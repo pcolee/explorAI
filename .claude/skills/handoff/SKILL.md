@@ -9,9 +9,9 @@ Goal: the next session, on Cole's machine or Sam's, can pick up from `docs/agent
 
 ## Steps
 
-1. **Sync.** `git fetch` and check `git status`. If `main` moved upstream, rebase or merge before writing so the log does not conflict.
+1. **Sync.** `scripts/sync.sh pull`. If it reports a conflict, stop and tell the user.
 2. **Collect.** From this session: files changed (`git diff --stat` against where you started), decisions made, questions answered, new questions, anything the user said is next.
-3. **Write the log entry.** At the top of `docs/agent-log.md`, under "Open questions", add `## YYYY-MM-DD · <person> (via Claude Code)` with at most these parts, skipping any that are empty:
+3. **Write the log entry.** Directly below the `<!-- newest entry below -->` marker in `docs/agent-log.md`, add `## YYYY-MM-DD · <person> (via Claude Code)`, ending the entry with a blank line, with at most these parts, skipping any that are empty:
    - **Changed:** files and one line each on why.
    - **Decided:** decisions and who made them.
    - **Issues:** problems found and not fixed, with file and slide.
@@ -22,8 +22,5 @@ Goal: the next session, on Cole's machine or Sam's, can pick up from `docs/agent
    - No member names, emails, phone numbers, or form responses. The repo is public.
    - Dates are absolute (`2026-10-07`, not "next Wednesday").
    - If a deck changed, slide count and note count still match.
-6. **Commit and share.**
-   - Cole (repo owner): commit to `main` or a branch, her call.
-   - Anyone else: commit on a branch (`handoff/YYYY-MM-DD` if nothing better), push, and open a PR to `main`.
-   - Ask the user before pushing if they have not already said to.
-7. **Report** in two or three lines: what was logged, and the PR link if one was opened.
+6. **Commit and push.** `git add docs/agent-log.md` (plus `CLAUDE.md` if it changed), commit on `main`, then `scripts/sync.sh push`. No need to ask: both collaborators push to `main` (see "Sync" in `CLAUDE.md`).
+7. **Report** in two or three lines: what was logged and the pushed commit.

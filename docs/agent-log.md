@@ -6,9 +6,24 @@ Shared handoff log for anyone (human or agent) working in this repo. Newest entr
 
 Remove a line once it is answered and note the answer in that day's entry.
 
-- Who is building the Meeting 3 deck (Wed 2026-10-07, "Building AI Context")?
 - Is Wed 2 to 3 pm in CIS A-204 the standing meeting time for the rest of Fall 2026?
 - Sam's Fall 2026 plan ([rcc-explorai](https://github.com/Sam-T-G/rcc-explorai), session cards in `semesters/2026-fall/sessions/`) has each meeting start with a written prediction and end with one sentence for `rules.md`. Should decks in this repo include those steps?
+
+<!-- newest entry below: add "## YYYY-MM-DD · Name (via Claude Code)" here and end it with a blank line -->
+
+## 2026-10-06 · Sam (via Claude Code)
+
+**Decided:** Cole gave Sam permission to push and merge directly. Both agents now push to `main` through `scripts/sync.sh push`, so PRs are no longer needed. Sam built the Meeting 3 deck (answers the "who builds it" question).
+
+**Changed:**
+- `CLAUDE.md`: new Sync section (pull before work, small commits on `main`, push after every verified change, stop on conflict). Removed the branch-and-PR rule.
+- `scripts/sync.sh`: `pull` rebases onto `origin/main` and reports incoming commits; `push` pulls, runs checks, pushes, and retries if the other person pushed first; `status`.
+- `scripts/check.sh`: blocks a push on a deck/notes count mismatch, unfilled `{{PLACEHOLDER}}`, missing local files, shared `localStorage` keys, conflict markers, or email addresses.
+- `.claude/settings.json`: hooks pull at session start and before every prompt, and block raw `git push`, force-push, `reset --hard`, and `git clean -f`. Allows the sync script, `git add`, and `git commit` without prompts.
+- `.gitattributes`: union merge for this log, so two entries added at once both survive.
+- `meetings/meeting-3/`: deck, notes, and offline tokenizer for 2026-10-07 (separate commit).
+
+**Next:** Cole runs `git pull` once to pick this up. On her first session in the repo, Claude Code asks her to approve the hooks in `.claude/settings.json`. The scripts need bash (macOS, Linux, or Git Bash on Windows).
 
 ## 2026-10-05 · Sam (via Claude Code)
 
