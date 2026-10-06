@@ -404,6 +404,16 @@ addEventListener('keydown',function(e){if(typing(e))return;
  else if(['ArrowLeft','ArrowUp','PageUp','Backspace'].indexOf(e.key)>-1){e.preventDefault();prev()}
  else if(e.key==='f'){document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen().catch(function(){})}
  else if(e.key==='t'||e.key==='T'){e.preventDefault();toggleTimer()}});
-addEventListener('click',function(e){if(e.target.closest('a,textarea,input,button,.lab .out,.stats'))return;e.clientX<innerWidth/3?prev():next()});
+addEventListener('click',function(e){if(document.documentElement.classList.contains('pv-tool'))return;if(e.target.closest('a,textarea,input,button,.lab .out,.stats'))return;e.clientX<innerWidth/3?prev():next()});
 addEventListener('resize',fit);fit();show((parseInt(location.hash.slice(1))||1)-1);
-</script></body></html>
+
+/* ---------- hooks for the presenter add-on (../shared/explorai-presenter.js + presenter.js): S presenter view, M phone remote ---------- */
+function builds(n){return S[n].querySelectorAll('[data-build-in],[data-step]').length}
+window.__explorDeck={
+ slides:S.map(function(s,n){var t=s.querySelector('.timer');return{beats:builds(n),timer:t?+t.dataset.seconds:0,room:false}}),
+ state:function(){return{i:i,b:builds(i)-pend(i).length,room:false,busy:false}}};
+addEventListener('hashchange',function(){var n=(parseInt(location.hash.slice(1))||1)-1;if(n!==i)show(n)});
+</script>
+<script src="../shared/explorai-presenter.js"></script>
+<script src="../shared/presenter.js"></script>
+</body></html>

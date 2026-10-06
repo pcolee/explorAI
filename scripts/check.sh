@@ -39,6 +39,11 @@ for dir in meetings/*/; do
     if [ "$slides" != "$cards" ] || [ "${n:-x}" != "$slides" ]; then
       fail+=("$m: deck has $slides slides, notes have $cards cards, notes script says N=${n:-missing}. All three must match.")
     fi
+    if grep -q 'shared/presenter.js' "$deck"; then
+      bridges=$(grep -o '<p class="bridge">' "$notes" | wc -l | tr -d ' ')
+      [ "$bridges" -ge $((cards - 1)) ] || fail+=("$m: deck loads the presenter but only $bridges of $((cards - 1)) notes cards have a <p class=\"bridge\"> line (every card but the last needs one)")
+      grep -q '__explorDeck' "$deck" || fail+=("$m: deck loads the presenter but does not define window.__explorDeck (see meetings/shared/explorai-presenter.js)")
+    fi
     key=$(grep -oE "localStorage\.getItem\('[^']+'\)" "$notes" | head -1 | sed -E "s/.*\('//; s/'\)//")
     if [ -n "$key" ]; then
       if printf '%s\n' "$keys" | grep -qx "$key"; then

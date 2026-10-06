@@ -53,7 +53,18 @@ Two people's agents edit this repo. The goal is that neither one ever works on a
 
 - One `<article class="note" id="nK" data-i="K">` per slide, numbered to match deck order exactly. If you add, remove, or reorder a slide, update the notes and the `N` constant in the notes script in the same commit.
 - `p.say` = lines to say aloud, `p.do` = presenter cues, `.time` = slide start time.
+- `p.bridge` ends every card but the last: one spoken sentence that carries the room into the next slide without saying its headline.
 - Saved position uses `localStorage`, which every page on `pcolee.github.io` shares. Use a key unique to the meeting (`m3-cur`, not `cur`), or a new meeting's notes open at the old meeting's last card.
+
+## Presenter tools (Meeting 3 on)
+
+On the deck laptop, `S` opens a presenter view (now, next, notes, bridge line, timers, run sheet) and `M` shows a QR code that turns a phone or iPad into a remote with the notes. Several remotes can connect at once.
+
+- Shared code in `meetings/shared/`: `presenter.js` is a copy of the GDG/ACM deck kits' file (change it there and recopy, never only here); `explorai-presenter.js` fits it to this repo's decks and reads each meeting's `notes.html` into the views.
+- A deck opts in by defining `window.__explorDeck`, jumping to the slide on `hashchange`, ignoring clicks on `.pv-tool` pages, and loading the two scripts after its own. Copy these lines from the end of Meeting 3's `index.html`.
+- The remote goes through the club relay (`deck-relay` on Cloud Run, which allows `pcolee.github.io`), with ntfy.sh as automatic fallback. It needs the published deck, so test the remote on the live URL.
+- Switching the deck laptop to another tab (a live demo) is fine: tested on 2026-10-06 with the deck tab hidden for 5.7 minutes, and the remote kept working both ways. If a remote ever looks stale, a tap or a laptop key press resyncs it.
+- `scripts/check.sh` fails a deck that loads the presenter without bridge lines or the deck hooks.
 
 ## Rules
 

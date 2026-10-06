@@ -9,7 +9,7 @@ Last updated: 2026-10-06 by Sam.
 | # | Date | Topic | State | Next / blocking |
 |---|---|---|---|---|
 | 2 | 2026-09-30 | What is AI, really? | Presented | None. Known cosmetic issues listed in the 2026-10-05 log entry. |
-| 3 | 2026-10-07 | How AI reads your words | Live, ready to present | Cole to review before 2:00 pm. Confirm the sign-in QR (reused from Meeting 2) is still the right form. |
+| 3 | 2026-10-07 | How AI reads your words | Live, ready to present, with presenter tools (S, M) | Cole to review before 2:00 pm. Confirm the sign-in QR (reused from Meeting 2) is still the right form. Try the phone remote on the live URL once before the meeting. |
 | 4 | 2026-10-14 | Build One Thing (title from Sam's plan, unconfirmed) | Not started | Decide topic and who builds it. |
 
 ## Standing facts
@@ -17,4 +17,5 @@ Last updated: 2026-10-06 by Sam.
 - Meetings: Wednesdays 2:00 to 3:00 pm, CIS A-204 (from the decks; not yet confirmed as standing for the term).
 - Live site: `https://pcolee.github.io/explorAI/meetings/meeting-N/`. Every push to `main` publishes.
 - Instagram: `@explorai.rcc`. Sign-in form and board application links are listed in the 2026-10-05 log entry.
-- Deck style: Meeting 3 moved the styles into classes so the next deck can reuse them. Start Meeting 4 from Meeting 3's `index.html` and `notes.html`.
+- Deck style: Meeting 3 moved the styles into classes so the next deck can reuse them. Start Meeting 4 from Meeting 3's `index.html` and `notes.html`, which also carry the presenter hooks and bridge lines (see "Presenter tools" in `CLAUDE.md`).
+- Presenter tools: on the deck laptop, `S` opens the presenter view and `M` shows a QR code for a phone or iPad remote. Several remotes can connect at once.
