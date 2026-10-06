@@ -17,4 +17,9 @@ esac
 if printf '%s' "$cmd" | grep -qE '(^|[;&|[:space:]])git([[:space:]]+-C[[:space:]]+[^[:space:]]+)?[[:space:]]+push([[:space:]]|$)'; then
   block "push with 'scripts/sync.sh push'. It pulls, runs scripts/check.sh, then pushes to main."
 fi
+# A commit is building too: hold it to the Context rule (also catches files edited through the shell)
+if printf '%s' "$cmd" | grep -qE '(^|[;&|[:space:]])git([[:space:]]+-C[[:space:]]+[^[:space:]]+)?[[:space:]]+commit([[:space:]]|$)'; then
+  printf '%s' "$input" | "$(dirname "$0")/context-gate.sh" commit
+  exit $?
+fi
 exit 0

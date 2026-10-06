@@ -22,6 +22,7 @@ Remove a line once it is answered and note the answer in that day's entry.
 - `.claude/settings.json`: hooks pull at session start and before every prompt, and block raw `git push`, force-push, `reset --hard`, and `git clean -f`. Allows the sync script, `git add`, and `git commit` without prompts.
 - `.gitattributes`: union merge for this log, so two entries added at once both survive.
 - `meetings/meeting-3/`: deck, notes, and offline tokenizer for 2026-10-07 (separate commit).
+- Shared context system (second push today): `docs/status.md` (current snapshot, rewritten at each handoff); `scripts/context.sh` (the brief: others' new work, meetings, status, open questions, recent log); a hard **Context rule** in `CLAUDE.md`. Hooks deliver the brief at session start and after compaction; `scripts/hooks/context-gate.sh` blocks the first edit or commit of a session, and the first after the other person pushes, until the agent writes a "Context check:" to its user; `scripts/hooks/stop-check.sh` stops a turn from ending with work that is unlogged, unpushed, or uncommitted. `/handoff` now updates status and keeps one log entry per person per day.
 
 **Next:** Cole runs `git pull` once to pick this up. On her first session in the repo, Claude Code asks her to approve the hooks in `.claude/settings.json`. The scripts need bash (macOS, Linux, or Git Bash on Windows).
 

@@ -2,7 +2,24 @@
 
 Slide decks and speaker notes for ExplorAI, the AI club at Riverside City College. Owner: Cole (`pcolee`). Collaborator: Sam (`Sam-T-G`). Both run Claude Code against this repo, so this file and `docs/agent-log.md` are how agents on different machines share context.
 
-Both agents push to `main` themselves. The **Sync** rules below are mandatory, and hooks in `.claude/settings.json` enforce most of them. End a session with `/handoff`.
+Both agents push to `main` themselves. The **Context rule** and **Sync** rules below are mandatory, and hooks in `.claude/settings.json` enforce them.
+
+## Context rule (hard)
+
+Before building anything, meaning any edit to a repo file or any commit, cross-reference new and existing context:
+
+1. **New:** what the other person did since you last worked here. The session-start brief lists their commits and the files each touched; `git show <sha>` for detail.
+2. **Existing:** `docs/status.md` (where everything stands), the open questions and recent entries in `docs/agent-log.md`, this file, the files you are about to change, and the same files in the previous meeting's folder (structure, style, bugs already fixed).
+3. **Say it:** before the first edit, tell the user under **Context check:** in 1 to 3 lines what is relevant and how your plan accounts for it, or that nothing affects it. If the context conflicts with the request (someone else already built it, a decision went the other way, an open question is unresolved), ask before building.
+
+Enforcement: the first edit or commit of every session, and the first one after someone else's commits arrive, is blocked once and returns the brief (`scripts/hooks/context-gate.sh`). Run `scripts/context.sh` any time to see the brief again. Edit repo files with the edit tools, not shell rewrites, so the gate sees them.
+
+Where context lives, so nothing is kept only in one person's chat:
+
+- `docs/status.md`: the current snapshot. One row per meeting (state, next step, blocker) plus standing facts. Rewritten in place at every `/handoff`.
+- `docs/agent-log.md`: history. One entry per person per day (update yours in place if you work again that day): changed, decided, issues, next. Plus the open-questions list.
+- Commit messages: the step-by-step progress. Say what changed and why.
+- This file: rules and contracts that stay true. Never dated facts.
 
 ## Sync
 
@@ -14,7 +31,7 @@ Two people's agents edit this repo. The goal is that neither one ever works on a
 - **Verified means opened in a browser.** Walk changed slides with real key presses before pushing. `main` is the live site.
 - **On conflict: stop.** `sync.sh` aborts the rebase and leaves your commits as they were. Tell the user which commits collided. Never force-push, `reset --hard`, or delete the other person's changes to make a push go through.
 - **During a meeting** (Wed 2:00 to 3:00 pm), do not push to that meeting's folder unless the presenter asks.
-- **Log decisions, not every push.** Commit messages carry progress. Add a `docs/agent-log.md` entry (via `/handoff`) at the end of a session or when something is decided or blocked.
+- **Hand off before you stop.** After committing work, run `/handoff` (updates `docs/status.md` and your log entry, then pushes). A Stop hook reminds you if work is unlogged, unpushed, or uncommitted.
 - `docs/agent-log.md` merges with git's `union` driver (`.gitattributes`), so two entries added at once both survive. Re-read the file after a pull if both of you edited the open-questions list.
 
 ## Layout
