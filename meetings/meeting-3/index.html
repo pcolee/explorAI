@@ -154,9 +154,9 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 /* Hook slide large-phone layout */
 .hook-slide{padding:0!important;gap:0!important;flex-direction:row!important;align-items:stretch!important}
 .hook-text{width:860px;flex:none;display:flex;flex-direction:column;justify-content:center;gap:36px;padding:80px 96px}
-.hook-phone-panel{position:relative;flex:1;overflow:hidden}
+.hook-phone-panel{position:relative;flex:1;overflow:hidden;-webkit-mask-image:linear-gradient(to bottom,transparent 0%,#000 50%);mask-image:linear-gradient(to bottom,transparent 0%,#000 50%)}
 .hook-phone-panel .hook-scale{position:absolute;bottom:0;left:50%;margin-left:-225px;width:450px;transform:scale(1.5);transform-origin:bottom center}
-.hook-eyebrow{position:absolute;top:64px;left:96px}
+.hook-eyebrow{position:absolute;top:80px;left:96px}
 /* Message rows with avatars */
 .iphone-msgs .msg-row{display:flex;align-items:flex-end;gap:8px}
 .iphone-msgs .msg-row .msg-grp{flex:1;min-width:0}
@@ -446,16 +446,21 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 <section id="vivid" style="background:radial-gradient(circle,rgba(63,90,42,.04) 1.5px,transparent 1.5px) 0 0/28px 28px,linear-gradient(135deg,#FFFBF5 0%,#F4F7E6 55%,#F2C1D6 100%);gap:36px">
 <p class="eyebrow">Vague vs. Vivid</p>
 <h2>Same task. Very different context.</h2>
-<div style="display:flex;gap:32px;flex:1;align-items:stretch">
-<div class="card" style="border-color:var(--leaf);background:var(--mint);flex:1;display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;gap:28px;flex:1;align-items:stretch">
+<div class="card" style="border-color:var(--leaf);background:var(--mint);flex:1;display:flex;flex-direction:column;gap:14px">
 <p class="eyebrow" style="font-size:20px;color:var(--ink)">Vague</p>
-<h3 style="font-size:36px;font-family:var(--mono);font-weight:500;color:var(--body)">"Write an email to my professor."</h3>
-<p style="margin-top:auto;color:var(--body)">The AI has to guess: which professor? what course? what happened? what tone? what length? Any answer is a guess.</p>
+<h3 style="font-size:36px;font-family:var(--mono);font-weight:500;color:var(--body)">"Help me study for an exam."</h3>
+<p style="margin-top:auto;color:var(--body)">Missing everything: which exam? what subject? what kind of help? what format?</p>
 </div>
-<div class="card" style="border-color:var(--accent);background:var(--pinkwash);flex:2;display:flex;flex-direction:column;gap:16px">
+<div class="card" style="border-color:#CC8050;background:#FDE0CC;flex:1;display:flex;flex-direction:column;gap:14px">
+<p class="eyebrow" style="font-size:20px;color:#CC8050">Better</p>
+<h3 style="font-size:28px;font-family:var(--mono);font-weight:500;color:var(--body)">"Help me study for my bio exam on Friday. I need to review cell biology."</h3>
+<p style="margin-top:auto;color:var(--body)">Has a subject and deadline — still guessing the format, depth, and how to actually help.</p>
+</div>
+<div class="card" style="border-color:var(--accent);background:var(--pinkwash);flex:1;display:flex;flex-direction:column;gap:14px">
 <p class="eyebrow" style="font-size:20px">Vivid</p>
-<p style="font-family:var(--mono);font-size:30px;font-weight:700;line-height:1.5;color:var(--ink);flex:1">"I’m in Intro to Python — I’ve had perfect attendance all semester. I missed Tuesday’s lab because of a family emergency. I’m sorry for the short notice. Write a polite, apologetic email to Professor Lee explaining the situation and asking if I can make up the lab this week. Under 100 words, professional tone."</p>
-<p style="color:var(--accent);font-weight:700;font-size:26px">Every sentence answers a question the AI would’ve guessed wrong.</p>
+<p style="font-family:var(--mono);font-size:22px;font-weight:700;line-height:1.55;color:var(--ink);flex:1">"I’m a first-year bio student. Exam Friday, chapters 3–5. I’m weakest on mitosis. Quiz me with 5 questions one at a time, then explain any I miss."</p>
+<p style="color:var(--accent);font-weight:700;font-size:22px">Who + What + Why + How. Nothing left to guess.</p>
 </div>
 </div>
 <p class="pill" style="background:var(--pinkwash);border:2px solid var(--accent);color:var(--accent)">What changed? Who + What + Why + How. Four rules, one much better result.</p>
