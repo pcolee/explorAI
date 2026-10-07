@@ -14,11 +14,12 @@ Remove a line once it is answered and note the answer in that day's entry.
 ## 2026-10-07 · Cole (via Claude Code)
 
 **Changed:**
-- `meetings/meeting-3/index.html` (hook slides 11–14): removed zoom animations (`hZoom1-4` keyframes and all `animation:` rules on `.iphone-msgs`); removed `transform-origin:bottom center` from `.iphone-msgs`; iPhone scaled up from 385×820px to 450×860px with proportional border-radius, buttons, screen, and Dynamic Island; message pending transform changed from `translateY(-18px)` to `translateY(16px)` so revealed messages pop in from below; hook slide padding reduced from 80px to 64px to fit the taller phone; iPhone container widened from 500px to 570px on all 4 hook slides; hook4 background changed from the green gradient to the same cream-to-pink gradient as hooks 1–3.
+- `meetings/meeting-3/index.html` (hook slides 11–14): removed zoom animations; iPhone scaled 385×820→450×860px; message pop-in direction fixed to bottom-up (`translateY(16px)`); hook slide padding 80→64px; container 500→570px; hook4 background changed from green to cream-to-pink to match hooks 1–3.
+- `meetings/meeting-3/index.html` (second commit, polish pass): recipe slide — cards slide in on entry (staggered CSS anim on `:not([hidden])`), each arrow press highlights one card with pink glow (`data-build-in` overridden to stay visible, glow on reveal); vivid slide — vague text 52→36px, vivid 26→30px bold, vivid prompt expanded with attendance/apology/tone context, pill styled accent-pink; takeaways slide — `justify-content:center` so sentence sits in vertical middle; thanks slide — next-meeting frosted card opacity .25→.55; act1 ghost numbers changed from near-invisible dark green (`rgba(63,90,42,.1)`) to accent pink (`rgba(168,72,122,.32)`); Part 1 divider gradient angle 135→155°, lighter at top; AI Context divider gradient adds lilac `#D4C5F0` (210°, cream→lilac→pink), distinct from the green divider.
 
-**Decided:** Hook segment uses a static, larger phone — no zoom. Message reveals pop in from below (organic feel). Background stays pink through the entire hook segment; green starts at act1 (slide 15).
+**Decided:** Recipe card highlight accumulates as you talk through cards (each press glows one more), not single-active. Section dividers each have a unique gradient; Part 1 uses green, AI Context uses lilac-pink. Ghost numbers on activity cards should be accent-colored, not ink-colored.
 
-**Next:** Meeting 3 presents today at 2:00 pm. Meeting 4 topic and plan still TBD.
+**Next:** Meeting 3 presented 2026-10-07. Meeting 4 topic and plan still TBD — Cole to provide.
 
 ## 2026-10-06 · Cole (via Claude Code)
 
