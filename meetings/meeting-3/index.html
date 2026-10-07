@@ -1,7 +1,6 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ExplorAI Meeting 3: How AI Reads Your Words</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400..700;1,400..700&family=DM+Sans:wght@400..700&family=DM+Mono:wght@400;500&display=swap">
 <style>
-/* Same stage, palette, and type as Meeting 2. Styles live in classes here instead of inline so the next deck can reuse them. */
 :root{--ink:#3F5A2A;--body:#4D5845;--accent:#A8487A;--green:#D9E8AD;--pink:#F2C1D6;--mint:#F4F7E6;--cream:#FFFBF5;--card:#FFFEFB;--sand:#F4ECDD;--pinkwash:#FBE6EF;--leaf:#9CB57B;
 --display:'Fraunces',Georgia,serif;--sans:'DM Sans',Arial,sans-serif;--mono:'DM Mono',ui-monospace,Menlo,monospace;--grad:linear-gradient(135deg,#D9E8AD 0%,#EAEFD2 45%,#F2C1D6 100%)}
 html,body{margin:0;height:100%;background:var(--mint);overflow:hidden}
@@ -40,8 +39,6 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 #count{position:fixed;right:14px;bottom:10px;font:600 13px system-ui,sans-serif;color:#3F5A2A;opacity:.7}
 .timer{font-family:var(--display);font-size:96px;font-weight:600;color:var(--ink);background:rgba(255,255,255,.85);padding:12px 48px;border-radius:999px;font-variant-numeric:tabular-nums;align-self:start}
 .timer.done{background:rgba(242,193,214,.95);color:var(--accent)}
-
-/* Token chips. Three fills cycle so neighbors never match; a leading space shows as a dot. */
 .toks{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-family:var(--mono);font-weight:500;color:var(--ink)}
 .tok{display:inline-block;padding:4px 10px;border-radius:10px;white-space:pre;line-height:1.25}
 .tok:nth-child(3n+1){background:var(--green)}.tok:nth-child(3n+2){background:var(--pink)}.tok:nth-child(3n){background:var(--sand)}
@@ -49,8 +46,6 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 .tok.byte{font-style:italic;font-family:var(--sans);font-weight:700;font-size:.7em;padding-block:9px}
 .toks.s28{font-size:28px}.toks.s36{font-size:36px}.toks.s44{font-size:44px}.toks.s60{font-size:60px}
 .tcount{font-family:var(--display);font-weight:600;color:var(--accent);white-space:nowrap}
-
-/* Live lab */
 .lab textarea{width:100%;height:150px;resize:none;font:500 44px/1.3 var(--sans);color:var(--ink);background:var(--card);border:2px solid var(--green);border-radius:24px;padding:24px 32px;outline:none}
 .lab textarea:focus{border-color:var(--accent);box-shadow:0 0 0 6px var(--pinkwash)}
 .lab .out{min-height:220px;max-height:300px;overflow:hidden}
@@ -58,8 +53,6 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 .stat{background:var(--card);border:2px solid var(--green);border-radius:24px;padding:20px 32px;display:flex;align-items:baseline;gap:16px}
 .stat b{font-family:var(--display);font-size:64px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
 .stat span{font-size:26px}
-
-/* Guess game: the plain string splits into chips when revealed */
 .gcard{background:var(--card);border:2px solid var(--green);border-radius:24px;padding:22px 32px;display:flex;align-items:center;gap:24px;min-height:112px}
 .gcard .n{font-size:28px;font-weight:700;color:var(--accent);min-width:1.4em}
 .gcard .plain{font-family:var(--mono);font-weight:500;font-size:36px;color:var(--ink);white-space:pre}
@@ -68,8 +61,6 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 .gcard.pending .toks,.gcard.pending .tcount{display:none}
 .gcard:not(.pending) .plain{display:none}
 .gcard:not(.pending){border-color:var(--pink)}
-
-/* Window diagram: heavy frame = the window, standard blocks inside, dashed = not written yet */
 .win{border:3px solid var(--ink);border-radius:28px;padding:24px;display:flex;flex-direction:column;gap:14px;background:rgba(255,254,251,.7)}
 .blk{border:2px solid var(--leaf);border-radius:16px;padding:16px 24px;background:var(--card)}
 .blk b{display:block;font-family:var(--display);font-size:36px;font-weight:600;color:var(--ink)}
@@ -77,8 +68,6 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 .blk.you{background:var(--green)}
 .blk.next{border:2px dashed var(--accent);background:transparent}
 .blk.next b{color:var(--accent)}
-
-/* Toy window rows */
 .tw{position:relative;display:flex;flex-direction:column;gap:22px}
 .tw .r{display:flex;align-items:center;gap:24px}
 .tw .lbl{width:300px;flex:none;font-size:26px;line-height:1.25}
@@ -91,19 +80,36 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 .tw .flabel{position:absolute;top:-58px;font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--ink)}
 .legend{display:flex;gap:28px;font-size:26px;align-items:center}
 .legend i{display:inline-block;width:36px;height:24px;border-radius:6px;vertical-align:-4px;margin-right:10px}
-
-/* Prompt columns */
 .pcol{background:var(--card);border:2px solid var(--green);border-radius:24px;padding:28px 32px;display:flex;flex-direction:column;gap:14px}
 .pcol .tag{font-family:var(--display);font-size:40px;font-weight:600;color:var(--ink)}
 .pcol .what{font-size:24px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent)}
 .pcol p{font-size:31px;line-height:1.4}
 .pcol .mat{background:var(--mint);border-left:6px solid var(--leaf);padding:10px 16px;border-radius:8px}
 .pcol .extra{background:var(--pinkwash);border-left:6px solid var(--accent);padding:10px 16px;border-radius:8px}
+.imsg-wrap{background:#F2F2F7;border-radius:32px;padding:36px 44px;display:flex;flex-direction:column;gap:18px}
+.imsg-hd{display:flex;align-items:center;gap:20px;padding-bottom:18px;border-bottom:1px solid rgba(0,0,0,.07)}
+.imsg-avs{display:flex}
+.av{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:19px;font-weight:700;color:#fff;border:3px solid #F2F2F7;flex:none}
+.av+.av{margin-left:-14px}
+.imsg-hd-text b{display:block;font-size:26px;font-weight:700;color:#1C1C1E;font-family:var(--sans)}
+.imsg-hd-text span{font-size:19px;color:#8E8E93;font-family:var(--sans)}
+.imsg-msgs{display:flex;flex-direction:column;gap:12px}
+.msg-grp{display:flex;flex-direction:column;gap:4px}
+.msg-from{font-size:19px;font-weight:600;margin-left:18px;line-height:1.2;font-family:var(--sans)}
+.msg-bub{display:inline-block;background:#E9E9EB;border-radius:20px;padding:13px 22px;line-height:1.4;color:#1C1C1E;max-width:82%;font-family:var(--sans)}
+.imsg-tdiv{text-align:center;font-size:19px;color:#8E8E93;font-weight:500;margin:2px 0;font-family:var(--sans)}
+.cp .msg-from{color:#FF375F}.cd .msg-from{color:#34C759}.cm .msg-from{color:#007AFF}
+.imsg-wrap.lg .msg-bub{font-size:38px;padding:18px 28px}
+.imsg-wrap.md .msg-bub{font-size:30px;padding:14px 22px}
+.imsg-wrap.sm .msg-bub{font-size:25px;padding:11px 18px}
+.imsg-wrap.sm .msg-grp{gap:2px}
+.imsg-wrap.sm .imsg-msgs{gap:8px}
+.imsg-wrap.sm .msg-from{font-size:17px}
+.imsg-wrap.sm .imsg-tdiv{font-size:17px}
 @media (prefers-reduced-motion:reduce){[data-build-in]{transition:none}}
 </style></head><body>
 <div id="stage">
 
-<!-- ===================== ARRIVE ===================== -->
 <section id="cover" class="grad center">
 <p class="eyebrow">ExplorAI · Meeting 3</p>
 <h1 class="title">How AI reads your words</h1>
@@ -115,37 +121,46 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 <div class="qr"><img src="data:image/png;base64,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" alt="QR code: Sign in here!" style="width:400px;height:400px"><p>Sign in here!</p></div></div>
 </section>
 
-<section id="announce" class="mint">
+<section id="shares" class="mint">
 <div style="display:flex;align-items:center;gap:96px;flex:1"><div style="flex:1;display:flex;flex-direction:column;gap:32px">
-<p class="eyebrow">Announcements</p>
+<p class="eyebrow">explorAI Shares</p>
 <h1 style="font-family:var(--display);font-size:96px;font-weight:600;line-height:1.1;color:var(--ink)">LA Hacks AI Hackathon at UCLA</h1>
-<div class="row" style="gap:24px"><div class="card pink"><h3>Fri, Oct 9</h3><p>Applications due. That’s in two days!</p></div><div class="card"><h3>Oct 17–18</h3><p>James West Alumni Center, UCLA</p></div></div>
-<p class="lead">Never done a hackathon? This is a good first one. Apply on your own or with friends from here.</p>
+<div class="row" style="gap:24px"><div class="card pink"><h3>Fri, Oct 9</h3><p>Applications due — that’s in two days!</p></div><div class="card"><h3>Oct 17–18</h3><p>James West Alumni Center, UCLA</p></div></div>
+<p class="lead">Never done a hackathon? This is a good first one. You don’t need to code — teams need people who can pitch, design, and research.</p>
 </div>
 <div class="qr"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAkQAAAJECAIAAAB4gqwNAAALb0lEQVR4nO3XMY7jyhVAUbehLTHnTrg27oQ519NRB+PAmYGP6VGN9eaOzsmJeiyWdFEfP74+/wUAZf+eHgAAVokZAHliBkCemAGQJ2YA5IkZAHliBkCemAGQJ2YA5IkZAHliBkCemAGQJ2YA5IkZAHliBkCemAGQJ2YA5IkZAHliBkCemAGQJ2YA5IkZAHliBkCemAGQJ2YA5IkZAHliBkCemAGQJ2YA5IkZAHliBkCemAGQJ2YA5IkZAHliBkCemAGQJ2YA5IkZAHliBkDeY2rh/dimluabrvMeWXflbEzNvOLd3neF/40/39SZdDMDIE/MAMgTMwDyxAyAPDEDIE/MAMgTMwDyxAyAPDEDIE/MAMgTMwDyxAyAPDEDIE/MAMgTMwDyxAyAPDEDIE/MAMgTMwDyHtMDPOM67+kRMvZje6t1V6zM/G5nsrhX7/aNVhR/v25mAOSJGQB5YgZAnpgBkCdmAOSJGQB5YgZAnpgBkCdmAOSJGQB5YgZAnpgBkCdmAOSJGQB5YgZAnpgBkCdmAOSJGQB5YgZA3mN6gFfbj216hF92nff0CBnv9n1X3ndl3Xc7k+92rorczADIEzMA8sQMgDwxAyBPzADIEzMA8sQMgDwxAyBPzADIEzMA8sQMgDwxAyBPzADIEzMA8sQMgDwxAyBPzADIEzMA8sQMgLzH9ADw7vZje6t1r/MeWZe/m5sZAHliBkCemAGQJ2YA5IkZAHliBkCemAGQJ2YA5IkZAHliBkCemAGQJ2YA5IkZAHliBkCemAGQJ2YA5IkZAHliBkCemAGQ95gegL/Tdd4j6+7HNrLuFPsM/+VmBkCemAGQJ2YA5IkZAHliBkCemAGQJ2YA5IkZAHliBkCemAGQJ2YA5IkZAHliBkCemAGQJ2YA5IkZAHliBkCemAGQJ2YA5D2mB3i167ynR+An9mMbWbd4Nlb2qvi+U+zVn8/NDIA8MQMgT8wAyBMzAPLEDIA8MQMgT8wAyBMzAPLEDIA8MQMgT8wAyBMzAPLEDIA8MQMgT8wAyBMzAPLEDIA8MQMgT8wAyHtMD/CM/dimR+AnVr7Rdd4j6654t/ctsld/NzczAPLEDIA8MQMgT8wAyBMzAPLEDIA8MQMgT8wAyBMzAPLEDIA8MQMgT8wAyBMzAPLEDIA8MQMgT8wAyBMzAPLEDIA8MQMg7+PH1+f0DPyF9mMbWfc675F1i1a+kX3mT+NmBkCemAGQJ2YA5IkZAHliBkCemAGQJ2YA5IkZAHliBkCemAGQJ2YA5IkZAHliBkCemAGQJ2YA5IkZAHliBkCemAGQJ2YA5D2mFt6P7elnr/P+jZP83d5tn1fed8XKXk3NPKX4jVYUv2/xt+9mBkCemAGQJ2YA5IkZAHliBkCemAGQJ2YA5IkZAHliBkCemAGQJ2YA5IkZAHliBkCemAGQJ2YA5IkZAHliBkCemAGQJ2YA5H38+PocWXg/tpF1r/N++tmVmVfW5fumvlFx3RXF8zy1V0XF7+tmBkCemAGQJ2YA5IkZAHliBkCemAGQJ2YA5IkZAHliBkCemAGQJ2YA5IkZAHliBkCemAGQJ2YA5IkZAHliBkCemAGQJ2YA5D2mB+D/az+2kXWv83762ZWZp9ZdUXzfqZmnvNt5Ln5fNzMA8sQMgDwxAyBPzADIEzMA8sQMgDwxAyBPzADIEzMA8sQMgDwxAyBPzADIEzMA8sQMgDwxAyBPzADIEzMA8sQMgDwxAyDvMbXwdd4j6+7HNrLuipWZi/u8MrN1X7Puiqnf4NT7Tpk6V1PczADIEzMA8sQMgDwxAyBPzADIEzMA8sQMgDwxAyBPzADIEzMA8sQMgDwxAyBPzADIEzMA8sQMgDwxAyBPzADIEzMA8sQMgLyPH1+fIwvvxzay7orrvJ9+tvi+K6b2qviNVmZe8W5ncsXUN5oy9Rtc4WYGQJ6YAZAnZgDkiRkAeWIGQJ6YAZAnZgDkiRkAeWIGQJ6YAZAnZgDkiRkAeWIGQJ6YAZAnZgDkiRkAeWIGQJ6YAZAnZgDkPaYHeMZ13tMj/LLizPuxjay7slcrM099o+LMK4r7XPRu58rNDIA8MQMgT8wAyBMzAPLEDIA8MQMgT8wAyBMzAPLEDIA8MQMgT8wAyBMzAPLEDIA8MQMgT8wAyBMzAPLEDIA8MQMgT8wAyHtMD/Bq+7GNrHud99PPvtvMK+uumNrnFc7GaxT3eUXxG7mZAZAnZgDkiRkAeWIGQJ6YAZAnZgDkiRkAeWIGQJ6YAZAnZgDkiRkAeWIGQJ6YAZAnZgDkiRkAeWIGQJ6YAZAnZgDkiRkAeY/pAV7tOu+Rdfdje/rZd5t5Zd0pU99oSvE8r5g6z36D3+dmBkCemAGQJ2YA5IkZAHliBkCemAGQJ2YA5IkZAHliBkCemAGQJ2YA5IkZAHliBkCemAGQJ2YA5IkZAHliBkCemAGQJ2YA5D2mB3i1/diefvY67984yfetzLxi6n1XrMw8tc/v9n2n3nfF1P/Gu52NFW5mAOSJGQB5YgZAnpgBkCdmAOSJGQB5YgZAnpgBkCdmAOSJGQB5YgZAnpgBkCdmAOSJGQB5YgZAnpgBkCdmAOSJGQB5YgZA3sePr8/pGfgL7cc2su513iPret/vm5p5xbu9b5GbGQB5YgZAnpgBkCdmAOSJGQB5YgZAnpgBkCdmAOSJGQB5YgZAnpgBkCdmAOSJGQB5YgZAnpgBkCdmAOSJGQB5YgZAnpgBkPeYWng/tqml+abrvEeeXTF1rlbe12/h+1b2aupMFhX32c0MgDwxAyBPzADIEzMA8sQMgDwxAyBPzADIEzMA8sQMgDwxAyBPzADIEzMA8sQMgDwxAyBPzADIEzMA8sQMgDwxAyBPzADIe0wP8IzrvKdHyNiPbXqEl5o6Gyv7vDKz78s/mTqTU9zMAMgTMwDyxAyAPDEDIE/MAMgTMwDyxAyAPDEDIE/MAMgTMwDyxAyAPDEDIE/MAMgTMwDyxAyAPDEDIE/MAMgTMwDyxAyAvMf0AK+2H9v0CL/sOu/pEV5q6htN7fPK+67MPLXPxd/glOI3mvoduZkBkCdmAOSJGQB5YgZAnpgBkCdmAOSJGQB5YgZAnpgBkCdmAOSJGQB5YgZAnpgBkCdmAOSJGQB5YgZAnpgBkCdmAOSJGQB5j+kB4He6zju37n5sI8++m6mzsWLqXBW5mQGQJ2YA5IkZAHliBkCemAGQJ2YA5IkZAHliBkCemAGQJ2YA5IkZAHliBkCemAGQJ2YA5IkZAHliBkCemAGQJ2YA5IkZAHmP6QHgf13n/fSz+7H9xkn4Jyvf6N1Mncl3+x25mQGQJ2YA5IkZAHliBkCemAGQJ2YA5IkZAHliBkCemAGQJ2YA5IkZAHliBkCemAGQJ2YA5IkZAHliBkCemAGQJ2YA5IkZAHmP6QFe7Trv6RH4if3Ynn525ftOrbuiuFcr3m1mvs/NDIA8MQMgT8wAyBMzAPLEDIA8MQMgT8wAyBMzAPLEDIA8MQMgT8wAyBMzAPLEDIA8MQMgT8wAyBMzAPLEDIA8MQMgT8wAyHtMD/CM/dimR+AnVr7Rdd6/cZLXrOtMvkbxXBVnLnIzAyBPzADIEzMA8sQMgDwxAyBPzADIEzMA8sQMgDwxAyBPzADIEzMA8sQMgDwxAyBPzADIEzMA8sQMgDwxAyBPzADIEzMA8j5+fH1OzwAAS9zMAMgTMwDyxAyAPDEDIE/MAMgTMwDyxAyAPDEDIE/MAMgTMwDyxAyAPDEDIE/MAMgTMwDyxAyAPDEDIE/MAMgTMwDyxAyAPDEDIE/MAMgTMwDyxAyAPDEDIE/MAMgTMwDyxAyAPDEDIE/MAMgTMwDyxAyAPDEDIE/MAMgTMwDyxAyAPDEDIE/MAMgTMwDyxAyAvP8AHHd+IpV6ieQAAAAASUVORK5CYII=" alt="QR code: ai.lahacks.com" style="width:380px;height:380px"><p>ai.lahacks.com</p></div></div>
 <p class="foot">ExplorAI · Meeting 3</p>
 </section>
 
+<section id="gemini" class="mint">
+<p class="eyebrow">explorAI Shares</p>
+<h2>Gemini 4 Argon</h2>
+<div class="row" style="gap:24px;flex:1;align-items:stretch;margin-top:8px">
+<div class="card"><h3>What it is</h3><p>Google DeepMind’s new flagship model, announced Sept 30, 2026. Built for long, multi-step work — it plans, takes many actions, and keeps track of the whole task.</p></div>
+<div class="card pink"><h3>Who it’s for right now</h3><p>Vetted cyber defenders in Google’s Fairwind Program — governments, critical infrastructure, major platforms. API and Ultra subscribers are next. No date for everyone else.</p></div>
+<div class="card"><h3>Why it’s notable</h3><p>Very strong at long context: huge documents, codebases, long videos. It reportedly caught a critical bug in hospital software that earlier models missed.</p></div>
+</div>
+<p class="pill">Every Argon headline measures it in tokens: up to a million tokens per response. So — what’s a token? Sam’s got it.</p>
+</section>
+
 <section id="today">
 <p class="eyebrow">Today</p>
-<h2>Four parts, one question: what does AI actually get to read?</h2>
+<h2>One question: what does AI actually get to read?</h2>
 <div class="grid4">
-<div class="card"><p class="num" style="font-size:56px">1</p><h3>Tokens</h3><p>The pieces it reads and writes</p></div>
-<div class="card"><p class="num" style="font-size:56px">2</p><h3>Context</h3><p>Everything it can see right now</p></div>
-<div class="card"><p class="num" style="font-size:56px">3</p><h3>Prompting</h3><p>Same question, three ways</p></div>
-<div class="card pink"><p class="num" style="font-size:56px">4</p><h3>Getting more out of it</h3><p>Habits that come from 1 to 3</p></div>
+<div class="card"><p class="num" style="font-size:56px">1</p><h3>Tokens</h3><p>The chunks it reads and writes</p></div>
+<div class="card"><p class="num" style="font-size:56px">2</p><h3>Hook</h3><p>A group chat out of context</p></div>
+<div class="card"><p class="num" style="font-size:56px">3</p><h3>AI Context &amp; Prompting</h3><p>What fills the window — and how</p></div>
+<div class="card pink"><p class="num" style="font-size:56px">4</p><h3>Activities</h3><p>First try, then the recipe</p></div>
 </div>
 <p class="foot">ExplorAI · Meeting 3</p>
 </section>
 
-<!-- ===================== TENSION ===================== -->
 <section id="recap" class="grad center">
 <p class="eyebrow">Last week</p>
 <h1 class="big" style="font-size:96px">A chatbot predicts the next piece of text, over and over.</h1>
 <p class="sub" data-build-in>So what is a “piece”? And how much can it read before it predicts?</p>
 </section>
 
-<!-- ===================== PART 1: TOKENS ===================== -->
 <section id="part1" class="center" style="background:radial-gradient(circle,rgba(63,90,42,.07) 1.5px,transparent 1.5px) 0 0/32px 32px,linear-gradient(135deg,#D9E8AD 0%,#EEF4DA 50%,#F4F7E6 100%);position:relative;overflow:hidden">
 <span aria-hidden="true" style="position:absolute;right:-20px;bottom:-80px;font-family:var(--display);font-size:520px;font-weight:700;color:rgba(63,90,42,.07);line-height:1;pointer-events:none;user-select:none">1</span>
 <p class="eyebrow">Part 1</p>
@@ -200,12 +215,121 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 <p class="pill" data-build-in style="margin-top:auto">“How many r’s?” It got three numbers. Counting letters means guessing what’s inside them.</p>
 </section>
 
-<!-- ===================== PART 2: CONTEXT ===================== -->
-<section id="part2" class="center" style="background:radial-gradient(circle,rgba(168,72,122,.06) 1.5px,transparent 1.5px) 0 0/32px 32px,linear-gradient(150deg,#F4ECDD 0%,#FBE6EF 55%,#F2C1D6 100%);position:relative;overflow:hidden">
-<span aria-hidden="true" style="position:absolute;right:-20px;bottom:-80px;font-family:var(--display);font-size:520px;font-weight:700;color:rgba(168,72,122,.07);line-height:1;pointer-events:none;user-select:none">2</span>
-<p class="eyebrow">Part 2</p>
-<h1 class="divider">Context</h1>
-<p class="sub">Everything the model can see when it answers.</p>
+<section id="hook1" style="background:#F2F2F7;padding:80px 128px;gap:48px">
+<p class="eyebrow" style="color:var(--accent)">Hook · Teams: what just happened here?</p>
+<div style="display:flex;align-items:center;gap:80px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:28px">
+<h2 style="font-size:60px">You’re seeing the last message in a group chat.</h2>
+<p class="lead" style="color:var(--body)">Discuss with your team. What’s the situation? What happened before this?</p>
+</div>
+<div style="flex:1.1">
+<div class="imsg-wrap lg">
+<div class="imsg-hd">
+<div class="imsg-avs"><div class="av" style="background:#FF375F">P</div><div class="av" style="background:#34C759">D</div><div class="av" style="background:#007AFF">M</div></div>
+<div class="imsg-hd-text"><b>Priya, Dani, Marcus</b><span>Group · iMessage</span></div>
+</div>
+<div class="imsg-msgs">
+<div class="msg-grp cp"><span class="msg-from">Priya</span><span class="msg-bub">I trusted you. after everything we’ve been through. I can’t even look at you right now.</span></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section id="hook2" style="background:#F2F2F7;padding:80px 128px;gap:48px">
+<p class="eyebrow" style="color:var(--accent)">Hook · Teams: does your guess change?</p>
+<div style="display:flex;align-items:center;gap:80px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:28px">
+<h2 style="font-size:60px">More messages appeared above.</h2>
+<p class="lead" style="color:var(--body)">Lock in your team’s best guess. What happened in this chat?</p>
+</div>
+<div style="flex:1.1">
+<div class="imsg-wrap md">
+<div class="imsg-hd">
+<div class="imsg-avs"><div class="av" style="background:#FF375F">P</div><div class="av" style="background:#34C759">D</div><div class="av" style="background:#007AFF">M</div></div>
+<div class="imsg-hd-text"><b>Priya, Dani, Marcus</b><span>Group · iMessage</span></div>
+</div>
+<div class="imsg-msgs">
+<div class="msg-grp cm"><span class="msg-from">Marcus</span><span class="msg-bub">it was ONE time</span></div>
+<div class="msg-grp cp"><span class="msg-from">Priya</span><span class="msg-bub">ONE TIME IS ALL IT TAKES MARCUS</span></div>
+<div class="msg-grp cp"><span class="msg-bub">I trusted you. after everything we’ve been through. I can’t even look at you right now.</span></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section id="hook3" style="background:#F2F2F7;padding:80px 128px;gap:48px">
+<p class="eyebrow" style="color:var(--accent)">Hook · Getting warmer?</p>
+<div style="display:flex;align-items:center;gap:80px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:28px">
+<h2 style="font-size:60px">A few messages before that.</h2>
+<p class="lead" style="color:var(--body)">Update your guess. What exactly did Marcus do?</p>
+</div>
+<div style="flex:1.1">
+<div class="imsg-wrap sm">
+<div class="imsg-hd">
+<div class="imsg-avs"><div class="av" style="background:#FF375F">P</div><div class="av" style="background:#34C759">D</div><div class="av" style="background:#007AFF">M</div></div>
+<div class="imsg-hd-text"><b>Priya, Dani, Marcus</b><span>Group · iMessage</span></div>
+</div>
+<div class="imsg-msgs">
+<div class="msg-grp cd"><span class="msg-from">Dani</span><span class="msg-bub">wait… marcus why does your account say “continue watching: episode 10”</span></div>
+<div class="msg-grp cm"><span class="msg-from">Marcus</span><span class="msg-bub">I fell asleep with autoplay on I SWEAR</span></div>
+<div class="msg-grp cm"><span class="msg-bub">it was ONE time</span></div>
+<div class="msg-grp cp"><span class="msg-from">Priya</span><span class="msg-bub">ONE TIME IS ALL IT TAKES MARCUS</span></div>
+<div class="msg-grp cp"><span class="msg-bub">I trusted you. after everything we’ve been through. I can’t even look at you right now.</span></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section id="hook4" style="background:#F2F2F7;padding:80px 128px;gap:32px">
+<p class="eyebrow" style="color:var(--accent)">Hook · Full context</p>
+<div style="display:flex;align-items:center;gap:80px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:28px">
+<h2 style="font-size:52px">Now you have everything.</h2>
+<p class="lead" style="color:var(--body)">Same last message the whole time. Without the context it sounded like a breakup. With the full chat, it’s someone being dramatic about a TV finale.</p>
+<p class="lead" style="color:var(--body)">The AI is in this spot every time you send a message. If the earlier context isn’t there, it’s guessing — just like you were on slide 1.</p>
+</div>
+<div style="flex:1.1">
+<div class="imsg-wrap sm">
+<div class="imsg-hd">
+<div class="imsg-avs"><div class="av" style="background:#FF375F">P</div><div class="av" style="background:#34C759">D</div><div class="av" style="background:#007AFF">M</div></div>
+<div class="imsg-hd-text"><b>Priya, Dani, Marcus</b><span>Group · iMessage</span></div>
+</div>
+<div class="imsg-msgs">
+<div class="msg-grp cp"><span class="msg-from">Priya</span><span class="msg-bub">rules for friday’s watch party: nobody watches the finale early. anyone who does is dead to me</span></div>
+<div class="msg-grp cd"><span class="msg-from">Dani</span><span class="msg-bub">agreed</span></div>
+<div class="msg-grp cm"><span class="msg-from">Marcus</span><span class="msg-bub">obviously</span></div>
+<div class="imsg-tdiv">Two days later</div>
+<div class="msg-grp cd"><span class="msg-from">Dani</span><span class="msg-bub">wait… marcus why does your account say “continue watching: episode 10”</span></div>
+<div class="msg-grp cm"><span class="msg-from">Marcus</span><span class="msg-bub">I fell asleep with autoplay on I SWEAR</span></div>
+<div class="msg-grp cm"><span class="msg-bub">it was ONE time</span></div>
+<div class="msg-grp cp"><span class="msg-from">Priya</span><span class="msg-bub">ONE TIME IS ALL IT TAKES MARCUS</span></div>
+<div class="msg-grp cp"><span class="msg-bub">I trusted you. after everything we’ve been through. I can’t even look at you right now.</span></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section id="act1" class="mint" style="gap:36px">
+<div style="display:flex;justify-content:space-between;align-items:start"><div style="display:flex;flex-direction:column;gap:20px"><p class="eyebrow">Activity Part 1 · 5 minutes</p><h2>First attempt — no tips</h2></div><div class="timer" data-seconds="300">5:00</div></div>
+<p class="lead">Write a prompt for one of these tasks, however you normally would. Run it and save both the prompt and the answer — you’ll use them in Part 2.</p>
+<div class="grid4">
+<div class="card"><h3 style="font-size:36px">Business</h3><p>Instagram caption for a campus coffee pop-up</p></div>
+<div class="card"><h3 style="font-size:36px">Cybersecurity</h3><p>Explain a phishing text to someone’s grandma</p></div>
+<div class="card"><h3 style="font-size:36px">CS</h3><p>Explain a for-loop to someone who’s never coded</p></div>
+<div class="card pink"><h3 style="font-size:36px">General</h3><p>Plan a cheap LA weekend for 3 broke college students</p></div>
+</div>
+<p class="foot">ExplorAI · Meeting 3 · Press T for the timer</p>
+</section>
+
+<section id="context" class="center" style="background:radial-gradient(circle,rgba(63,90,42,.06) 1.5px,transparent 1.5px) 0 0/32px 32px,linear-gradient(145deg,#D9E8AD 0%,#F4ECDD 45%,#F2C1D6 100%);position:relative;overflow:hidden">
+<p class="eyebrow">AI Context &amp; Prompting</p>
+<h1 class="divider" style="font-size:120px;line-height:1.05">What goes<br>in the window</h1>
+<p class="sub">And how to fill it well.</p>
 </section>
 
 <section id="window">
@@ -241,111 +365,76 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 <h1 class="big" style="font-size:110px">It can’t read what you didn’t put in the window.</h1>
 </section>
 
-<!-- ===================== PART 3: PROMPTING ===================== -->
-<section id="part3" class="center" style="background:radial-gradient(circle,rgba(63,90,42,.06) 1.5px,transparent 1.5px) 0 0/32px 32px,linear-gradient(160deg,#D9E8AD 0%,#F4F7E6 40%,#F2C1D6 100%);position:relative;overflow:hidden">
-<span aria-hidden="true" style="position:absolute;right:-20px;bottom:-80px;font-family:var(--display);font-size:520px;font-weight:700;color:rgba(63,90,42,.06);line-height:1;pointer-events:none;user-select:none">3</span>
-<p class="eyebrow">Part 3</p>
-<h1 class="divider">Prompting</h1>
-<p class="sub">Same question, three ways.</p>
-</section>
-
-<section id="predict">
-<p class="eyebrow">Before we run anything</p>
-<h2>Predict first</h2>
-<div class="card" style="padding:48px;border-left:12px solid var(--leaf)"><p style="font-size:40px;line-height:1.4;color:var(--ink)">On the next slide is one question asked three ways. Rank the three answers <b>best to worst</b> before you see any of them.</p><p style="font-size:40px;line-height:1.4;color:var(--ink)">Then: how much better is the best one? <b>A little</b>, <b>a lot</b>, or <b>night and day</b>?</p></div>
-<p class="lead">Write it down. We’ll check it against what happens.</p>
-<p class="foot">ExplorAI · Meeting 3</p>
-</section>
-
-<section id="prompts" class="mint" style="gap:28px;padding-top:96px">
-<p class="eyebrow">One question, three ways</p>
-<div class="row" style="gap:24px;flex:1;align-items:stretch">
-<div class="pcol"><p class="tag">A</p><p class="what">Just ask</p><p>Can I still turn in HW3 for credit, and what’s the best score I can get?</p></div>
-<div class="pcol"><p class="tag">B</p><p class="what">Ask + the material</p><p>Can I still turn in HW3 for credit, and what’s the best score I can get?</p><p class="mat">My syllabus says: “Late homework is accepted up to 48 hours after the deadline, minus 10% per day late. No late work on exams or the final project.” HW3 was due Monday at 11:59pm. It’s now Wednesday at 3pm.</p></div>
-<div class="pcol" style="border-color:var(--pink)"><p class="tag">C</p><p class="what">Ask + material + guidance</p><p>Can I still turn in HW3 for credit, and what’s the best score I can get?</p><p class="mat">Same syllabus quote, due date, and time as B.</p><p class="extra">You’re helping a student read their syllabus. Answer in two sentences. Quote the policy line you used and show the math. If the syllabus doesn’t say, tell me instead of guessing.</p></div>
-</div>
-<p class="foot" style="bottom:48px">ExplorAI · Meeting 3 · The syllabus is made up for this demo.</p>
-</section>
-
-<section id="run">
-<p class="eyebrow">Live demo</p>
-<h2>Run all three, each in a new chat</h2>
-<p class="lead">Why a new chat each time? So answer A can’t peek at the syllabus from B.</p>
-<div class="row" style="margin-top:12px">
-<div class="card" data-build-in><h3>Which was best?</h3><p>Hands up for A, B, C. Was it a little better, a lot, or night and day?</p></div>
-<div class="card" data-build-in><h3>What couldn’t A know?</h3><p>The policy, the due date, or what time it is now. So it had to guess or stay vague.</p></div>
-<div class="card pink" data-build-in><h3>What did C add?</h3><p>Not new facts. It told the model what a good answer looks like.</p></div>
-</div>
-<p class="foot">ExplorAI · Meeting 3</p>
-</section>
-
 <section id="recipe" class="mint">
 <p class="eyebrow">What to put in the window</p>
 <h2>Five things that make an answer better</h2>
 <div class="card pink" style="flex-direction:row;align-items:center;gap:32px;padding:28px 36px"><p class="num" style="font-size:64px;line-height:1">1</p><div><h3>The material</h3><p>Paste the real thing: the rubric, the syllabus, the job post. This is the part people skip, and it matters most.</p></div></div>
 <div class="grid4">
-<div class=”card”><p class=”num” style=”font-size:48px;line-height:1”>2</p><h3 style=”font-size:38px”>Who</h3><p>Who you are and what role you're writing from</p></div>
-<div class=”card”><p class=”num” style=”font-size:48px;line-height:1”>3</p><h3 style=”font-size:38px”>What</h3><p>Exactly what you need — specific, not vague</p></div>
-<div class=”card”><p class=”num” style=”font-size:48px;line-height:1”>4</p><h3 style=”font-size:38px”>Why</h3><p>What this is for and the context around it</p></div>
-<div class=”card”><p class=”num” style=”font-size:48px;line-height:1”>5</p><h3 style=”font-size:38px”>How</h3><p>Limits in numbers: “150 words, 3 bullets,” not “short”</p></div>
+<div class="card"><p class="num" style="font-size:48px;line-height:1">2</p><h3 style="font-size:38px">Who</h3><p>Who you are and what role you’re writing from</p></div>
+<div class="card"><p class="num" style="font-size:48px;line-height:1">3</p><h3 style="font-size:38px">What</h3><p>Exactly what you need — specific, not vague</p></div>
+<div class="card"><p class="num" style="font-size:48px;line-height:1">4</p><h3 style="font-size:38px">Why</h3><p>What this is for and the context around it</p></div>
+<div class="card"><p class="num" style="font-size:48px;line-height:1">5</p><h3 style="font-size:38px">How</h3><p>Limits in numbers: “150 words, 3 bullets,” not “short”</p></div>
 </div>
 <p class="foot">ExplorAI · Meeting 3</p>
 </section>
 
-<section id="yourturn">
-<div style="display:flex;justify-content:space-between;align-items:start"><div style="display:flex;flex-direction:column;gap:24px"><p class="eyebrow">Your turn · Solo or pairs · 8 minutes</p><h2>Before and after</h2></div><div class="timer" data-seconds="480">8:00</div></div>
-<div class="grid4">
-<div class="card"><p class="num" style="font-size:48px;line-height:1">1</p><h3 style="font-size:38px">Ask it bare</h3><p>Something you actually need. Save the answer.</p></div>
-<div class="card"><p class="num" style="font-size:48px;line-height:1">2</p><h3 style="font-size:38px">Build the context</h3><p>Paste the material, then add 2 to 5 from the recipe.</p></div>
-<div class="card"><p class="num" style="font-size:48px;line-height:1">3</p><h3 style="font-size:38px">Run it again</h3><p>In a new chat. Put the two answers side by side.</p></div>
-<div class="card pink"><p class="num" style="font-size:48px;line-height:1">4</p><h3 style="font-size:38px">One sentence</h3><p>Write down what changed.</p></div>
+<section id="vivid">
+<p class="eyebrow">Vague vs. Vivid</p>
+<h2>Same task. Very different context.</h2>
+<div class="row" style="gap:32px;flex:1;align-items:stretch;margin-top:8px">
+<div class="card" style="border-color:var(--accent);background:var(--pinkwash)">
+<p class="eyebrow" style="font-size:20px">Vague</p>
+<h3 style="font-size:52px;font-family:var(--mono);font-weight:500;color:var(--body)">“Write an email to my professor.”</h3>
+<p style="margin-top:auto">The AI has to guess: which professor? what course? what happened? what tone? what length? Any answer is a guess.</p>
 </div>
-<p class="lead"><b style="color:var(--ink)">Stuck for a task?</b> Get feedback on a resume line (paste the job post), or plan your week (paste your due dates). Skip passwords and other people’s info.</p>
+<div class="card" style="border-color:var(--leaf);background:var(--mint)">
+<p class="eyebrow" style="font-size:20px;color:var(--ink)">Vivid</p>
+<p style="font-family:var(--mono);font-size:26px;line-height:1.55;color:var(--ink)">“I’m a student in Intro to Python. I missed Tuesday’s lab because of a family emergency. Write a short, polite email to Professor Lee asking if I can make it up this week. Keep it under 100 words.”</p>
+</div>
+</div>
+<p class="pill">What changed? Who + What + Why + How. Four answers, one much better result.</p>
+</section>
+
+<section id="act2" class="mint" style="gap:36px">
+<div style="display:flex;justify-content:space-between;align-items:start"><div style="display:flex;flex-direction:column;gap:20px"><p class="eyebrow">Activity Part 2 · 8 minutes</p><h2>Same task. The recipe.</h2></div><div class="timer" data-seconds="480">8:00</div></div>
+<p class="lead">Rewrite your Part 1 prompt using the recipe below. Run it in a new chat — keep the context from Part 1 out.</p>
+<div class="grid4">
+<div class="card"><p class="num" style="font-size:48px;line-height:1">2</p><h3 style="font-size:38px">Who</h3><p>Who you are or who the AI should be</p></div>
+<div class="card"><p class="num" style="font-size:48px;line-height:1">3</p><h3 style="font-size:38px">What</h3><p>Exactly what you need, specific</p></div>
+<div class="card"><p class="num" style="font-size:48px;line-height:1">4</p><h3 style="font-size:38px">Why</h3><p>The situation and context around it</p></div>
+<div class="card pink"><p class="num" style="font-size:48px;line-height:1">5</p><h3 style="font-size:38px">How</h3><p>Limits in numbers, not vibes</p></div>
+</div>
+<p class="lead" style="margin-top:auto"><b style="color:var(--ink)">After:</b> put Part 1 and Part 2 answers side by side. What one piece of context changed your result the most?</p>
 <p class="foot">ExplorAI · Meeting 3 · Press T for the timer</p>
 </section>
 
-<section id="share" class="green center">
-<p class="eyebrow">Share out · 3 minutes</p>
-<h1 class="big">What changed?</h1>
-<p class="sub">Read us your one sentence. What did the first answer miss?</p>
-</section>
-
-<!-- ===================== PART 4: GETTING MORE OUT OF IT ===================== -->
-<section id="part4" class="center" style="background:radial-gradient(circle,rgba(168,72,122,.06) 1.5px,transparent 1.5px) 0 0/32px 32px,linear-gradient(135deg,#F2C1D6 0%,#D9E8AD 45%,#F4ECDD 100%);position:relative;overflow:hidden">
-<span aria-hidden="true" style="position:absolute;right:-20px;bottom:-80px;font-family:var(--display);font-size:520px;font-weight:700;color:rgba(168,72,122,.06);line-height:1;pointer-events:none;user-select:none">4</span>
-<p class="eyebrow">Part 4</p>
-<h1 class="divider" style="font-size:140px">Getting more out of it</h1>
-<p class="sub">Four habits that come straight from tokens and context.</p>
-</section>
-
-<section id="habits">
-<p class="eyebrow">Habits</p>
-<h2>Use the window on purpose</h2>
-<div class="grid2">
-<div class="card" data-build-in><h3>New topic, new chat</h3><p>The whole chat rides along every turn. Old, unrelated messages crowd the window and can steer the answer.</p></div>
-<div class="card" data-build-in><h3>Paste, don’t describe</h3><p>“My professor’s policy” means nothing to it. The policy itself does.</p></div>
-<div class="card" data-build-in><h3>Spell out the limits</h3><p>Numbers beat vibes. “Under 100 words” is something it can hit. “Short” is a guess.</p></div>
-<div class="card pink" data-build-in><h3>Give it a way out</h3><p>“If it’s not in what I pasted, say so.” Fewer made-up answers.</p></div>
+<section id="wrap" class="grad">
+<p class="eyebrow" style="margin-bottom:8px">Three things to remember</p>
+<div style="display:flex;flex-direction:column;gap:28px;flex:1;justify-content:center">
+<div class="card" style="flex-direction:row;align-items:center;gap:32px;padding:28px 36px"><p class="num" style="font-size:72px;line-height:1;min-width:60px">1</p><div><h3>Tokens are the chunks AI reads in.</h3><p>They set the cost and the limit.</p></div></div>
+<div class="card" style="flex-direction:row;align-items:center;gap:32px;padding:28px 36px"><p class="num" style="font-size:72px;line-height:1;min-width:60px">2</p><div><h3>Context is everything the AI can see.</h3><p>If it’s not there, the AI is guessing.</p></div></div>
+<div class="card pink" style="flex-direction:row;align-items:center;gap:32px;padding:28px 36px"><p class="num" style="font-size:72px;line-height:1;min-width:60px">3</p><div><h3>Good prompts answer Who, What, Why, and How.</h3><p>And leave out anything sensitive.</p></div></div>
 </div>
-<p class="foot">ExplorAI · Meeting 3</p>
-</section>
-
-<!-- ===================== CLOSE ===================== -->
-<section id="wrap" class="grad center">
-<p class="eyebrow">To wrap up</p>
-<h1 class="big" style="font-size:84px">AI reads tokens, only what fits in its window. Put the material in, and tell it what good looks like.</h1>
+<p class="pill" style="align-self:start;margin-top:auto">Recipe recall: can you call out all four questions from memory?</p>
 </section>
 
 <section id="thanks" class="grad">
-<div style="display:flex;align-items:center;gap:64px;flex:1"><div style="flex:1;display:flex;flex-direction:column;gap:36px"><h1 class="title">Thank you!</h1><p class="sub" style="font-weight:700">Follow us on Instagram: @explorai.rcc</p>
-<div class="card" style="align-self:start;padding:24px 36px;gap:6px"><p class="eyebrow">Next week · Oct 14</p><p style="font-size:36px;font-weight:700;color:var(--ink);font-family:var(--display)">Build One Thing</p></div></div>
-<div class="qr"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAApQAAAKUCAIAAAA1rT9rAAAOCklEQVR4nO3XwXHjuBZA0e9fSol7ZqLYmIn2jMcrLzwRdI0s9Oj1bZ6zV+ERBHULH99fn/8DADr+Pz0AAPAz4g0AMeINADHiDQAx4g0AMeINADHiDQAx4g0AMeINADHiDQAx4g0AMeINADHiDQAx4g0AMeINADHiDQAx4g0AMeINADHiDQAx4g0AMeINADHiDQAx4g0AMeINADHiDQAx4g0AMeINADHiDQAx4g0AMeINADHiDQAx4g0AMeINADHiDQAx4g0AMeINADHiDQAx4g0AMeINADG3qYX3+za1NE96HOfLv115v1db92qK73eKc/XnmzpXbt4AECPeABAj3gAQI94AECPeABAj3gAQI94AECPeABAj3gAQI94AECPeABAj3gAQI94AECPeABAj3gAQI94AECPeABAj3gAQI94AEHObHuAVj+OcHiFjv28j6668o6mZV9adOpNXm7m47tQ++5983tTZWOHmDQAx4g0AMeINADHiDQAx4g0AMeINADHiDQAx4g0AMeINADHiDQAx4g0AMeINADHiDQAx4g0AMeINADHiDQAx4g0AMeINADHiDQAxt+kB3m2/b9Mj/NjjOKdHyJjaq5VzVXy/xe+I5xXfb/E7WuHmDQAx4g0AMeINADHiDQAx4g0AMeINADHiDQAx4g0AMeINADHiDQAx4g0AMeINADHiDQAx4g0AMeINADHiDQAx4g0AMeINADHiDQAxt+kB+Dvt9216hB+bmrm47uM4f+Mkz5vaq6nnhV9x8waAGPEGgBjxBoAY8QaAGPEGgBjxBoAY8QaAGPEGgBjxBoAY8QaAGPEGgBjxBoAY8QaAGPEGgBjxBoAY8QaAGPEGgBjxBoAY8QaAmNv0AEDPft+mR/ixx3G+/NuV511ZF37FzRsAYsQbAGLEGwBixBsAYsQbAGLEGwBixBsAYsQbAGLEGwBixBsAYsQbAGLEGwBixBsAYsQbAGLEGwBixBsAYsQbAGLEGwBixBsAYm7TA7zb4zinR+A/tN+3l3+7cjautu4Ke/Xnu9rzFrl5A0CMeANAjHgDQIx4A0CMeANAjHgDQIx4A0CMeANAjHgDQIx4A0CMeANAjHgDQIx4A0CMeANAjHgDQIx4A0CMeANAjHgDQIx4A0DMbXqAV+z3bXoE/kOP43z5t87Ge6zs89T7La67wrfwd3PzBoAY8QaAGPEGgBjxBoAY8QaAGPEGgBjxBoAY8QaAGPEGgBjxBoAY8QaAGPEGgBjxBoAY8QaAGPEGgBjxBoAY8QaAGPEGgBjxBoCY29TCj+OcWpo/3H7fXv6tc/UeK/u88n6vxnnmV9y8ASBGvAEgRrwBIEa8ASBGvAEgRrwBIEa8ASBGvAEgRrwBIEa8ASBGvAEgRrwBIEa8ASBGvAEgRrwBIEa8ASBGvAEgRrwBIEa8ASDmNrXwft9e/u3jOH/jJO8x9bwr617N1d5R8Ru82rd/NVPvt/gtuHkDQIx4A0CMeANAjHgDQIx4A0CMeANAjHgDQIx4A0CMeANAjHgDQIx4A0CMeANAjHgDQIx4A0CMeANAjHgDQIx4A0CMeANAjHgDQMzH99fn9Axvtd+3kXUfx/nyb1dmXll3ytWed8XVzvOK4tmY2iueN3Wu3LwBIEa8ASBGvAEgRrwBIEa8ASBGvAEgRrwBIEa8ASBGvAEgRrwBIEa8ASBGvAEgRrwBIEa8ASBGvAEgRrwBIEa8ASBGvAEgRrwBIOY2PcBV7PftUuuueBzn9Ag/Vtxnnjf1fle+heLMU4rfr5s3AMSINwDEiDcAxIg3AMSINwDEiDcAxIg3AMSINwDEiDcAxIg3AMSINwDEiDcAxIg3AMSINwDEiDcAxIg3AMSINwDEiDcAxIg3AMR8fH99jiy837eXf/s4zt84yXusPO+Klb262jtacbX3W1Q8k1PfoPP8vKlz5eYNADHiDQAx4g0AMeINADHiDQAx4g0AMeINADHiDQAx4g0AMeINADHiDQAx4g0AMeINADHiDQAx4g0AMeINADHiDQAx4g0AMeINADEf31+fIwvv921k3RWP45we4ceK+7xi5R0V92rqea+2z1OK/zlTps7zFDdvAIgRbwCIEW8AiBFvAIgRbwCIEW8AiBFvAIgRbwCIEW8AiBFvAIgRbwCIEW8AiBFvAIgRbwCIEW8AiBFvAIgRbwCIEW8AiBFvAIj5+P76HFl4v28j6654HOfLv1153pV1V0zNXDwb/PmmvqMVvsE/39S5cvMGgBjxBoAY8QaAGPEGgBjxBoAY8QaAGPEGgBjxBoAY8QaAGPEGgBjxBoAY8QaAGPEGgBjxBoAY8QaAGPEGgBjxBoAY8QaAGPEGgJjb1MKP43z5t/t9G1l3xdS6K3s1ZepsTCmejeLMRVP7XHS1/w03bwCIEW8AiBFvAIgRbwCIEW8AiBFvAIgRbwCIEW8AiBFvAIgRbwCIEW8AiBFvAIgRbwCIEW8AiBFvAIgRbwCIEW8AiBFvAIgRbwCI+fj++hxZeL9vI+s+jvPl367MvLLu1UydjSlTZ5Ln+d/48xWbssLNGwBixBsAYsQbAGLEGwBixBsAYsQbAGLEGwBixBsAYsQbAGLEGwBixBsAYsQbAGLEGwBixBsAYsQbAGLEGwBixBsAYsQbAGLEGwBibtMDvOJxnNMjZOz37eXfFve5OPPKO1oxtVdTZ3Jqn6dc7dtfUXxeN28AiBFvAIgRbwCIEW8AiBFvAIgRbwCIEW8AiBFvAIgRbwCIEW8AiBFvAIgRbwCIEW8AiBFvAIgRbwCIEW8AiBFvAIgRbwCIEW8AiPn4/vocWXi/byPrPo5zZF3eY+VcrZyNqXVXFL9B+/x3mzobK6bOlZs3AMSINwDEiDcAxIg3AMSINwDEiDcAxIg3AMSINwDEiDcAxIg3AMSINwDEiDcAxIg3AMSINwDEiDcAxIg3AMSINwDEiDcAxIg3AMR8fH99Ts9wCft9mx7hrR7HOT3CW13t/RatnMni+516Xuu+h5s3AMSINwDEiDcAxIg3AMSINwDEiDcAxIg3AMSINwDEiDcAxIg3AMSINwDEiDcAxIg3AMSINwDEiDcAxIg3AMSINwDEiDcAxIg3AMTcpgfgv/U4zpF19/s2su7U80652vtd4Uw+b2rmlXWLZ3KFmzcAxIg3AMSINwDEiDcAxIg3AMSINwDEiDcAxIg3AMSINwDEiDcAxIg3AMSINwDEiDcAxIg3AMSINwDEiDcAxIg3AMSINwDEiDcAxNymFt7v29TSOY/jfPm3K/u8su6UqXM19Y6uprjP3u/zVt5v8WyscPMGgBjxBoAY8QaAGPEGgBjxBoAY8QaAGPEGgBjxBoAY8QaAGPEGgBjxBoAY8QaAGPEGgBjxBoAY8QaAGPEGgBjxBoAY8QaAGPEGgJjb1MKP45xa+lKK+7wy837ffuMk1mVd8RtcOVfF5y1y8waAGPEGgBjxBoAY8QaAGPEGgBjxBoAY8QaAGPEGgBjxBoAY8QaAGPEGgBjxBoAY8QaAGPEGgBjxBoAY8QaAGPEGgBjxBoAY8QaAmNvUwvt9m1qaJz2Oc2TdlbNh5udNzezbf97VztWKqeed4uYNADHiDQAx4g0AMeINADHiDQAx4g0AMeINADHiDQAx4g0AMeINADHiDQAx4g0AMeINADHiDQAx4g0AMeINADHiDQAx4g0AMeINADG36QFe8TjO6REy9vs2su7KO5qaeWXdqTNZnJnnFd+Rb+E93LwBIEa8ASBGvAEgRrwBIEa8ASBGvAEgRrwBIEa8ASBGvAEgRrwBIEa8ASBGvAEgRrwBIEa8ASBGvAEgRrwBIEa8ASBGvAEgRrwBIOY2PcC77fdteoQfexzn9Ag/trLPK8879X6L52rqHV1N8WyscK7ew80bAGLEGwBixBsAYsQbAGLEGwBixBsAYsQbAGLEGwBixBsAYsQbAGLEGwBixBsAYsQbAGLEGwBixBsAYsQbAGLEGwBixBsAYsQbAGJu0wPwd3ocZ27d/b6NrDtl5XmLezV1NlY4z8+72l65eQNAjHgDQIx4A0CMeANAjHgDQIx4A0CMeANAjHgDQIx4A0CMeANAjHgDQIx4A0CMeANAjHgDQIx4A0CMeANAjHgDQIx4A0CMeANAzG16APgb7Pft5d8+jnNk3SlTe7Viat0VUzMXz2SRmzcAxIg3AMSINwDEiDcAxIg3AMSINwDEiDcAxIg3AMSINwDEiDcAxIg3AMSINwDEiDcAxIg3AMSINwDEiDcAxIg3AMSINwDEiDcAxNymB3i3x3FOj8C/2O/byLorZ+NqMxf3akVxr4rvqDjzFDdvAIgRbwCIEW8AiBFvAIgRbwCIEW8AiBFvAIgRbwCIEW8AiBFvAIgRbwCIEW8AiBFvAIgRbwCIEW8AiBFvAIgRbwCIEW8AiBFvAIi5TQ/wiv2+TY/Av/COnmev+JXHcb7826lztTLzlOLMbt4AECPeABAj3gAQI94AECPeABAj3gAQI94AECPeABAj3gAQI94AECPeABAj3gAQI94AECPeABAj3gAQI94AECPeABAj3gAQI94AEPPx/fU5PQMA8ANu3gAQI94AECPeABAj3gAQI94AECPeABAj3gAQI94AECPeABAj3gAQI94AECPeABAj3gAQI94AECPeABAj3gAQI94AECPeABAj3gAQI94AECPeABAj3gAQI94AECPeABAj3gAQI94AECPeABAj3gAQI94AECPeABAj3gAQI94AECPeABAj3gAQI94AECPeABAj3gAQI94AECPeABDzD2iRBqXPF6aeAAAAAElFTkSuQmCC" alt="QR code: Instagram" style="width:300px;height:300px"><p>Instagram</p></div></div>
+<div style="display:flex;align-items:center;gap:64px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:36px">
+<h1 class="title">Thank you!</h1>
+<p class="sub" style="font-weight:700">Follow us</p>
+<div class="card" style="align-self:start;padding:24px 36px;gap:6px"><p class="eyebrow">Next week · Oct 14</p><p style="font-size:36px;font-weight:700;color:var(--ink);font-family:var(--display)">Build One Thing</p></div>
+</div>
+<div style="display:flex;gap:48px;align-items:flex-start">
+<div class="qr"><img src="data:image/png;base64,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" alt="QR code: Instagram @explorai.rcc" style="width:280px;height:280px"><p>@explorai.rcc</p></div>
+<div class="qr"><img src="data:image/png;base64,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" alt="QR code: Discord server" style="width:280px;height:280px"><p>Discord</p></div>
+</div>
+</div>
 </section>
 
 </div><div id="count"></div>
 <script src="tokenizer.js"></script>
 <script>
-/* ---------- token rendering ---------- */
 var T=window.ExplorTok||null;
 function chipsFor(text){
  var frag=document.createDocumentFragment();
@@ -360,22 +449,18 @@ function chipsFor(text){
 document.querySelectorAll('[data-tok]').forEach(function(el){var r=chipsFor(el.dataset.tok);el.appendChild(r.frag);var cnt=el.parentNode.querySelector('.tcount');if(cnt&&el.closest('.gcard'))cnt.textContent=r.n+(r.n===1?' token':' tokens')});
 document.querySelectorAll('[data-count-of]').forEach(function(el){el.textContent=T?T.encode(el.dataset.countOf).length:''});
 document.querySelectorAll('[data-ids]').forEach(function(el){if(!T)return;T.encode(el.dataset.ids).forEach(function(id){var c=document.createElement('span');c.className='tok';c.textContent=id;el.appendChild(c)})});
-
-/* ---------- live lab ---------- */
 var labIn=document.getElementById('labIn');
 function lab(){var v=labIn.value,o=document.getElementById('labOut');o.textContent='';var r=chipsFor(v);o.appendChild(r.frag);
  var chars=[...v].length;document.getElementById('labT').textContent=r.n;document.getElementById('labC').textContent=chars;document.getElementById('labR').textContent=r.n?(chars/r.n).toFixed(1):'0'}
 labIn.addEventListener('input',lab);labIn.addEventListener('keydown',function(e){if(e.key==='Escape')labIn.blur()});lab();
-
-/* ---------- toy window: real token counts, pretend window size ---------- */
 (function(){
  var msgs=[['you','I have a calc quiz Friday on derivatives. No calculators allowed.'],['ai','Got it. Want to start with the power rule, the product rule, or the chain rule?'],['you','Chain rule. I always mess up the inside part.'],['ai','Think outside, then inside: take the derivative of the outer function, leave the inside alone, then multiply by the derivative of the inside.'],['you','Can you give me a practice problem?'],['ai','Sure. Find the derivative of (3x + 1)^5.'],['you','Wait, what day is my quiz again?']];
  var L=96,turns=[1,3,5,7],box=document.getElementById('toyRows');document.getElementById('toyL').textContent=L;
  var n=msgs.map(function(m){return T?T.encode(m[1]).length:10});
- var LBL=300+24, TRACK=1664-LBL, OUT=150, GAP=12, px=(TRACK-OUT-24)/L; /* frame on the right; whole dropped messages hang off its left edge */
+ var LBL=300+24,TRACK=1664-LBL,OUT=150,GAP=12,px=(TRACK-OUT-24)/L;
  turns.forEach(function(k,ti){
   var tot=0;for(var i=0;i<k;i++)tot+=n[i];
-  var first=0,kept=tot;while(kept>L){kept-=n[first];first++} /* the app drops whole messages, oldest first */
+  var first=0,kept=tot;while(kept>L){kept-=n[first];first++}
   var r=document.createElement('div');r.className='r';r.setAttribute('data-build-in','');
   r.innerHTML='<div class="lbl"><b>Turn '+(ti+1)+'</b>'+(tot>L?tot+' tokens, only '+L+' fit':tot+' tokens sent')+'</div><div class="track"></div>';
   var tr=r.lastChild,x=OUT;
@@ -385,13 +470,10 @@ labIn.addEventListener('input',lab);labIn.addEventListener('keydown',function(e)
  function seg(i,x,cls){var s=document.createElement('div');s.className='seg '+cls;s.style.left=x+'px';s.style.width=(n[i]*px-6)+'px';s.textContent=(i+1)+' · '+n[i];s.title=msgs[i][1];return s}
  var f=document.createElement('div');f.className='frame';f.style.left=(LBL+OUT-10)+'px';f.style.width=(L*px+14)+'px';
  var fl=document.createElement('div');fl.className='flabel';fl.textContent='The window · '+L+' tokens';f.appendChild(fl);box.appendChild(f);
- /* the first row's build reveals the frame with it; keep the frame visible from the start */
 })();
-
-/* ---------- deck runtime (Meeting 2's, plus timers of any length and a typing-safe keyboard) ---------- */
 var st=document.getElementById('stage'),S=[].slice.call(st.children),i=0,timerInt=null,timerT=0,timerOn=false;
-function fit(){var k=Math.min(innerWidth/1920,innerHeight/1080);st.style.transform='scale('+k+') translate(-50%,-50%)';}
-function pend(n){return [].slice.call(S[n].querySelectorAll('[data-build-in].pending,[data-step].pending'));}
+function fit(){var k=Math.min(innerWidth/1920,innerHeight/1080);st.style.transform='scale('+k+') translate(-50%,-50%)'}
+function pend(n){return [].slice.call(S[n].querySelectorAll('[data-build-in].pending,[data-step].pending'))}
 function fmt(t){var m=Math.floor(t/60),s=t%60;return m+':'+(s<10?'0':'')+s}
 function resetTimer(){if(timerInt){clearInterval(timerInt);timerInt=null}timerOn=false;var el=S[i].querySelector('.timer');if(el){timerT=+el.dataset.seconds;el.textContent=fmt(timerT);el.classList.remove('done')}}
 function toggleTimer(){var el=S[i].querySelector('.timer');if(!el)return;if(timerOn){clearInterval(timerInt);timerInt=null;timerOn=false;return}if(timerT<=0)return;timerOn=true;
@@ -410,8 +492,6 @@ addEventListener('keydown',function(e){if(typing(e))return;
  else if(e.key==='t'||e.key==='T'){e.preventDefault();toggleTimer()}});
 addEventListener('click',function(e){if(document.documentElement.classList.contains('pv-tool'))return;if(e.target.closest('a,textarea,input,button,.lab .out,.stats'))return;e.clientX<innerWidth/3?prev():next()});
 addEventListener('resize',fit);fit();show((parseInt(location.hash.slice(1))||1)-1);
-
-/* ---------- hooks for the presenter add-on (../shared/explorai-presenter.js + presenter.js): S presenter view, M phone remote ---------- */
 function builds(n){return S[n].querySelectorAll('[data-build-in],[data-step]').length}
 window.__explorDeck={
  slides:S.map(function(s,n){var t=s.querySelector('.timer');return{beats:builds(n),timer:t?+t.dataset.seconds:0,room:false}}),
