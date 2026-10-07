@@ -20,9 +20,11 @@ Remove a line once it is answered and note the answer in that day's entry.
 - `meetings/meeting-3/index.html` (third commit, context divider final): AI Context divider gradient swapped so lavender sits at the 0% corner, green runs through the middle, pink at the far end — `linear-gradient(210deg,#EAE4F8 0%,#D9E8AD 50%,#F2C1D6 100%)`. Previous version had green at 0% and lavender at 50%, which made purple feel dominant over the body text.
 - `meetings/meeting-3/index.html` (fourth commit, hook phone redesign): hook slides 11–14 rebuilt with 150% iPhone (`scale(1.5)` via `position:absolute;bottom:0` in `position:relative;overflow:hidden` panel), status bar + nav cropped at top for immersive look; per-message avatar circles (P=red, D=green, M=blue) using `.msg-row` wrapper; `@keyframes msgPop` staggered bottom-up entry animation per slide; AI Context divider purple (#EAE4F8) removed — now pure green→mint→pink (`linear-gradient(200deg,#D9E8AD 0%,#F4F7E6 45%,#F2C1D6 100%)`).
 
-**Decided:** Recipe card highlight accumulates as you talk through cards (each press glows one more), not single-active. Section dividers each have a unique gradient; Part 1 uses green, AI Context uses green→mint→pink (no purple). Ghost numbers on activity cards should be accent-colored, not ink-colored. Hook phone at 150% scale with top crop is the intended look — nav/status bar clipped is by design.
+- `meetings/meeting-3/index.html` (fifth commit, hook text polish): `Hook ·` eyebrow moved out of centered flex column and positioned absolutely at `top:64px left:96px` (top-left corner of slide, class `.hook-eyebrow`); hook4 h2 bumped from 56px to 64px to match hooks 1–3; animation continuity — carryover messages in hooks 2–4 get `animation:none` (no re-pop when advancing), only the new messages for each slide animate in with stagger starting at 0s.
 
-**Next:** Meeting 3 presented 2026-10-07. Meeting 4 topic and plan still TBD — Cole to provide.
+**Decided:** Recipe card highlight accumulates as you talk through cards (each press glows one more), not single-active. Section dividers each have a unique gradient; Part 1 uses green, AI Context uses green→mint→pink (no purple). Ghost numbers on activity cards should be accent-colored, not ink-colored. Hook phone at 150% scale with top crop is the intended look — nav/status bar clipped is by design. Hook eyebrow sits top-left of the slide (not in the centered text block); existing messages never re-animate when advancing between hook slides.
+
+**Next:** Meeting 3 polish complete. Meeting 4 topic and plan TBD — Cole to provide.
 
 ## 2026-10-06 · Cole (via Claude Code)
 
