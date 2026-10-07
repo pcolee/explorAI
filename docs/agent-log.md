@@ -17,6 +17,7 @@ Remove a line once it is answered and note the answer in that day's entry.
 - `docs/meeting-routine.md` (new): standard slide order and timing for every meeting — title page, title + sign-in QR, explorAI Shares, hook, 35-minute content block, closing page with thank you / next-meeting teaser / Instagram + Discord QR codes.
 - `meetings/meeting-3/index.html`: part divider slides (Part 1–4) now have unique multi-color gradients, subtle dot texture, and a large ghost number; recipe slide items 2–5 updated from "Who and why / Limits / Example / What good looks like" to Who / What / Why / How.
 - `meetings/meeting-3/notes.html`: note card 19 updated to match new recipe wording.
+- `meetings/meeting-3/explorai meeting 3 timeline.md` (new): committed the pre-existing timeline doc.
 
 **Decided:** Discord server link is `https://discord.gg/CskqghTu7`. Closing slide from Meeting 4 onward should include both Instagram and Discord QR codes. Recipe framework is Material + Who/What/Why/How (combines the 5-step deck recipe with the 4-step timeline recipe).
 
