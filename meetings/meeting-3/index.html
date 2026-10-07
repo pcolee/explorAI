@@ -108,11 +108,11 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 .imsg-wrap.sm .imsg-tdiv{font-size:17px}
 @media (prefers-reduced-motion:reduce){[data-build-in]{transition:none}}
 /* iPhone frame */
-.iphone{position:relative;width:385px;height:820px;background:#1C1C1E;border-radius:54px;padding:13px;flex:none;box-shadow:0 0 0 1.5px rgba(255,255,255,.12),0 70px 140px rgba(0,0,0,.38),0 35px 70px rgba(0,0,0,.2),inset 0 0 0 1px rgba(255,255,255,.06)}
-.iphone::before{content:'';position:absolute;left:-4px;top:120px;width:4px;height:36px;background:#2C2C2E;border-radius:4px 0 0 4px;box-shadow:0 52px 0 #2C2C2E,0 -58px 0 #2C2C2E}
-.iphone::after{content:'';position:absolute;right:-4px;top:150px;width:4px;height:66px;background:#2C2C2E;border-radius:0 4px 4px 0}
-.iphone-screen{background:#fff;border-radius:42px;height:100%;overflow:hidden;display:flex;flex-direction:column;position:relative}
-.iphone-island{position:absolute;top:13px;left:50%;transform:translateX(-50%);width:126px;height:36px;background:#1C1C1E;border-radius:20px;z-index:10;pointer-events:none}
+.iphone{position:relative;width:450px;height:860px;background:#1C1C1E;border-radius:63px;padding:15px;flex:none;box-shadow:0 0 0 1.5px rgba(255,255,255,.12),0 70px 140px rgba(0,0,0,.38),0 35px 70px rgba(0,0,0,.2),inset 0 0 0 1px rgba(255,255,255,.06)}
+.iphone::before{content:'';position:absolute;left:-4px;top:140px;width:4px;height:42px;background:#2C2C2E;border-radius:4px 0 0 4px;box-shadow:0 61px 0 #2C2C2E,0 -68px 0 #2C2C2E}
+.iphone::after{content:'';position:absolute;right:-4px;top:175px;width:4px;height:77px;background:#2C2C2E;border-radius:0 4px 4px 0}
+.iphone-screen{background:#fff;border-radius:49px;height:100%;overflow:hidden;display:flex;flex-direction:column;position:relative}
+.iphone-island{position:absolute;top:15px;left:50%;transform:translateX(-50%);width:147px;height:42px;background:#1C1C1E;border-radius:20px;z-index:10;pointer-events:none}
 .iphone-status{display:flex;justify-content:space-between;align-items:center;padding:18px 26px 4px;font-size:15px;font-weight:700;color:#1C1C1E;font-family:var(--sans);flex:none}
 .iphone-status-icons{display:flex;align-items:center;gap:6px}
 .imsg-nav{display:flex;align-items:center;padding:6px 12px 10px;gap:4px;border-bottom:1px solid rgba(0,0,0,.08);flex:none;background:#F9F9F9}
@@ -123,7 +123,7 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 .imsg-nav-av+.imsg-nav-av{margin-left:-8px}
 .imsg-nav-name{font-size:13px;font-weight:600;color:#1C1C1E;font-family:var(--sans)}
 .imsg-nav-sub{font-size:11px;color:#8E8E93;font-family:var(--sans)}
-.iphone-msgs{flex:1;display:flex;flex-direction:column-reverse;justify-content:flex-start;gap:5px;padding:10px 12px 8px;overflow:hidden;transform-origin:bottom center}
+.iphone-msgs{flex:1;display:flex;flex-direction:column-reverse;justify-content:flex-start;gap:5px;padding:10px 12px 8px;overflow:hidden}
 .iphone-msgs .msg-grp{display:flex;flex-direction:column;gap:2px;flex:none}
 .iphone-msgs .msg-from{font-size:13px;font-weight:600;margin-left:10px;line-height:1.3;font-family:var(--sans)}
 .iphone-msgs .msg-bub{display:inline-block;background:#E9E9EB;border-radius:18px 18px 18px 4px;padding:9px 14px;font-size:16px;line-height:1.45;color:#1C1C1E;max-width:88%;font-family:var(--sans)}
@@ -131,22 +131,13 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 .iphone-msgs .cd .msg-from{color:#34C759}
 .iphone-msgs .cm .msg-from{color:#007AFF}
 .iphone-msgs .imsg-tdiv{text-align:center;font-size:12px;color:#8E8E93;font-weight:500;margin:2px 0;font-family:var(--sans)}
-.iphone-msgs [data-build-in].pending{opacity:0;transform:translateY(-18px)}
+.iphone-msgs [data-build-in].pending{opacity:0;transform:translateY(16px)}
 .iphone-input{display:flex;align-items:center;gap:8px;padding:8px 12px 10px;border-top:1px solid rgba(0,0,0,.07);flex:none;background:#fff}
 .iphone-input-plus{width:30px;height:30px;border:1.5px solid #C7C7CC;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;color:#8E8E93;flex:none;line-height:1;padding-bottom:1px}
 .iphone-input-field{flex:1;background:#F2F2F7;border-radius:18px;padding:7px 14px;font-size:14px;color:#8E8E93;font-family:var(--sans)}
 .iphone-input-mic{font-size:14px;color:#8E8E93;flex:none}
 .iphone-home{height:24px;display:flex;align-items:center;justify-content:center;background:#fff;flex:none}
 .iphone-home::after{content:'';width:120px;height:5px;background:#1C1C1E;border-radius:3px;opacity:.2}
-/* Hook slide zoom — plays on display:none→flex (each slide activation) */
-@keyframes hZoom1{from{transform:scale(2.6)}to{transform:scale(2.2)}}
-@keyframes hZoom2{from{transform:scale(2.3)}to{transform:scale(1.5)}}
-@keyframes hZoom3{from{transform:scale(1.6)}to{transform:scale(1.0)}}
-@keyframes hZoom4{from{transform:scale(1.1)}to{transform:scale(.78)}}
-#hook1 .iphone-msgs{animation:hZoom1 .9s cubic-bezier(.22,1,.36,1) both}
-#hook2 .iphone-msgs{animation:hZoom2 .9s cubic-bezier(.22,1,.36,1) both}
-#hook3 .iphone-msgs{animation:hZoom3 .9s cubic-bezier(.22,1,.36,1) both}
-#hook4 .iphone-msgs{animation:hZoom4 .9s cubic-bezier(.22,1,.36,1) both}
 /* Slide transitions */
 @keyframes sOut{to{opacity:0;transform:translateY(-10px)}}
 @keyframes sIn{from{opacity:0;transform:translateY(10px)}}
@@ -249,14 +240,14 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 <p class="pill" data-build-in style="margin-top:auto">"How many r’s?" It got three numbers. Counting letters means guessing what’s inside them.</p>
 </section>
 
-<section id="hook1" style="background:radial-gradient(circle,rgba(63,90,42,.04) 1.5px,transparent 1.5px) 0 0/28px 28px,linear-gradient(135deg,#FFFBF5 0%,#FDF3F8 55%,#F2C1D6 100%);padding:80px 128px;gap:32px">
+<section id="hook1" style="background:radial-gradient(circle,rgba(63,90,42,.04) 1.5px,transparent 1.5px) 0 0/28px 28px,linear-gradient(135deg,#FFFBF5 0%,#FDF3F8 55%,#F2C1D6 100%);padding:64px 128px;gap:32px">
 <p class="eyebrow" style="color:var(--accent)">Hook · What happened here?</p>
 <div style="display:flex;align-items:center;gap:80px;flex:1">
 <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:32px">
 <h2 style="font-size:64px">You’re seeing the last message in a group chat.</h2>
 <p class="lead" style="color:var(--body)">Discuss with your team for 30 seconds. What’s the situation? What happened before this?</p>
 </div>
-<div style="flex:none;display:flex;align-items:center;justify-content:center;width:500px">
+<div style="flex:none;display:flex;align-items:center;justify-content:center;width:570px">
 <div class="iphone"><div class="iphone-screen"><div class="iphone-island"></div>
 <div class="iphone-status"><span>9:41</span><div class="iphone-status-icons">
 <svg width="17" height="12" viewBox="0 0 17 12" fill="#1C1C1E" aria-hidden="true"><rect x="0" y="3.5" width="3" height="8.5" rx="1"/><rect x="4.7" y="2" width="3" height="10" rx="1"/><rect x="9.4" y=".5" width="3" height="11.5" rx="1"/><rect x="14" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
@@ -278,14 +269,14 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 </div>
 </section>
 
-<section id="hook2" style="background:radial-gradient(circle,rgba(63,90,42,.04) 1.5px,transparent 1.5px) 0 0/28px 28px,linear-gradient(135deg,#FFFBF5 0%,#FDF3F8 55%,#F2C1D6 100%);padding:80px 128px;gap:32px">
+<section id="hook2" style="background:radial-gradient(circle,rgba(63,90,42,.04) 1.5px,transparent 1.5px) 0 0/28px 28px,linear-gradient(135deg,#FFFBF5 0%,#FDF3F8 55%,#F2C1D6 100%);padding:64px 128px;gap:32px">
 <p class="eyebrow" style="color:var(--accent)">Hook · Does your guess change?</p>
 <div style="display:flex;align-items:center;gap:80px;flex:1">
 <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:32px">
 <h2 style="font-size:64px">Two more messages appeared above.</h2>
 <p class="lead" style="color:var(--body)">Lock in your team’s best guess. What happened in this chat?</p>
 </div>
-<div style="flex:none;display:flex;align-items:center;justify-content:center;width:500px">
+<div style="flex:none;display:flex;align-items:center;justify-content:center;width:570px">
 <div class="iphone"><div class="iphone-screen"><div class="iphone-island"></div>
 <div class="iphone-status"><span>9:41</span><div class="iphone-status-icons">
 <svg width="17" height="12" viewBox="0 0 17 12" fill="#1C1C1E" aria-hidden="true"><rect x="0" y="3.5" width="3" height="8.5" rx="1"/><rect x="4.7" y="2" width="3" height="10" rx="1"/><rect x="9.4" y=".5" width="3" height="11.5" rx="1"/><rect x="14" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
@@ -309,14 +300,14 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 </div>
 </section>
 
-<section id="hook3" style="background:radial-gradient(circle,rgba(63,90,42,.04) 1.5px,transparent 1.5px) 0 0/28px 28px,linear-gradient(135deg,#FFFBF5 0%,#FDF3F8 55%,#F2C1D6 100%);padding:80px 128px;gap:32px">
+<section id="hook3" style="background:radial-gradient(circle,rgba(63,90,42,.04) 1.5px,transparent 1.5px) 0 0/28px 28px,linear-gradient(135deg,#FFFBF5 0%,#FDF3F8 55%,#F2C1D6 100%);padding:64px 128px;gap:32px">
 <p class="eyebrow" style="color:var(--accent)">Hook · Getting warmer</p>
 <div style="display:flex;align-items:center;gap:80px;flex:1">
 <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:32px">
 <h2 style="font-size:64px">A few messages before that.</h2>
 <p class="lead" style="color:var(--body)">Update your guess. What exactly did Marcus do?</p>
 </div>
-<div style="flex:none;display:flex;align-items:center;justify-content:center;width:500px">
+<div style="flex:none;display:flex;align-items:center;justify-content:center;width:570px">
 <div class="iphone"><div class="iphone-screen"><div class="iphone-island"></div>
 <div class="iphone-status"><span>9:41</span><div class="iphone-status-icons">
 <svg width="17" height="12" viewBox="0 0 17 12" fill="#1C1C1E" aria-hidden="true"><rect x="0" y="3.5" width="3" height="8.5" rx="1"/><rect x="4.7" y="2" width="3" height="10" rx="1"/><rect x="9.4" y=".5" width="3" height="11.5" rx="1"/><rect x="14" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
@@ -342,14 +333,14 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 </div>
 </section>
 
-<section id="hook4" style="background:radial-gradient(circle,rgba(63,90,42,.04) 1.5px,transparent 1.5px) 0 0/28px 28px,linear-gradient(135deg,#FFFBF5 0%,#F2F8EC 55%,#D9E8AD 100%);padding:80px 128px;gap:32px">
+<section id="hook4" style="background:radial-gradient(circle,rgba(63,90,42,.04) 1.5px,transparent 1.5px) 0 0/28px 28px,linear-gradient(135deg,#FFFBF5 0%,#FDF3F8 55%,#F2C1D6 100%);padding:64px 128px;gap:32px">
 <p class="eyebrow" style="color:var(--accent)">Hook · Full context</p>
 <div style="display:flex;align-items:center;gap:80px;flex:1">
 <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:32px">
 <h2 style="font-size:56px">Now you have everything.</h2>
 <p class="lead" data-build-in style="color:var(--body)">The AI is in this spot every time you message it. No earlier context? It guesses — just like you did on step 1.</p>
 </div>
-<div style="flex:none;display:flex;align-items:center;justify-content:center;width:500px">
+<div style="flex:none;display:flex;align-items:center;justify-content:center;width:570px">
 <div class="iphone"><div class="iphone-screen"><div class="iphone-island"></div>
 <div class="iphone-status"><span>9:41</span><div class="iphone-status-icons">
 <svg width="17" height="12" viewBox="0 0 17 12" fill="#1C1C1E" aria-hidden="true"><rect x="0" y="3.5" width="3" height="8.5" rx="1"/><rect x="4.7" y="2" width="3" height="10" rx="1"/><rect x="9.4" y=".5" width="3" height="11.5" rx="1"/><rect x="14" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
