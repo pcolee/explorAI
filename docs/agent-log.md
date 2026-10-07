@@ -20,10 +20,12 @@ Remove a line once it is answered and note the answer in that day's entry.
 - `meetings/meeting-3/explorai meeting 3 timeline.md` (new): committed the pre-existing timeline doc.
 - `meetings/meeting-3/index.html` (slide 4): added `data-build-in` to all three Argon cards and the pill so they reveal one per arrow press; removed "Sam's got it / what's a token" from the pill text.
 - `meetings/meeting-3/notes.html` (n4): expanded with full Argon detail — Fairwind audience breakdown, use cases (software engineering / business / cyber defense), hospital bug story, context-window caveat, cue for card-by-card reveal, updated bridge.
+- `meetings/meeting-3/index.html` (fifth session): slides 12–15 rebuilt with pure-CSS iPhone frame + zoom animations; removed Today slide (was slide 5); hook4 second paragraph only with `data-build-in`; act1 redesigned with 3 general tasks and accent-pink headers; vivid card colors swapped (vivid→pink, vague→mint), pill "Four rules"; recipe renumbered Who=1–How=4 with Material as "before you start" pre-step; takeaways slide simplified to one sentence.
+- `meetings/meeting-3/notes.html` (fifth session): n5 removed, n6–n25 renumbered n5–n24 (N=24); n14, n15, n20 expanded; n23 updated for single-sentence takeaways.
 
-**Decided:** Discord server link is `https://discord.gg/CskqghTu7`. Closing slide from Meeting 4 onward should include both Instagram and Discord QR codes. Recipe framework is Material + Who/What/Why/How. Slide-count constraint (25) is a soft template, not a hard rule — add slides freely.
+**Decided:** Discord server link is `https://discord.gg/CskqghTu7`. Closing slide from Meeting 4 onward should include both Instagram and Discord QR codes. Recipe numbering: Who=1, What=2, Why=3, How=4 (Material is a pre-step, not step 1). Slide-count constraint (25) is a soft template, not a hard rule — add slides freely.
 
-**Next:** Meeting 3 is live and fully rebuilt. Meeting 4 topic and content still TBD — Cole to provide a plan or timeline.
+**Next:** Meeting 3 is polished and live, ready for 2026-10-07. Meeting 4 topic and content still TBD — Cole to provide a plan or timeline.
 
 
 
