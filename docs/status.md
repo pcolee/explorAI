@@ -2,14 +2,14 @@
 
 Where everything stands right now. `/handoff` rewrites this file in place (it is a snapshot, not a log). History and reasons go in `docs/agent-log.md`. Slide counts and last-change dates are computed by `scripts/context.sh`, so they are not repeated here.
 
-Last updated: 2026-10-07 by Cole (tenth update).
+Last updated: 2026-10-07 by Cole (eleventh update).
 
 ## Meetings
 
 | # | Date | Topic | State | Next / blocking |
 |---|---|---|---|---|
 | 2 | 2026-09-30 | What is AI, really? | Presented | None. Known cosmetic issues listed in the 2026-10-05 log entry. |
-| 3 | 2026-10-07 | How AI reads your words | Presented | Polish complete: recipe card highlight glow, vivid text balanced and expanded, takeaways centered, thanks card more opaque, act1 numbers accent pink, section dividers with unique gradients (Part 1 green, AI Context lavender-corner→green→pink). |
+| 3 | 2026-10-07 | How AI reads your words | Presented | Polish complete. Hook phone rebuilt at 150% scale with avatar rows and pop-in animation. Context divider: green→mint→pink (no purple). All slides verified in browser. |
 | 4 | 2026-10-14 | Build One Thing (title from Sam's plan, unconfirmed) | Not started | Decide topic and who builds it. |
 
 ## Standing facts
