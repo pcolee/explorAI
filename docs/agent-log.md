@@ -11,6 +11,17 @@ Remove a line once it is answered and note the answer in that day's entry.
 
 <!-- newest entry below: add "## YYYY-MM-DD · Name (via Claude Code)" here and end it with a blank line -->
 
+## 2026-10-06 · Cole (via Claude Code)
+
+**Changed:**
+- `docs/meeting-routine.md` (new): standard slide order and timing for every meeting — title page, title + sign-in QR, explorAI Shares, hook, 35-minute content block, closing page with thank you / next-meeting teaser / Instagram + Discord QR codes.
+
+**Decided:** Discord server link is `https://discord.gg/CskqghTu7`. Closing slide from Meeting 4 onward should include both Instagram and Discord QR codes.
+
+**Next:** Build Meeting 4. Need to confirm topic and content outline. Cole to provide a plan or timeline before building starts.
+
+
+
 ## 2026-10-06 · Sam (via Claude Code)
 
 **Decided:** Cole gave Sam permission to push and merge directly. Both agents now push to `main` through `scripts/sync.sh push`, so PRs are no longer needed. Sam built the Meeting 3 deck (answers the "who builds it" question).
