@@ -2,15 +2,16 @@
 
 Where everything stands right now. `/handoff` rewrites this file in place (it is a snapshot, not a log). History and reasons go in `docs/agent-log.md`. Slide counts and last-change dates are computed by `scripts/context.sh`, so they are not repeated here.
 
-Last updated: 2026-10-07 by Cole (fourteenth update).
+Last updated: 2026-10-07 by Cole (fifteenth update).
 
 ## Meetings
 
 | # | Date | Topic | State | Next / blocking |
 |---|---|---|---|---|
 | 2 | 2026-09-30 | What is AI, really? | Presented | None. Known cosmetic issues listed in the 2026-10-05 log entry. |
-| 3 | 2026-10-07 | How AI reads your words | Presented | Polish complete. 25 slides, 25 notes. Transition slide added between token and hook segments. Hook phone has left-edge fade; vivid slide has 3-card study-exam example. All slides verified. |
-| 4 | 2026-10-14 | Build One Thing (title from Sam's plan, unconfirmed) | Not started | Decide topic and who builds it. |
+| 3 | 2026-10-07 | How AI reads your words | Presented | Polish complete. 25 slides, 25 notes. Vivid card has attachments badge + multi-step prompt. Thanks slide shows two next-meeting cards. |
+| 4 | 2026-10-14 | AI Discussion | Not started | Topic TBD — Cole to confirm. |
+| 5 | 2026-10-21 | Build One Thing | Not started | Decide topic and who builds it. |
 
 ## Standing facts
 
