@@ -151,6 +151,23 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 #recipe:not([hidden]) .grid4 > .card:nth-child(4){animation-delay:.21s}
 #recipe .card[data-build-in]{opacity:1;transform:none;transition:box-shadow .35s,border-color .35s}
 #recipe .card[data-build-in]:not(.pending){box-shadow:0 0 0 3px rgba(242,193,214,.85),0 0 32px rgba(242,193,214,.4);border-color:var(--accent)}
+/* Hook slide large-phone layout */
+.hook-slide{padding:0!important;gap:0!important;flex-direction:row!important;align-items:stretch!important}
+.hook-text{width:860px;flex:none;display:flex;flex-direction:column;justify-content:center;gap:36px;padding:80px 96px}
+.hook-phone-panel{flex:1;overflow:hidden;display:flex;align-items:flex-end;justify-content:center}
+.hook-phone-panel .hook-scale{transform:scale(1.5);transform-origin:bottom center;flex:none}
+/* Message rows with avatars */
+.iphone-msgs .msg-row{display:flex;align-items:flex-end;gap:8px}
+.iphone-msgs .msg-row .msg-grp{flex:1;min-width:0}
+.msg-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex:none;font-family:var(--sans)}
+.cp-av{background:#FF375F}.cd-av{background:#34C759}.cm-av{background:#007AFF}
+/* Message pop-in animation */
+@keyframes msgPop{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}
+#hook1:not([hidden]) .iphone-msgs>*,#hook2:not([hidden]) .iphone-msgs>*,#hook3:not([hidden]) .iphone-msgs>*,#hook4:not([hidden]) .iphone-msgs>*{animation:msgPop .38s cubic-bezier(.22,1,.36,1) both}
+#hook1:not([hidden]) .iphone-msgs>*:nth-child(1){animation-delay:0s}
+#hook2:not([hidden]) .iphone-msgs>*:nth-child(1){animation-delay:0s}#hook2:not([hidden]) .iphone-msgs>*:nth-child(2){animation-delay:.1s}#hook2:not([hidden]) .iphone-msgs>*:nth-child(3){animation-delay:.2s}
+#hook3:not([hidden]) .iphone-msgs>*:nth-child(1){animation-delay:0s}#hook3:not([hidden]) .iphone-msgs>*:nth-child(2){animation-delay:.09s}#hook3:not([hidden]) .iphone-msgs>*:nth-child(3){animation-delay:.18s}#hook3:not([hidden]) .iphone-msgs>*:nth-child(4){animation-delay:.27s}#hook3:not([hidden]) .iphone-msgs>*:nth-child(5){animation-delay:.36s}
+#hook4:not([hidden]) .iphone-msgs>*:nth-child(1){animation-delay:0s}#hook4:not([hidden]) .iphone-msgs>*:nth-child(2){animation-delay:.07s}#hook4:not([hidden]) .iphone-msgs>*:nth-child(3){animation-delay:.14s}#hook4:not([hidden]) .iphone-msgs>*:nth-child(4){animation-delay:.21s}#hook4:not([hidden]) .iphone-msgs>*:nth-child(5){animation-delay:.28s}#hook4:not([hidden]) .iphone-msgs>*:nth-child(6){animation-delay:.35s}#hook4:not([hidden]) .iphone-msgs>*:nth-child(7){animation-delay:.42s}#hook4:not([hidden]) .iphone-msgs>*:nth-child(8){animation-delay:.49s}#hook4:not([hidden]) .iphone-msgs>*:nth-child(9){animation-delay:.56s}
 </style></head><body>
 <div id="stage">
 
@@ -248,27 +265,20 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 <p class="pill" data-build-in style="margin-top:auto">"How many r’s?" It got three numbers. Counting letters means guessing what’s inside them.</p>
 </section>
 
-<section id="hook1" style="background:radial-gradient(circle,rgba(63,90,42,.04) 1.5px,transparent 1.5px) 0 0/28px 28px,linear-gradient(135deg,#FFFBF5 0%,#FDF3F8 55%,#F2C1D6 100%);padding:64px 128px;gap:32px">
+<section id="hook1" class="hook-slide" style="background:radial-gradient(circle,rgba(63,90,42,.04) 1.5px,transparent 1.5px) 0 0/28px 28px,linear-gradient(135deg,#FFFBF5 0%,#FDF3F8 55%,#F2C1D6 100%)">
+<div class="hook-text">
 <p class="eyebrow" style="color:var(--accent)">Hook · What happened here?</p>
-<div style="display:flex;align-items:center;gap:80px;flex:1">
-<div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:32px">
 <h2 style="font-size:64px">You’re seeing the last message in a group chat.</h2>
 <p class="lead" style="color:var(--body)">Discuss with your team for 30 seconds. What’s the situation? What happened before this?</p>
 </div>
-<div style="flex:none;display:flex;align-items:center;justify-content:center;width:570px">
+<div class="hook-phone-panel">
+<div class="hook-scale">
 <div class="iphone"><div class="iphone-screen"><div class="iphone-island"></div>
-<div class="iphone-status"><span>9:41</span><div class="iphone-status-icons">
-<svg width="17" height="12" viewBox="0 0 17 12" fill="#1C1C1E" aria-hidden="true"><rect x="0" y="3.5" width="3" height="8.5" rx="1"/><rect x="4.7" y="2" width="3" height="10" rx="1"/><rect x="9.4" y=".5" width="3" height="11.5" rx="1"/><rect x="14" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
-<svg width="16" height="12" viewBox="0 0 16 12" fill="none" aria-hidden="true"><circle cx="8" cy="10.5" r="1.5" fill="#1C1C1E"/><path d="M4.6 7C5.8 5.8 6.9 5.2 8 5.2s2.2.6 3.4 1.8" stroke="#1C1C1E" stroke-width="1.5" stroke-linecap="round"/><path d="M1.6 4C3.7 1.9 5.7.8 8 .8s4.3 1.1 6.4 3.2" stroke="#1C1C1E" stroke-width="1.5" stroke-linecap="round"/></svg>
-<svg width="25" height="12" viewBox="0 0 25 12" fill="none" aria-hidden="true"><rect x=".75" y=".75" width="20.5" height="10.5" rx="3.25" stroke="#1C1C1E" stroke-width="1.5"/><rect x="2.5" y="2.5" width="14" height="7" rx="1.5" fill="#1C1C1E"/><path d="M22 4v4a2 2 0 0 0 0-4z" fill="#1C1C1E" opacity=".4"/></svg>
-</div></div>
+<div class="iphone-status"><span>9:41</span><div class="iphone-status-icons"><svg width="17" height="12" viewBox="0 0 17 12" fill="#1C1C1E" aria-hidden="true"><rect x="0" y="3.5" width="3" height="8.5" rx="1"/><rect x="4.7" y="2" width="3" height="10" rx="1"/><rect x="9.4" y=".5" width="3" height="11.5" rx="1"/><rect x="14" y="0" width="3" height="12" rx="1" opacity=".3"/></svg><svg width="16" height="12" viewBox="0 0 16 12" fill="none" aria-hidden="true"><circle cx="8" cy="10.5" r="1.5" fill="#1C1C1E"/><path d="M4.6 7C5.8 5.8 6.9 5.2 8 5.2s2.2.6 3.4 1.8" stroke="#1C1C1E" stroke-width="1.5" stroke-linecap="round"/><path d="M1.6 4C3.7 1.9 5.7.8 8 .8s4.3 1.1 6.4 3.2" stroke="#1C1C1E" stroke-width="1.5" stroke-linecap="round"/></svg><svg width="25" height="12" viewBox="0 0 25 12" fill="none" aria-hidden="true"><rect x=".75" y=".75" width="20.5" height="10.5" rx="3.25" stroke="#1C1C1E" stroke-width="1.5"/><rect x="2.5" y="2.5" width="14" height="7" rx="1.5" fill="#1C1C1E"/><path d="M22 4v4a2 2 0 0 0 0-4z" fill="#1C1C1E" opacity=".4"/></svg></div></div>
 <div class="imsg-nav"><span class="imsg-nav-back">‹</span>
-<div class="imsg-nav-center">
-<div class="imsg-nav-avs"><div class="imsg-nav-av" style="background:#FF375F">P</div><div class="imsg-nav-av" style="background:#34C759">D</div><div class="imsg-nav-av" style="background:#007AFF">M</div></div>
-<span class="imsg-nav-name">Watch Party ›</span><span class="imsg-nav-sub">iMessage</span>
-</div><span style="width:40px"></span></div>
+<div class="imsg-nav-center"><div class="imsg-nav-avs"><div class="imsg-nav-av" style="background:#FF375F">P</div><div class="imsg-nav-av" style="background:#34C759">D</div><div class="imsg-nav-av" style="background:#007AFF">M</div></div><span class="imsg-nav-name">Watch Party ›</span><span class="imsg-nav-sub">iMessage</span></div><span style="width:40px"></span></div>
 <div class="iphone-msgs">
-<div class="msg-grp cp"><span class="msg-from">Priya</span><span class="msg-bub">I trusted you. after everything we’ve been through. I can’t even look at you right now.</span></div>
+<div class="msg-row"><div class="msg-av cp-av">P</div><div class="msg-grp cp"><span class="msg-from">Priya</span><span class="msg-bub">I trusted you. after everything we’ve been through. I can’t even look at you right now.</span></div></div>
 </div>
 <div class="iphone-input"><span class="iphone-input-plus">+</span><div class="iphone-input-field">iMessage</div><span class="iphone-input-mic">🎙</span></div>
 <div class="iphone-home"></div>
@@ -277,29 +287,22 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 </div>
 </section>
 
-<section id="hook2" style="background:radial-gradient(circle,rgba(63,90,42,.04) 1.5px,transparent 1.5px) 0 0/28px 28px,linear-gradient(135deg,#FFFBF5 0%,#FDF3F8 55%,#F2C1D6 100%);padding:64px 128px;gap:32px">
+<section id="hook2" class="hook-slide" style="background:radial-gradient(circle,rgba(63,90,42,.04) 1.5px,transparent 1.5px) 0 0/28px 28px,linear-gradient(135deg,#FFFBF5 0%,#FDF3F8 55%,#F2C1D6 100%)">
+<div class="hook-text">
 <p class="eyebrow" style="color:var(--accent)">Hook · Does your guess change?</p>
-<div style="display:flex;align-items:center;gap:80px;flex:1">
-<div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:32px">
 <h2 style="font-size:64px">Two more messages appeared above.</h2>
 <p class="lead" style="color:var(--body)">Lock in your team’s best guess. What happened in this chat?</p>
 </div>
-<div style="flex:none;display:flex;align-items:center;justify-content:center;width:570px">
+<div class="hook-phone-panel">
+<div class="hook-scale">
 <div class="iphone"><div class="iphone-screen"><div class="iphone-island"></div>
-<div class="iphone-status"><span>9:41</span><div class="iphone-status-icons">
-<svg width="17" height="12" viewBox="0 0 17 12" fill="#1C1C1E" aria-hidden="true"><rect x="0" y="3.5" width="3" height="8.5" rx="1"/><rect x="4.7" y="2" width="3" height="10" rx="1"/><rect x="9.4" y=".5" width="3" height="11.5" rx="1"/><rect x="14" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
-<svg width="16" height="12" viewBox="0 0 16 12" fill="none" aria-hidden="true"><circle cx="8" cy="10.5" r="1.5" fill="#1C1C1E"/><path d="M4.6 7C5.8 5.8 6.9 5.2 8 5.2s2.2.6 3.4 1.8" stroke="#1C1C1E" stroke-width="1.5" stroke-linecap="round"/><path d="M1.6 4C3.7 1.9 5.7.8 8 .8s4.3 1.1 6.4 3.2" stroke="#1C1C1E" stroke-width="1.5" stroke-linecap="round"/></svg>
-<svg width="25" height="12" viewBox="0 0 25 12" fill="none" aria-hidden="true"><rect x=".75" y=".75" width="20.5" height="10.5" rx="3.25" stroke="#1C1C1E" stroke-width="1.5"/><rect x="2.5" y="2.5" width="14" height="7" rx="1.5" fill="#1C1C1E"/><path d="M22 4v4a2 2 0 0 0 0-4z" fill="#1C1C1E" opacity=".4"/></svg>
-</div></div>
+<div class="iphone-status"><span>9:41</span><div class="iphone-status-icons"><svg width="17" height="12" viewBox="0 0 17 12" fill="#1C1C1E" aria-hidden="true"><rect x="0" y="3.5" width="3" height="8.5" rx="1"/><rect x="4.7" y="2" width="3" height="10" rx="1"/><rect x="9.4" y=".5" width="3" height="11.5" rx="1"/><rect x="14" y="0" width="3" height="12" rx="1" opacity=".3"/></svg><svg width="16" height="12" viewBox="0 0 16 12" fill="none" aria-hidden="true"><circle cx="8" cy="10.5" r="1.5" fill="#1C1C1E"/><path d="M4.6 7C5.8 5.8 6.9 5.2 8 5.2s2.2.6 3.4 1.8" stroke="#1C1C1E" stroke-width="1.5" stroke-linecap="round"/><path d="M1.6 4C3.7 1.9 5.7.8 8 .8s4.3 1.1 6.4 3.2" stroke="#1C1C1E" stroke-width="1.5" stroke-linecap="round"/></svg><svg width="25" height="12" viewBox="0 0 25 12" fill="none" aria-hidden="true"><rect x=".75" y=".75" width="20.5" height="10.5" rx="3.25" stroke="#1C1C1E" stroke-width="1.5"/><rect x="2.5" y="2.5" width="14" height="7" rx="1.5" fill="#1C1C1E"/><path d="M22 4v4a2 2 0 0 0 0-4z" fill="#1C1C1E" opacity=".4"/></svg></div></div>
 <div class="imsg-nav"><span class="imsg-nav-back">‹</span>
-<div class="imsg-nav-center">
-<div class="imsg-nav-avs"><div class="imsg-nav-av" style="background:#FF375F">P</div><div class="imsg-nav-av" style="background:#34C759">D</div><div class="imsg-nav-av" style="background:#007AFF">M</div></div>
-<span class="imsg-nav-name">Watch Party ›</span><span class="imsg-nav-sub">iMessage</span>
-</div><span style="width:40px"></span></div>
+<div class="imsg-nav-center"><div class="imsg-nav-avs"><div class="imsg-nav-av" style="background:#FF375F">P</div><div class="imsg-nav-av" style="background:#34C759">D</div><div class="imsg-nav-av" style="background:#007AFF">M</div></div><span class="imsg-nav-name">Watch Party ›</span><span class="imsg-nav-sub">iMessage</span></div><span style="width:40px"></span></div>
 <div class="iphone-msgs">
-<div class="msg-grp cp"><span class="msg-bub">I trusted you. after everything we’ve been through. I can’t even look at you right now.</span></div>
-<div class="msg-grp cp"><span class="msg-from">Priya</span><span class="msg-bub">ONE TIME IS ALL IT TAKES MARCUS</span></div>
-<div class="msg-grp cm"><span class="msg-from">Marcus</span><span class="msg-bub">it was ONE time</span></div>
+<div class="msg-row"><div class="msg-av cp-av">P</div><div class="msg-grp cp"><span class="msg-bub">I trusted you. after everything we’ve been through. I can’t even look at you right now.</span></div></div>
+<div class="msg-row"><div class="msg-av" style="background:transparent"></div><div class="msg-grp cp"><span class="msg-from">Priya</span><span class="msg-bub">ONE TIME IS ALL IT TAKES MARCUS</span></div></div>
+<div class="msg-row"><div class="msg-av cm-av">M</div><div class="msg-grp cm"><span class="msg-from">Marcus</span><span class="msg-bub">it was ONE time</span></div></div>
 </div>
 <div class="iphone-input"><span class="iphone-input-plus">+</span><div class="iphone-input-field">iMessage</div><span class="iphone-input-mic">🎙</span></div>
 <div class="iphone-home"></div>
@@ -308,31 +311,24 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 </div>
 </section>
 
-<section id="hook3" style="background:radial-gradient(circle,rgba(63,90,42,.04) 1.5px,transparent 1.5px) 0 0/28px 28px,linear-gradient(135deg,#FFFBF5 0%,#FDF3F8 55%,#F2C1D6 100%);padding:64px 128px;gap:32px">
+<section id="hook3" class="hook-slide" style="background:radial-gradient(circle,rgba(63,90,42,.04) 1.5px,transparent 1.5px) 0 0/28px 28px,linear-gradient(135deg,#FFFBF5 0%,#FDF3F8 55%,#F2C1D6 100%)">
+<div class="hook-text">
 <p class="eyebrow" style="color:var(--accent)">Hook · Getting warmer</p>
-<div style="display:flex;align-items:center;gap:80px;flex:1">
-<div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:32px">
 <h2 style="font-size:64px">A few messages before that.</h2>
 <p class="lead" style="color:var(--body)">Update your guess. What exactly did Marcus do?</p>
 </div>
-<div style="flex:none;display:flex;align-items:center;justify-content:center;width:570px">
+<div class="hook-phone-panel">
+<div class="hook-scale">
 <div class="iphone"><div class="iphone-screen"><div class="iphone-island"></div>
-<div class="iphone-status"><span>9:41</span><div class="iphone-status-icons">
-<svg width="17" height="12" viewBox="0 0 17 12" fill="#1C1C1E" aria-hidden="true"><rect x="0" y="3.5" width="3" height="8.5" rx="1"/><rect x="4.7" y="2" width="3" height="10" rx="1"/><rect x="9.4" y=".5" width="3" height="11.5" rx="1"/><rect x="14" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
-<svg width="16" height="12" viewBox="0 0 16 12" fill="none" aria-hidden="true"><circle cx="8" cy="10.5" r="1.5" fill="#1C1C1E"/><path d="M4.6 7C5.8 5.8 6.9 5.2 8 5.2s2.2.6 3.4 1.8" stroke="#1C1C1E" stroke-width="1.5" stroke-linecap="round"/><path d="M1.6 4C3.7 1.9 5.7.8 8 .8s4.3 1.1 6.4 3.2" stroke="#1C1C1E" stroke-width="1.5" stroke-linecap="round"/></svg>
-<svg width="25" height="12" viewBox="0 0 25 12" fill="none" aria-hidden="true"><rect x=".75" y=".75" width="20.5" height="10.5" rx="3.25" stroke="#1C1C1E" stroke-width="1.5"/><rect x="2.5" y="2.5" width="14" height="7" rx="1.5" fill="#1C1C1E"/><path d="M22 4v4a2 2 0 0 0 0-4z" fill="#1C1C1E" opacity=".4"/></svg>
-</div></div>
+<div class="iphone-status"><span>9:41</span><div class="iphone-status-icons"><svg width="17" height="12" viewBox="0 0 17 12" fill="#1C1C1E" aria-hidden="true"><rect x="0" y="3.5" width="3" height="8.5" rx="1"/><rect x="4.7" y="2" width="3" height="10" rx="1"/><rect x="9.4" y=".5" width="3" height="11.5" rx="1"/><rect x="14" y="0" width="3" height="12" rx="1" opacity=".3"/></svg><svg width="16" height="12" viewBox="0 0 16 12" fill="none" aria-hidden="true"><circle cx="8" cy="10.5" r="1.5" fill="#1C1C1E"/><path d="M4.6 7C5.8 5.8 6.9 5.2 8 5.2s2.2.6 3.4 1.8" stroke="#1C1C1E" stroke-width="1.5" stroke-linecap="round"/><path d="M1.6 4C3.7 1.9 5.7.8 8 .8s4.3 1.1 6.4 3.2" stroke="#1C1C1E" stroke-width="1.5" stroke-linecap="round"/></svg><svg width="25" height="12" viewBox="0 0 25 12" fill="none" aria-hidden="true"><rect x=".75" y=".75" width="20.5" height="10.5" rx="3.25" stroke="#1C1C1E" stroke-width="1.5"/><rect x="2.5" y="2.5" width="14" height="7" rx="1.5" fill="#1C1C1E"/><path d="M22 4v4a2 2 0 0 0 0-4z" fill="#1C1C1E" opacity=".4"/></svg></div></div>
 <div class="imsg-nav"><span class="imsg-nav-back">‹</span>
-<div class="imsg-nav-center">
-<div class="imsg-nav-avs"><div class="imsg-nav-av" style="background:#FF375F">P</div><div class="imsg-nav-av" style="background:#34C759">D</div><div class="imsg-nav-av" style="background:#007AFF">M</div></div>
-<span class="imsg-nav-name">Watch Party ›</span><span class="imsg-nav-sub">iMessage</span>
-</div><span style="width:40px"></span></div>
+<div class="imsg-nav-center"><div class="imsg-nav-avs"><div class="imsg-nav-av" style="background:#FF375F">P</div><div class="imsg-nav-av" style="background:#34C759">D</div><div class="imsg-nav-av" style="background:#007AFF">M</div></div><span class="imsg-nav-name">Watch Party ›</span><span class="imsg-nav-sub">iMessage</span></div><span style="width:40px"></span></div>
 <div class="iphone-msgs">
-<div class="msg-grp cp"><span class="msg-bub">I trusted you. after everything we’ve been through. I can’t even look at you right now.</span></div>
-<div class="msg-grp cp"><span class="msg-from">Priya</span><span class="msg-bub">ONE TIME IS ALL IT TAKES MARCUS</span></div>
-<div class="msg-grp cm"><span class="msg-bub">it was ONE time</span></div>
-<div class="msg-grp cm"><span class="msg-from">Marcus</span><span class="msg-bub">I fell asleep with autoplay on I SWEAR</span></div>
-<div class="msg-grp cd"><span class="msg-from">Dani</span><span class="msg-bub">wait… marcus why does your account say "continue watching: episode 10"</span></div>
+<div class="msg-row"><div class="msg-av cp-av">P</div><div class="msg-grp cp"><span class="msg-bub">I trusted you. after everything we’ve been through. I can’t even look at you right now.</span></div></div>
+<div class="msg-row"><div class="msg-av" style="background:transparent"></div><div class="msg-grp cp"><span class="msg-from">Priya</span><span class="msg-bub">ONE TIME IS ALL IT TAKES MARCUS</span></div></div>
+<div class="msg-row"><div class="msg-av cm-av">M</div><div class="msg-grp cm"><span class="msg-bub">it was ONE time</span></div></div>
+<div class="msg-row"><div class="msg-av" style="background:transparent"></div><div class="msg-grp cm"><span class="msg-from">Marcus</span><span class="msg-bub">I fell asleep with autoplay on I SWEAR</span></div></div>
+<div class="msg-row"><div class="msg-av cd-av">D</div><div class="msg-grp cd"><span class="msg-from">Dani</span><span class="msg-bub">wait… marcus why does your account say "continue watching: episode 10"</span></div></div>
 </div>
 <div class="iphone-input"><span class="iphone-input-plus">+</span><div class="iphone-input-field">iMessage</div><span class="iphone-input-mic">🎙</span></div>
 <div class="iphone-home"></div>
@@ -341,35 +337,28 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 </div>
 </section>
 
-<section id="hook4" style="background:radial-gradient(circle,rgba(63,90,42,.04) 1.5px,transparent 1.5px) 0 0/28px 28px,linear-gradient(135deg,#FFFBF5 0%,#FDF3F8 55%,#F2C1D6 100%);padding:64px 128px;gap:32px">
+<section id="hook4" class="hook-slide" style="background:radial-gradient(circle,rgba(63,90,42,.04) 1.5px,transparent 1.5px) 0 0/28px 28px,linear-gradient(135deg,#FFFBF5 0%,#FDF3F8 55%,#F2C1D6 100%)">
+<div class="hook-text">
 <p class="eyebrow" style="color:var(--accent)">Hook · Full context</p>
-<div style="display:flex;align-items:center;gap:80px;flex:1">
-<div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:32px">
 <h2 style="font-size:56px">Now you have everything.</h2>
 <p class="lead" data-build-in style="color:var(--body)">The AI is in this spot every time you message it. No earlier context? It guesses — just like you did on step 1.</p>
 </div>
-<div style="flex:none;display:flex;align-items:center;justify-content:center;width:570px">
+<div class="hook-phone-panel">
+<div class="hook-scale">
 <div class="iphone"><div class="iphone-screen"><div class="iphone-island"></div>
-<div class="iphone-status"><span>9:41</span><div class="iphone-status-icons">
-<svg width="17" height="12" viewBox="0 0 17 12" fill="#1C1C1E" aria-hidden="true"><rect x="0" y="3.5" width="3" height="8.5" rx="1"/><rect x="4.7" y="2" width="3" height="10" rx="1"/><rect x="9.4" y=".5" width="3" height="11.5" rx="1"/><rect x="14" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
-<svg width="16" height="12" viewBox="0 0 16 12" fill="none" aria-hidden="true"><circle cx="8" cy="10.5" r="1.5" fill="#1C1C1E"/><path d="M4.6 7C5.8 5.8 6.9 5.2 8 5.2s2.2.6 3.4 1.8" stroke="#1C1C1E" stroke-width="1.5" stroke-linecap="round"/><path d="M1.6 4C3.7 1.9 5.7.8 8 .8s4.3 1.1 6.4 3.2" stroke="#1C1C1E" stroke-width="1.5" stroke-linecap="round"/></svg>
-<svg width="25" height="12" viewBox="0 0 25 12" fill="none" aria-hidden="true"><rect x=".75" y=".75" width="20.5" height="10.5" rx="3.25" stroke="#1C1C1E" stroke-width="1.5"/><rect x="2.5" y="2.5" width="14" height="7" rx="1.5" fill="#1C1C1E"/><path d="M22 4v4a2 2 0 0 0 0-4z" fill="#1C1C1E" opacity=".4"/></svg>
-</div></div>
+<div class="iphone-status"><span>9:41</span><div class="iphone-status-icons"><svg width="17" height="12" viewBox="0 0 17 12" fill="#1C1C1E" aria-hidden="true"><rect x="0" y="3.5" width="3" height="8.5" rx="1"/><rect x="4.7" y="2" width="3" height="10" rx="1"/><rect x="9.4" y=".5" width="3" height="11.5" rx="1"/><rect x="14" y="0" width="3" height="12" rx="1" opacity=".3"/></svg><svg width="16" height="12" viewBox="0 0 16 12" fill="none" aria-hidden="true"><circle cx="8" cy="10.5" r="1.5" fill="#1C1C1E"/><path d="M4.6 7C5.8 5.8 6.9 5.2 8 5.2s2.2.6 3.4 1.8" stroke="#1C1C1E" stroke-width="1.5" stroke-linecap="round"/><path d="M1.6 4C3.7 1.9 5.7.8 8 .8s4.3 1.1 6.4 3.2" stroke="#1C1C1E" stroke-width="1.5" stroke-linecap="round"/></svg><svg width="25" height="12" viewBox="0 0 25 12" fill="none" aria-hidden="true"><rect x=".75" y=".75" width="20.5" height="10.5" rx="3.25" stroke="#1C1C1E" stroke-width="1.5"/><rect x="2.5" y="2.5" width="14" height="7" rx="1.5" fill="#1C1C1E"/><path d="M22 4v4a2 2 0 0 0 0-4z" fill="#1C1C1E" opacity=".4"/></svg></div></div>
 <div class="imsg-nav"><span class="imsg-nav-back">‹</span>
-<div class="imsg-nav-center">
-<div class="imsg-nav-avs"><div class="imsg-nav-av" style="background:#FF375F">P</div><div class="imsg-nav-av" style="background:#34C759">D</div><div class="imsg-nav-av" style="background:#007AFF">M</div></div>
-<span class="imsg-nav-name">Watch Party ›</span><span class="imsg-nav-sub">iMessage</span>
-</div><span style="width:40px"></span></div>
+<div class="imsg-nav-center"><div class="imsg-nav-avs"><div class="imsg-nav-av" style="background:#FF375F">P</div><div class="imsg-nav-av" style="background:#34C759">D</div><div class="imsg-nav-av" style="background:#007AFF">M</div></div><span class="imsg-nav-name">Watch Party ›</span><span class="imsg-nav-sub">iMessage</span></div><span style="width:40px"></span></div>
 <div class="iphone-msgs">
-<div class="msg-grp cp"><span class="msg-bub">I trusted you. after everything we’ve been through. I can’t even look at you right now.</span></div>
-<div class="msg-grp cp"><span class="msg-from">Priya</span><span class="msg-bub">ONE TIME IS ALL IT TAKES MARCUS</span></div>
-<div class="msg-grp cm"><span class="msg-bub">it was ONE time</span></div>
-<div class="msg-grp cm"><span class="msg-from">Marcus</span><span class="msg-bub">I fell asleep with autoplay on I SWEAR</span></div>
-<div class="msg-grp cd"><span class="msg-from">Dani</span><span class="msg-bub">wait… marcus why does your account say "continue watching: episode 10"</span></div>
+<div class="msg-row"><div class="msg-av cp-av">P</div><div class="msg-grp cp"><span class="msg-bub">I trusted you. after everything we’ve been through. I can’t even look at you right now.</span></div></div>
+<div class="msg-row"><div class="msg-av" style="background:transparent"></div><div class="msg-grp cp"><span class="msg-from">Priya</span><span class="msg-bub">ONE TIME IS ALL IT TAKES MARCUS</span></div></div>
+<div class="msg-row"><div class="msg-av cm-av">M</div><div class="msg-grp cm"><span class="msg-bub">it was ONE time</span></div></div>
+<div class="msg-row"><div class="msg-av" style="background:transparent"></div><div class="msg-grp cm"><span class="msg-from">Marcus</span><span class="msg-bub">I fell asleep with autoplay on I SWEAR</span></div></div>
+<div class="msg-row"><div class="msg-av cd-av">D</div><div class="msg-grp cd"><span class="msg-from">Dani</span><span class="msg-bub">wait… marcus why does your account say "continue watching: episode 10"</span></div></div>
 <div class="imsg-tdiv">Two days later</div>
-<div class="msg-grp cm"><span class="msg-from">Marcus</span><span class="msg-bub">obviously</span></div>
-<div class="msg-grp cd"><span class="msg-from">Dani</span><span class="msg-bub">agreed</span></div>
-<div class="msg-grp cp"><span class="msg-from">Priya</span><span class="msg-bub">rules for friday’s watch party: nobody watches the finale early. anyone who does is dead to me</span></div>
+<div class="msg-row"><div class="msg-av cm-av">M</div><div class="msg-grp cm"><span class="msg-from">Marcus</span><span class="msg-bub">obviously</span></div></div>
+<div class="msg-row"><div class="msg-av cd-av">D</div><div class="msg-grp cd"><span class="msg-from">Dani</span><span class="msg-bub">agreed</span></div></div>
+<div class="msg-row"><div class="msg-av cp-av">P</div><div class="msg-grp cp"><span class="msg-from">Priya</span><span class="msg-bub">rules for friday’s watch party: nobody watches the finale early. anyone who does is dead to me</span></div></div>
 </div>
 <div class="iphone-input"><span class="iphone-input-plus">+</span><div class="iphone-input-field">iMessage</div><span class="iphone-input-mic">🎙</span></div>
 <div class="iphone-home"></div>
@@ -398,7 +387,7 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 <p class="foot">ExplorAI · Meeting 3 · Press T for the timer</p>
 </section>
 
-<section id="context" class="center" style="background:radial-gradient(circle,rgba(63,90,42,.05) 1.5px,transparent 1.5px) 0 0/38px 38px,linear-gradient(210deg,#EAE4F8 0%,#D9E8AD 50%,#F2C1D6 100%);position:relative;overflow:hidden">
+<section id="context" class="center" style="background:radial-gradient(circle,rgba(63,90,42,.05) 1.5px,transparent 1.5px) 0 0/38px 38px,linear-gradient(200deg,#D9E8AD 0%,#F4F7E6 45%,#F2C1D6 100%);position:relative;overflow:hidden">
 <p class="eyebrow">AI Context &amp; Prompting</p>
 <h1 class="divider" style="font-size:120px;line-height:1.05">What goes<br>in the window</h1>
 <p class="sub">And how to fill it well.</p>
