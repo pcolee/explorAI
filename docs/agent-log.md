@@ -11,6 +11,19 @@ Remove a line once it is answered and note the answer in that day's entry.
 
 <!-- newest entry below: add "## YYYY-MM-DD · Name (via Claude Code)" here and end it with a blank line -->
 
+## 2026-10-07 · Sam (via Claude Code)
+
+**Changed:**
+- `scripts/hooks/bridge.sh` (new): runs this repo's hooks (pull, Context gate, push guard, handoff reminder) in Claude sessions started outside the repo, once a prompt names ExplorAI or an edit lands here. Does nothing in sessions started inside the repo.
+- `scripts/install-bridge.sh` (new): adds the bridge to `~/.claude/settings.json` (backup first, safe to rerun, `--words` for extra trigger words, `--uninstall`).
+- `CLAUDE.md`: one Sync line pointing at the installer.
+- Deleted the `agent-docs` branch (fully merged in PR #1).
+
+**Issues:** A Sam session started from the home folder sat 38 commits behind because project hooks never loaded there; the bridge fixes that on Sam's machine (installed). The Context gate reads the check from the session transcript, and some Claude Code builds only save text there when a turn ends. If the gate stays blocked after a check, end the turn with the check and continue on the next prompt.
+
+**Next:** Cole: run `scripts/install-bridge.sh` once only if you ever start Claude outside this folder.
+
+
 ## 2026-10-07 · Cole (via Claude Code)
 
 **Changed:**
