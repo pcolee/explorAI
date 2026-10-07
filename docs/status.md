@@ -2,14 +2,14 @@
 
 Where everything stands right now. `/handoff` rewrites this file in place (it is a snapshot, not a log). History and reasons go in `docs/agent-log.md`. Slide counts and last-change dates are computed by `scripts/context.sh`, so they are not repeated here.
 
-Last updated: 2026-10-06 by Cole (second update).
+Last updated: 2026-10-06 by Cole (third update).
 
 ## Meetings
 
 | # | Date | Topic | State | Next / blocking |
 |---|---|---|---|---|
 | 2 | 2026-09-30 | What is AI, really? | Presented | None. Known cosmetic issues listed in the 2026-10-05 log entry. |
-| 3 | 2026-10-07 | How AI reads your words | Live, ready to present, with presenter tools (S, M) | Part dividers updated (gradients + texture). Recipe updated to Material + Who/What/Why/How. Confirm sign-in QR before 2:00 pm. |
+| 3 | 2026-10-07 | How AI reads your words | Live, fully rebuilt, ready to present | Deck rebuilt from timeline.md: explorAI Shares eyebrow, Gemini 4 Argon slide, iMessage hook (slides 12–15), Activity 1 task card, AI Context & Prompting section, Vague vs. Vivid, Activity 2, 3-takeaway wrap, both Instagram + Discord QR codes on thanks slide. Confirm sign-in QR before 2:00 pm. |
 | 4 | 2026-10-14 | Build One Thing (title from Sam's plan, unconfirmed) | Not started | Decide topic and who builds it. |
 
 ## Standing facts
