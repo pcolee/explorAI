@@ -19,7 +19,9 @@ Remove a line once it is answered and note the answer in that day's entry.
 - `CLAUDE.md`: one Sync line pointing at the installer.
 - Deleted the `agent-docs` branch (fully merged in PR #1).
 
-**Issues:** A Sam session started from the home folder sat 38 commits behind because project hooks never loaded there; the bridge fixes that on Sam's machine (installed). The Context gate reads the check from the session transcript, and some Claude Code builds only save text there when a turn ends. If the gate stays blocked after a check, end the turn with the check and continue on the next prompt.
+- `scripts/context.sh --ack` + `scripts/hooks/context-gate.sh`: the gate also opens on a check recorded with `scripts/context.sh --ack "Context check: ..."`. Some Claude Code builds save a reply's text to the transcript only when the reply ends, so a check and an edit in the same reply stayed blocked. Each block clears any earlier recorded check.
+
+**Issues:** A Sam session started from the home folder sat 38 commits behind because project hooks never loaded there; the bridge fixes that on Sam's machine (installed).
 
 **Next:** Cole: run `scripts/install-bridge.sh` once only if you ever start Claude outside this folder.
 
