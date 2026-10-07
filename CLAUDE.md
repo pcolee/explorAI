@@ -25,6 +25,7 @@ Where context lives, so nothing is kept only in one person's chat:
 
 Two people's agents edit this repo. The goal is that neither one ever works on a stale copy.
 
+- **Starting Claude outside this folder?** Project hooks only load when Claude starts inside the repo. Run `scripts/install-bridge.sh` once per machine and they also run in sessions started elsewhere, once a prompt names ExplorAI or an edit lands here (`--uninstall` removes it).
 - **Pull before you work.** Hooks run `scripts/sync.sh pull` at session start and before every prompt. Read what it reports: new commits from the other person are their progress. If it says `SYNC CONFLICT`, `SYNC BLOCKED`, or that edits went to the stash, stop and tell the user before editing anything.
 - **Work on `main`.** No branches or PRs. Commit small, one change per commit, with a message that says what changed and why (the other agent reads these as progress).
 - **Push after every verified change, without asking.** Stage files by name (`git add <paths>`, never `-A` or `.`), commit, then `scripts/sync.sh push`. It pulls, runs `scripts/check.sh`, and pushes, retrying if the other person pushed first. Never run `git push` directly (a hook blocks it). Do not leave verified work unpushed at the end of a turn.
