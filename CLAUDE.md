@@ -12,7 +12,7 @@ Before building anything, meaning any edit to a repo file or any commit, cross-r
 2. **Existing:** `docs/status.md` (where everything stands), the open questions and recent entries in `docs/agent-log.md`, this file, the files you are about to change, and the same files in the previous meeting's folder (structure, style, bugs already fixed).
 3. **Say it:** before the first edit, tell the user under **Context check:** in 1 to 3 lines what is relevant and how your plan accounts for it, or that nothing affects it. If the context conflicts with the request (someone else already built it, a decision went the other way, an open question is unresolved), ask before building.
 
-Enforcement: the first edit or commit of every session, and the first one after someone else's commits arrive, is blocked once and returns the brief (`scripts/hooks/context-gate.sh`). Run `scripts/context.sh` any time to see the brief again. Edit repo files with the edit tools, not shell rewrites, so the gate sees them.
+Enforcement: the first edit or commit of every session, and the first one after someone else's commits arrive, is blocked once and returns the brief (`scripts/hooks/context-gate.sh`). It opens when the check shows up in the session transcript, or after `scripts/context.sh --ack "Context check: ..."` with the same lines (for builds that save a reply's text only when it ends). Run `scripts/context.sh` any time to see the brief again. Edit repo files with the edit tools, not shell rewrites, so the gate sees them.
 
 Where context lives, so nothing is kept only in one person's chat:
 

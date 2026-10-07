@@ -25,10 +25,12 @@ checks() {
 }
 
 ack="$state/$sid.ack"; pending="$state/$sid.pending"
+# Written by `scripts/context.sh --ack` after this block. Cleared at every block, so an old one never counts.
+said="$state/said"
 if [ -f "$pending" ]; then
   now=$(checks)
-  if [ "$now" = -1 ] || [ "$now" -gt "$(cat "$pending")" ]; then rm -f "$pending"; exit 0; fi
-  echo "CONTEXT RULE (CLAUDE.md): still blocked. Write \"Context check:\" to the user first, in 1 to 3 lines: what in the brief above is relevant to this change and how your plan accounts for it, or that nothing affects it. Then retry." >&2
+  if [ "$now" = -1 ] || [ "$now" -gt "$(cat "$pending")" ] || [ -s "$said" ]; then rm -f "$pending" "$said"; exit 0; fi
+  echo "CONTEXT RULE (CLAUDE.md): still blocked. Write \"Context check:\" to the user first, in 1 to 3 lines: what in the brief above is relevant to this change and how your plan accounts for it, or that nothing affects it. Then retry. If you already wrote it and are still blocked, this Claude Code build has not saved your text to the transcript yet: run scripts/context.sh --ack \"Context check: <the same lines>\", then retry." >&2
   exit 2
 fi
 if [ -f "$ack" ]; then
@@ -41,6 +43,7 @@ else
 fi
 git rev-parse HEAD > "$ack"
 checks > "$pending"
+rm -f "$said"
 
 {
   echo "CONTEXT RULE (CLAUDE.md): blocked once because $reason. Nothing was changed."
@@ -49,6 +52,7 @@ checks > "$pending"
   echo "  2. Existing context: docs/status.md, the open questions, the files you will change, and the same files in the previous meeting's folder."
   echo "  3. Tell the user, under \"Context check:\", in 1 to 3 lines what is relevant and how your plan accounts for it, or that nothing affects it. If anything conflicts with the request, ask the user before building."
   echo "The gate checks the transcript and stays closed until you have written the Context check. After that it stays open until someone else pushes again."
+  echo "If you wrote the check and are still blocked (some Claude Code builds save a reply's text only when the reply ends), also run: scripts/context.sh --ack \"Context check: <the same lines>\""
   echo
   scripts/context.sh --short ${base:+--since "$base"}
 } >&2

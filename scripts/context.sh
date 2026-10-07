@@ -3,12 +3,28 @@
 #   scripts/context.sh                 full brief: other people's new commits, meetings, status, open questions, recent log
 #   scripts/context.sh --since <sha>   "new from others" covers <sha>..HEAD instead of the last 5 commits by others
 #   scripts/context.sh --short         skip the recent log entries (used by the edit gate)
+#   scripts/context.sh --ack "Context check: ..."   record the check you just told the user, for when
+#                                      the edit gate cannot see it in the transcript (some Claude Code
+#                                      builds save a reply's text only when the reply ends)
 set -uo pipefail
 cd "$(git rev-parse --show-toplevel)" || exit 1
 
 since=""; short=0
 while [ $# -gt 0 ]; do
-  case $1 in --since) since=${2:-}; shift ;; --short) short=1 ;; esac
+  case $1 in
+    --since) since=${2:-}; shift ;;
+    --short) short=1 ;;
+    --ack)
+      said=${2:-}
+      if ! printf '%s' "$said" | grep -qiE '^[[:space:]*]*context check:' || [ ${#said} -lt 40 ]; then
+        echo "context: --ack needs the check itself, starting with \"Context check:\" (1 to 3 lines on what is relevant and how the plan accounts for it)."
+        exit 1
+      fi
+      dir="$(git rev-parse --git-dir)/agent-ctx"; mkdir -p "$dir"
+      printf '%s\n' "$said" > "$dir/said"
+      echo "Recorded. $said"
+      exit 0 ;;
+  esac
   shift
 done
 me=$(git config user.email || echo "")
