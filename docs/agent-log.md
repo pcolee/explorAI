@@ -11,6 +11,14 @@ Remove a line once it is answered and note the answer in that day's entry.
 
 <!-- newest entry below: add "## YYYY-MM-DD · Name (via Claude Code)" here and end it with a blank line -->
 
+## 2026-10-08 · Sam (via Claude Code)
+
+**Changed:**
+- Hook pinning: every hook runs a copy each person approved in `~/.config/rcc-coworking/`. A pull that changes `scripts/hooks/`, `sync.sh`, `context.sh`, `review.mjs`, `coworking.conf`, `install-bridge.sh`, or `.claude/` stops with `SYNC HELD` until a person approves the diff in a terminal (`~/.config/rcc-coworking/approve <repo>`). Raw `git pull`, `merge`, and `rebase` are blocked. Same kit in all three repos. (`e6044a0`)
+- Review v2 (`55bf182`, `5885135`): `meetings/shared/review.js` loads the relay's annotation client (`A` to annotate, `I` for the inbox, `?view=review`, Google sign-in limited to club members). `presenter.js` lists each slide's open notes in the presenter view, never on the room's screen. `scripts/review.mjs` uses the v2 API with an agent token. Checked on Meeting 3 with real key presses. The relay's v1 passcode review is retired.
+
+**Issues:** Cole: your next pull stops with `SYNC HELD` for the kit change. Run `~/.config/rcc-coworking/approve` on this repo in a terminal, read the diff, and answer y. Then run `scripts/install-bridge.sh` once. You are on the relay's ExplorAI, GDG, and ACM member lists, so Google sign-in works for you in the decks. Known old bug: on slide 1 the presenter's Now preview shows the Thank-you slide. `explorai-presenter.js` still has unused `fitBeside` code for the old `C` panel.
+
 ## 2026-10-07 · Sam (via Claude Code)
 
 **Changed:**
