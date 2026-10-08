@@ -67,7 +67,7 @@ done
 
 if command -v node >/dev/null 2>&1 && [ -f "$KIT/scripts/review.mjs" ]; then
   echo
-  echo "LIVE REVIEW (comments and speakers on the decks; scripts/review.mjs show <deck> for detail):"
+  echo "LIVE REVIEW (notes and speakers on the decks; scripts/review.mjs inbox <deck> for detail):"
   node "$KIT/scripts/review.mjs" brief 2>&1 | head -40
 fi
 

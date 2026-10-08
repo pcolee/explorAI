@@ -16,7 +16,8 @@
      mirror     a preview frame inside the other views: no keys, no pointer
    The deck window stays the source of truth; every view only sends presses and
    draws what the deck reports. With review.js loaded, every view also names who
-   covers the slide and cues the handoff when the next slide changes speaker. */
+   covers the slide and cues the handoff when the next slide changes speaker, and the
+   presenter view and remote list the slide's open review notes. */
 (function () {
   'use strict';
   var deck = document.querySelector('.deck');
@@ -120,6 +121,17 @@
   function whoOf(i) { var r = window.__review; return r ? r.ownerOf(i) : (slides[i] && slides[i].getAttribute('data-owner')) || ''; }
   function whoHtml(name) { var r = window.__review; return !name ? '' : r ? r.chip(name, 'is-small') : '<span class="pv-who">' + esc(name) + '</span>'; }
   function onReview(fn) { window.addEventListener('deck-review', fn); }
+  // Open review notes on a slide (review.js, once signed in). Only the presenter's own views show them.
+  function reviewHtml(i) {
+    var r = window.__review, t = r && r.threadsOf ? r.threadsOf(i) : [];
+    if (!t.length) return '';
+    return '<p class="pv-label">Open review notes · ' + t.length + '</p>' + t.slice(0, 6).map(function (v) {
+      var who = v.author && v.author.name ? whoHtml(v.author.name + (v.author.via === 'agent' ? '’s agent' : '')) + ' ' : '';
+      var quote = v.target && v.target.text ? '<span class="pv-review__quote">“' + esc(v.target.text.slice(0, 80)) + '”</span> ' : '';
+      var body = v.body.length > 220 ? v.body.slice(0, 220) + '…' : v.body;
+      return '<p class="pv-review__item">' + who + quote + esc(body) + (v.suggestion ? ' <span class="pv-muted">(suggests new text)</span>' : '') + '</p>';
+    }).join('') + (t.length > 6 ? '<p class="pv-muted">and ' + (t.length - 6) + ' more on the board</p>' : '');
+  }
 
   /* ---------- The relay --------------------------------------------------- */
   function relayPost(m, fail, k) {
@@ -311,7 +323,7 @@
       '<header class="pv__bar"><p class="pv__deck"></p><p class="pv__where"></p><p class="pv__clock" hidden></p>' +
       '<button type="button" class="pv__elapsed" title="Time since this opened. Click to reset.">0:00</button><p class="pv__wall"></p>' +
       '<button type="button" class="pv-btn" data-act="phone">Remote</button><a class="pv-btn" target="_blank" rel="noopener">Run sheet</a></header>' +
-      '<section class="pv__now"><p class="pv-label">Now</p><div class="pv__slot"></div><div class="pv__notes"></div></section>' +
+      '<section class="pv__now"><p class="pv-label">Now</p><div class="pv__slot"></div><div class="pv__notes"></div><div class="pv-review"></div></section>' +
       '<section class="pv__next"><p class="pv-label pv__upnext">Next</p><div class="pv__slot"></div>' +
       '<div class="pv-bridge"><p class="pv-label">Bridge</p><div class="pv-bridge__body"></div></div><div class="pv__qr" hidden></div></section>' +
       '<p class="pv__status" role="status">Waiting for the deck. Open this with S from the deck window.</p>';
@@ -339,6 +351,7 @@
         var clk = q('.pv__clock'); clk.hidden = !d.clock; clk.textContent = d.clock ? 'Clock ' + d.clock : '';
         q('.pv__upnext').textContent = c.upNext;
         q('.pv__notes').innerHTML = c.notes.html || '<p class="pv-muted">No notes on this slide.</p>';
+        q('.pv-review').innerHTML = reviewHtml(st.i);
         q('.pv-bridge__body').innerHTML = bridgeHtml(c);
         q('.pv-bridge').classList.toggle('is-due', c.due && !!c.notes.bridge);
         if (d.remotes && d.remotes !== lastRemotes) q('.pv__qr').hidden = true;
@@ -371,7 +384,7 @@
       '<div class="rv__main"><header class="rv__bar"><p class="rv__where"></p><p class="rv__count"></p><p class="rv__clock"></p></header>' +
       '<h1 class="rv__title"></h1>' +
       '<div class="pv-bridge"><p class="pv-label">Bridge</p><div class="pv-bridge__body"></div></div>' +
-      '<p class="rv__next"></p><div class="rv__notes"></div></div>' +
+      '<p class="rv__next"></p><div class="rv__notes"></div><div class="pv-review"></div></div>' +
       (wide ? '<div class="rv__previews"><p class="pv-label">Now</p><div class="pv__slot"></div><p class="pv-label rv__upnext">Next</p><div class="pv__slot"></div></div>' : '') +
       '<nav class="rv__pad"><button type="button" data-k="ArrowLeft">Back</button><button type="button" data-k="ArrowRight">Next</button></nav>';
     var q = function (sel) { return one(sel, rv); };
@@ -387,6 +400,7 @@
       q('.pv-bridge__body').innerHTML = bridgeHtml(c);
       q('.pv-bridge').classList.toggle('is-due', c.due && !!c.notes.bridge);
       q('.rv__notes').innerHTML = c.notes.html || '<p class="pv-muted">No notes on this slide.</p>';
+      q('.pv-review').innerHTML = reviewHtml(st.i);
       show(0, st); show(1, c.next || st);
     }
     if (wide) setInterval(function () { if (cur) { show(0, cur); show(1, nextOf(cur.i, cur.b, cur.room) || cur); } }, 600);
@@ -508,6 +522,7 @@
     '.pv-mirror .deck{pointer-events:none;cursor:none}.pv-mirror .deck-toast,.pv-mirror .deck-notes,.pv-mirror .deck-help,.pv-mirror .pv-toast{display:none!important}',
     '.pv-hand{margin:8px 0 0;font:500 15px var(--pv-font);display:flex;align-items:center;gap:8px}.pv-who{font-weight:500}.rs__who{margin:6px 0 0}.rs__people{display:flex;flex-wrap:wrap;gap:8px;align-items:center}',
     '.pv__where .rvw-who,.rv__title .rvw-who{vertical-align:middle;margin-left:6px}',
+    '.pv-review:not(:empty){margin-top:14px;padding:12px 16px;border-radius:12px;background:var(--pv-box)}.pv-review__item{margin:8px 0 0;font-size:17px;line-height:1.45}.pv-review__item .rvw-who{vertical-align:middle;margin-right:4px}.pv-review__quote{font-style:italic}',
     '.deck-notes .bridge{font-weight:500;border-left:4px solid var(--pv-hl);padding-left:12px}.deck-notes .bridge::before{content:"Bridge: ";font:13px var(--pv-code);letter-spacing:.06em;text-transform:uppercase;opacity:.8}',
     '@media print{.pv-qr-dialog,.pv-toast{display:none!important}}'
   ].join('\n');

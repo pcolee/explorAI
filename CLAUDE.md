@@ -68,13 +68,14 @@ On the deck laptop, `S` opens a presenter view (now, next, notes, bridge line, t
 - Switching the deck laptop to another tab (a live demo) is fine: tested on 2026-10-06 with the deck tab hidden for 5.7 minutes, and the remote kept working both ways. If a remote ever looks stale, a tap or a laptop key press resyncs it.
 - `scripts/check.sh` fails a deck that loads the presenter without bridge lines or the deck hooks.
 
-## Review (comments and speakers on the decks)
+## Review (notes and speakers on the decks)
 
-- `meetings/shared/review.js` (a copy of the kits' file, like `presenter.js`) loads after `presenter.js`. `C` in the deck opens a side panel: who covers the slide (tap a name) and comment threads. `?view=review` on the deck's URL is the whole-deck board. Changes reach everyone's screen in about a second, through the club relay (`/review/` on `deck-relay`, saved in Firestore). The presenter view, remote, and run sheet then name each slide's speaker and cue "Hand to …" when the next slide changes hands.
-- Agents use `node scripts/review.mjs`: `brief`, `show <deck>`, `add <deck> <slide> <text>`, `reply`, `resolve <deck> <id> <what changed>`, `assign <deck> <3-7> <name|->`, with `<deck>` as `meetings/meeting-N/index.html`. Anything an agent writes is marked agent. The brief lists open comments.
-- A comment is a request from a person. Treat open comments on a deck you are editing as part of the task: fix them or reply why not, and resolve each one you fixed in the same turn (`/handoff` checks).
-- Slides are keyed by their `<section id>`. Renaming an id orphans its comments and speaker.
-- The passcode is in `~/.config/rcc-review/key` (`node scripts/review.mjs login`). It never goes in the repo, and neither does comment text: the repo is public.
+- `meetings/shared/review.js` (a copy of the kits' file, like `presenter.js`) loads after `presenter.js` and loads the club relay's annotation client. In a deck, `A` toggles annotate mode: pin a note to a spot, a selected phrase, or the whole slide, or suggest replacement text. `I` opens the notes inbox. `?view=review` on the deck's URL is the whole-deck board with speakers. Sign-in is Google, limited to each club's member list on the relay. Changes reach everyone in about a second.
+- Open notes show in the presenter view (`S`) and the remote, never on the screen the room sees.
+- Agents use `node scripts/review.mjs` (commands at the top of the file): `brief`, `inbox <deck>` (each note with the source line it points at), `claim`, `resolve <deck> <id> --commit <sha> <what changed>`, `reply`, `annotate`, `assign`, `status`, `watch`, with `<deck>` as `meetings/meeting-N/index.html`. Anything an agent writes is marked agent. The relay also serves the same tools over MCP (`/mcp`).
+- A note is a request from a person. When you edit a deck, run `inbox` first, `claim` each note you take, set `status` while you work, then fix it or reply why not. Apply an accepted suggestion exactly as written. Resolve each fixed note with the commit that fixed it, in the same turn (`/handoff` checks).
+- Slides are keyed by their `<section id>` (a `data-id` wins if set). Renaming an id orphans its notes and speaker; set `data-id` to the old id first if a slide has either.
+- The agent token comes from "Connect an agent" in a deck (your avatar in the review bar) and lives in `~/.config/rcc-review/agent-token` (`node scripts/review.mjs login`). It never goes in the repo, and neither does note text or anyone's email: the repo is public.
 
 ## Rules
 
