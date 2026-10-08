@@ -21,9 +21,14 @@ Remove a line once it is answered and note the answer in that day's entry.
 
 - `scripts/context.sh --ack` + `scripts/hooks/context-gate.sh`: the gate also opens on a check recorded with `scripts/context.sh --ack "Context check: ..."`. Some Claude Code builds save a reply's text to the transcript only when the reply ends, so a check and an edit in the same reply stayed blocked. Each block clears any earlier recorded check.
 
+- Shared coworking kit (evening): the scripts, hooks, and `/handoff` are now the same files in this repo, rcc-gdg, and rcc-acm, which adopted this repo's workflow today. ExplorAI's own settings moved to `scripts/coworking.conf` (bridge words, deck list, notes count). Behavior here is unchanged, except: the brief says DECKS instead of MEETINGS and adds a LIVE REVIEW section, and installing one repo's bridge no longer removes another repo's.
+- Live review: `meetings/shared/review.js` (copy of the kits' file) loads in Meeting 3. `C` opens a side panel for comments on the slide and who covers it; `?view=review` is the whole deck. It syncs live through `deck-relay` (`/review/`, saved in Firestore) behind a club passcode that is never in the repo. `presenter.js` recopied from the kits: it names each slide's speaker and cues the handoff. `explorai-presenter.js` fits the stage beside the panel while it is open. `scripts/review.mjs` lets agents read, comment, resolve, and assign. Tested with two browsers on the live relay: comments arrive in about 100 ms, the deck never moves on a click in the panel, and closing the panel restores the stage.
+
+**Decided:** Sam: one review passcode for all three clubs, shared out of band.
+
 **Issues:** A Sam session started from the home folder sat 38 commits behind because project hooks never loaded there; the bridge fixes that on Sam's machine (installed).
 
-**Next:** Cole: run `scripts/install-bridge.sh` once only if you ever start Claude outside this folder.
+**Next:** Cole: run `scripts/install-bridge.sh` once only if you ever start Claude outside this folder, and `node scripts/review.mjs login` (Sam has the passcode) so your agent can see review comments. Start Meeting 4 from Meeting 3's files, including the `review.js` line.
 
 
 ## 2026-10-07 · Cole (via Claude Code)
