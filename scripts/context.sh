@@ -31,11 +31,12 @@ while [ $# -gt 0 ]; do
 done
 me=$(git config user.email || echo "")
 site=$(git remote get-url origin 2>/dev/null | sed -E 's#.*github\.com[:/]([^/]+)/([^/.]+)(\.git)?$#https://\1.github.io/\2#')
+KIT=${COWORK_KIT:-$(pwd)}   # the approved copy of these scripts, when the launcher runs them
 DECKS='meetings/*/index.html'
 deck_extra() { :; }
 # The deck's live link: data-live-url in the file, else the repo's Pages site plus its folder.
 live_url() { local u; u=$(grep -oE 'data-live-url="[^"]+"' "$1" | head -1 | sed -E 's/.*="//; s/"$//'); echo "${u:-${site:+$site/$(dirname "$1")/}}"; }
-[ -f scripts/coworking.conf ] && . scripts/coworking.conf
+[ -f "$KIT/scripts/coworking.conf" ] && . "$KIT/scripts/coworking.conf"
 
 # Commits by anyone but me, with the files each touched
 others() {
@@ -64,10 +65,10 @@ git ls-files -- $DECKS 2>/dev/null | sort | while read -r f; do
   echo "  $f: $s slides$(deck_extra "$f"). Last change ${last:-uncommitted}. $(live_url "$f")"
 done
 
-if command -v node >/dev/null 2>&1 && [ -f scripts/review.mjs ]; then
+if command -v node >/dev/null 2>&1 && [ -f "$KIT/scripts/review.mjs" ]; then
   echo
   echo "LIVE REVIEW (comments and speakers on the decks; scripts/review.mjs show <deck> for detail):"
-  node scripts/review.mjs brief 2>&1 | head -40
+  node "$KIT/scripts/review.mjs" brief 2>&1 | head -40
 fi
 
 if [ -f docs/status.md ]; then

@@ -17,6 +17,11 @@ esac
 if printf '%s' "$cmd" | grep -qE '(^|[;&|[:space:]])git([[:space:]]+-C[[:space:]]+[^[:space:]]+)?[[:space:]]+push([[:space:]]|$)'; then
   block "push with 'scripts/sync.sh push'. It pulls, runs scripts/check.sh, then pushes to main."
 fi
+# Bringing in others' commits goes through sync.sh too: it holds changes to the files that run on this
+# machine (.claude settings, hooks) until a person approves them. A raw pull or merge would skip that.
+if printf '%s' "$cmd" | grep -qE '(^|[;&|[:space:]])git([[:space:]]+-C[[:space:]]+[^[:space:]]+)?[[:space:]]+(pull|merge|rebase)([[:space:]]|$)' && ! printf '%s' "$cmd" | grep -qE 'rebase[[:space:]]+--(abort|continue|skip)'; then
+  block "bring in new commits with 'scripts/sync.sh pull'. It holds changes to auto-run files until a person approves them."
+fi
 # A commit is building too: hold it to the Context rule (also catches files edited through the shell)
 if printf '%s' "$cmd" | grep -qE '(^|[;&|[:space:]])git([[:space:]]+-C[[:space:]]+[^[:space:]]+)?[[:space:]]+commit([[:space:]]|$)'; then
   printf '%s' "$input" | "$(dirname "$0")/context-gate.sh" commit

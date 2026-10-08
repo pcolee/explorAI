@@ -23,7 +23,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/scripts/hooks/session-start.sh",
+            "command": "if [ -x \"$HOME/.config/rcc-coworking/run\" ]; then exec \"$HOME/.config/rcc-coworking/run\" \"$CLAUDE_PROJECT_DIR\" hooks/session-start.sh; else echo \"This repo's coworking hooks are not set up on this machine (sync, context check, handoff). In a terminal, run: scripts/install-bridge.sh\"; fi",
             "timeout": 45
           }
         ]
@@ -34,7 +34,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/scripts/sync.sh pull --quiet --hook",
+            "command": "if [ -x \"$HOME/.config/rcc-coworking/run\" ]; then exec \"$HOME/.config/rcc-coworking/run\" \"$CLAUDE_PROJECT_DIR\" sync.sh pull --quiet --hook; fi",
             "timeout": 30
           }
         ]
@@ -46,7 +46,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/scripts/hooks/guard-git.sh",
+            "command": "if [ -x \"$HOME/.config/rcc-coworking/run\" ]; then exec \"$HOME/.config/rcc-coworking/run\" \"$CLAUDE_PROJECT_DIR\" hooks/guard-git.sh; fi",
             "timeout": 15
           }
         ]
@@ -56,7 +56,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/scripts/hooks/context-gate.sh edit",
+            "command": "if [ -x \"$HOME/.config/rcc-coworking/run\" ]; then exec \"$HOME/.config/rcc-coworking/run\" \"$CLAUDE_PROJECT_DIR\" hooks/context-gate.sh edit; fi",
             "timeout": 15
           }
         ]
@@ -67,7 +67,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/scripts/hooks/stop-check.sh",
+            "command": "if [ -x \"$HOME/.config/rcc-coworking/run\" ]; then exec \"$HOME/.config/rcc-coworking/run\" \"$CLAUDE_PROJECT_DIR\" hooks/stop-check.sh; fi",
             "timeout": 15
           }
         ]

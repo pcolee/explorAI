@@ -10,7 +10,10 @@ jfield() { printf '%s' "$flat" | sed -nE "s/.*\"$1\"[[:space:]]*:[[:space:]]*\"(
 root=${CLAUDE_PROJECT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null)}
 cd "$root" 2>/dev/null || exit 0
 git rev-parse --is-inside-work-tree >/dev/null 2>&1 || exit 0
-LABEL="this repo"; [ -f scripts/coworking.conf ] && . scripts/coworking.conf
+# KIT is where the approved copy of these scripts lives (~/.config/rcc-coworking, set by the launcher);
+# without the launcher it is the repo itself.
+KIT=${COWORK_KIT:-$root}
+LABEL="this repo"; [ -f "$KIT/scripts/coworking.conf" ] && . "$KIT/scripts/coworking.conf"
 sid=$(jfield session_id); sid=${sid:-unknown}
 state="$(git rev-parse --git-dir)/agent-ctx"
 mkdir -p "$state"

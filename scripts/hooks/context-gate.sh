@@ -54,6 +54,6 @@ rm -f "$said"
   echo "The gate checks the transcript and stays closed until you have written the Context check. After that it stays open until someone else pushes again."
   echo "If you wrote the check and are still blocked (some Claude Code builds save a reply's text only when the reply ends), also run: scripts/context.sh --ack \"Context check: <the same lines>\""
   echo
-  scripts/context.sh --short ${base:+--since "$base"}
+  "$KIT/scripts/context.sh" --short ${base:+--since "$base"}
 } >&2
 exit 2

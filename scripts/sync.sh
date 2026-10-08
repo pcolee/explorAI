@@ -5,11 +5,21 @@
 #   scripts/sync.sh push                      pull, run scripts/check.sh, push to main (retries if someone pushed first)
 #   scripts/sync.sh status                    ahead/behind and the latest commits on origin/main
 # --quiet prints nothing when already up to date. --hook always exits 0 so a Claude Code hook never blocks the session.
+#
+# Pinned hooks: the hooks that run automatically on each machine are an approved copy in
+# ~/.config/rcc-coworking/repos/<owner>-<repo>/ (scripts/install-bridge.sh, then the approve command).
+# A pull that would bring a changed hook, script the hooks run, or .claude setting into this clone
+# is HELD until a person reviews and approves it in a terminal, so nobody who can push here can
+# make code run on someone else's machine unseen.
 set -uo pipefail
 
 cd "$(git rev-parse --show-toplevel 2>/dev/null)" || { echo "sync: not inside a git repo"; exit 1; }
 PUSH_NOTE=""
-[ -f scripts/coworking.conf ] && . scripts/coworking.conf
+KIT=${COWORK_KIT:-$(pwd)}
+[ -f "$KIT/scripts/coworking.conf" ] && . "$KIT/scripts/coworking.conf"
+PROTECTED='scripts/hooks scripts/sync.sh scripts/context.sh scripts/review.mjs scripts/coworking.conf scripts/install-bridge.sh .claude'
+KEY=$(git remote get-url origin 2>/dev/null | sed -E 's#.*[:/]([^/]+)/([^/]+)$#\1-\2#; s#\.git$##')
+TRUST="$HOME/.config/rcc-coworking/repos/$KEY"
 export GIT_TERMINAL_PROMPT=0
 BRANCH=main
 cmd=${1:-status}; shift || true
@@ -39,6 +49,25 @@ pull() {
   if [ -z "$incoming" ]; then
     [ $quiet = 1 ] || echo "Sync: up to date with origin/$BRANCH ($(git rev-parse --short origin/$BRANCH))."
     return 0
+  fi
+  # Hold the pull if it would change a protected file away from this machine's approved copy.
+  if [ -d "$TRUST" ]; then
+    local f held=""
+    # shellcheck disable=SC2086
+    for f in $(git diff --name-only HEAD...origin/$BRANCH -- $PROTECTED); do
+      local want have=""; want=$(git rev-parse -q --verify "origin/$BRANCH:$f" 2>/dev/null || true)
+      [ -f "$TRUST/$f" ] && have=$(git hash-object "$TRUST/$f")
+      [ "$want" = "$have" ] || held="$held $f"
+    done
+    if [ -n "$held" ]; then
+      # shellcheck disable=SC2086
+      die "SYNC HELD: new commits on origin/$BRANCH change files this machine runs automatically:$held
+Changed by: $(git log --format='%an <%ae>' HEAD..origin/$BRANCH -- $held | sort -u | paste -sd ', ' -).
+Nothing was pulled. Tell the user. A person reviews and approves it in a terminal (an agent cannot):
+  ~/.config/rcc-coworking/approve $(pwd)
+Commits waiting:
+$incoming"
+    fi
   fi
   local files; files=$(git diff --name-only HEAD...origin/$BRANCH)
   local stashes_before; stashes_before=$(git stash list | wc -l)

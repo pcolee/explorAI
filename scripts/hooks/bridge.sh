@@ -7,10 +7,12 @@
 # or an edit lands in a repo file. Each repo that uses the coworking kit installs its own copy. After that: pull every prompt, the Context gate on edits
 # and commits, the push guard, and the Stop-hook handoff reminder.
 #   bridge.sh prompt|edit|bash|stop
-REPO=$(cd "$(dirname "$0")/../.." && pwd -P) || exit 0
-H="$REPO/scripts/hooks"
+# The launcher (~/.config/rcc-coworking/run) passes the repo and the approved copy of the kit.
+REPO=${COWORK_REPO:-$(cd "$(dirname "$0")/../.." && pwd -P)} || exit 0
+KIT=${COWORK_KIT:-$REPO}
+H="$KIT/scripts/hooks"
 LABEL="this repo"; BRIDGE_WORDS=""
-[ -f "$REPO/scripts/coworking.conf" ] && . "$REPO/scripts/coworking.conf"
+[ -f "$KIT/scripts/coworking.conf" ] && . "$KIT/scripts/coworking.conf"
 input=$(cat)
 flat=$(printf '%s' "$input" | tr '\n' ' ')
 jfield() { printf '%s' "$flat" | sed -nE "s/.*\"$1\"[[:space:]]*:[[:space:]]*\"(([^\"\\\\]|\\\\.)*)\".*/\\1/p"; }
@@ -23,7 +25,7 @@ inrepo "$(real "$start")" && exit 0
 
 sid=$(jfield session_id); [ -n "$sid" ] || exit 0
 mark="${TMPDIR:-/tmp}/cowork-bridge/$(printf '%s' "$REPO" | cksum | cut -d' ' -f1)/$sid"
-run() { printf '%s' "$input" | CLAUDE_PROJECT_DIR="$REPO" "$H/$1" "${@:2}"; }
+run() { printf '%s' "$input" | CLAUDE_PROJECT_DIR="$REPO" COWORK_KIT="$KIT" "$H/$1" "${@:2}"; }
 
 engage() {
   [ -f "$mark" ] && return
@@ -37,7 +39,7 @@ words=${BRIDGE_WORDS:-$(basename "$REPO")}${COWORK_BRIDGE_WORDS:+"|$COWORK_BRIDG
 case "$1" in
   prompt)
     if [ -f "$mark" ]; then
-      (cd "$REPO" && scripts/sync.sh pull --quiet --hook)
+      (cd "$REPO" && "$KIT/scripts/sync.sh" pull --quiet --hook)
     elif jfield prompt | grep -qiE "(^|[^a-z])($words)([^a-z]|$)"; then
       engage
     fi ;;
