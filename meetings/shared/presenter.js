@@ -323,9 +323,9 @@
       '<header class="pv__bar"><p class="pv__deck"></p><p class="pv__where"></p><p class="pv__clock" hidden></p>' +
       '<button type="button" class="pv__elapsed" title="Time since this opened. Click to reset.">0:00</button><p class="pv__wall"></p>' +
       '<button type="button" class="pv-btn" data-act="phone">Remote</button><a class="pv-btn" target="_blank" rel="noopener">Run sheet</a></header>' +
-      '<section class="pv__now"><p class="pv-label">Now</p><div class="pv__slot"></div><div class="pv__notes"></div><div class="pv-review"></div></section>' +
+      '<section class="pv__now"><p class="pv-label">Now</p><div class="pv__slot"></div><div class="pv__notes"></div></section>' +
       '<section class="pv__next"><p class="pv-label pv__upnext">Next</p><div class="pv__slot"></div>' +
-      '<div class="pv-bridge"><p class="pv-label">Bridge</p><div class="pv-bridge__body"></div></div><div class="pv__qr" hidden></div></section>' +
+      '<div class="pv-bridge"><p class="pv-label">Bridge</p><div class="pv-bridge__body"></div></div><div class="pv-review"></div><div class="pv__qr" hidden></div></section>' +
       '<p class="pv__status" role="status">Waiting for the deck. Open this with S from the deck window.</p>';
     var q = function (sel) { return one(sel, pv); };
     q('.pv__deck').textContent = deck.getAttribute('data-ledger') || document.title;
@@ -522,7 +522,7 @@
     '.pv-mirror .deck{pointer-events:none;cursor:none}.pv-mirror .deck-toast,.pv-mirror .deck-notes,.pv-mirror .deck-help,.pv-mirror .pv-toast{display:none!important}',
     '.pv-hand{margin:8px 0 0;font:500 15px var(--pv-font);display:flex;align-items:center;gap:8px}.pv-who{font-weight:500}.rs__who{margin:6px 0 0}.rs__people{display:flex;flex-wrap:wrap;gap:8px;align-items:center}',
     '.pv__where .rvw-who,.rv__title .rvw-who{vertical-align:middle;margin-left:6px}',
-    '.pv-review:not(:empty){margin-top:14px;padding:12px 16px;border-radius:12px;background:var(--pv-box)}.pv-review__item{margin:8px 0 0;font-size:17px;line-height:1.45}.pv-review__item .rvw-who{vertical-align:middle;margin-right:4px}.pv-review__quote{font-style:italic}',
+    '.pv-review:not(:empty){margin-top:14px;padding:12px 16px;border-radius:12px;background:var(--pv-box)}.pv-review__item{margin:8px 0 0;font-size:17px;line-height:1.45}.pv-review__item .rvw-who{vertical-align:middle;margin-right:4px}.pv-review__quote{font-style:italic}.pv__next .pv-review{overflow:auto;min-height:0}',
     '.deck-notes .bridge{font-weight:500;border-left:4px solid var(--pv-hl);padding-left:12px}.deck-notes .bridge::before{content:"Bridge: ";font:13px var(--pv-code);letter-spacing:.06em;text-transform:uppercase;opacity:.8}',
     '@media print{.pv-qr-dialog,.pv-toast{display:none!important}}'
   ].join('\n');
