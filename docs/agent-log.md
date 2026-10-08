@@ -25,6 +25,7 @@ Remove a line once it is answered and note the answer in that day's entry.
 - Live review: `meetings/shared/review.js` (copy of the kits' file) loads in Meeting 3. `C` opens a side panel for comments on the slide and who covers it; `?view=review` is the whole deck. It syncs live through `deck-relay` (`/review/`, saved in Firestore) behind a club passcode that is never in the repo. `presenter.js` recopied from the kits: it names each slide's speaker and cues the handoff. `explorai-presenter.js` fits the stage beside the panel while it is open. `scripts/review.mjs` lets agents read, comment, resolve, and assign. Tested with two browsers on the live relay: comments arrive in about 100 ms, the deck never moves on a click in the panel, and closing the panel restores the stage.
 
 - `scripts/hooks/bridge.sh` (late evening, all three repos): a shell command is judged by the folder it runs in (a leading `cd`, or `git -C`), not the session's last folder. A commit in another repo was being held to this repo's context gate and push guard.
+- `meetings/shared/review.js` recopied: the panel's board link is set in code (GDG's publish step refused a bundle carrying a literal local `href`).
 
 **Decided:** Sam: one review passcode for all three clubs, shared out of band.
 
