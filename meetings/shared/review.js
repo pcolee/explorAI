@@ -251,7 +251,7 @@
         '<div class="rvw-row"><span class="rvw-hint">⌘ Enter to post</span><button class="rvw-btn is-primary" type="submit">Comment</button></div></form>' +
         (done.length ? '<details class="rvw-old"><summary>' + done.length + ' resolved</summary>' + done.map(function (c) { return threadHtml(c); }).join('') + '</details>' : '') +
         '</section></div>' +
-        '<footer class="rvw-foot"><span>' + totalOpen + ' open in this deck</span><a href="' + esc(location.href.split('#')[0].split('?')[0]) + '?view=review" target="_blank" rel="noopener">All slides</a><span class="rvw-me">' + chip(me(), 'is-small') + '<button type="button" class="rvw-link is-quiet" data-signout>Switch</button></span></footer>';
+        '<footer class="rvw-foot"><span>' + totalOpen + ' open in this deck</span><a data-board target="_blank" rel="noopener">All slides</a><span class="rvw-me">' + chip(me(), 'is-small') + '<button type="button" class="rvw-link is-quiet" data-signout>Switch</button></span></footer>';
       var nta = one('.rvw-new textarea', box), form = one('.rvw-new', box);
       nta.value = drafts[i] || '';
       if (focusIn) nta.focus();
@@ -265,6 +265,8 @@
         }));
       });
       one('[data-signout]', box).addEventListener('click', function () { put('rcc-review-name', ''); connect(); });
+      // Set in code: a bundled deck may not carry a literal local link (publish-deck.sh checks).
+      one('[data-board]', box).href = location.href.split('#')[0].split('?')[0] + '?view=review';
       wireHead();
     }
     function wireHead() { var x = one('.rvw-x', box); if (x) x.addEventListener('click', toggle); }
