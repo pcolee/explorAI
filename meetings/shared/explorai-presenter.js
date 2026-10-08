@@ -60,6 +60,18 @@
   ].join('\n');
   var style = document.createElement('style'); style.textContent = css; document.head.appendChild(style);
 
+  // review.js: while its panel is open (C), fit the stage into the space left of it. The deck's
+  // own fit() runs first on every resize and sizes for the whole window; this runs after it.
+  var root = document.documentElement;
+  function fitBeside() {
+    if (!root.classList.contains('rvw-open')) { stage.style.left = ''; return; }
+    var p = document.querySelector('.rvw-panel'), w = p ? p.getBoundingClientRect().width : 0;
+    var room = window.innerWidth - w, k = Math.min(room / 1920, window.innerHeight / 1080);
+    stage.style.left = (room / 2) + 'px';
+    stage.style.transform = 'scale(' + k + ') translate(-50%,-50%)';
+  }
+  window.addEventListener('resize', function () { setTimeout(fitBeside, 0); });
+
   function ready() { window.__deck = window.__explorDeck; }
   if (!window.fetch || !window.DOMParser) { ready(); return; }
   fetch('notes.html').then(function (r) { if (!r.ok) throw r.status; return r.text(); }).then(function (text) {
