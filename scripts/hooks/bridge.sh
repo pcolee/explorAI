@@ -47,7 +47,16 @@ case "$1" in
     engage >&2
     run context-gate.sh edit; exit $? ;;
   bash)
-    inrepo "$(real "$(jfield cwd)")" || jfield command | grep -qF "$REPO" || exit 0
+    cmdline=$(jfield command)
+    # A command that runs in another folder (a leading cd <dir>, or git -C <dir>) belongs to that folder.
+    there=$(printf '%s' "$cmdline" | sed -nE 's/^[[:space:]]*cd[[:space:]]+("([^"]+)"|([^;&| ]+)).*/\2\3/p')
+    [ -n "$there" ] || there=$(printf '%s' "$cmdline" | sed -nE 's/.*git[[:space:]]+-C[[:space:]]+("([^"]+)"|([^ ]+)).*/\2\3/p')
+    if [ -n "$there" ]; then
+      case "$there" in "~"*) there="$HOME${there#\~}" ;; /*) ;; *) there="$(jfield cwd)/$there" ;; esac
+      inrepo "$(real "$there")" || exit 0
+    else
+      inrepo "$(real "$(jfield cwd)")" || printf '%s' "$cmdline" | grep -qF "$REPO" || exit 0
+    fi
     run guard-git.sh; exit $? ;;
   stop)
     [ -f "$mark" ] || exit 0
