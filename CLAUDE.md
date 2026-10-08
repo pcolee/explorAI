@@ -2,7 +2,7 @@
 
 Slide decks and speaker notes for ExplorAI, the AI club at Riverside City College. Owner: Cole (`pcolee`). Collaborator: Sam (`Sam-T-G`). Both run Claude Code against this repo, so this file and `docs/agent-log.md` are how agents on different machines share context.
 
-Both agents push to `main` themselves. The **Context rule** and **Sync** rules below are mandatory, and hooks in `.claude/settings.json` enforce them.
+Both agents push to `main` themselves. The **Context rule** and **Sync** rules below are mandatory, and hooks in `.claude/settings.json` enforce them. The scripts, hooks, and `/handoff` are the shared coworking kit, identical in Sam's rcc-gdg and rcc-acm repos; `scripts/coworking.conf` is the only ExplorAI-specific part, so change the rest in all three together.
 
 ## Context rule (hard)
 
@@ -66,6 +66,14 @@ On the deck laptop, `S` opens a presenter view (now, next, notes, bridge line, t
 - The remote goes through the club relay (`deck-relay` on Cloud Run, which allows `pcolee.github.io`), with ntfy.sh as automatic fallback. It needs the published deck, so test the remote on the live URL.
 - Switching the deck laptop to another tab (a live demo) is fine: tested on 2026-10-06 with the deck tab hidden for 5.7 minutes, and the remote kept working both ways. If a remote ever looks stale, a tap or a laptop key press resyncs it.
 - `scripts/check.sh` fails a deck that loads the presenter without bridge lines or the deck hooks.
+
+## Review (comments and speakers on the decks)
+
+- `meetings/shared/review.js` (a copy of the kits' file, like `presenter.js`) loads after `presenter.js`. `C` in the deck opens a side panel: who covers the slide (tap a name) and comment threads. `?view=review` on the deck's URL is the whole-deck board. Changes reach everyone's screen in about a second, through the club relay (`/review/` on `deck-relay`, saved in Firestore). The presenter view, remote, and run sheet then name each slide's speaker and cue "Hand to …" when the next slide changes hands.
+- Agents use `node scripts/review.mjs`: `brief`, `show <deck>`, `add <deck> <slide> <text>`, `reply`, `resolve <deck> <id> <what changed>`, `assign <deck> <3-7> <name|->`, with `<deck>` as `meetings/meeting-N/index.html`. Anything an agent writes is marked agent. The brief lists open comments.
+- A comment is a request from a person. Treat open comments on a deck you are editing as part of the task: fix them or reply why not, and resolve each one you fixed in the same turn (`/handoff` checks).
+- Slides are keyed by their `<section id>`. Renaming an id orphans its comments and speaker.
+- The passcode is in `~/.config/rcc-review/key` (`node scripts/review.mjs login`). It never goes in the repo, and neither does comment text: the repo is public.
 
 ## Rules
 

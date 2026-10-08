@@ -3,12 +3,14 @@
 # for Claude sessions started OUTSIDE the repo. Project hooks only load when Claude starts
 # inside it, so without this a session started from your home folder never pulls or hands off.
 # Does nothing in sessions started inside the repo, and nothing until a session "engages":
-# a prompt names ExplorAI (plus any words in EXPLORAI_BRIDGE_WORDS, regex alternation),
-# or an edit lands in a repo file. After that: pull every prompt, the Context gate on edits
+# a prompt names this repo (BRIDGE_WORDS in scripts/coworking.conf, plus any in COWORK_BRIDGE_WORDS),
+# or an edit lands in a repo file. Each repo that uses the coworking kit installs its own copy. After that: pull every prompt, the Context gate on edits
 # and commits, the push guard, and the Stop-hook handoff reminder.
 #   bridge.sh prompt|edit|bash|stop
 REPO=$(cd "$(dirname "$0")/../.." && pwd -P) || exit 0
 H="$REPO/scripts/hooks"
+LABEL="this repo"; BRIDGE_WORDS=""
+[ -f "$REPO/scripts/coworking.conf" ] && . "$REPO/scripts/coworking.conf"
 input=$(cat)
 flat=$(printf '%s' "$input" | tr '\n' ' ')
 jfield() { printf '%s' "$flat" | sed -nE "s/.*\"$1\"[[:space:]]*:[[:space:]]*\"(([^\"\\\\]|\\\\.)*)\".*/\\1/p"; }
@@ -20,18 +22,18 @@ start=${CLAUDE_PROJECT_DIR:-$(jfield cwd)}
 inrepo "$(real "$start")" && exit 0
 
 sid=$(jfield session_id); [ -n "$sid" ] || exit 0
-mark="${TMPDIR:-/tmp}/explorai-bridge/$sid"
+mark="${TMPDIR:-/tmp}/cowork-bridge/$(printf '%s' "$REPO" | cksum | cut -d' ' -f1)/$sid"
 run() { printf '%s' "$input" | CLAUDE_PROJECT_DIR="$REPO" "$H/$1" "${@:2}"; }
 
 engage() {
   [ -f "$mark" ] && return
   mkdir -p "$(dirname "$mark")" && : > "$mark"
-  echo "This session is working on the ExplorAI decks repo ($REPO) from outside it, so its project hooks are bridged in. Its CLAUDE.md rules apply in full (Context rule, Sync, /handoff): read $REPO/CLAUDE.md before building. The /handoff skill is not loaded here; follow $REPO/.claude/skills/handoff/SKILL.md. Run repo commands from the repo (cd $REPO && scripts/sync.sh push)."
+  echo "This session is working on $LABEL ($REPO) from outside it, so its project hooks are bridged in. Its CLAUDE.md rules apply in full (Context rule, Sync, /handoff): read $REPO/CLAUDE.md before building. The /handoff skill is not loaded here; follow $REPO/.claude/skills/handoff/SKILL.md. Run repo commands from the repo (cd $REPO && scripts/sync.sh push)."
   [ -f "$REPO/local-docs/STATUS.md" ] && echo "Private notes on this machine (never committed): $REPO/local-docs/STATUS.md."
   run session-start.sh
 }
 
-words='explor ?ai|pcolee'${EXPLORAI_BRIDGE_WORDS:+"|$EXPLORAI_BRIDGE_WORDS"}
+words=${BRIDGE_WORDS:-$(basename "$REPO")}${COWORK_BRIDGE_WORDS:+"|$COWORK_BRIDGE_WORDS"}${EXPLORAI_BRIDGE_WORDS:+"|$EXPLORAI_BRIDGE_WORDS"}
 case "$1" in
   prompt)
     if [ -f "$mark" ]; then

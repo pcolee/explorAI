@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 # Prints the shared-context brief every agent cross-references before building (CLAUDE.md, "Context rule").
+# Part of the shared coworking kit (identical in rcc-gdg, rcc-acm, pcolee/explorAI); scripts/coworking.conf
+# names this repo's decks (DECKS) and, optionally, deck_extra and live_url for each deck line.
 #   scripts/context.sh                 full brief: other people's new commits, meetings, status, open questions, recent log
 #   scripts/context.sh --since <sha>   "new from others" covers <sha>..HEAD instead of the last 5 commits by others
 #   scripts/context.sh --short         skip the recent log entries (used by the edit gate)
@@ -29,6 +31,11 @@ while [ $# -gt 0 ]; do
 done
 me=$(git config user.email || echo "")
 site=$(git remote get-url origin 2>/dev/null | sed -E 's#.*github\.com[:/]([^/]+)/([^/.]+)(\.git)?$#https://\1.github.io/\2#')
+DECKS='meetings/*/index.html'
+deck_extra() { :; }
+# The deck's live link: data-live-url in the file, else the repo's Pages site plus its folder.
+live_url() { local u; u=$(grep -oE 'data-live-url="[^"]+"' "$1" | head -1 | sed -E 's/.*="//; s/"$//'); echo "${u:-${site:+$site/$(dirname "$1")/}}"; }
+[ -f scripts/coworking.conf ] && . scripts/coworking.conf
 
 # Commits by anyone but me, with the files each touched
 others() {
@@ -49,14 +56,19 @@ else
 fi
 
 echo
-echo "MEETINGS (computed from the repo):"
-for d in meetings/*/; do
-  m=${d%/}; [ -f "$m/index.html" ] || continue
-  s=$(grep -o '<section[ >]' "$m/index.html" | wc -l | tr -d ' ')
-  n=$( [ -f "$m/notes.html" ] && grep -o '<article class="note"' "$m/notes.html" | wc -l | tr -d ' ' || echo none)
-  last=$(git log -1 --date=short --format='%ad %an: %s' -- "$m" 2>/dev/null)
-  echo "  $(basename "$m"): $s slides, notes $n. Last change ${last:-uncommitted}. ${site:+$site/$m/}"
+echo "DECKS (computed from the repo):"
+# shellcheck disable=SC2086
+git ls-files -- $DECKS 2>/dev/null | sort | while read -r f; do
+  s=$(grep -o '<section[ >]' "$f" | wc -l | tr -d ' ')
+  last=$(git log -1 --date=short --format='%ad %an: %s' -- "$f" 2>/dev/null)
+  echo "  $f: $s slides$(deck_extra "$f"). Last change ${last:-uncommitted}. $(live_url "$f")"
 done
+
+if command -v node >/dev/null 2>&1 && [ -f scripts/review.mjs ]; then
+  echo
+  echo "LIVE REVIEW (comments and speakers on the decks; scripts/review.mjs show <deck> for detail):"
+  node scripts/review.mjs brief 2>&1 | head -40
+fi
 
 if [ -f docs/status.md ]; then
   echo

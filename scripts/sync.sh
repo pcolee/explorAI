@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Keeps every collaborator's clone on top of origin/main.
+# Keeps every collaborator's clone on top of origin/main. Part of the shared coworking kit:
+# identical in rcc-gdg, rcc-acm, and pcolee/explorAI; per-repo settings are in scripts/coworking.conf.
 #   scripts/sync.sh pull [--quiet] [--hook]   rebase local work onto origin/main, report what came in
 #   scripts/sync.sh push                      pull, run scripts/check.sh, push to main (retries if someone pushed first)
 #   scripts/sync.sh status                    ahead/behind and the latest commits on origin/main
@@ -7,6 +8,8 @@
 set -uo pipefail
 
 cd "$(git rev-parse --show-toplevel 2>/dev/null)" || { echo "sync: not inside a git repo"; exit 1; }
+PUSH_NOTE=""
+[ -f scripts/coworking.conf ] && . scripts/coworking.conf
 export GIT_TERMINAL_PROMPT=0
 BRANCH=main
 cmd=${1:-status}; shift || true
@@ -67,10 +70,12 @@ push() {
       echo "Push: nothing to push (no local commits ahead of origin/$BRANCH)."
       break
     fi
-    scripts/check.sh || die "PUSH REFUSED: scripts/check.sh failed. Fix the problems above, commit, and push again."
+    # A repo whose check reads the working tree checks exactly what is being pushed (scripts/push-check.sh).
+    check=scripts/check.sh; [ -x scripts/push-check.sh ] && check=scripts/push-check.sh
+    $check || die "PUSH REFUSED: $check failed. Fix the problems above, commit, and push again."
     local range; range=$(git log --format='  %h %s' origin/$BRANCH..HEAD)
     if git push --quiet origin "HEAD:$BRANCH" 2>/tmp/sync-push-err.$$; then
-      echo "Pushed to origin/$BRANCH (live on GitHub Pages in about a minute):"
+      echo "Pushed to origin/$BRANCH${PUSH_NOTE:+ ($PUSH_NOTE)}:"
       echo "$range"
       rm -f /tmp/sync-push-err.$$
       break

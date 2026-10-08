@@ -1,4 +1,5 @@
-# Shared helpers for the Claude Code hooks in this folder. Sourced, not run.
+# Shared helpers for the Claude Code hooks in this folder. Sourced, not run. Part of the shared
+# coworking kit (identical in rcc-gdg, rcc-acm, pcolee/explorAI); per-repo settings: scripts/coworking.conf.
 # Per-clone hook state lives in .git/agent-ctx/ so it is never committed.
 
 hook_input=$(cat)
@@ -9,6 +10,7 @@ jfield() { printf '%s' "$flat" | sed -nE "s/.*\"$1\"[[:space:]]*:[[:space:]]*\"(
 root=${CLAUDE_PROJECT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null)}
 cd "$root" 2>/dev/null || exit 0
 git rev-parse --is-inside-work-tree >/dev/null 2>&1 || exit 0
+LABEL="this repo"; [ -f scripts/coworking.conf ] && . scripts/coworking.conf
 sid=$(jfield session_id); sid=${sid:-unknown}
 state="$(git rev-parse --git-dir)/agent-ctx"
 mkdir -p "$state"
