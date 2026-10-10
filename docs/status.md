@@ -2,7 +2,7 @@
 
 Where everything stands right now. `/handoff` rewrites this file in place (it is a snapshot, not a log). History and reasons go in `docs/agent-log.md`. Slide counts and last-change dates are computed by `scripts/context.sh`, so they are not repeated here.
 
-Last updated: 2026-10-07 by Sam.
+Last updated: 2026-10-10 by Sam.
 
 ## Meetings
 
@@ -10,7 +10,7 @@ Last updated: 2026-10-07 by Sam.
 |---|---|---|---|---|
 | 2 | 2026-09-30 | What is AI, really? | Presented | None. Known cosmetic issues listed in the 2026-10-05 log entry. |
 | 3 | 2026-10-07 | How AI reads your words | Presented | Polish complete. 25 slides, 25 notes. Vivid card has attachments badge + multi-step prompt. Thanks slide shows two next-meeting cards. Activity Part 1 cards have no numbers. |
-| 4 | 2026-10-14 | AI Discussion | Not started | Topic TBD — Cole to confirm. |
+| 4 | 2026-10-14 | Let's argue about AI (discussion) | Drafting, live | First draft by Sam 2026-10-10 (`567bfe3`): 23 slides, 23 notes. Parts: School, Jobs, Lightning round (AI friends, copyright, data centers, state laws, safety), finger vote before and after. Cole to review the topic and copy (`A` in the deck). No speakers assigned. |
 | 5 | 2026-10-21 | Build One Thing | Not started | Decide topic and who builds it. |
 
 ## Standing facts
