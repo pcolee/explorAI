@@ -10,7 +10,7 @@ Last updated: 2026-10-10 by Sam.
 |---|---|---|---|---|
 | 2 | 2026-09-30 | What is AI, really? | Presented | None. Known cosmetic issues listed in the 2026-10-05 log entry. |
 | 3 | 2026-10-07 | How AI reads your words | Presented | Polish complete. 25 slides, 25 notes. Vivid card has attachments badge + multi-step prompt. Thanks slide shows two next-meeting cards. Activity Part 1 cards have no numbers. |
-| 4 | 2026-10-14 | Let's argue about AI (discussion) | Drafting, live | First draft by Sam 2026-10-10 (`567bfe3`): 23 slides, 23 notes. Parts: School, Jobs, Lightning round (AI friends, copyright, data centers, state laws, safety), finger vote before and after. Cole to review the topic and copy (`A` in the deck). No speakers assigned. |
+| 4 | 2026-10-14 | Let's argue about AI (discussion) | Drafting, live | First draft by Sam 2026-10-10 (`567bfe3`): 23 slides, 23 notes. Plain-language pass `c28cd00`. Parts: School, Jobs, Quick round (AI friends, copyright, data centers, state laws, safety), finger vote before and after. Cole to review the topic and copy (`A` in the deck). No speakers assigned. |
 | 5 | 2026-10-21 | Build One Thing | Not started | Decide topic and who builds it. |
 
 ## Standing facts

@@ -16,6 +16,8 @@ Remove a line once it is answered and note the answer in that day's entry.
 **Changed:**
 - `meetings/meeting-4/index.html` + `notes.html` (new, `567bfe3`): first draft of the Oct 14 discussion meeting, "Let's argue about AI". Built from Meeting 3's shell (presenter hooks, `review.js`, bridges, `m4-cur`). Shares: GPT-6 Astra and the shelved 6.1. Then ground rules (0 to 5 finger vote), a hands-up hook, Part 1 School (NYC pause, Maryland AI tutor trial, CSU's OpenAI deal), Part 2 Jobs (Challenger layoff counts, new-grad unemployment debate, executives' claims), Part 3 Lightning round (5 slides, 2:00 timers), a re-vote, and thanks. News is from July to October 2026, and every fact slide cites its outlet. QR codes are reused from Meeting 3: sign-in `https://forms.gle/AAN5yiHXcajJvhAe8`, Instagram `https://www.instagram.com/explorai.rcc`, Discord `https://discord.gg/CskqghTu7`.
 
+- `meetings/meeting-4/` (`c28cd00`): plain-language pass on slides and notes at Sam's request. Terms are defined once or replaced (AGI, data center, agents, fair use, detectors, entry-level), idioms are removed, and "Lightning round" is now "Quick round".
+
 **Decided:** Sam set Meeting 4's topic as an open discussion on AI news (jobs, school, society). This fills the "topic TBD" row; Cole can still change it.
 
 **Issues:** Two sources are weak, and both are flagged: the Maryland tutor trial is from a trade site and we have not found the paper (slide 8), and the final approval of the Anthropic authors settlement comes from smaller outlets (slide 18, in the notes). Thanks slide shows only Oct 21; nothing is known yet for Oct 28.
