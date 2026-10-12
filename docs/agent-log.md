@@ -11,6 +11,17 @@ Remove a line once it is answered and note the answer in that day's entry.
 
 <!-- newest entry below: add "## YYYY-MM-DD · Name (via Claude Code)" here and end it with a blank line -->
 
+## 2026-10-12 · Sam (via Claude Code)
+
+**Changed:**
+- `meetings/meeting-4/index.html` + `notes.html` (`7c63888`): Sam added two sets of talking points. (1) Job displacement: the slow-down slide (id `slow` kept) moves from the quick round to slide 15, right before the jobs discussion, as a fact slide with no timer. The jobs discussion (slide 16) now asks: is AI good or bad for society overall; who's responsible when AI replaces jobs; should we slow AI down to protect jobs; do you believe a company that says a cut isn't AI. The layoff-reporting and switch-majors questions are cut; the reporting bill stays in the notes as a backup. (2) New quick-round slide 20, "Copying software": ArtCraft's free copies of 7 Adobe apps built with Claude, plus AI-decompiled browser games and Activision's takedowns. 24 slides and 24 notes; the jobs discussion runs 2:32 to 2:40 and the vote again runs 2:51 to 2:56. Checked with real key presses in Chrome: slides 15, 16, and 19 to 24, both timers, the presenter view on slide 20, and notes 24/24 in order.
+
+**Decided:** Sam picked the job-displacement points and the Adobe/game-decompiling topic. The Adobe story is framed as copying what the apps do, not decompiling: ArtCraft's developer says he never touched Adobe's code. Decompiling is the games part.
+
+**Issues:** On slide 20, "hundreds" of games is Kotaku's own count (Oct 9) and has not been checked independently. Nobody has confirmed how much Claude wrote for ArtCraft or that it never used Adobe's code, and Adobe had not responded as of 2026-10-12. The notes flag all three. PetaPixel and TechSpot blocked our fetch, so the slide cites Decrypt, Kotaku, and XDA Developers.
+
+**Next:** Cole: review slides 15, 16, and 20 (`A` to annotate) and assign who covers each part. Before Wednesday, check slides 3 and 15 for newer safety news and slide 20 for an Adobe response.
+
 ## 2026-10-10 · Sam (via Claude Code)
 
 **Changed:**
