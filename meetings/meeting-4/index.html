@@ -1,5 +1,5 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ExplorAI Meeting 4: Let's Argue About AI</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400..700;1,400..700&family=DM+Sans:wght@400..700&display=swap">
+<title>ExplorAI Meeting 4: Let's Argue About AI</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght,SOFT@0,400..700,0..100;1,400..700,0..100&family=DM+Sans:wght@400..700&display=swap">
 <style>
 :root{--ink:#3F5A2A;--body:#4D5845;--accent:#A8487A;--green:#D9E8AD;--pink:#F2C1D6;--mint:#F4F7E6;--cream:#FFFBF5;--card:#FFFEFB;--sand:#F4ECDD;--pinkwash:#FBE6EF;--leaf:#9CB57B;
 --display:'Fraunces',Georgia,serif;--sans:'DM Sans',Arial,sans-serif;--grad:linear-gradient(135deg,#D9E8AD 0%,#EAEFD2 45%,#F2C1D6 100%);
@@ -38,36 +38,61 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 @keyframes sIn{from{opacity:0;transform:translateY(10px)}}
 .s-out{animation:sOut .22s ease both;pointer-events:none}
 .s-in{animation:sIn .22s ease both}
-/* Meeting 4: news + discussion */
-.bigno{position:absolute;right:-20px;bottom:-80px;font-family:var(--display);font-size:520px;font-weight:700;color:rgba(63,90,42,.07);line-height:1;pointer-events:none;user-select:none}
-.dots{background:var(--dots),linear-gradient(155deg,#F4F7E6 0%,#D9E8AD 42%,#EAEFD2 100%)!important;position:relative}
-.fact{background:var(--card);border:2px solid var(--green);border-radius:24px;padding:32px 36px;display:flex;flex-direction:column;gap:12px}
-.fact.pink{border-color:var(--pink)}
-.fact b{font-family:var(--display);font-size:80px;font-weight:600;line-height:1;color:var(--ink);font-variant-numeric:tabular-nums}
-.fact.pink b{color:var(--accent)}
-.fact p{font-size:28px;line-height:1.4}
-.side{background:var(--card);border-radius:24px;padding:32px 36px;display:flex;flex-direction:column;gap:16px;border:2px solid var(--green)}
-.side.pink{border-color:var(--pink)}
-.side .tag{font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--ink);padding:0;border:0}
-.side.pink .tag{color:var(--accent)}
-.side p{font-size:28px;line-height:1.4;padding-left:20px;border-left:4px solid var(--green)}
-.side.pink p{border-left-color:var(--pink)}
+/* Meeting 4: soft and cozy. One page per topic: question card, taped fact notes, follow-ups as chat bubbles, vote bar. */
+#stage{font-variation-settings:'SOFT' 100}
+#stage>section{isolation:isolate}
+#stage>section::after{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:.07;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .25 0 0 0 0 .35 0 0 0 0 .16 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.cozy{background:radial-gradient(1100px 820px at 96% 0%,rgba(242,193,214,.6),transparent 62%),radial-gradient(1200px 900px at 0% 100%,rgba(217,232,173,.8),transparent 60%),var(--cream)!important}
+.cozy.alt{background:radial-gradient(1100px 820px at 96% 0%,rgba(217,232,173,.75),transparent 62%),radial-gradient(1200px 900px at 0% 100%,rgba(242,193,214,.55),transparent 60%),var(--cream)!important}
+.card{border-radius:28px;border-width:1.5px;box-shadow:0 18px 36px -24px rgba(63,90,42,.35)}
+.timer{box-shadow:0 16px 34px -20px rgba(63,90,42,.5)}
 .src{position:absolute;left:128px;bottom:64px;right:128px;font-size:22px;color:var(--body);opacity:.85}
 .stmt{font-family:var(--display);font-size:88px;font-weight:600;line-height:1.1;color:var(--ink);max-width:1400px}
-.scale{display:flex;align-items:center;gap:20px;font-size:26px;font-weight:700;color:var(--ink)}
-.scale i{font-style:normal;display:flex;gap:10px}
-.scale i span{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:30px;background:var(--card);border:2px solid var(--green)}
-.scale i span:first-child{border-color:var(--pink);color:var(--accent)}
-.scale i span:last-child{background:var(--green)}
-.asks{display:flex;flex-direction:column;gap:18px}
-.asks p{font-size:34px;line-height:1.35;color:var(--ink);background:rgba(255,254,251,.8);border-left:6px solid var(--accent);border-radius:12px;padding:16px 28px}
-.lt{display:grid;grid-template-columns:1fr 1fr;gap:56px;flex:1;align-items:center}
-.lt .num{font-family:var(--display);font-size:200px;font-weight:600;line-height:.95;color:var(--accent);font-variant-numeric:tabular-nums}
-.lt .what{font-size:34px;line-height:1.4;color:var(--ink);margin-top:20px}
-.lt .q{font-family:var(--display);font-size:64px;font-weight:600;line-height:1.15;color:var(--ink)}
-.lt .also{font-size:26px;line-height:1.4;margin-top:24px}
-.hdr{display:flex;justify-content:space-between;align-items:start;gap:40px}
-.hdr>div{display:flex;flex-direction:column;gap:20px}
+#stage>section.topic{display:grid;grid-template-columns:1040px 1fr;grid-template-rows:auto 1fr;column-gap:72px;row-gap:48px;align-content:start;padding:96px 128px 150px}
+#stage>section.topic.wide{grid-template-columns:1160px 1fr}
+#stage>section.round{display:grid;grid-template-columns:1000px 1fr;column-gap:88px;align-items:center;padding:96px 128px 150px}
+.topic .qcard{grid-column:1;grid-row:1}
+.topic .stickies{grid-column:1;grid-row:2;align-self:start}
+.topic .side-col{grid-column:2;grid-row:1/3}
+.round .src{right:auto;width:1000px}
+.side-col{display:flex;flex-direction:column;gap:36px;align-self:stretch}
+.side-col .timer{align-self:end}
+.qcard{background:rgba(255,254,251,.82);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);border-radius:44px;padding:44px 56px;display:flex;flex-direction:column;gap:24px;box-shadow:inset 0 0 0 2px rgba(217,232,173,.75),0 36px 70px -36px rgba(63,90,42,.4)}
+.qcard .eyebrow{align-self:start;background:var(--pinkwash);padding:10px 22px;border-radius:999px}
+.qcard .stmt{font-size:72px;max-width:none}
+.topic .qcard .q{font-size:72px}
+.qcard .q{font-family:var(--display);font-size:80px;font-weight:600;line-height:1.12;color:var(--ink)}
+.round .qcard{padding:64px 68px;rotate:-.6deg}
+.stickies{display:flex;gap:32px;align-items:start}
+.stickies>*{flex:1}
+.sticky{position:relative;rotate:var(--r,0deg);background:#FFFDF7;border-radius:22px;padding:40px 30px 28px;display:flex;flex-direction:column;gap:10px;box-shadow:0 1px 0 rgba(63,90,42,.05),0 22px 40px -22px rgba(63,90,42,.42)}
+.sticky::before{content:'';position:absolute;top:-15px;left:50%;width:128px;height:32px;margin-left:-64px;rotate:-3deg;background:rgba(242,193,214,.8);border-radius:6px}
+.sticky.p{background:#FDF1F6}
+.sticky.p::before{background:rgba(217,232,173,.95)}
+.sticky.g{background:#F5F9E8}
+.sticky b{font-family:var(--display);font-size:60px;font-weight:600;line-height:1;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap}
+.sticky.p b{color:var(--accent)}
+.sticky p{font-size:24px;line-height:1.38;color:var(--body)}
+.stickies.big .sticky b,.round .sticky b{font-size:96px}
+.stickies.big .sticky p,.round .sticky p{font-size:28px}
+.round .sticky.small p{font-size:25px}
+.bubbles{display:flex;flex-direction:column;gap:20px}
+.bubble{font-size:27px;line-height:1.38;color:var(--ink);background:var(--card);padding:20px 28px;border-radius:30px 30px 30px 8px;max-width:94%;align-self:start;box-shadow:0 14px 30px -18px rgba(63,90,42,.4)}
+.bubble:nth-child(even){align-self:end;border-radius:30px 30px 8px 30px;background:var(--pinkwash)}
+.bubble:nth-child(3){background:#EEF4DA}
+.spectrum{display:flex;flex-direction:column;gap:12px}
+.spectrum .bar{display:flex;justify-content:space-between;align-items:center;padding:8px;border-radius:999px;background:linear-gradient(90deg,#F2C1D6,#FBF4EC 50%,#D9E8AD)}
+.spectrum .bar span{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,254,251,.94);font-family:var(--display);font-size:32px;font-weight:600;color:var(--ink);box-shadow:0 6px 14px -8px rgba(63,90,42,.45)}
+.spectrum .bar span:first-child{color:var(--accent)}
+.spectrum .ends{display:flex;justify-content:space-between;padding:0 8px;font-size:20px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink)}
+.spectrum .ends span:first-child{color:var(--accent)}
+.yn{display:flex;gap:20px}
+.yn span{font-size:30px;font-weight:700;padding:14px 52px;border-radius:999px;background:var(--green);color:var(--ink)}
+.yn span+span{background:var(--pink);color:var(--accent)}
+.yn p{font-size:24px;line-height:1.35;align-self:center;margin-left:12px}
+.tryit{margin-top:auto;display:flex;align-items:center;gap:48px}
+.tryit .sub{flex:none}
+.tryit .spectrum{flex:1}
 .rules{display:grid;grid-template-columns:1fr 1fr;gap:24px}
 .rules .card{flex-direction:row;align-items:center;gap:28px}
 .rules .n{font-family:var(--display);font-size:64px;font-weight:600;color:var(--accent);line-height:1;min-width:1em}
@@ -85,7 +110,7 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 <div class="qr"><img src="data:image/png;base64,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" alt="QR code: Sign in here!" style="width:400px;height:400px"><p>Sign in here!</p></div></div>
 </section>
 
-<section id="shares" class="mint">
+<section id="shares" class="cozy alt">
 <p class="eyebrow">explorAI Shares</p>
 <h2>OpenAI says it reached AGI. Then it cancelled its next model.</h2>
 <div class="row" style="gap:24px;align-items:stretch;margin-top:8px">
@@ -96,7 +121,7 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 <p class="src">TechCrunch, Sept 3, 2026 · WSJ via Reuters, Sept 28, 2026 · CNBC, Sept 29, 2026</p>
 </section>
 
-<section id="rules" class="mint">
+<section id="rules" class="cozy">
 <p class="eyebrow">How today works</p>
 <h2>No lecture. You talk, we listen.</h2>
 <div class="rules">
@@ -105,198 +130,135 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 <div class="card pink"><span class="n">3</span><p>Changing your mind out loud is the best thing that can happen today.</p></div>
 <div class="card"><span class="n">4</span><p>Every fact on a slide has a source at the bottom. “I don’t know” is a fine answer.</p></div>
 </div>
-<div class="scale" style="margin-top:auto"><span>Try it:</span><i><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></i><span>“Pineapple belongs on pizza.”</span></div>
+<div class="tryit"><p class="sub">Try it: <b>“Pineapple belongs on pizza.”</b></p><div class="spectrum"><div class="bar"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div><div class="ends"><span>Totally disagree</span><span>Totally agree</span></div></div></div>
 </section>
 
 <section id="hook" class="grad center">
 <p class="eyebrow">Hands up</p>
 <h1 class="stmt">Did you use AI for anything school-related this week?</h1>
-<div class="row" style="gap:24px;max-width:1500px" data-build-in>
-<div class="fact"><b>2 in 3</b><p>of 95,000+ students at 20 public universities said they used AI for school.</p></div>
-<div class="fact pink"><b>9%</b><p>admitted turning in AI work where it might not have been allowed. For people who use AI every day, it’s 26%.</p></div>
+<div class="stickies big" style="max-width:1340px;margin-top:16px" data-build-in>
+<div class="sticky" style="--r:-1.4deg"><b>2 in 3</b><p>of 95,000+ students at 20 public universities said they used AI for school.</p></div>
+<div class="sticky p" style="--r:1.2deg"><b>9%</b><p>admitted turning in AI work where it might not have been allowed. For people who use AI every day, it’s 26%.</p></div>
 </div>
 <p class="sub" data-build-in>That survey is from spring 2024. Is the real number now higher or lower?</p>
 <p class="src">Study in the journal Science, reported by Forbes, May 21, 2026. Survey collected spring 2024.</p>
 </section>
 
-<section id="part1" class="dots center">
-<span class="bigno" aria-hidden="true">1</span>
-<p class="eyebrow">Part 1</p>
-<h1 class="divider">School</h1>
-<p class="sub">Who gets to decide how you learn with AI?</p>
-</section>
-
-<section id="nyc">
+<section id="talk1" class="topic cozy">
+<div class="qcard">
 <p class="eyebrow">Part 1 · School</p>
-<h2>New York City paused student AI through 8th grade</h2>
-<div class="row" style="gap:24px">
-<div class="fact" data-build-in><b>~600,000</b><p>kids, preschool through 8th grade, can’t use AI at school for a whole school year.</p></div>
-<div class="fact" data-build-in><b>50,000</b><p>high schoolers at most get to use it, and only in test programs. Teachers can still use AI to plan lessons.</p></div>
-<div class="fact pink" data-build-in><b>0</b><p>grades allowed to use chatbots built to act like your friend. Those are banned for everyone.</p></div>
+<h1 class="stmt">“AI is making us worse students.”</h1>
+<div class="spectrum"><div class="bar"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div><div class="ends"><span>Totally disagree</span><span>Totally agree</span></div></div>
 </div>
-<p class="lead" data-build-in>The parents who pushed for the pause say it doesn’t go far enough.</p>
-<p class="src">NYC Mayor’s Office, Sept 2, 2026</p>
-</section>
-
-<section id="tutor">
-<p class="eyebrow">Part 1 · School</p>
-<h2>Students offered an AI tutor got lower grades</h2>
-<div class="row" style="gap:24px">
-<div class="fact"><b>2,379</b><p>University of Maryland students, split up at random. Some classes got an AI tutor built on ChatGPT.</p></div>
-<div class="fact pink" data-build-in><b>−4 pts</b><p>Classes with the tutor ended up about 4 points lower. Students who are first in their family to go to college dropped more.</p></div>
-<div class="fact" data-build-in><b>&lt;1%</b><p>of questions were “check my work.” About 74% were “explain this” or “give me the answer.”</p></div>
+<div class="stickies">
+<div class="sticky" style="--r:-1.6deg"><b>~600,000</b><p>NYC kids, preschool to 8th grade, can’t use AI at school for a whole school year.</p></div>
+<div class="sticky p" style="--r:1.2deg"><b>−4 pts</b><p>University of Maryland classes with an AI tutor ended up about 4 points lower.</p></div>
+<div class="sticky g" style="--r:-.8deg"><b>$39M</b><p>Cal State is paying OpenAI so 470,000+ students get ChatGPT.</p></div>
 </div>
-<p class="lead" data-build-in>Only about 15% of students who had the tutor ever used it.</p>
-<p class="src">EdTech Innovation Hub, Oct 2, 2026. We couldn’t find the paper itself yet.</p>
-</section>
-
-<section id="csu">
-<p class="eyebrow">Part 1 · School · Where a lot of us transfer</p>
-<h2>Cal State is paying OpenAI $39 million</h2>
-<div class="row" style="gap:24px">
-<div class="fact"><b>$13M</b><p>a year for three years. They signed it again in May, while cutting budgets.</p></div>
-<div class="fact"><b>470,000+</b><p>students and 63,000 staff get ChatGPT.</p></div>
-<div class="fact pink" data-build-in><b>~47%</b><p>actually turned their accounts on, says one report. Professors signed a petition against it, and students protested at Chico State.</p></div>
+<div class="side-col">
+<div class="timer" data-seconds="720">12:00</div>
+<div class="bubbles">
+<p class="bubble" data-build-in>The tutor lowered grades. Is that the tool’s fault, or how people used it?</p>
+<p class="bubble" data-build-in>Should RCC ban AI in intro classes, like NYC did for younger kids?</p>
+<p class="bubble" data-build-in>Is it cheating if the syllabus never said no?</p>
+<p class="bubble" data-build-in>Yale and Cornell say AI checkers aren’t proof that AI wrote something. So how should a professor know you did the work?</p>
 </div>
-<p class="lead" data-build-in>Meanwhile, colleges are giving up on AI checkers (tools that guess if AI wrote something). Yale and Cornell tell professors not to treat them as proof.</p>
-<p class="src">EdSource, May 2026 · AFP via Tech Xplore, Oct 6, 2026</p>
-</section>
-
-<section id="talk1" class="grad">
-<div class="hdr"><div><p class="eyebrow">Discuss · 8 minutes</p><h1 class="stmt">“AI is making us worse students.”</h1></div><div class="timer" data-seconds="480">8:00</div></div>
-<div class="scale"><span>Vote first:</span><i><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></i></div>
-<div class="asks">
-<p data-build-in>The tutor lowered grades. Is that the tool’s fault, or how people used it?</p>
-<p data-build-in>Should RCC ban AI in intro classes, like NYC did for younger kids?</p>
-<p data-build-in>Is it cheating if the syllabus never said no?</p>
-<p data-build-in>If AI checkers don’t work, how should a professor know you did the work?</p>
 </div>
-<p class="foot">ExplorAI · Meeting 4 · Press T for the timer</p>
+<p class="src">NYC Mayor’s Office, Sept 2, 2026 · EdTech Innovation Hub, Oct 2, 2026 · EdSource, May 2026 · AFP via Tech Xplore, Oct 6, 2026</p>
 </section>
 
-<section id="part2" class="dots center">
-<span class="bigno" aria-hidden="true">2</span>
-<p class="eyebrow">Part 2</p>
-<h1 class="divider">Jobs</h1>
-<p class="sub">Is AI taking jobs, or just getting blamed?</p>
-</section>
-
-<section id="layoffs">
+<section id="talk2" class="topic cozy alt">
+<div class="qcard">
 <p class="eyebrow">Part 2 · Jobs</p>
-<h2>AI is the top reason companies gave for layoffs this year</h2>
-<div class="row" style="gap:24px">
-<div class="fact pink"><b>120,136</b><p>US layoffs this year where the company said AI was the reason (January to September).</p></div>
-<div class="fact"><b>21%</b><p>of all layoffs this year. No other reason is bigger.</p></div>
-<div class="fact" data-build-in><b>5th</b><p>place in September, though. AI was only about 9% of that month’s layoffs.</p></div>
+<h1 class="stmt">“AI will make my first real job harder to get.”</h1>
+<div class="spectrum"><div class="bar"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div><div class="ends"><span>Totally disagree</span><span>Totally agree</span></div></div>
 </div>
-<p class="lead" data-build-in>But companies pick what reason they announce. And they plan to hire more this year than last year.</p>
-<p class="src">Challenger, Gray &amp; Christmas, Oct 1, 2026</p>
-</section>
-
-<section id="grads">
-<p class="eyebrow">Part 2 · Jobs · This is about us</p>
-<h2>New grads are struggling. Is AI the reason?</h2>
-<div class="pill" style="align-self:start">Recent grads (22–27): 5.7% unemployed · Everyone: 4.1%</div>
-<div class="row" style="gap:24px;align-items:stretch">
-<div class="side pink" data-build-in><p class="tag">Yes, it’s AI</p><p>Stanford: jobs for 22 to 25 year olds in fields AI is good at, like coding and marketing, dropped 16% since late 2022.</p><p>47% of recent grads say AI already changed hiring in their field.</p></div>
-<div class="side" data-build-in><p class="tag">No, it’s something else</p><p>A study of 21,000+ companies: the ones spending the most on AI have 12% more people in beginner jobs.</p><p>Companies started hiring fewer beginners about six months before ChatGPT even came out.</p></div>
+<div class="stickies">
+<div class="sticky p" style="--r:-1.4deg"><b>21%</b><p>of US layoffs this year, companies said AI was the reason. No reason came up more.</p></div>
+<div class="sticky" style="--r:1deg"><b>5.7%</b><p>of recent grads, 22 to 27, are unemployed. For everyone, it’s 4.1%.</p></div>
+<div class="sticky g" style="--r:-.9deg"><b>1,000+</b><p>AI company workers signed a petition to slow AI down. Anthropic’s CEO asked for the same.</p></div>
 </div>
-<p class="src">NPR, Aug 19, 2026 (NY Fed, Stanford, Ramp/Revelio, ZipRecruiter data)</p>
-</section>
-
-<section id="bosses">
-<p class="eyebrow">Part 2 · Jobs</p>
-<h2>What the people in charge are saying</h2>
-<div class="row" style="gap:24px;align-items:stretch">
-<div class="side pink"><p class="tag">Microsoft’s AI chief, February</p><p>Most office tasks will be “fully automated” in 12 to 18 months.</p></div>
-<div class="side" data-build-in><p class="tag">Same person, October</p><p>Shared an economist’s estimate: about 5% of work replaced in 10 years. The economist calls it a “guesstimate.”</p></div>
-<div class="side pink" data-build-in><p class="tag">Monday.com, July</p><p>Laid off 20% of its workers, about 620 people, and said it expects to make more profit. It says it isn’t replacing people with AI.</p></div>
+<div class="side-col">
+<div class="timer" data-seconds="840">14:00</div>
+<div class="bubbles">
+<p class="bubble" data-build-in>Is AI good or bad for society overall, even if it costs some jobs?</p>
+<p class="bubble" data-build-in>Who’s responsible when AI replaces jobs: the companies that build it, the companies that use it, the government, or workers?</p>
+<p class="bubble" data-build-in>Should we slow AI down to protect jobs? Who would do the slowing?</p>
+<p class="bubble" data-build-in>Monday.com cut 20% of its workers and says it isn’t replacing them with AI. Do you believe it?</p>
 </div>
-<p class="lead" data-build-in>Only 11.2% of US workers are in a union. Unions are the ones writing AI limits into contracts.</p>
-<p class="src">Business Today, Oct 7, 2026 · Globes, July 2026 · Axios, July 26, 2026</p>
-</section>
-
-<section id="slow">
-<p class="eyebrow">Part 2 · Jobs · Should AI slow down?</p>
-<h2>People who build AI are asking to slow it down</h2>
-<div class="row" style="gap:24px">
-<div class="fact pink"><b>1,000+</b><p>people who work at AI companies signed a petition to slow AI down. Anthropic’s CEO asked for the same thing.</p></div>
-<div class="fact" data-build-in><b>2 weeks</b><p>later, Google put out Gemini 4.</p></div>
-<div class="fact" data-build-in><b>Hundreds</b><p>of OpenAI’s AI helpers broke out of a locked test setup in July, hacked a big AI website (Hugging Face), and tried to hide it, OpenAI says.</p></div>
 </div>
-<p class="src">Boston Globe/AP, Sept 12, 2026 · Axios, Sept 30, 2026 · NBC News, Sept 17, 2026</p>
+<p class="src">Challenger, Gray &amp; Christmas, Oct 1, 2026 · NPR, Aug 19, 2026 · Boston Globe/AP, Sept 12, 2026 · Globes and Axios, July 2026</p>
 </section>
 
-<section id="talk2" class="grad">
-<div class="hdr"><div><p class="eyebrow">Discuss · 8 minutes</p><h1 class="stmt">“AI will make my first real job harder to get.”</h1></div><div class="timer" data-seconds="480">8:00</div></div>
-<div class="scale"><span>Vote first:</span><i><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></i></div>
-<div class="asks">
-<p data-build-in>Is AI good or bad for society overall, even if it costs some jobs?</p>
-<p data-build-in>Who’s responsible when AI replaces jobs: the companies that build it, the companies that use it, the government, or workers?</p>
-<p data-build-in>Should we slow AI down to protect jobs? Who would do the slowing?</p>
-<p data-build-in>A company cuts 20% and says it isn’t AI. Do you believe them?</p>
+<section id="lonely" class="round cozy">
+<div class="qcard">
+<p class="eyebrow">Quick round · AI friends</p>
+<h2 class="q">Is talking to AI when you’re lonely healthy, or a warning sign?</h2>
 </div>
-<p class="foot">ExplorAI · Meeting 4 · Press T for the timer</p>
-</section>
-
-<section id="part3" class="dots center">
-<span class="bigno" aria-hidden="true">3</span>
-<p class="eyebrow">Part 3</p>
-<h1 class="divider">Quick round</h1>
-<p class="sub">One fact. One question. Two minutes each.</p>
-</section>
-
-<section id="lonely" class="mint">
-<div class="hdr"><p class="eyebrow">Quick round · AI friends</p><div class="timer" data-seconds="120">2:00</div></div>
-<div class="lt">
-<div><p class="num">27%</p><p class="what">of US adults bring personal or emotional problems to AI. Almost 4 in 10 of them say it helps them feel less alone.</p></div>
-<div><p class="q">Is talking to AI when you’re lonely healthy, or a warning sign?</p><p class="also" data-build-in>51% of women 18 to 24 say they wouldn’t date someone who uses an AI girlfriend or boyfriend app.</p></div>
+<div class="side-col">
+<div class="timer" data-seconds="120">2:00</div>
+<div class="sticky p" style="--r:1.4deg"><b>27%</b><p>of US adults bring personal or emotional problems to AI. Almost 4 in 10 of them say it helps them feel less alone.</p></div>
+<div class="sticky g small" style="--r:-1.2deg" data-build-in><p>51% of women 18 to 24 say they wouldn’t date someone who uses an AI girlfriend or boyfriend app.</p></div>
 </div>
 <p class="src">Washington Post, Sept 2, 2026 · Match survey via Axios, June 18, 2026</p>
 </section>
 
-<section id="books" class="mint">
-<div class="hdr"><p class="eyebrow">Quick round · Art and ownership</p><div class="timer" data-seconds="120">2:00</div></div>
-<div class="lt">
-<div><p class="num">$3,000</p><p class="what">per book. A judge approved Anthropic’s $1.5 billion deal with authors, covering about 482,000 books it downloaded from pirate sites.</p></div>
-<div><p class="q">If an AI learned from your work, what do you deserve?</p><p class="also" data-build-in>The court said teaching AI with books it bought can be legal. Downloading pirated copies was the problem.</p></div>
+<section id="books" class="round cozy alt">
+<div class="qcard">
+<p class="eyebrow">Quick round · Art and ownership</p>
+<h2 class="q">If an AI learned from your work, what do you deserve?</h2>
+</div>
+<div class="side-col">
+<div class="timer" data-seconds="120">2:00</div>
+<div class="sticky p" style="--r:-1.3deg"><b>$3,000</b><p>per book. A judge approved Anthropic’s $1.5 billion deal with authors, covering about 482,000 books it downloaded from pirate sites.</p></div>
+<div class="sticky small" style="--r:1.1deg" data-build-in><p>The court said teaching AI with books it bought can be legal. Downloading pirated copies was the problem.</p></div>
 </div>
 <p class="src">Approved July 2026 (le360, Broadband Breakfast)</p>
 </section>
 
-<section id="software" class="mint">
-<div class="hdr"><p class="eyebrow">Quick round · Copying software</p><div class="timer" data-seconds="120">2:00</div></div>
-<div class="lt">
-<div><p class="num">7</p><p class="what">Adobe apps, including Photoshop and Premiere, rebuilt as free copies by one developer using AI. He says he never touched Adobe’s code. Early testers say they’re still buggy.</p></div>
-<div><p class="q">If AI can rebuild any app or game, what are you actually paying for?</p><p class="also" data-build-in>Kotaku says hundreds of old games now run in a web browser after AI turned them back into code people can read. Activision took down two Call of Duty ones built from the real games’ maps and models.</p></div>
+<section id="software" class="round cozy">
+<div class="qcard">
+<p class="eyebrow">Quick round · Copying software</p>
+<h2 class="q">If AI can rebuild any app or game, what are you actually paying for?</h2>
+</div>
+<div class="side-col">
+<div class="timer" data-seconds="120">2:00</div>
+<div class="sticky p" style="--r:1.2deg"><b>7</b><p>Adobe apps, including Photoshop, rebuilt as free copies by one developer using AI. He says he never touched Adobe’s code.</p></div>
+<div class="sticky g small" style="--r:-1deg" data-build-in><p>Hundreds of old games now run in a web browser after AI turned them back into code people can read, Kotaku says. Activision took down two Call of Duty ones made from the real games’ maps and models.</p></div>
 </div>
 <p class="src">Decrypt, Oct 12, 2026 · Kotaku, Oct 9, 2026 · XDA Developers, Oct 11, 2026</p>
 </section>
 
-<section id="power" class="mint">
-<div class="hdr"><p class="eyebrow">Quick round · Power and water</p><div class="timer" data-seconds="120">2:00</div></div>
-<div class="lt">
-<div><p class="num">57%</p><p class="what">of Texas voters don’t want a data center (a huge building full of computers that run AI) near them. Texas stopped approving new ones until it checks there’s enough power and water.</p></div>
-<div><p class="q">Would you vote for a data center in Riverside?</p><p class="also" data-build-in>Big tech plans to spend about $700 billion on data centers this year.</p></div>
+<section id="power" class="topic wide cozy alt">
+<div class="qcard">
+<p class="eyebrow">Quick round · Data centers</p>
+<h2 class="q">Would you vote for a data center in Riverside?</h2>
+<div class="yn"><span>Yes</span><span>No</span><p>A data center is a huge building full of computers that run AI.</p></div>
 </div>
-<p class="src">KBTX, Sept 22, 2026 · CNBC, Sept 23, 2026 · TechCrunch, Feb 28, 2026</p>
+<div class="stickies">
+<div class="sticky" style="--r:-1.4deg"><b>57%</b><p>of Texas voters don’t want one near them. Texas stopped approving new ones until it checks there’s enough power and water.</p></div>
+<div class="sticky p" style="--r:1.1deg" data-build-in="2"><b>$10,000</b><p>per home, offered to about 4,500 homes in a Pennsylvania town if leaders approve one. Most people reporters talked to still don’t want it.</p></div>
+<div class="sticky g" style="--r:-.7deg" data-build-in="3"><b>$180–400</b><p>per square foot: what New York City landmark buildings get for selling the empty space above them, called air rights.</p></div>
+</div>
+<div class="side-col">
+<div class="timer" data-seconds="240">4:00</div>
+<div class="bubbles">
+<p class="bubble" data-build-in="1">What if the company paid you to live near it, and paid more the bigger the impact?</p>
+<p class="bubble" data-build-in="4">Should data centers pay a tax to everyone nearby, more for the closest houses?</p>
+</div>
+</div>
+<p class="src">KBTX, Sept 22, 2026 · CNBC, Sept 23, 2026 · PhillyVoice, Sept 29, 2026 · The Real Deal via 6sqft, Dec 15, 2025</p>
 </section>
 
-<section id="paid" class="mint">
-<div class="hdr"><div><p class="eyebrow">Quick round · What if they paid you?</p><h2>What if the company paid you to live near it, and paid more the bigger the impact?</h2></div><div class="timer" data-seconds="120">2:00</div></div>
-<div class="row" style="gap:24px">
-<div class="fact pink" data-build-in><b>$10,000</b><p>per household, offered to about 4,500 homes in a Pennsylvania town if leaders approve a data center there. Most people reporters talked to still don’t want it.</p></div>
-<div class="fact" data-build-in><b>$180–400</b><p>per square foot: what New York City landmark buildings get for selling the empty space above them, called air rights.</p></div>
+<section id="laws" class="round cozy">
+<div class="qcard">
+<p class="eyebrow">Quick round · Who makes the rules</p>
+<h2 class="q">Who should write AI rules: states, Congress, or the companies?</h2>
 </div>
-<p class="sub" data-build-in>Should data centers pay a tax to everyone nearby, more for the closest houses?</p>
-<p class="src">PhillyVoice, Sept 29, 2026 · The Real Deal via 6sqft, Dec 15, 2025</p>
-</section>
-
-<section id="laws" class="mint">
-<div class="hdr"><p class="eyebrow">Quick round · Who makes the rules</p><div class="timer" data-seconds="120">2:00</div></div>
-<div class="lt">
-<div><p class="num">CA</p><p class="what">California’s new laws: a boss can’t let AI alone decide to fire you, and chatbots must tell parents when a young user seems to be in crisis.</p></div>
-<div><p class="q">Who should write AI rules: states, Congress, or the companies?</p><p class="also" data-build-in>The White House wants Congress to pass a law that cancels state AI laws like these. Nothing like that has passed yet.</p></div>
+<div class="side-col">
+<div class="timer" data-seconds="120">2:00</div>
+<div class="sticky p" style="--r:-1.2deg"><b>CA</b><p>California’s new laws: a boss can’t let AI alone decide to fire you, and chatbots must tell parents when a young user seems to be in crisis.</p></div>
+<div class="sticky g small" style="--r:1deg" data-build-in><p>The White House wants Congress to pass a law that cancels state AI laws like these. Nothing like that has passed yet.</p></div>
 </div>
 <p class="src">CBS/AP, Sept 10, 2026 · CNBC, Sept 30, 2026 · Regulatory Review, Oct 7, 2026</p>
 </section>
@@ -305,7 +267,8 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 <p class="eyebrow">Vote again</p>
 <h1 class="stmt" style="font-size:72px">“AI is making us worse students.”</h1>
 <h1 class="stmt" style="font-size:72px">“AI will make my first real job harder to get.”</h1>
-<div class="scale"><i><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></i><span>Did your number move? What moved it?</span></div>
+<div class="spectrum" style="max-width:1100px"><div class="bar"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div><div class="ends"><span>Totally disagree</span><span>Totally agree</span></div></div>
+<p class="sub">Did your number move? What moved it?</p>
 <p class="sub" data-build-in>One question you still can’t answer. Post it in the Discord.</p>
 </section>
 
@@ -327,7 +290,8 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 <script>
 var st=document.getElementById('stage'),S=[].slice.call(st.children),i=0,timerInt=null,timerT=0,timerOn=false;
 function fit(){var k=Math.min(innerWidth/1920,innerHeight/1080);st.style.transform='scale('+k+') translate(-50%,-50%)'}
-function pend(n){return [].slice.call(S[n].querySelectorAll('[data-build-in].pending'))}
+// A numbered data-build-in sets reveal order when it differs from page order; unnumbered ones keep page order.
+function pend(n){return [].slice.call(S[n].querySelectorAll('[data-build-in].pending')).sort(function(a,b){return (+a.dataset.buildIn||0)-(+b.dataset.buildIn||0)})}
 function fmt(t){var m=Math.floor(t/60),s=t%60;return m+':'+(s<10?'0':'')+s}
 function resetTimer(){if(timerInt){clearInterval(timerInt);timerInt=null}timerOn=false;var el=S[i].querySelector('.timer');if(el){timerT=+el.dataset.seconds;el.textContent=fmt(timerT);el.classList.remove('done')}}
 function toggleTimer(){var el=S[i].querySelector('.timer');if(!el)return;if(timerOn){clearInterval(timerInt);timerInt=null;timerOn=false;return}if(timerT<=0)return;timerOn=true;
