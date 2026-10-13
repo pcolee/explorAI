@@ -347,7 +347,7 @@ function resetTimer(){if(timerInt){clearInterval(timerInt);timerInt=null}timerOn
 function toggleTimer(){var el=S[i].querySelector('.timer');if(!el)return;if(timerOn){clearInterval(timerInt);timerInt=null;timerOn=false;return}if(timerT<=0)return;timerOn=true;
  timerInt=setInterval(function(){timerT--;el.textContent=fmt(timerT);if(timerT<=0){el.classList.add('done');clearInterval(timerInt);timerInt=null;timerOn=false}},1000)}
 function show(n,end){var o=i;i=Math.max(0,Math.min(S.length-1,n));
- if(S[o]!==S[i]){S.forEach(function(s,j){if(s!==S[o]&&s!==S[i])s.hidden=true});S[o].classList.add('s-out');setTimeout(function(){S[o].hidden=true;S[o].classList.remove('s-out')},220);S[i].hidden=false;S[i].classList.add('s-in');setTimeout(function(){S[i].classList.remove('s-in')},220)}else{S[i].hidden=false}
+ if(S[o]!==S[i]){S.forEach(function(s,j){if(s!==S[o]&&s!==S[i])s.hidden=true});S[o].classList.add('s-out');setTimeout(function(){S[o].hidden=true;S[o].classList.remove('s-out')},220);S[i].hidden=false;S[i].classList.add('s-in');setTimeout(function(){S[i].classList.remove('s-in')},220)}else{S.forEach(function(s){s.hidden=s!==S[i]})}
  S[i].querySelectorAll('[data-build-in]').forEach(function(b){b.classList.toggle('pending',!end)});
  document.getElementById('count').textContent=(i+1)+' / '+S.length;history.replaceState(null,'','#'+(i+1));
  if(document.activeElement&&document.activeElement.blur)document.activeElement.blur();resetTimer()}
@@ -363,7 +363,9 @@ addEventListener('click',function(e){if(document.documentElement.classList.conta
 // Wrap headline words in spans so they can rise in one after another. Text and textContent stay the same.
 [].forEach.call(st.querySelectorAll('.title,.stmt,h2'),function(h){if(h.children.length)return;var k=0,parts=h.textContent.split(/(\s+)/);h.textContent='';
  parts.forEach(function(p){if(!p)return;if(/^\s+$/.test(p)){h.appendChild(document.createTextNode(p));return}var w=document.createElement('span');w.className='w';w.style.setProperty('--w',k++);w.textContent=p;h.appendChild(w)})});
-addEventListener('resize',fit);fit();show((parseInt(location.hash.slice(1))||1)-1);
+// Open on the slide in the link; a number past the end (an old link from before slides were cut) opens slide 1.
+var h0=parseInt(location.hash.slice(1));
+addEventListener('resize',fit);fit();show(h0>=1&&h0<=S.length?h0-1:0);
 function builds(n){return S[n].querySelectorAll('[data-build-in]').length}
 window.__explorDeck={
  slides:S.map(function(s,n){var t=s.querySelector('.timer');return{beats:builds(n),timer:t?+t.dataset.seconds:0,room:false}}),
