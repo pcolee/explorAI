@@ -2,7 +2,7 @@
 
 Where everything stands right now. `/handoff` rewrites this file in place (it is a snapshot, not a log). History and reasons go in `docs/agent-log.md`. Slide counts and last-change dates are computed by `scripts/context.sh`, so they are not repeated here.
 
-Last updated: 2026-10-12 by Sam.
+Last updated: 2026-10-13 by Sam.
 
 ## Meetings
 
@@ -10,7 +10,7 @@ Last updated: 2026-10-12 by Sam.
 |---|---|---|---|---|
 | 2 | 2026-09-30 | What is AI, really? | Presented | None. Known cosmetic issues listed in the 2026-10-05 log entry. |
 | 3 | 2026-10-07 | How AI reads your words | Presented | Polish complete. 25 slides, 25 notes. Vivid card has attachments badge + multi-step prompt. Thanks slide shows two next-meeting cards. Activity Part 1 cards have no numbers. |
-| 4 | 2026-10-14 | Let's argue about AI (discussion) | Drafting, live | First draft by Sam 2026-10-10 (`567bfe3`), plain-language pass `c28cd00`, talking points added 2026-10-12 (`7c63888`, `e137113`): 25 slides, 25 notes. Parts: School; Jobs (now ends with the slow-down slide, and the discussion asks about society, who's responsible, and slowing down); Quick round (AI friends, copyright, copying software, data centers plus "What if they paid you?", state laws); finger vote before and after. Notes cut to the open questions (`a07843e`). Cole to review the topic and copy (`A` in the deck). No speakers assigned. Open: slide 3 card 2 names the wrong model (GPT-6.1 Astra was cancelled; GPT-6.1 Sol shipped) and slide 15's Gemini 4 timing is off; fixes proposed in the 2026-10-12 log entry, waiting on Sam. |
+| 4 | 2026-10-14 | Let's argue about AI (discussion) | Drafting, live | First draft by Sam 2026-10-10 (`567bfe3`). Talking points were added 2026-10-12, and on 2026-10-13 it was rebuilt as one page per topic with a softer look (`170ed00`): 14 slides, 14 notes. Order: welcome, sign-in, shares, rules, hands-up hook, School (discussion, 2:10 to 2:24), Jobs (discussion incl. society, who's responsible, slowing down, 2:24 to 2:40), quick round (AI friends, copyright, copying software, data centers incl. "what if they paid you" and a nearby-homes tax, state laws), vote again, thanks. Notes keep only the open questions and cues. Cole to review (`A` in the deck). No speakers assigned. Open: slide 3 card 2 names the wrong model (GPT-6.1 Astra was cancelled; GPT-6.1 Sol shipped); the fix is proposed in the 2026-10-12 log entry and waiting on Sam. |
 | 5 | 2026-10-21 | Build One Thing | Not started | Decide topic and who builds it. |
 
 ## Standing facts
@@ -19,7 +19,7 @@ Last updated: 2026-10-12 by Sam.
 - Live site: `https://pcolee.github.io/explorAI/meetings/meeting-N/`. Every push to `main` publishes.
 - Instagram: `@explorai.rcc`. Discord: `https://discord.gg/CskqghTu7`. Sign-in form and board application links are listed in the 2026-10-05 log entry.
 - Meeting routine (slide order, timing, QR targets): `docs/meeting-routine.md`.
-- Deck style: Meeting 3 moved the styles into classes so the next deck can reuse them. Start Meeting 4 from Meeting 3's `index.html` and `notes.html`, which also carry the presenter hooks and bridge lines (see "Presenter tools" in `CLAUDE.md`).
+- Deck style: Meeting 3 moved the styles into classes so the next deck can reuse them. Meeting 4 adds the soft, cozy pieces: `.topic` and `.round` one-page layouts, `.qcard` question card, taped `.sticky` notes, `.bubble` follow-ups, the `.spectrum` 0 to 5 vote bar, `.cozy` backgrounds, Fraunces soft axis, and numbered `data-build-in` for reveal order. Start the next deck from Meeting 4's `index.html` and `notes.html`, which also carry the presenter hooks and bridge lines (see "Presenter tools" in `CLAUDE.md`).
 - Presenter tools: on the deck laptop, `S` opens the presenter view and `M` shows a QR code for a phone or iPad remote. Several remotes can connect at once.
 - Starting Claude outside the repo folder: run `scripts/install-bridge.sh` once per machine so the hooks still run (Sam's machine has it).
 - Live review (Meeting 3 on): `A` in a deck to annotate, `I` for the notes inbox, `?view=review` for the board, `node scripts/review.mjs` for agents. Google sign-in, limited to each club's member list on the relay. The scripts and hooks are the shared coworking kit (same files in rcc-gdg and rcc-acm); ExplorAI's settings are in `scripts/coworking.conf`.
