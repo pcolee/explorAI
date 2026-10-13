@@ -96,6 +96,56 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 .rules{display:grid;grid-template-columns:1fr 1fr;gap:24px}
 .rules .card{flex-direction:row;align-items:center;gap:28px}
 .rules .n{font-family:var(--display);font-size:64px;font-weight:600;color:var(--accent);line-height:1;min-width:1em}
+/* Meeting 4 motion: things settle in softly, in reading order. A slide replays its entrance each time it shows,
+   because CSS animations restart when a section leaves display:none. Builds animate when .pending comes off. */
+[data-build-in]{transition:none}
+[data-build-in]:not(.pending){animation:softIn .55s cubic-bezier(.2,.8,.2,1) backwards}
+.w{display:inline-block;animation:wordIn .6s cubic-bezier(.2,.8,.2,1) backwards;animation-delay:calc(var(--o,.08s) + var(--w,0) * 38ms)}
+.qcard .w{--o:.24s}
+.eyebrow,.lead,.sub:not([data-build-in]){animation:fadeIn .7s ease .1s backwards}
+.src{animation:fadeIn .8s ease .6s backwards}
+.qcard,.card:not([data-build-in]){animation:rise .7s cubic-bezier(.2,.8,.2,1) backwards}
+.rules .card:nth-child(1){animation-delay:.1s}.rules .card:nth-child(2){animation-delay:.18s}.rules .card:nth-child(3){animation-delay:.26s}.rules .card:nth-child(4){animation-delay:.34s}
+.qr{animation:pop .6s cubic-bezier(.34,1.56,.64,1) .3s backwards}
+.qr+.qr{animation-delay:.42s}
+.timer{animation:pop .6s cubic-bezier(.34,1.56,.64,1) .2s backwards}
+.timer.done{animation:ding .8s cubic-bezier(.34,1.56,.64,1)}
+.spectrum .bar{animation:wipe .9s cubic-bezier(.2,.8,.2,1) .15s backwards}
+.spectrum .bar span{animation:pop .5s cubic-bezier(.34,1.56,.64,1) backwards;animation-delay:calc(.3s + var(--j,0) * 70ms)}
+.spectrum .bar span:nth-child(2){--j:1}.spectrum .bar span:nth-child(3){--j:2}.spectrum .bar span:nth-child(4){--j:3}.spectrum .bar span:nth-child(5){--j:4}.spectrum .bar span:nth-child(6){--j:5}
+.spectrum .ends{animation:fadeIn .6s ease .75s backwards}
+.yn span{animation:pop .5s cubic-bezier(.34,1.56,.64,1) .45s backwards}
+.yn span+span{animation-delay:.53s}
+.yn p{animation:fadeIn .6s ease .65s backwards}
+/* Notes are set down one by one, then taped. --o is when a group starts, --k staggers inside it. */
+.sticky:not(.pending){animation:place .75s cubic-bezier(.2,.8,.2,1) backwards;animation-delay:calc(var(--o,0s) + var(--k,0s))}
+.sticky:not(.pending)::before{animation:tape .4s cubic-bezier(.2,.8,.2,1) backwards;animation-delay:calc(var(--o,0s) + var(--k,0s) + .42s)}
+.stickies>:nth-child(2){--k:.12s}
+.stickies>:nth-child(3){--k:.24s}
+.topic .stickies{--o:.5s}
+.round .side-col{--o:.75s}
+.sticky[data-build-in]{--o:0s;--k:0s}
+.stickies[data-build-in]:not(.pending){animation:none}
+.stickies[data-build-in].pending>.sticky,.stickies[data-build-in].pending>.sticky::before{animation:none}
+/* Follow-ups arrive like chat messages: the bubble pops from its tail, shows typing dots, then the words. Earlier ones step back. */
+.bubble{position:relative;transform-origin:0 100%;transition:opacity .5s}
+.bubble:nth-child(even){transform-origin:100% 100%}
+.bubble:not(.pending){animation:bubbleIn .55s cubic-bezier(.34,1.4,.64,1) backwards,bubbleText .3s ease .5s backwards}
+.bubble:not(.pending)::after{content:'• • •';position:absolute;left:28px;top:50%;translate:0 -50%;font-size:26px;letter-spacing:1px;color:var(--accent);opacity:0;animation:typing .62s ease}
+.bubble:not(.pending):has(~.bubble:not(.pending)){opacity:.6}
+@keyframes softIn{from{opacity:0;translate:0 22px;filter:blur(4px)}}
+@keyframes wordIn{from{opacity:0;translate:0 .3em;filter:blur(6px)}}
+@keyframes fadeIn{from{opacity:0}}
+@keyframes rise{from{opacity:0;translate:0 28px;scale:.98}}
+@keyframes pop{from{opacity:0;scale:.6}}
+@keyframes ding{30%{scale:1.1}60%{scale:.97}}
+@keyframes wipe{from{clip-path:inset(0 100% 0 0 round 999px)}to{clip-path:inset(0 0 0 0 round 999px)}}
+@keyframes place{0%{opacity:0;translate:0 -40px;scale:1.07;rotate:calc(var(--r,0deg) - 5deg);box-shadow:0 46px 60px -26px rgba(63,90,42,.32)}60%{opacity:1;translate:0 3px;scale:.995;rotate:calc(var(--r,0deg) + .8deg)}}
+@keyframes tape{from{opacity:0;scale:.2 1}}
+@keyframes bubbleIn{0%{opacity:0;scale:.7;translate:0 14px}60%{opacity:1}}
+@keyframes bubbleText{from{color:transparent}}
+@keyframes typing{0%,78%{opacity:.9}100%{opacity:0}}
+@media (prefers-reduced-motion:reduce){#stage *,#stage *::before,#stage *::after{animation:none!important}}
 </style></head><body>
 <div id="stage">
 
@@ -310,6 +360,9 @@ addEventListener('keydown',function(e){if(typing(e))return;
  else if(e.key==='f'){document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen().catch(function(){})}
  else if(e.key==='t'||e.key==='T'){e.preventDefault();toggleTimer()}});
 addEventListener('click',function(e){if(document.documentElement.classList.contains('pv-tool'))return;if(e.target.closest('a,textarea,input,button'))return;e.clientX<innerWidth/3?prev():next()});
+// Wrap headline words in spans so they can rise in one after another. Text and textContent stay the same.
+[].forEach.call(st.querySelectorAll('.title,.stmt,h2'),function(h){if(h.children.length)return;var k=0,parts=h.textContent.split(/(\s+)/);h.textContent='';
+ parts.forEach(function(p){if(!p)return;if(/^\s+$/.test(p)){h.appendChild(document.createTextNode(p));return}var w=document.createElement('span');w.className='w';w.style.setProperty('--w',k++);w.textContent=p;h.appendChild(w)})});
 addEventListener('resize',fit);fit();show((parseInt(location.hash.slice(1))||1)-1);
 function builds(n){return S[n].querySelectorAll('[data-build-in]').length}
 window.__explorDeck={
