@@ -22,6 +22,15 @@ ol{padding-left:22px;margin:6px 0}li{margin:4px 0}
 table{width:100%;border-collapse:collapse;margin-top:8px;font-size:16px}
 td{padding:10px 8px;border-top:1px solid var(--line);vertical-align:top}td:first-child{font-weight:700;color:var(--ink);width:42%}
 a{color:var(--accent)}
+.rounds{display:grid;gap:10px;margin-top:10px}
+.round{background:var(--pinkwash);border:1px solid #F2C1D6;border-radius:999px;padding:12px 22px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:4px 14px}
+.round p{margin:0;grid-column:1;font-size:15.5px}.rtop{grid-column:1/-1;display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.rn{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.clock{font:600 26px var(--display);color:var(--ink);font-variant-numeric:tabular-nums}
+.rbtn{grid-column:2;grid-row:2;display:flex;gap:8px}
+.round.done{background:var(--accent);border-color:var(--accent)}.round.done *{color:var(--bg)!important}.round.done button{border-color:var(--bg);background:transparent}
+button.ghost{background:transparent;color:var(--ink)}
+@media(max-width:480px){.round{border-radius:28px;grid-template-columns:1fr}.rbtn{grid-column:1;grid-row:auto}}
 </style></head><body><div class="wrap">
 <span class="eyebrow">ExplorAI · Meeting 5 · Build sheet</span>
 <h1>Build One Thing</h1>
@@ -37,7 +46,12 @@ Looks: [colors, style, vibe]</pre></div>
 
 <h2>Rounds</h2>
 <p>Work solo or group up!</p>
-<ol><li><b>Build, 5 min.</b> Pick an idea, write the recipe, generate it.</li><li><b>Fix, 7 min.</b> Test every button. Make one change through chat and one through Annotation Mode.</li><li><b>Stretch, 6 min.</b> Add one AI Chip (a one-click add-on near the prompt box that gives your app a new ability, like image generation or Google Maps), or a feature you thought of while testing.</li></ol>
+<div class="rounds">
+<div class="round" data-seconds="300"><div class="rtop"><span class="rn">Round 1 · 5 min</span><span class="clock" role="timer" aria-label="Round 1 timer">5:00</span></div><p><b>Build.</b> Pick an idea, write the recipe, generate it.</p><div class="rbtn"><button type="button" class="go">Start</button><button type="button" class="rs ghost">Reset</button></div></div>
+<div class="round" data-seconds="420"><div class="rtop"><span class="rn">Round 2 · 7 min</span><span class="clock" role="timer" aria-label="Round 2 timer">7:00</span></div><p><b>Fix.</b> Test every button. Make one change through chat and one through Annotation Mode.</p><div class="rbtn"><button type="button" class="go">Start</button><button type="button" class="rs ghost">Reset</button></div></div>
+<div class="round" data-seconds="360"><div class="rtop"><span class="rn">Round 3 · 6 min</span><span class="clock" role="timer" aria-label="Round 3 timer">6:00</span></div><p><b>Stretch.</b> Add one AI Chip, or a feature you thought of while testing.</p><div class="rbtn"><button type="button" class="go">Start</button><button type="button" class="rs ghost">Reset</button></div></div>
+</div>
+<p><b>AI Chip:</b> a one-click add-on near the prompt box that gives your app a new ability, like image generation or Google Maps, without you describing how to build it.</p>
 
 <h2>Idea prompts</h2>
 <div class="card"><div class="head"><div><span class="tag">School</span><h3>3D Surface Explorer</h3></div><button type="button">Copy</button></div>
@@ -80,4 +94,12 @@ document.querySelectorAll('.card button').forEach(function(b){b.addEventListener
  function done(){b.textContent='Copied';b.classList.add('ok');setTimeout(function(){b.textContent='Copy';b.classList.remove('ok')},1600)}
  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){sel(t)})}else sel(t);
  function sel(){var r=document.createRange();r.selectNodeContents(b.closest('.card').querySelector('pre'));var s=getSelection();s.removeAllRanges();s.addRange(r)}})});
+
+document.querySelectorAll('.round').forEach(function(r){var tot=+r.dataset.seconds,left=tot,end=0,t=null,c=r.querySelector('.clock'),g=r.querySelector('.go');
+ function show(){var m=Math.floor(left/60),x=left%60;c.textContent=m+':'+(x<10?'0':'')+x}
+ function stop(){clearInterval(t);t=null}
+ function tick(){left=Math.max(0,Math.ceil((end-Date.now())/1000));show();if(!left){stop();g.textContent='Start';r.classList.add('done');try{navigator.vibrate&&navigator.vibrate([300,150,300])}catch(e){}}}
+ g.addEventListener('click',function(){if(t){left=Math.max(0,Math.ceil((end-Date.now())/1000));stop();g.textContent='Resume';return}
+  if(!left){left=tot;r.classList.remove('done')}end=Date.now()+left*1000;g.textContent='Pause';t=setInterval(tick,250);tick()});
+ r.querySelector('.rs').addEventListener('click',function(){stop();left=tot;r.classList.remove('done');g.textContent='Start';show()})});
 </script></body></html>
