@@ -2,7 +2,7 @@
 
 Where everything stands right now. `/handoff` rewrites this file in place (it is a snapshot, not a log). History and reasons go in `docs/agent-log.md`. Slide counts and last-change dates are computed by `scripts/context.sh`, so they are not repeated here.
 
-Last updated: 2026-10-13 by Sam.
+Last updated: 2026-10-20 by Cole.
 
 ## Meetings
 
@@ -11,7 +11,7 @@ Last updated: 2026-10-13 by Sam.
 | 2 | 2026-09-30 | What is AI, really? | Presented | None. Known cosmetic issues listed in the 2026-10-05 log entry. |
 | 3 | 2026-10-07 | How AI reads your words | Presented | Polish complete. 25 slides, 25 notes. Vivid card has attachments badge + multi-step prompt. Thanks slide shows two next-meeting cards. Activity Part 1 cards have no numbers. |
 | 4 | 2026-10-14 | Let's argue about AI (discussion) | Drafting, live | First draft by Sam 2026-10-10 (`567bfe3`). Talking points were added 2026-10-12, and on 2026-10-13 it was rebuilt as one page per topic with a softer look (`170ed00`) and soft entrance animations (`ce4740f`). Discord posting prompts removed (`56f1382`), and an Anthropic false police tip quick round added (`cb785bb`): 15 slides, 15 notes. Order: welcome, sign-in, shares, rules, hands-up hook, School (discussion, 2:10 to 2:24), Jobs (discussion incl. society, who's responsible, slowing down, 2:24 to 2:40), quick round (AI friends, copyright, copying software, data centers incl. "what if they paid you" and a nearby-homes tax, AI acting on its own (Anthropic's false police tip), state laws), vote again, thanks. Notes keep only the open questions and cues. Cole to review (`A` in the deck). No speakers assigned. Open: slide 3 card 2 names the wrong model (GPT-6.1 Astra was cancelled; GPT-6.1 Sol shipped); the fix is proposed in the 2026-10-12 log entry and waiting on Sam. |
-| 5 | 2026-10-21 | Build One Thing | Not started | Decide topic and who builds it. |
+| 5 | 2026-10-21 | Build One Thing (vibe coding in Google AI Studio) | Drafting, live | First draft by Cole 2026-10-20 (`a0ff5b7`) from Cole's plan (`meetings/meeting-5/content.md`, not committed). 21 slides, 21 notes, plus `build.html`, a student build sheet with copy buttons (QR on the build slide). Order: cover, sign-in, Kaggle course share, free AI Pro, Meeting 3 callback, recipe for apps, vibe coding, traditional vs. vibe, hands-up poll, live demo (5 slides, 2:12 to 2:22), 5 rules, idea cards, fixes, build time (18:00, 2:26 to 2:44), show and tell (1:00 per pair, T restarts), takeaway, thanks. Open: the demo app is TBD in the plan, so slides 11 and 12 use Schedule Snapshot as a stand-in; the thanks slide says "Oct 28 · Topic coming soon". |
 
 ## Standing facts
 

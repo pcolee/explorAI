@@ -11,6 +11,17 @@ Remove a line once it is answered and note the answer in that day's entry.
 
 <!-- newest entry below: add "## YYYY-MM-DD · Name (via Claude Code)" here and end it with a blank line -->
 
+## 2026-10-20 · Cole (via Claude Code)
+
+**Changed:**
+- `meetings/meeting-5/index.html` + `notes.html` (new, `a0ff5b7`): first draft of the Oct 21 vibe coding workshop, "Build One Thing", from Cole's 50-minute plan in `meetings/meeting-5/content.md`. Built on Meeting 4's head, styles, motion block, fixed `show()` engine, and presenter/review hooks. New pieces: `.prompt` blocks, the `.recipe` Meeting 3 vs. apps table (the Looks row reveals on a press), `.roles` pills, `.ideas` notes, `.fixes` cards, and a `.build` layout (template, QR, 18:00 timer, three round notes). Pressing T after 0:00 restarts the timer, for 1:00 per pair at show and tell. Notes use `m5-cur` and have 20 bridges. Checked in Chrome: all 21 slides fit, 33 real key presses reach the end, the timer restarts, and the notes render 21/21.
+- `meetings/meeting-5/build.html` (new): a student build sheet for phones, with copy buttons for the recipe template and the five full idea prompts, plus the rounds, 5 rules, fixes, and links. The plan asks for a copy-paste template, and students can't copy from the projector.
+- QR codes: new `https://one.google.com/ai-student` (AI Pro slide and thanks slide) and `https://pcolee.github.io/explorAI/meetings/meeting-5/build.html` (build slide). Sign-in, Instagram, and Discord QRs are reused from Meeting 4.
+
+**Issues:** The plan leaves the demo app TBD, so slides 11 and 12 and note 12 use Schedule Snapshot as a stand-in. The thanks slide says "Next week · Oct 28 · Topic coming soon". The Kaggle course has no QR because the plan doesn't give its URL. No speakers are assigned.
+
+**Next:** Cole: pick the demo app (and change slides 11 and 12 if it isn't Schedule Snapshot), build the finished demo app and the vague-prompt screenshot before Wednesday, set the Oct 28 topic, and review the deck (`A` to annotate).
+
 ## 2026-10-13 · Sam (via Claude Code)
 
 **Changed:**
