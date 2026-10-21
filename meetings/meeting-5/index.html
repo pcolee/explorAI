@@ -234,6 +234,18 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 .bubbles.still .bubble:nth-child(3)::after{animation-delay:.7s;animation-fill-mode:backwards}
 .bubbles.still .bubble{opacity:1!important}
 @media (prefers-reduced-motion:reduce){#stage *,#stage *::before,#stage *::after{animation:none!important}.recipe>.new.pending>*{opacity:0}}
+/* Meeting 3 recall card: the context window from Meeting 3's slide, so students recognize it. */
+.win{border:3px solid var(--ink);border-radius:28px;padding:22px;display:flex;flex-direction:column;gap:12px;background:rgba(255,254,251,.7)}
+.blk{border:2px solid var(--leaf);border-radius:16px;padding:14px 22px;background:var(--card)}
+.blk b{display:block;font-family:var(--display);font-size:32px;font-weight:600;color:var(--ink)}
+.blk span{font-size:23px}
+.blk.you{background:var(--green)}
+.blk.next{border:2px dashed var(--accent);background:transparent}
+.blk.next b{color:var(--accent)}
+.recall .win{transform:rotate(1.2deg)}
+.recall{margin:0;width:780px;flex:none;display:flex;flex-direction:column;gap:16px;filter:drop-shadow(0 26px 34px rgba(63,90,42,.22))}
+.recall figcaption{align-self:flex-start;font-size:22px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--accent);background:var(--pinkwash);padding:8px 22px;border-radius:999px}
+#callback .recall{animation:rise .8s cubic-bezier(.2,.8,.2,1) .35s backwards}
 /* Meeting 5 sizing: workshop slides carry fewer words, so they run larger than Meeting 4's. */
 #demo .rules,#tips .rules{gap:28px}
 #demo .rules .card{padding:48px 44px}
@@ -300,9 +312,18 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 </section>
 
 <section id="callback" class="grad center">
-<p class="eyebrow">Remember Meeting 3?</p>
-<h1 class="stmt" style="font-size:110px">It can’t read what you didn’t put in the window.</h1>
-<p class="sub" data-build-in>Today the same rule builds an app instead of an answer.</p>
+<div style="display:flex;align-items:center;gap:88px;width:100%">
+<div style="flex:1;display:flex;flex-direction:column;gap:32px;align-items:flex-start;text-align:left"><p class="eyebrow">Remember Meeting 3?</p>
+<h1 class="stmt" style="font-size:92px">It can’t read what you didn’t put in the window.</h1>
+<p class="sub" data-build-in>Today the same rule builds an app instead of an answer.</p></div>
+<figure class="recall"><figcaption>Meeting 3 · The context window</figcaption>
+<div class="win">
+<div class="blk"><b>Instructions from the app</b><span>Rules the company wrote. You usually never see them.</span></div>
+<div class="blk"><b>Files and pasted material</b><span>Your notes, a PDF, a syllabus</span></div>
+<div class="blk"><b>The whole chat so far</b><span>Every message, both sides, sent again</span></div>
+<div class="blk you"><b>Your new message</b><span>The part you think of as "the prompt"</span></div>
+<div class="blk next"><b>Its reply, one token at a time</b><span>Each new token joins the window before the next one is predicted</span></div>
+</div></figure></div>
 </section>
 
 <section id="recipe" class="cozy alt" style="gap:32px">
