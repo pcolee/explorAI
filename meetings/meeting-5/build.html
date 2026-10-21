@@ -30,6 +30,8 @@ a{color:var(--accent)}
 .rbtn{grid-column:2;grid-row:2;display:flex;gap:10px}
 .round.done{background:var(--accent);border-color:var(--accent)}.round.done *{color:var(--bg)!important}.round.done button{border-color:var(--bg);background:transparent}
 .refine{color:var(--accent);font-weight:500}
+textarea{display:block;width:100%;margin-top:10px;padding:12px 14px;background:var(--wash);border:1px solid var(--line);border-radius:12px;font:500 16px/1.55 ui-monospace,Menlo,monospace;color:var(--ink);resize:vertical}
+textarea:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 button.ghost{background:transparent;color:var(--ink)}
 @media(max-width:480px){.round{border-radius:30px;padding:18px 22px;grid-template-columns:1fr}.rbtn{margin-top:4px}.rbtn{grid-column:1;grid-row:auto}}
 </style></head><body><div class="wrap">
@@ -68,6 +70,14 @@ Looks: Dark background so the surface colors pop, with a smooth color gradient b
 <p class="refine"><b>Your turn:</b> this is a rough prompt. Rewrite it with the recipe (Who, What, Why, How, Looks) before you paste it in.</p>
 <pre>Build a "Would You Rather" game for college students. It uses Gemini to generate a new question each time I click a button, and I pick an option to see a fun fake percentage of how others voted. Colorful, game-show style.</pre></div>
 
+<div class="card"><div class="head"><div><span class="tag">Yours</span><h3>Your own idea</h3></div><button type="button">Copy</button></div>
+<p class="refine">Edit this right here. Fill in the brackets, then copy it to paste into AI Studio or save it somewhere.</p>
+<textarea id="own" rows="8" spellcheck="true" aria-label="Your own idea, edit the recipe">Who: [who uses this app]
+What: Build a [type of app]. It [feature 1], [feature 2], and [feature 3].
+Why: I want to [problem it solves].
+How: [how it works or how to use it: one page? buttons? what happens step by step?]
+Looks: [colors, style, vibe]</textarea></div>
+
 <h2>5 rules</h2>
 <ol><li><b>One change per message.</b> If five changes break it, you won't know which one did.</li><li><b>Describe bugs like you'd tell a tutor:</b> what you did, what you expected, what happened instead. Not "it's broken," but "When I click Next on the last card, the page goes blank. I expected it to loop back to card 1."</li><li><b>Click every button.</b> The AI can say a feature works when it doesn't. You're the tester.</li><li><b>If the chat spirals, start fresh.</b> Open a new build and paste a clean summary of what you want.</li><li><b>No real secrets.</b> No passwords, API keys, or personal info in an app you might share.</li></ol>
 
@@ -91,10 +101,10 @@ Looks: Dark background so the surface colors pop, with a smooth color gradient b
 <p>Follow <a href="https://www.instagram.com/explorai.rcc">@explorai.rcc</a> · <a href="https://discord.gg/CskqghTu7">Discord</a></p>
 </div>
 <script>
-document.querySelectorAll('.card button').forEach(function(b){b.addEventListener('click',function(){var t=b.closest('.card').querySelector('pre').textContent;
+document.querySelectorAll('.card button').forEach(function(b){b.addEventListener('click',function(){var el=b.closest('.card').querySelector('pre,textarea');var t=el.value!==undefined?el.value:el.textContent;
  function done(){b.textContent='Copied';b.classList.add('ok');setTimeout(function(){b.textContent='Copy';b.classList.remove('ok')},1600)}
  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){sel(t)})}else sel(t);
- function sel(){var r=document.createRange();r.selectNodeContents(b.closest('.card').querySelector('pre'));var s=getSelection();s.removeAllRanges();s.addRange(r)}})});
+ function sel(){var r=document.createRange();var e=b.closest('.card').querySelector('pre,textarea');if(e.select){e.select()}else{r.selectNodeContents(e);var s=getSelection();s.removeAllRanges();s.addRange(r)}}})});
 
 document.querySelectorAll('.round').forEach(function(r){var tot=+r.dataset.seconds,left=tot,end=0,t=null,c=r.querySelector('.clock'),g=r.querySelector('.go');
  function show(){var m=Math.floor(left/60),x=left%60;c.textContent=m+':'+(x<10?'0':'')+x}
@@ -103,4 +113,6 @@ document.querySelectorAll('.round').forEach(function(r){var tot=+r.dataset.secon
  g.addEventListener('click',function(){if(t){left=Math.max(0,Math.ceil((end-Date.now())/1000));stop();g.textContent='Resume';return}
   if(!left){left=tot;r.classList.remove('done')}end=Date.now()+left*1000;g.textContent='Pause';t=setInterval(tick,250);tick()});
  r.querySelector('.rs').addEventListener('click',function(){stop();left=tot;r.classList.remove('done');g.textContent='Start';show()})});
+var own=document.getElementById('own');try{var sv=localStorage.getItem('m5-own');if(sv)own.value=sv}catch(e){}
+own.addEventListener('input',function(){try{localStorage.setItem('m5-own',own.value)}catch(e){}});
 </script></body></html>
