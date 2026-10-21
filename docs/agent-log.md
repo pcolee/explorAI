@@ -19,12 +19,12 @@ Remove a line once it is answered and note the answer in that day's entry.
 - `meetings/meeting-5/index.html` (`5bcb580`): removed the "While you wait" card from the sign-in slide (slide 2), at Cole's request. Note 2 still says the AI Studio setup aloud.
 - `meetings/meeting-5/index.html` + `notes.html` (slide 5): added a recall card beside the headline, the context window from Meeting 3's slide 18 (same markup and look, recreated at a smaller size so it stays sharp), at Cole's request. Note 5 cues it.
 - `meetings/meeting-5/index.html` + `notes.html` (slide order, at Cole's request): slides 5 to 9 are now hands-up poll, vibe coding, traditional vs. vibe, Meeting 3 callback, recipe for apps, then the demo. Notes renumbered, times shifted (hands-up 2:06, vibe 2:07, versus 2:09, callback 2:10, recipe 2:11), and the bridges on notes 4 to 9 reworded. Demo and later slides keep their numbers.
-- `meetings/meeting-5/index.html` + `notes.html` (slides 11 and 12, notes 10 to 13): the demo app is now a club landing page for ExplorAI, at Cole's request. The vague prompt is "make a club website", the recipe prompt is a trimmed version of the club landing page idea card, and note 13's test steps check the nav links, Join us, and the phone layout. Schedule Snapshot stays as an idea card and in `build.html`.
+- `meetings/meeting-5/index.html` + `notes.html` (slides 11 and 12, notes 10 to 13): the demo app is now a club landing page for ExplorAI, at Cole's request. The vague prompt is "Can you make me a website for my club?", the recipe prompt is a trimmed version of the club landing page idea card, and note 13's test steps check the nav links, Join us, and the phone layout. Schedule Snapshot stays as an idea card and in `build.html`.
 - QR codes: new `https://one.google.com/ai-student` (AI Pro slide and thanks slide) and `https://pcolee.github.io/explorAI/meetings/meeting-5/build.html` (build slide). Sign-in, Instagram, and Discord QRs are reused from Meeting 4.
 
 **Issues:** The thanks slide says "Next week · Oct 28 · Topic coming soon". The Kaggle course has no QR because the plan doesn't give its URL. No speakers are assigned.
 
-**Next:** Cole: build the finished club landing page and the vague-prompt screenshot ("make a club website") before Wednesday, set the Oct 28 topic, and review the deck (`A` to annotate).
+**Next:** Cole: build the finished club landing page and the vague-prompt screenshot ("Can you make me a website for my club?") before Wednesday, set the Oct 28 topic, and review the deck (`A` to annotate).
 
 ## 2026-10-13 · Sam (via Claude Code)
 
