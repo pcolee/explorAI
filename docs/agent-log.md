@@ -25,9 +25,9 @@ Remove a line once it is answered and note the answer in that day's entry.
 
 **Decided:** Meeting 6 (Oct 28) topic is "Under the Hood" (Cole). The Discord invite expiry date, not the meeting count, is the deadline for replacing it (Cole agreed).
 
-**Issues:** The `S` presenter popup could not be tested through browser automation (the popup is blocked without a real user gesture). Checked instead: the deck has the presenter hooks and scripts, `window.__presenter` loads, notes have 20 bridges for 21 slides, `scripts/check.sh` passes, and `?view=presenter` renders but waits for the deck window. A second try after a real click also opened nothing in the automation's tab group. Someone needs to press `S` on the live deck by hand once. Also unverified: the exact on-screen name of the Annotation Mode button in AI Studio (no official step-by-step found), so open Build mode once before the meeting.
+**Issues:** Browser automation cannot open the `S` presenter popup (it never shows in the automation's tab group, even after a real click), so it could not test it. Cole pressed `S` on the live deck by hand and confirmed it works. Still unverified: the exact on-screen name of the Annotation Mode button in AI Studio (no official step-by-step found), so open Build mode once before the meeting.
 
-**Next:** Cole: keep editing Meeting 5's `index.html`; press `S` on the live deck to confirm the presenter view; Meeting 6 topic and date still to be set.
+**Next:** Cole: keep editing Meeting 5's `index.html`; Meeting 6 topic and date still to be set.
 
 ## 2026-10-20 · Cole (via Claude Code)
 
