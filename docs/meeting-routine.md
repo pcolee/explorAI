@@ -46,7 +46,7 @@ Single slide with three things:
 | Platform | Handle / URL |
 |---|---|
 | Instagram | @explorai.rcc · https://www.instagram.com/explorai.rcc |
-| Discord | https://discord.gg/CskqghTu7 |
+| Discord | https://discord.gg/wymCa4EPj |
 
 ---
 
@@ -81,8 +81,10 @@ Single slide with three things:
 
 QR codes in the deck are inline base64 PNGs. When you add or update a QR code, put its decoded URL in the commit message and in your log entry (`docs/agent-log.md`). Never embed a QR without recording what it points to.
 
+The Discord invite expires. Replace it every 2 meetings (last changed for Meeting 5; next due Meeting 7), in each deck's Discord QR, the build sheet link, and this file.
+
 Current QR targets:
 - Sign-in: `https://forms.gle/AAN5yiHXcajJvhAe8`
 - Instagram: `https://www.instagram.com/explorai.rcc`
-- Discord: `https://discord.gg/CskqghTu7`
+- Discord: `https://discord.gg/wymCa4EPj`
 - Board application: `https://forms.gle/d6vLSxUzxgZUN5Q69`

@@ -17,7 +17,8 @@ Last updated: 2026-10-20 by Cole.
 
 - Meetings: Wednesdays 2:00 to 3:00 pm, CIS A-204 (from the decks; not yet confirmed as standing for the term).
 - Live site: `https://pcolee.github.io/explorAI/meetings/meeting-N/`. Every push to `main` publishes.
-- Instagram: `@explorai.rcc`. Discord: `https://discord.gg/CskqghTu7`. Sign-in form and board application links are listed in the 2026-10-05 log entry.
+- Instagram: `@explorai.rcc`. Discord: `https://discord.gg/wymCa4EPj` (set 2026-10-20 for Meeting 5). Sign-in form and board application links are listed in the 2026-10-05 log entry.
+- **Reminder, every 2 meetings: replace the Discord invite (it expires).** Last changed 2026-10-20 for Meeting 5, so it is next due for Meeting 7 (2026-11-04), then Meeting 9. Update the link on the sign-in/thanks QR and the build sheet, then `docs/meeting-routine.md` and this file. Tell Cole at the start of that meeting's deck work.
 - Meeting routine (slide order, timing, QR targets): `docs/meeting-routine.md`.
 - Deck style: Meeting 3 moved the styles into classes so the next deck can reuse them. Meeting 4 adds the soft, cozy pieces: `.topic` and `.round` one-page layouts, `.qcard` question card, taped `.sticky` notes, `.bubble` follow-ups, the `.spectrum` 0 to 5 vote bar, `.cozy` backgrounds, Fraunces soft axis, numbered `data-build-in` for reveal order, and the motion block (entrances replay each time a slide shows; off under prefers-reduced-motion). Start the next deck from Meeting 4's `index.html` and `notes.html`, which also carry the presenter hooks and bridge lines (see "Presenter tools" in `CLAUDE.md`).
 - Presenter tools: on the deck laptop, `S` opens the presenter view and `M` shows a QR code for a phone or iPad remote. Several remotes can connect at once.
