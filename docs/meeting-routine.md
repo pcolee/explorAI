@@ -81,7 +81,7 @@ Single slide with three things:
 
 QR codes in the deck are inline base64 PNGs. When you add or update a QR code, put its decoded URL in the commit message and in your log entry (`docs/agent-log.md`). Never embed a QR without recording what it points to.
 
-The Discord invite expires. Replace it every 2 meetings (last changed for Meeting 5; next due Meeting 7), in each deck's Discord QR, the build sheet link, and this file.
+The Discord invite expires. Current invite `wymCa4EPj` expires **2026-11-20 06:37 UTC** (the evening of Wed 2026-11-19 Pacific), last changed for Meeting 5. Replace it every 2 meetings (next due Meeting 7, 2026-11-04), in each deck's Discord QR, the build sheet link, and this file. The expiry date, not the meeting count, is the real deadline: when you start a deck, check it with `curl -s "https://discord.com/api/v9/invites/<code>"` (the `expires_at` field) and replace the invite if it expires within about 2 weeks of that meeting. Every time the invite is replaced, update the code, the expiry date here and in `docs/status.md`, and the QR target list below.
 
 Current QR targets:
 - Sign-in: `https://forms.gle/AAN5yiHXcajJvhAe8`
