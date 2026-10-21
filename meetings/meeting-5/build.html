@@ -1,0 +1,89 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Build Sheet · ExplorAI Meeting 5</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=DM+Sans:wght@400;500;700&display=swap">
+<style>
+:root{--bg:#FFFBF5;--card:#FFFEFB;--line:#DCE6C0;--fg:#3A4433;--ink:#3F5A2A;--accent:#A8487A;--wash:#EEF4DA;--pinkwash:#FBE6EF;
+color-scheme:light;--display:'Fraunces',Georgia,serif;--body:'DM Sans',Arial,sans-serif}
+html{color-scheme:light}*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.55}
+.wrap{max-width:720px;margin:0 auto;padding:24px 16px 80px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:var(--display);font-weight:600;font-size:34px;line-height:1.15;color:var(--ink);margin:6px 0 8px}
+h2{font-family:var(--display);font-weight:600;font-size:24px;color:var(--ink);margin:32px 0 10px}
+h3{font-family:var(--display);font-weight:600;font-size:19px;color:var(--ink);margin:0}
+p{margin:6px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px 18px;margin-top:12px}
+.card .tag{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+pre{margin:10px 0 0;padding:12px 14px;background:var(--wash);border-radius:12px;font:500 14.5px/1.55 ui-monospace,Menlo,monospace;white-space:pre-wrap;word-break:break-word;color:var(--ink)}
+button{flex:none;font:700 14px var(--body);padding:8px 14px;border-radius:999px;border:1px solid var(--ink);background:var(--ink);color:var(--bg);cursor:pointer}
+button.ok{background:var(--pinkwash);color:var(--accent);border-color:var(--accent)}
+button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+ol{padding-left:22px;margin:6px 0}li{margin:4px 0}
+table{width:100%;border-collapse:collapse;margin-top:8px;font-size:16px}
+td{padding:10px 8px;border-top:1px solid var(--line);vertical-align:top}td:first-child{font-weight:700;color:var(--ink);width:42%}
+a{color:var(--accent)}
+</style></head><body><div class="wrap">
+<span class="eyebrow">ExplorAI · Meeting 5 · Build sheet</span>
+<h1>Build One Thing</h1>
+<p>Open <a href="https://aistudio.google.com">aistudio.google.com</a>, sign in with a <b>personal Gmail</b> (school accounts can have it turned off), and click <b>Build</b> in the left sidebar. Copy a prompt below, fill in the brackets, and paste it in.</p>
+
+<h2>Recipe template</h2>
+<div class="card"><div class="head"><h3>Start here</h3><button type="button">Copy</button></div>
+<pre>Who: [who uses this app]
+What: Build a [type of app]. It [feature 1], [feature 2], and [feature 3].
+Why: I want to [problem it solves].
+How: [one page? buttons? what happens step by step?]
+Looks: [colors, style, vibe]</pre></div>
+
+<h2>Rounds</h2>
+<ol><li><b>Build, 5 min.</b> Pick an idea, write the recipe, generate it.</li><li><b>Fix, 7 min.</b> Test every button. Make one change through chat and one through Annotation Mode.</li><li><b>Stretch, 6 min.</b> Add one AI Chip, or a feature you thought of while testing.</li></ol>
+<p>One person types, the other tests. Switch halfway.</p>
+
+<h2>Idea prompts</h2>
+<div class="card"><div class="head"><div><span class="tag">School</span><h3>Schedule Snapshot</h3></div><button type="button">Copy</button></div>
+<pre>Who: I'm a community college student juggling classes, work, and clubs.
+What: Build a visual weekly schedule planner. I add each class with its name, days, start and end time, and room, and it shows a color-coded Monday–Friday calendar grid from 7am to 10pm. Highlight any time conflicts in red, and show my total class hours per week. Bonus: a box where I can paste my schedule as plain text and Gemini fills in the classes for me.
+Why: I want to see my whole week at a glance and catch conflicts before I register.
+How: One page. Clicking a class block lets me edit or delete it.
+Looks: Clean and minimal, soft pastel color for each class, rounded blocks.</pre></div>
+<div class="card"><div class="head"><div><span class="tag">School</span><h3>3D Surface Explorer</h3></div><button type="button">Copy</button></div>
+<pre>Who: I'm a Calculus 3 student learning multivariable functions.
+What: Build a 3D graphing tool. I type a function z = f(x, y), like sin(x)*cos(y) or x^2 - y^2, and it draws the surface in 3D with labeled x, y, and z axes. I can rotate and zoom with my mouse. Add preset buttons for a paraboloid, a saddle, and a ripple, plus sliders to change the x and y range.
+Why: I want to see what these surfaces actually look like instead of imagining them from the equation.
+How: One page. Input box and presets on the left, graph on the right. Show an error message if the function can't be read.
+Looks: Dark background so the surface colors pop, with a smooth color gradient based on height.</pre></div>
+<div class="card"><div class="head"><div><span class="tag">Club</span><h3>Club landing page</h3></div><button type="button">Copy</button></div>
+<pre>Who: I'm an officer of [club name] at [college], and new students are the audience.
+What: Build a one-page landing page for the club with these sections: a hero with the club name, tagline, and a "Join us" button; About (what we do and who it's for); Meeting info (day, time, room); Upcoming events as 3 cards; Officers with a photo placeholder, name, and role; a short FAQ; and a footer with Instagram and Discord links.
+Why: I want one link we can share on Instagram that tells people everything they need to show up.
+How: Smooth scrolling, a sticky top nav that jumps to each section, and it should look good on a phone.
+Looks: [club colors], [vibe: playful, techy, minimal], with a friendly serif or rounded font.</pre></div>
+<div class="card"><div class="head"><div><span class="tag">Personal</span><h3>Mood playlist picker</h3></div><button type="button">Copy</button></div>
+<pre>Build a mood-based playlist picker. I choose a mood (focused, hype, chill, sad), and it uses Gemini to suggest 8 songs with the artist and a one-line reason for each. Moody dark theme with neon accents.</pre></div>
+<div class="card"><div class="head"><div><span class="tag">Fun</span><h3>Would You Rather</h3></div><button type="button">Copy</button></div>
+<pre>Build a "Would You Rather" game for college students. It uses Gemini to generate a new question each time I click a button, and I pick an option to see a fun fake percentage of how others voted. Colorful, game-show style.</pre></div>
+
+<h2>5 rules</h2>
+<ol><li><b>One change per message.</b> If five changes break it, you won't know which one did.</li><li><b>Describe bugs like you'd tell a tutor:</b> what you did, what you expected, what happened instead. Not "it's broken," but "When I click Next on the last card, the page goes blank. I expected it to loop back to card 1."</li><li><b>Click every button.</b> The AI can say a feature works when it doesn't. You're the tester.</li><li><b>If the chat spirals, start fresh.</b> Open a new build and paste a clean summary of what you want.</li><li><b>No real secrets.</b> No passwords, API keys, or personal info in an app you might share.</li></ol>
+
+<h2>If you get stuck</h2>
+<table>
+<tr><td>Can't open AI Studio</td><td>Switch to a personal Gmail account.</td></tr>
+<tr><td>App is blank or shows an error</td><td>Tell the chat exactly what you see, or regenerate.</td></tr>
+<tr><td>Hit the daily limit</td><td>Pair up and share one account. Limits reset at midnight Pacific.</td></tr>
+<tr><td>App looks generic</td><td>Add a Looks section with specific colors and style.</td></tr>
+<tr><td>A change broke something</td><td>Restore the previous version, then ask for one smaller change.</td></tr>
+<tr><td>3D graph won't show</td><td>Ask the chat to "use Plotly.js for the 3D surface."</td></tr>
+</table>
+
+<h2>After today</h2>
+<p>Free year of Google AI Pro for US college students (higher AI Studio limits): <a href="https://one.google.com/ai-student">one.google.com/ai-student</a>. Claim by Dec 31, 2026. You add a payment method, so set a reminder to cancel before the year ends if you don't want to pay $19.99 a month after.</p>
+<p>Next step: Google's free 5-Day AI Agents: Intensive Vibe Coding Course, self-paced on Kaggle.</p>
+<p>Follow <a href="https://www.instagram.com/explorai.rcc">@explorai.rcc</a> · <a href="https://discord.gg/CskqghTu7">Discord</a></p>
+</div>
+<script>
+document.querySelectorAll('.card button').forEach(function(b){b.addEventListener('click',function(){var t=b.closest('.card').querySelector('pre').textContent;
+ function done(){b.textContent='Copied';b.classList.add('ok');setTimeout(function(){b.textContent='Copy';b.classList.remove('ok')},1600)}
+ if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){sel(t)})}else sel(t);
+ function sel(){var r=document.createRange();r.selectNodeContents(b.closest('.card').querySelector('pre'));var s=getSelection();s.removeAllRanges();s.addRange(r)}})});
+</script></body></html>

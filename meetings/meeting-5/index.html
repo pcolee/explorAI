@@ -1,0 +1,545 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ExplorAI Meeting 5: Build One Thing</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght,SOFT@0,400..700,0..100;1,400..700,0..100&family=DM+Sans:wght@400..700&display=swap">
+<style>
+:root{--ink:#3F5A2A;--body:#4D5845;--accent:#A8487A;--green:#D9E8AD;--pink:#F2C1D6;--mint:#F4F7E6;--cream:#FFFBF5;--card:#FFFEFB;--sand:#F4ECDD;--pinkwash:#FBE6EF;--leaf:#9CB57B;
+--display:'Fraunces',Georgia,serif;--sans:'DM Sans',Arial,sans-serif;--grad:linear-gradient(135deg,#D9E8AD 0%,#EAEFD2 45%,#F2C1D6 100%);
+--dots:radial-gradient(circle,rgba(63,90,42,.07) 1.5px,transparent 1.5px) 0 0/30px 30px}
+html,body{margin:0;height:100%;background:var(--mint);overflow:hidden}
+*{box-sizing:border-box}
+#stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:0 0}
+#stage>section{position:absolute;inset:0;width:1920px;height:1080px;overflow:hidden;color:var(--body);font-family:var(--sans);padding:128px 128px 160px;display:flex;flex-direction:column;justify-content:start;gap:40px;background:var(--cream)}
+#stage>section[hidden]{display:none!important}
+h1,h2,h3,p,ul,ol{margin:0}
+.grad{background:var(--grad)!important}.mint{background:var(--mint)!important}
+.center{justify-content:center!important}
+.eyebrow{font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--accent)}
+.title{font-family:var(--display);font-size:140px;font-weight:600;line-height:1.1;color:var(--ink)}
+.divider{font-family:var(--display);font-size:160px;font-weight:600;line-height:1.1;color:var(--ink)}
+h2{font-family:var(--display);font-size:72px;font-weight:600;line-height:1.15;color:var(--ink)}
+h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;color:var(--ink)}
+.lead{font-size:32px;line-height:1.4}
+.lead.ink{color:var(--ink)}
+.sub{font-size:36px;line-height:1.4;color:var(--ink)}
+.card{background:var(--card);padding:36px;border:2px solid var(--green);border-radius:24px;display:flex;flex-direction:column;gap:12px}
+.card.pink{border-color:var(--pink)}
+.card p{font-size:28px;line-height:1.4}
+.row{display:flex;gap:32px}.row>*{flex:1}
+.foot{position:absolute;left:128px;bottom:64px;width:1100px;font-size:24px;color:var(--body)}
+.qr{display:flex;flex-direction:column;align-items:center;gap:20px;background:var(--card);padding:32px;border:2px solid var(--green);border-radius:32px}
+.qr img{object-fit:contain}.qr p{font-size:28px;font-weight:700;color:var(--ink)}
+.pill{font-size:32px;font-weight:700;color:var(--ink);background:var(--green);padding:24px 40px;border-radius:999px;text-align:center}
+[data-build-in]{transition:opacity .4s,transform .4s}
+[data-build-in].pending{opacity:0;transform:translateY(24px)}
+#count{position:fixed;right:14px;bottom:10px;font:600 13px system-ui,sans-serif;color:#3F5A2A;opacity:.7}
+.timer{font-family:var(--display);font-size:96px;font-weight:600;color:var(--ink);background:rgba(255,255,255,.85);padding:12px 48px;border-radius:999px;font-variant-numeric:tabular-nums;align-self:start}
+.timer.done{background:rgba(242,193,214,.95);color:var(--accent)}
+@media (prefers-reduced-motion:reduce){[data-build-in]{transition:none}}
+@keyframes sOut{to{opacity:0;transform:translateY(-10px)}}
+@keyframes sIn{from{opacity:0;transform:translateY(10px)}}
+.s-out{animation:sOut .22s ease both;pointer-events:none}
+.s-in{animation:sIn .22s ease both}
+/* Meeting 4: soft and cozy. One page per topic: question card, taped fact notes, follow-ups as chat bubbles, vote bar. */
+#stage{font-variation-settings:'SOFT' 100}
+#stage>section{isolation:isolate}
+#stage>section::after{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:.07;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .25 0 0 0 0 .35 0 0 0 0 .16 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.cozy{background:radial-gradient(1100px 820px at 96% 0%,rgba(242,193,214,.6),transparent 62%),radial-gradient(1200px 900px at 0% 100%,rgba(217,232,173,.8),transparent 60%),var(--cream)!important}
+.cozy.alt{background:radial-gradient(1100px 820px at 96% 0%,rgba(217,232,173,.75),transparent 62%),radial-gradient(1200px 900px at 0% 100%,rgba(242,193,214,.55),transparent 60%),var(--cream)!important}
+.card{border-radius:28px;border-width:1.5px;box-shadow:0 18px 36px -24px rgba(63,90,42,.35)}
+.timer{box-shadow:0 16px 34px -20px rgba(63,90,42,.5)}
+.src{position:absolute;left:128px;bottom:64px;right:128px;font-size:22px;color:var(--body);opacity:.85}
+.stmt{font-family:var(--display);font-size:88px;font-weight:600;line-height:1.1;color:var(--ink);max-width:1400px}
+#stage>section.topic{display:grid;grid-template-columns:1040px 1fr;grid-template-rows:auto 1fr;column-gap:72px;row-gap:48px;align-content:start;padding:96px 128px 150px}
+#stage>section.topic.wide{grid-template-columns:1160px 1fr}
+#stage>section.round{display:grid;grid-template-columns:1000px 1fr;column-gap:88px;align-items:center;padding:96px 128px 150px}
+.topic .qcard{grid-column:1;grid-row:1}
+.topic .stickies{grid-column:1;grid-row:2;align-self:start}
+.topic .side-col{grid-column:2;grid-row:1/3}
+.round .src{right:auto;width:1000px}
+.side-col{display:flex;flex-direction:column;gap:36px;align-self:stretch}
+.side-col .timer{align-self:end}
+.qcard{background:rgba(255,254,251,.82);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);border-radius:44px;padding:44px 56px;display:flex;flex-direction:column;gap:24px;box-shadow:inset 0 0 0 2px rgba(217,232,173,.75),0 36px 70px -36px rgba(63,90,42,.4)}
+.qcard .eyebrow{align-self:start;background:var(--pinkwash);padding:10px 22px;border-radius:999px}
+.qcard .stmt{font-size:72px;max-width:none}
+.topic .qcard .q{font-size:72px}
+.qcard .q{font-family:var(--display);font-size:80px;font-weight:600;line-height:1.12;color:var(--ink)}
+.round .qcard{padding:64px 68px;rotate:-.6deg}
+.stickies{display:flex;gap:32px;align-items:start}
+.stickies>*{flex:1}
+.sticky{position:relative;rotate:var(--r,0deg);background:#FFFDF7;border-radius:22px;padding:40px 30px 28px;display:flex;flex-direction:column;gap:10px;box-shadow:0 1px 0 rgba(63,90,42,.05),0 22px 40px -22px rgba(63,90,42,.42)}
+.sticky::before{content:'';position:absolute;top:-15px;left:50%;width:128px;height:32px;margin-left:-64px;rotate:-3deg;background:rgba(242,193,214,.8);border-radius:6px}
+.sticky.p{background:#FDF1F6}
+.sticky.p::before{background:rgba(217,232,173,.95)}
+.sticky.g{background:#F5F9E8}
+.sticky b{font-family:var(--display);font-size:60px;font-weight:600;line-height:1;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap}
+.sticky.p b{color:var(--accent)}
+.sticky p{font-size:24px;line-height:1.38;color:var(--body)}
+.stickies.big .sticky b,.round .sticky b{font-size:96px}
+.stickies.big .sticky p,.round .sticky p{font-size:28px}
+.round .sticky.small p{font-size:25px}
+.bubbles{display:flex;flex-direction:column;gap:20px}
+.bubble{font-size:27px;line-height:1.38;color:var(--ink);background:var(--card);padding:20px 28px;border-radius:30px 30px 30px 8px;max-width:94%;align-self:start;box-shadow:0 14px 30px -18px rgba(63,90,42,.4)}
+.bubble:nth-child(even){align-self:end;border-radius:30px 30px 8px 30px;background:var(--pinkwash)}
+.bubble:nth-child(3){background:#EEF4DA}
+.spectrum{display:flex;flex-direction:column;gap:12px}
+.spectrum .bar{display:flex;justify-content:space-between;align-items:center;padding:8px;border-radius:999px;background:linear-gradient(90deg,#F2C1D6,#FBF4EC 50%,#D9E8AD)}
+.spectrum .bar span{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,254,251,.94);font-family:var(--display);font-size:32px;font-weight:600;color:var(--ink);box-shadow:0 6px 14px -8px rgba(63,90,42,.45)}
+.spectrum .bar span:first-child{color:var(--accent)}
+.spectrum .ends{display:flex;justify-content:space-between;padding:0 8px;font-size:20px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink)}
+.spectrum .ends span:first-child{color:var(--accent)}
+.yn{display:flex;gap:20px}
+.yn span{font-size:30px;font-weight:700;padding:14px 52px;border-radius:999px;background:var(--green);color:var(--ink)}
+.yn span+span{background:var(--pink);color:var(--accent)}
+.yn p{font-size:24px;line-height:1.35;align-self:center;margin-left:12px}
+.tryit{margin-top:auto;display:flex;align-items:center;gap:48px}
+.tryit .sub{flex:none}
+.tryit .spectrum{flex:1}
+.rules{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.rules .card{flex-direction:row;align-items:center;gap:28px}
+.rules .n{font-family:var(--display);font-size:64px;font-weight:600;color:var(--accent);line-height:1;min-width:1em}
+/* Meeting 4 motion: things settle in softly, in reading order. A slide replays its entrance each time it shows,
+   because CSS animations restart when a section leaves display:none. Builds animate when .pending comes off. */
+[data-build-in]{transition:none}
+[data-build-in]:not(.pending){animation:softIn .55s cubic-bezier(.2,.8,.2,1) backwards}
+.w{display:inline-block;animation:wordIn .6s cubic-bezier(.2,.8,.2,1) backwards;animation-delay:calc(var(--o,.08s) + var(--w,0) * 38ms)}
+.qcard .w{--o:.24s}
+.eyebrow,.lead,.sub:not([data-build-in]){animation:fadeIn .7s ease .1s backwards}
+.src{animation:fadeIn .8s ease .6s backwards}
+.qcard,.card:not([data-build-in]){animation:rise .7s cubic-bezier(.2,.8,.2,1) backwards}
+.rules .card:nth-child(1){animation-delay:.1s}.rules .card:nth-child(2){animation-delay:.18s}.rules .card:nth-child(3){animation-delay:.26s}.rules .card:nth-child(4){animation-delay:.34s}
+.qr{animation:pop .6s cubic-bezier(.34,1.56,.64,1) .3s backwards}
+.qr+.qr{animation-delay:.42s}
+.timer{animation:pop .6s cubic-bezier(.34,1.56,.64,1) .2s backwards}
+.timer.done{animation:ding .8s cubic-bezier(.34,1.56,.64,1)}
+.spectrum .bar{animation:wipe .9s cubic-bezier(.2,.8,.2,1) .15s backwards}
+.spectrum .bar span{animation:pop .5s cubic-bezier(.34,1.56,.64,1) backwards;animation-delay:calc(.3s + var(--j,0) * 70ms)}
+.spectrum .bar span:nth-child(2){--j:1}.spectrum .bar span:nth-child(3){--j:2}.spectrum .bar span:nth-child(4){--j:3}.spectrum .bar span:nth-child(5){--j:4}.spectrum .bar span:nth-child(6){--j:5}
+.spectrum .ends{animation:fadeIn .6s ease .75s backwards}
+.yn span{animation:pop .5s cubic-bezier(.34,1.56,.64,1) .45s backwards}
+.yn span+span{animation-delay:.53s}
+.yn p{animation:fadeIn .6s ease .65s backwards}
+/* Notes are set down one by one, then taped. --o is when a group starts, --k staggers inside it. */
+.sticky:not(.pending){animation:place .75s cubic-bezier(.2,.8,.2,1) backwards;animation-delay:calc(var(--o,0s) + var(--k,0s))}
+.sticky:not(.pending)::before{animation:tape .4s cubic-bezier(.2,.8,.2,1) backwards;animation-delay:calc(var(--o,0s) + var(--k,0s) + .42s)}
+.stickies>:nth-child(2){--k:.12s}
+.stickies>:nth-child(3){--k:.24s}
+.topic .stickies{--o:.5s}
+.round .side-col{--o:.75s}
+.sticky[data-build-in]{--o:0s;--k:0s}
+.stickies[data-build-in]:not(.pending){animation:none}
+.stickies[data-build-in].pending>.sticky,.stickies[data-build-in].pending>.sticky::before{animation:none}
+/* Follow-ups arrive like chat messages: the bubble pops from its tail, shows typing dots, then the words. Earlier ones step back. */
+.bubble{position:relative;transform-origin:0 100%;transition:opacity .5s}
+.bubble:nth-child(even){transform-origin:100% 100%}
+.bubble:not(.pending){animation:bubbleIn .55s cubic-bezier(.34,1.4,.64,1) backwards,bubbleText .3s ease .5s backwards}
+.bubble:not(.pending)::after{content:'• • •';position:absolute;left:28px;top:50%;translate:0 -50%;font-size:26px;letter-spacing:1px;color:var(--accent);opacity:0;animation:typing .62s ease}
+.bubble:not(.pending):has(~.bubble:not(.pending)){opacity:.6}
+@keyframes softIn{from{opacity:0;translate:0 22px;filter:blur(4px)}}
+@keyframes wordIn{from{opacity:0;translate:0 .3em;filter:blur(6px)}}
+@keyframes fadeIn{from{opacity:0}}
+@keyframes rise{from{opacity:0;translate:0 28px;scale:.98}}
+@keyframes pop{from{opacity:0;scale:.6}}
+@keyframes ding{30%{scale:1.1}60%{scale:.97}}
+@keyframes wipe{from{clip-path:inset(0 100% 0 0 round 999px)}to{clip-path:inset(0 0 0 0 round 999px)}}
+@keyframes place{0%{opacity:0;translate:0 -40px;scale:1.07;rotate:calc(var(--r,0deg) - 5deg);box-shadow:0 46px 60px -26px rgba(63,90,42,.32)}60%{opacity:1;translate:0 3px;scale:.995;rotate:calc(var(--r,0deg) + .8deg)}}
+@keyframes tape{from{opacity:0;scale:.2 1}}
+@keyframes bubbleIn{0%{opacity:0;scale:.7;translate:0 14px}60%{opacity:1}}
+@keyframes bubbleText{from{color:transparent}}
+@keyframes typing{0%,78%{opacity:.9}100%{opacity:0}}
+@media (prefers-reduced-motion:reduce){#stage *,#stage *::before,#stage *::after{animation:none!important}}
+/* Meeting 5: vibe coding workshop. Reuses Meeting 4's cozy pieces; adds prompt blocks, the recipe table, role pills, and idea notes. */
+:root{--mono:ui-monospace,'SF Mono',Menlo,Consolas,monospace}
+.prompt{font-family:var(--mono);font-size:26px;line-height:1.55;color:var(--ink);background:rgba(244,247,230,.9);border-radius:22px;padding:28px 34px;box-shadow:inset 0 0 0 1.5px rgba(156,181,123,.45)}
+.prompt.big{font-size:56px;line-height:1.3;padding:36px 44px}
+.prompt p{font-size:inherit;line-height:inherit}
+.prompt p+p{margin-top:14px}
+.prompt b{color:var(--accent);font-weight:700}
+.recipe{display:grid;grid-template-columns:200px 1fr 1fr;gap:14px 24px;align-items:stretch}
+.recipe>.hd{font-size:22px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--ink);padding:0 32px}
+.recipe>.hd.now{color:var(--accent)}
+.recipe .k{font-family:var(--display);font-size:44px;font-weight:600;color:var(--ink);display:flex;align-items:center}
+.recipe .c{background:var(--card);border-radius:22px;padding:20px 32px;font-size:28px;line-height:1.35;display:flex;align-items:center;box-shadow:0 14px 30px -22px rgba(63,90,42,.45)}
+.recipe .c.now{background:#F5F9E8;color:var(--ink);font-weight:500}
+.recipe .c.none{background:transparent;box-shadow:inset 0 0 0 2px rgba(156,181,123,.35);color:rgba(77,88,69,.5)}
+.recipe>.new{display:contents}
+.recipe>.new>.k{color:var(--accent)}
+.recipe>.new>.c.now{background:var(--pinkwash);color:var(--accent);font-weight:700}
+.roles{display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+.roles p{font-size:26px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink);margin-right:8px}
+.roles span{font-size:28px;font-weight:700;padding:12px 30px;border-radius:999px;background:var(--green);color:var(--ink)}
+.roles span:nth-of-type(even){background:var(--pink);color:var(--accent)}
+#stage .sticky .quote{font-family:var(--display);font-size:52px;font-weight:600;line-height:1.15;color:var(--ink)}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.vs .card{padding:32px 44px;gap:0}
+.vs .card h3{margin-bottom:12px}
+.vs .card p{padding:14px 0;border-top:1.5px solid rgba(217,232,173,.9)}
+.vs .card.pink p{border-color:rgba(242,193,214,.9);color:var(--ink);font-weight:500}
+.callout{font-size:30px;line-height:1.4;font-weight:600;color:var(--accent);background:var(--pinkwash);border-radius:28px;padding:26px 40px;box-shadow:inset 0 0 0 2px rgba(168,72,122,.35)}
+.tour{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
+.tour .card{padding:44px}
+.tour .n,.ways .n{font-family:var(--display);font-size:72px;font-weight:600;color:var(--accent);line-height:1}
+.ways{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+.ways .card{padding:44px 48px;gap:20px}
+.ways .bubble{font-size:30px;max-width:100%}
+.rules .card.wide{grid-column:1/3}
+.ideas{display:grid;grid-template-columns:repeat(3,1fr);gap:40px 36px;margin-top:12px}
+.ideas .sticky{padding:44px 34px 32px;gap:12px}
+.ideas .sticky .tag{font-size:20px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--accent)}
+.ideas .sticky b{font-size:44px;white-space:normal;line-height:1.1}
+.ideas .sticky p{font-size:26px}
+.fixes{display:grid;grid-template-columns:1fr 1fr;gap:20px 32px}
+.fixes .card{padding:26px 36px;gap:6px}
+.fixes .card h3{font-size:34px}
+.fixes .card p{font-size:26px}
+#stage>section.build{display:grid;grid-template-columns:1080px 1fr;grid-template-rows:auto 1fr;column-gap:72px;row-gap:32px;align-content:start;padding:88px 128px 96px}
+.build .head{grid-column:1/3;display:flex;flex-direction:column;gap:20px}
+.build .qcard{grid-column:1;padding:40px 48px;gap:20px}
+.build .qcard .prompt{font-size:27px}
+.build .side-col{grid-column:2;grid-row:2;gap:28px}
+.build .side-col .sticky{padding:34px 28px 22px;gap:6px}
+.build .side-col .sticky .tag{font-size:20px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--accent)}
+.build .side-col .sticky p{font-size:24px}
+.grab{display:flex;align-items:center;gap:28px;font-size:26px;line-height:1.4;color:var(--ink)}
+.grab img{width:150px;height:150px;border-radius:14px;background:#fff;padding:8px;box-shadow:0 12px 26px -16px rgba(63,90,42,.5)}
+.frost{padding:22px 34px;gap:4px;border-radius:24px;background:rgba(255,255,255,.55);backdrop-filter:blur(16px) saturate(1.2);-webkit-backdrop-filter:blur(16px) saturate(1.2);border:1.5px solid rgba(255,255,255,.5);display:flex;flex-direction:column}
+.frost .t{font-size:32px;font-weight:700;color:var(--ink);font-family:var(--display);line-height:1.2}
+.qr.sm{padding:24px;gap:14px;border-radius:28px}
+.qr.sm p{font-size:24px;text-align:center}
+#stage .sticky p b{font-family:inherit;font-size:inherit;line-height:inherit;white-space:normal;color:var(--ink);font-weight:700}
+/* Meeting 5 motion: grid rows and cards rise in reading order, pills pop, quiet static bubbles pop in turn. */
+.recipe>*,.recipe>.new>*{animation:rise .6s cubic-bezier(.2,.8,.2,1) backwards;animation-delay:calc(.15s + var(--r5,0) * 80ms)}
+.recipe>.new>*{animation-name:none}
+.recipe>.new:not(.pending)>*{animation:softIn .55s cubic-bezier(.2,.8,.2,1) backwards}
+.recipe>.new:not(.pending)>.c.now{animation:softIn .55s cubic-bezier(.2,.8,.2,1) .12s backwards}
+.recipe>.new.pending>*{opacity:0}
+.roles span{animation:pop .5s cubic-bezier(.34,1.56,.64,1) backwards;animation-delay:calc(.55s + var(--j,0) * 90ms)}
+.roles p{animation:fadeIn .6s ease .45s backwards}
+.roles span:nth-of-type(2){--j:1}.roles span:nth-of-type(3){--j:2}.roles span:nth-of-type(4){--j:3}
+.prompt:not([data-build-in]){animation:rise .7s cubic-bezier(.2,.8,.2,1) .25s backwards}
+.prompt p{animation:fadeIn .5s ease backwards;animation-delay:calc(.45s + var(--j,0) * 110ms)}
+.prompt p:nth-child(2){--j:1}.prompt p:nth-child(3){--j:2}.prompt p:nth-child(4){--j:3}.prompt p:nth-child(5){--j:4}
+.tour .card:nth-child(2),.ways .card:nth-child(2),.vs .card:nth-child(2),.fixes .card:nth-child(2){animation-delay:.12s}
+.tour .card:nth-child(3),.fixes .card:nth-child(3){animation-delay:.24s}
+.fixes .card:nth-child(4){animation-delay:.32s}.fixes .card:nth-child(5){animation-delay:.4s}.fixes .card:nth-child(6){animation-delay:.48s}
+.rules .card:nth-child(5){animation-delay:.42s}
+.ideas{--o:.35s}
+.ideas>:nth-child(4){--k:.36s}.ideas>:nth-child(5){--k:.48s}.ideas>:nth-child(6){--k:.6s}
+.build .side-col{--o:.6s}
+.grab{animation:fadeIn .7s ease .9s backwards}
+.frost{animation:rise .7s cubic-bezier(.2,.8,.2,1) .2s backwards}
+.frost+.frost{animation-delay:.32s}
+.qr+.qr+.qr{animation-delay:.54s}
+.bubbles.still .bubble:nth-child(2){animation-delay:.35s,.85s}
+.bubbles.still .bubble:nth-child(2)::after{animation-delay:.35s;animation-fill-mode:backwards}
+.bubbles.still .bubble:nth-child(3){animation-delay:.7s,1.2s}
+.bubbles.still .bubble:nth-child(3)::after{animation-delay:.7s;animation-fill-mode:backwards}
+.bubbles.still .bubble{opacity:1!important}
+@media (prefers-reduced-motion:reduce){#stage *,#stage *::before,#stage *::after{animation:none!important}.recipe>.new.pending>*{opacity:0}}
+/* Meeting 5 sizing: workshop slides carry fewer words, so they run larger than Meeting 4's. */
+#demo .rules,#tips .rules{gap:28px}
+#demo .rules .card{padding:48px 44px}
+#demo .rules .card p{font-size:34px}
+#tips .rules .card p{font-size:30px}
+#vague .bubble{font-size:40px;padding:24px 36px}
+#vague .bubbles{gap:28px}
+#vivid .prompt{font-size:32px;padding:40px 48px}
+#vivid .prompt p+p{margin-top:20px}
+.recipe{row-gap:18px}
+.recipe .c{font-size:32px;padding:26px 34px}
+.recipe .k{font-size:52px}
+#tour .card p,#refine .card>p:not(.bubble){font-size:32px}
+#tour .card{padding:52px 48px;gap:18px}
+#refine .ways .bubble{font-size:34px;padding:22px 32px;margin-top:8px}
+#refine .ways .card.pink .bubble{background:var(--pinkwash)}
+#refine .sub{font-size:40px}
+#show .bubble{font-size:36px;padding:22px 34px}
+#show .bubbles{gap:26px}
+.fixes .card{padding:32px 40px;gap:10px}
+.fixes .card h3{font-size:40px}
+.fixes .card p{font-size:30px}
+.ideas .sticky p{font-size:28px}
+</style></head><body>
+<div id="stage">
+
+<section id="cover" class="grad center">
+<p class="eyebrow">ExplorAI · Meeting 5</p>
+<h1 class="title">Build One Thing</h1>
+<p class="sub">Vibe coding in Google AI Studio</p>
+<p class="lead ink">Wed, Oct 21 · 2–3pm · CIS A-204</p>
+</section>
+
+<section id="signin" class="grad center">
+<div style="display:flex;align-items:center;gap:96px;flex:1"><div style="flex:1;display:flex;flex-direction:column;gap:36px"><p class="eyebrow">ExplorAI · Meeting 5</p><h1 class="title">Build One Thing</h1><p class="lead ink">Wed, Oct 21 · 2–3pm · CIS A-204</p>
+<div class="frost" style="align-self:start;gap:10px"><p class="eyebrow">While you wait</p><p class="t">Open <span style="color:var(--accent)">aistudio.google.com</span>, sign in with a personal Gmail, and click Build.</p></div></div>
+<div class="qr"><img src="data:image/png;base64,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" alt="QR code: Sign in here!" style="width:400px;height:400px"><p>Sign in here!</p></div></div>
+</section>
+
+<section id="shares" class="cozy alt">
+<p class="eyebrow">explorAI Shares</p>
+<h2>Google teaches vibe coding for free</h2>
+<div class="row" style="gap:24px;align-items:stretch;margin-top:8px">
+<div class="card" data-build-in><h3>The course</h3><p>Google’s 5-Day AI Agents: Intensive Vibe Coding Course is now on Kaggle, and you can go at your own pace.</p></div>
+<div class="card" data-build-in><h3>What it costs</h3><p>Nothing. You need a free Kaggle account and an AI Studio account.</p></div>
+<div class="card pink" data-build-in><h3>Your next step</h3><p>It goes deeper into Python and agents. Today is the beginner version. If you like it, go there next.</p></div>
+</div>
+<p class="src">I Programmer, “Vibe Coding From Google On Kaggle”</p>
+</section>
+
+<section id="aipro" class="round cozy">
+<div class="qcard">
+<p class="eyebrow">For students</p>
+<h2 class="q">One free year of Google AI Pro</h2>
+<p class="lead">Higher daily limits in AI Studio, so you can build more before you hit a cap.</p>
+<div class="roles"><span>18+</span><span>Personal Google account</span><span>Verify with your school email</span></div>
+<p class="bubble" data-build-in>Claim it after today. The free tier is enough for this meeting. Set a reminder to cancel before the year ends.</p>
+</div>
+<div class="side-col" style="align-items:center;justify-content:center">
+<div class="sticky p" style="--r:1.3deg;align-self:stretch"><b>$0</b><p>for 12 months, normally $19.99 a month. You add a card, but you aren’t charged during the free year.</p></div>
+<div class="qr sm"><img src="data:image/png;base64,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" alt="QR code: one.google.com/ai-student" style="width:240px;height:240px"><p>Claim by Dec 31</p></div>
+</div>
+<p class="src">Google One, one.google.com/ai-student</p>
+</section>
+
+<section id="callback" class="grad center">
+<p class="eyebrow">Remember Meeting 3?</p>
+<h1 class="stmt" style="font-size:110px">It can’t read what you didn’t put in the window.</h1>
+<p class="sub" data-build-in>Today the same rule builds an app instead of an answer.</p>
+</section>
+
+<section id="recipe" class="cozy alt" style="gap:32px">
+<p class="eyebrow">The recipe, now for apps</p>
+<h2>Same recipe. The output is an app.</h2>
+<div class="recipe">
+<span></span><p class="hd">Meeting 3 · answers</p><p class="hd now">Today · apps</p>
+<p class="k" style="--r5:1">Who</p><p class="c" style="--r5:1">Who you are</p><p class="c now" style="--r5:1">Who uses the app</p>
+<p class="k" style="--r5:2">What</p><p class="c" style="--r5:2">What you need</p><p class="c now" style="--r5:2">What the app does, 3 features max</p>
+<p class="k" style="--r5:3">Why</p><p class="c" style="--r5:3">The situation</p><p class="c now" style="--r5:3">What problem it solves</p>
+<p class="k" style="--r5:4">How</p><p class="c" style="--r5:4">Limits in numbers</p><p class="c now" style="--r5:4">How it works, step by step</p>
+<div class="new" data-build-in><p class="k">+ Looks</p><p class="c none">New today</p><p class="c now">What it looks like: layout, colors, vibe</p></div>
+</div>
+</section>
+
+<section id="vibe" class="round cozy">
+<div class="qcard">
+<p class="eyebrow">What is vibe coding?</p>
+<h2 class="q">You describe the app in plain words. The AI writes the code.</h2>
+<div class="roles"><p>Your job</p><span>Prompter</span><span>Guide</span><span>Tester</span><span>Refiner</span></div>
+</div>
+<div class="side-col" style="justify-content:center">
+<div class="sticky p" style="--r:1.2deg"><p class="quote">“Forget that the code even exists.”</p><p>Andrej Karpathy, the AI researcher who named it</p></div>
+<div class="sticky g small" style="--r:-1deg" data-build-in><p>Google lists your four jobs as prompter, guide, tester, and refiner. Writing code isn’t one of them.</p></div>
+</div>
+<p class="src">Andrej Karpathy, Feb 2025 · Google Cloud, “What is vibe coding?”</p>
+</section>
+
+<section id="versus" class="cozy alt">
+<p class="eyebrow">Traditional vs. vibe coding</p>
+<h2>You don’t need the syntax. You need to know what you want.</h2>
+<div class="vs">
+<div class="card"><h3>Traditional coding</h3><p>Write code line by line</p><p>Know the syntax</p><p>Debug by reading code</p></div>
+<div class="card pink"><h3>Vibe coding</h3><p>Describe what you want</p><p>Know what you want</p><p>Debug by testing and describing the bug</p></div>
+</div>
+<p class="callout" data-build-in>The AI can say a feature works when it doesn’t. That’s the hallucination problem from Meeting 2, so you test everything.</p>
+</section>
+
+<section id="poll" class="grad center">
+<p class="eyebrow">Hands up</p>
+<h1 class="stmt">Who has written code before?</h1>
+<p class="sub" data-build-in>Good news: nobody needs to today.</p>
+</section>
+
+<section id="demo" class="cozy">
+<p class="eyebrow">Live demo · 10 minutes</p>
+<h2>Watch one get built.</h2>
+<div class="rules">
+<div class="card"><span class="n">1</span><p><b>Try the finished app.</b> Built with zero lines of code written by hand.</p></div>
+<div class="card"><span class="n">2</span><p><b>Vague prompt.</b> One line. See what the AI guesses.</p></div>
+<div class="card pink"><span class="n">3</span><p><b>Recipe prompt.</b> Who, What, Why, How, Looks. Then test it.</p></div>
+<div class="card"><span class="n">4</span><p><b>Two changes.</b> One through chat, one through Annotation Mode.</p></div>
+</div>
+</section>
+
+<section id="vague" class="round cozy alt">
+<div class="qcard">
+<p class="eyebrow">Vague prompt</p>
+<div class="prompt big">make a schedule app</div>
+<p class="lead">It works, but it’s generic. The AI had to guess everything, like you did with the group chat in Meeting 3.</p>
+</div>
+<div class="side-col" style="justify-content:center">
+<div class="bubbles">
+<p class="bubble" data-build-in>Who is it for?</p>
+<p class="bubble" data-build-in>What goes on it?</p>
+<p class="bubble" data-build-in>What should it look like?</p>
+</div>
+</div>
+</section>
+
+<section id="vivid" class="cozy" style="gap:32px">
+<p class="eyebrow">Recipe prompt</p>
+<h2>Same app, with the recipe.</h2>
+<div class="prompt">
+<p><b>Who:</b> I’m a community college student juggling classes, work, and clubs.</p>
+<p><b>What:</b> Build a visual weekly schedule planner. I add each class with its name, days, start and end time, and room, and it shows a color-coded Monday–Friday grid from 7am to 10pm. Highlight time conflicts in red, and show my total class hours per week.</p>
+<p><b>Why:</b> I want to see my whole week at a glance and catch conflicts before I register.</p>
+<p><b>How:</b> One page. Clicking a class block lets me edit or delete it.</p>
+<p><b>Looks:</b> Clean and minimal, a soft pastel color for each class, rounded blocks.</p>
+</div>
+</section>
+
+<section id="tour" class="cozy alt">
+<p class="eyebrow">While it builds</p>
+<h2>Three parts of Build mode</h2>
+<div class="tour">
+<div class="card"><span class="n">1</span><h3>Prompt box</h3><p>Where you paste the recipe. AI Chips add features like image generation or Google Maps.</p></div>
+<div class="card"><span class="n">2</span><h3>Chat panel</h3><p>Where you ask for changes after the app exists.</p></div>
+<div class="card pink"><span class="n">3</span><h3>Preview</h3><p>Where you test it like a real user. Click everything.</p></div>
+</div>
+</section>
+
+<section id="refine" class="cozy">
+<p class="eyebrow">Two ways to change it</p>
+<h2>Chat is for features. Annotation Mode is for “this thing right here.”</h2>
+<div class="ways">
+<div class="card"><h3>Chat</h3><p>Ask for one new feature.</p><p class="bubble">Add a dark mode toggle.</p></div>
+<div class="card pink"><h3>Annotation Mode</h3><p>Highlight the thing on the screen, then describe the change.</p><p class="bubble">Make this button bigger and pastel pink.</p></div>
+</div>
+<p class="sub" data-build-in>You don’t need to know what the code calls it.</p>
+</section>
+
+<section id="tips" class="cozy alt">
+<p class="eyebrow">Tips and tricks</p>
+<h2>5 rules for vibe coding</h2>
+<div class="rules">
+<div class="card"><span class="n">1</span><p><b>One change per message.</b> If five changes break it, you won’t know which one did.</p></div>
+<div class="card"><span class="n">2</span><p><b>Describe bugs like you’d tell a tutor:</b> what you did, what you expected, what happened.</p></div>
+<div class="card"><span class="n">3</span><p><b>Click every button.</b> The AI can say it works when it doesn’t. You’re the tester.</p></div>
+<div class="card"><span class="n">4</span><p><b>If the chat spirals, start fresh.</b> Paste a clean summary into a new build.</p></div>
+<div class="card pink wide"><span class="n">5</span><p><b>No real secrets.</b> No passwords, API keys, or personal info in an app you might share.</p></div>
+</div>
+</section>
+
+<section id="ideas" class="cozy">
+<p class="eyebrow">Stuck on an idea?</p>
+<h2>Pick one and make it yours.</h2>
+<div class="ideas stickies">
+<div class="sticky" style="--r:-1.3deg"><span class="tag">School</span><b>Schedule Snapshot</b><p>A color-coded weekly class planner that flags time conflicts.</p></div>
+<div class="sticky g" style="--r:1deg"><span class="tag">School</span><b>3D Surface Explorer</b><p>Type z = f(x, y) and spin the 3D graph. Made for Calc 3.</p></div>
+<div class="sticky" style="--r:-.7deg"><span class="tag">Club</span><b>Club landing page</b><p>One link with meeting info, events, officers, and an FAQ.</p></div>
+<div class="sticky g" style="--r:.9deg"><span class="tag">Personal</span><b>Mood playlist picker</b><p>Pick a mood, and Gemini suggests 8 songs and why.</p></div>
+<div class="sticky" style="--r:-1.1deg"><span class="tag">Fun</span><b>Would You Rather</b><p>Gemini writes a new question every click. Game-show style.</p></div>
+<div class="sticky p" style="--r:1.4deg"><span class="tag">Yours</span><b>Your own idea</b><p>Anything you’d actually use this week.</p></div>
+</div>
+</section>
+
+<section id="stuck" class="cozy alt" style="gap:32px">
+<p class="eyebrow">If you get stuck</p>
+<h2>Try this first.</h2>
+<div class="fixes">
+<div class="card"><h3>Can’t open AI Studio</h3><p>Switch to a personal Gmail account.</p></div>
+<div class="card"><h3>App is blank or shows an error</h3><p>Tell the chat exactly what you see, or regenerate.</p></div>
+<div class="card"><h3>Hit the daily limit</h3><p>Pair up and share one account. Limits reset at midnight Pacific.</p></div>
+<div class="card"><h3>App looks generic</h3><p>Add a Looks section with specific colors and style.</p></div>
+<div class="card pink"><h3>A change broke something</h3><p>Restore the last version, then ask for one smaller change.</p></div>
+<div class="card"><h3>3D graph won’t show</h3><p>Ask the chat to “use Plotly.js for the 3D surface.”</p></div>
+</div>
+</section>
+
+<section id="build" class="build cozy">
+<div class="head"><p class="eyebrow">Build time · 18 minutes</p><h2>One person types, one tests. Switch halfway.</h2></div>
+<div style="grid-column:1;grid-row:2;display:flex;flex-direction:column;gap:32px">
+<div class="qcard">
+<p class="eyebrow">Recipe template</p>
+<div class="prompt">
+<p><b>Who:</b> [who uses this app]</p>
+<p><b>What:</b> Build a [type of app]. It [feature 1], [feature 2], and [feature 3].</p>
+<p><b>Why:</b> I want to [problem it solves].</p>
+<p><b>How:</b> [one page? buttons? what happens step by step?]</p>
+<p><b>Looks:</b> [colors, style, vibe]</p>
+</div>
+</div>
+<div class="grab"><img src="data:image/png;base64,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" alt="QR code: Meeting 5 build sheet"><p>Scan to copy the template and the full idea prompts.</p></div>
+</div>
+<div class="side-col">
+<div class="timer" data-seconds="1080">18:00</div>
+<div class="sticky" style="--r:-1deg"><span class="tag">Round 1 · 5 min</span><p><b>Build.</b> Pick an idea, write the recipe, generate it.</p></div>
+<div class="sticky p" style="--r:.9deg"><span class="tag">Round 2 · 7 min</span><p><b>Fix.</b> Test every button. Make one change by chat and one by Annotation Mode.</p></div>
+<div class="sticky g" style="--r:-.7deg"><span class="tag">Round 3 · 6 min</span><p><b>Stretch.</b> Add an AI Chip, or a feature you thought of while testing.</p></div>
+</div>
+</section>
+
+<section id="show" class="round cozy alt">
+<div class="qcard">
+<p class="eyebrow">Show and tell</p>
+<h2 class="q">60 seconds each. Show us what you built.</h2>
+</div>
+<div class="side-col" style="justify-content:center">
+<div class="timer" data-seconds="60">1:00</div>
+<div class="bubbles still">
+<p class="bubble">What does it do?</p>
+<p class="bubble">What’s one change you made?</p>
+<p class="bubble">What broke, and how did you fix it?</p>
+</div>
+</div>
+</section>
+
+<section id="takeaway" class="grad center">
+<p class="eyebrow">One thing to remember</p>
+<h1 class="stmt" style="font-size:96px;max-width:1500px">You’re not writing the code. You’re writing the context, and testing what comes back.</h1>
+</section>
+
+<section id="thanks" class="grad">
+<div style="display:flex;align-items:center;gap:56px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:28px">
+<h1 class="title" style="font-size:128px">Thank you!</h1>
+<p class="sub" style="font-weight:700">Follow us on Instagram · <span style="color:var(--accent)">@explorai.rcc</span></p>
+<div class="frost"><p class="eyebrow">Next step</p><p class="t">Google’s free vibe coding course on Kaggle</p></div>
+<div class="frost"><p class="eyebrow">Next week · Oct 28</p><p class="t">Topic coming soon</p></div>
+</div>
+<div style="display:flex;gap:28px;align-items:flex-start">
+<div class="qr sm"><img src="data:image/png;base64,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" alt="QR code: Instagram @explorai.rcc" style="width:220px;height:220px"><p>@explorai.rcc</p></div>
+<div class="qr sm"><img src="data:image/png;base64,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" alt="QR code: Discord server" style="width:220px;height:220px"><p>Discord</p></div>
+<div class="qr sm"><img src="data:image/png;base64,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" alt="QR code: one.google.com/ai-student" style="width:220px;height:220px"><p>Free AI Pro<br>by Dec 31</p></div>
+</div>
+</div>
+</section>
+
+</div><div id="count"></div>
+<script>
+var st=document.getElementById('stage'),S=[].slice.call(st.children),i=0,timerInt=null,timerT=0,timerOn=false;
+function fit(){var k=Math.min(innerWidth/1920,innerHeight/1080);st.style.transform='scale('+k+') translate(-50%,-50%)'}
+// A numbered data-build-in sets reveal order when it differs from page order; unnumbered ones keep page order.
+function pend(n){return [].slice.call(S[n].querySelectorAll('[data-build-in].pending')).sort(function(a,b){return (+a.dataset.buildIn||0)-(+b.dataset.buildIn||0)})}
+function fmt(t){var m=Math.floor(t/60),s=t%60;return m+':'+(s<10?'0':'')+s}
+function resetTimer(){if(timerInt){clearInterval(timerInt);timerInt=null}timerOn=false;var el=S[i].querySelector('.timer');if(el){timerT=+el.dataset.seconds;el.textContent=fmt(timerT);el.classList.remove('done')}}
+// T after 0:00 starts the timer over, so show and tell can run 1:00 per group.
+function toggleTimer(){var el=S[i].querySelector('.timer');if(!el)return;if(timerOn){clearInterval(timerInt);timerInt=null;timerOn=false;return}if(timerT<=0){timerT=+el.dataset.seconds;el.textContent=fmt(timerT);el.classList.remove('done')}timerOn=true;
+ timerInt=setInterval(function(){timerT--;el.textContent=fmt(timerT);if(timerT<=0){el.classList.add('done');clearInterval(timerInt);timerInt=null;timerOn=false}},1000)}
+function show(n,end){var o=i;i=Math.max(0,Math.min(S.length-1,n));
+ if(S[o]!==S[i]){S.forEach(function(s,j){if(s!==S[o]&&s!==S[i])s.hidden=true});S[o].classList.add('s-out');setTimeout(function(){S[o].hidden=true;S[o].classList.remove('s-out')},220);S[i].hidden=false;S[i].classList.add('s-in');setTimeout(function(){S[i].classList.remove('s-in')},220)}else{S.forEach(function(s){s.hidden=s!==S[i]})}
+ S[i].querySelectorAll('[data-build-in]').forEach(function(b){b.classList.toggle('pending',!end)});
+ document.getElementById('count').textContent=(i+1)+' / '+S.length;history.replaceState(null,'','#'+(i+1));
+ if(document.activeElement&&document.activeElement.blur)document.activeElement.blur();resetTimer()}
+function next(){var p=pend(i);if(p.length){p[0].classList.remove('pending')}else if(i<S.length-1)show(i+1)}
+function prev(){if(i>0)show(i-1,true)}
+function typing(e){var t=e.target;return t&&(t.tagName==='TEXTAREA'||t.tagName==='INPUT'||t.isContentEditable)}
+addEventListener('keydown',function(e){if(typing(e))return;
+ if(['ArrowRight','ArrowDown',' ','PageDown','Enter'].indexOf(e.key)>-1){e.preventDefault();next()}
+ else if(['ArrowLeft','ArrowUp','PageUp','Backspace'].indexOf(e.key)>-1){e.preventDefault();prev()}
+ else if(e.key==='f'){document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen().catch(function(){})}
+ else if(e.key==='t'||e.key==='T'){e.preventDefault();toggleTimer()}});
+addEventListener('click',function(e){if(document.documentElement.classList.contains('pv-tool'))return;if(e.target.closest('a,textarea,input,button'))return;e.clientX<innerWidth/3?prev():next()});
+// Wrap headline words in spans so they can rise in one after another. Text and textContent stay the same.
+[].forEach.call(st.querySelectorAll('.title,.stmt,h2'),function(h){if(h.children.length)return;var k=0,parts=h.textContent.split(/(\s+)/);h.textContent='';
+ parts.forEach(function(p){if(!p)return;if(/^\s+$/.test(p)){h.appendChild(document.createTextNode(p));return}var w=document.createElement('span');w.className='w';w.style.setProperty('--w',k++);w.textContent=p;h.appendChild(w)})});
+// Open on the slide in the link; a number past the end (an old link from before slides were cut) opens slide 1.
+var h0=parseInt(location.hash.slice(1));
+addEventListener('resize',fit);fit();show(h0>=1&&h0<=S.length?h0-1:0);
+function builds(n){return S[n].querySelectorAll('[data-build-in]').length}
+window.__explorDeck={
+ slides:S.map(function(s,n){var t=s.querySelector('.timer');return{beats:builds(n),timer:t?+t.dataset.seconds:0,room:false}}),
+ state:function(){return{i:i,b:builds(i)-pend(i).length,room:false,busy:false}}};
+addEventListener('hashchange',function(){var n=(parseInt(location.hash.slice(1))||1)-1;if(n!==i)show(n)});
+</script>
+<script src="../shared/explorai-presenter.js"></script>
+<script src="../shared/presenter.js"></script>
+<script src="../shared/review.js"></script>
+</body></html>
