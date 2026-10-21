@@ -29,6 +29,7 @@ a{color:var(--accent)}
 .clock{font:600 26px var(--display);color:var(--ink);font-variant-numeric:tabular-nums}
 .rbtn{grid-column:2;grid-row:2;display:flex;gap:8px}
 .round.done{background:var(--accent);border-color:var(--accent)}.round.done *{color:var(--bg)!important}.round.done button{border-color:var(--bg);background:transparent}
+.refine{color:var(--accent);font-weight:500}
 button.ghost{background:transparent;color:var(--ink)}
 @media(max-width:480px){.round{border-radius:28px;grid-template-columns:1fr}.rbtn{grid-column:1;grid-row:auto}}
 </style></head><body><div class="wrap">
@@ -61,10 +62,10 @@ Why: I want to see what these surfaces actually look like instead of imagining t
 How: One page. Input box and presets on the left, graph on the right. Show an error message if the function can't be read.
 Looks: Dark background so the surface colors pop, with a smooth color gradient based on height.</pre></div>
 <div class="card"><div class="head"><div><span class="tag">Personal</span><h3>Mood playlist picker</h3></div><button type="button">Copy</button></div>
-<p><b>Your turn:</b> this is a rough prompt. Rewrite it with the recipe (Who, What, Why, How, Looks) before you paste it in.</p>
+<p class="refine"><b>Your turn:</b> this is a rough prompt. Rewrite it with the recipe (Who, What, Why, How, Looks) before you paste it in.</p>
 <pre>Build a mood-based playlist picker. I choose a mood (focused, hype, chill, sad), and it uses Gemini to suggest 8 songs with the artist and a one-line reason for each. Moody dark theme with neon accents.</pre></div>
 <div class="card"><div class="head"><div><span class="tag">Fun</span><h3>Would You Rather</h3></div><button type="button">Copy</button></div>
-<p><b>Your turn:</b> this is a rough prompt. Rewrite it with the recipe (Who, What, Why, How, Looks) before you paste it in.</p>
+<p class="refine"><b>Your turn:</b> this is a rough prompt. Rewrite it with the recipe (Who, What, Why, How, Looks) before you paste it in.</p>
 <pre>Build a "Would You Rather" game for college students. It uses Gemini to generate a new question each time I click a button, and I pick an option to see a fun fake percentage of how others voted. Colorful, game-show style.</pre></div>
 
 <h2>5 rules</h2>
