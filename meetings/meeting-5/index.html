@@ -234,6 +234,13 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 .bubbles.still .bubble:nth-child(3)::after{animation-delay:.7s;animation-fill-mode:backwards}
 .bubbles.still .bubble{opacity:1!important}
 @media (prefers-reduced-motion:reduce){#stage *,#stage *::before,#stage *::after{animation:none!important}.recipe>.new.pending>*{opacity:0}}
+/* Meeting 5 rules slide: every card shows from the start; each press lights the next one with a soft glowing edge. */
+#tips .card[data-build-in]{opacity:1;transform:none;transition:box-shadow .5s ease,border-color .5s ease;animation:rise .7s cubic-bezier(.2,.8,.2,1) backwards}
+#tips .card[data-build-in]:not(.pending){animation:rise .7s cubic-bezier(.2,.8,.2,1) backwards}
+#tips .card:nth-child(1){animation-delay:.1s}#tips .card:nth-child(2){animation-delay:.18s}#tips .card:nth-child(3){animation-delay:.26s}#tips .card:nth-child(4){animation-delay:.34s}#tips .card:nth-child(5){animation-delay:.42s}
+#tips .card:not(.pending):has(+ .card:not(.pending)){border-color:rgba(168,72,122,.3)}
+#tips .card:not(.pending):has(+ .card.pending),#tips .card:not(.pending):last-child{border-color:rgba(168,72,122,.7);box-shadow:0 0 0 3px rgba(168,72,122,.14),0 0 34px 6px rgba(168,72,122,.22),0 18px 36px -24px rgba(63,90,42,.35)}
+@media (prefers-reduced-motion:reduce){#tips .card{transition:none!important}}
 /* Meeting 3 recall card: the context window from Meeting 3's slide, so students recognize it. */
 .win{border:3px solid var(--ink);border-radius:28px;padding:22px;display:flex;flex-direction:column;gap:12px;background:rgba(255,254,251,.7)}
 .blk{border:2px solid var(--leaf);border-radius:16px;padding:14px 22px;background:var(--card)}
@@ -430,11 +437,11 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 <p class="eyebrow">Tips and tricks</p>
 <h2>5 rules for vibe coding</h2>
 <div class="rules">
-<div class="card"><span class="n">1</span><p><b>One change per message.</b> If five changes break it, you won’t know which one did.</p></div>
-<div class="card"><span class="n">2</span><p><b>Describe bugs like you’d tell a tutor:</b> what you did, what you expected, what happened.</p></div>
-<div class="card"><span class="n">3</span><p><b>Click every button.</b> The AI can say it works when it doesn’t. You’re the tester.</p></div>
-<div class="card"><span class="n">4</span><p><b>If the chat spirals, start fresh.</b> Paste a clean summary into a new build.</p></div>
-<div class="card pink wide"><span class="n">5</span><p><b>No real secrets.</b> No passwords, API keys, or personal info in an app you might share.</p></div>
+<div class="card" data-build-in="1"><span class="n">1</span><p><b>One change per message.</b> If five changes break it, you won’t know which one did.</p></div>
+<div class="card" data-build-in="2"><span class="n">2</span><p><b>Describe bugs like you’d tell a tutor:</b> what you did, what you expected, what happened.</p></div>
+<div class="card" data-build-in="3"><span class="n">3</span><p><b>Click every button.</b> The AI can say it works when it doesn’t. You’re the tester.</p></div>
+<div class="card" data-build-in="4"><span class="n">4</span><p><b>If the chat spirals, start fresh.</b> Paste a clean summary into a new build.</p></div>
+<div class="card pink wide" data-build-in="5"><span class="n">5</span><p><b>No real secrets.</b> No passwords, API keys, or personal info in an app you might share.</p></div>
 </div>
 </section>
 
