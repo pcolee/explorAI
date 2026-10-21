@@ -19,7 +19,10 @@ Remove a line once it is answered and note the answer in that day's entry.
 - Created an empty `meetings/meeting-6/` folder (not tracked by git until it has files).
 - `meetings/meeting-5/index.html` + `notes.html` (slide 21, note 21): next week's topic card reads "Under the Hood" in the card's normal dark green (tried dark pink, then reverted at Cole's request; also tried light pink text, a pink background, and a moved gradient, all dropped) instead of "Topic coming soon", and the AI Pro QR (decoded: `https://one.google.com/ai-student`) is removed, leaving the Instagram and Discord QRs, at Cole's request. Note 21 no longer points at the AI Pro QR (the offer is still on slide 4 and the build sheet) and now says next week is Under the Hood.
 
-**Decided:** Meeting 6 (Oct 28) topic is "Under the Hood" (Cole).
+- `docs/status.md` + `docs/meeting-routine.md`: recorded the Discord invite's expiry (`wymCa4EPj` expires 2026-11-20 06:37 UTC, the evening of 2026-11-19 Pacific) and a rule to check `expires_at` from Discord's invite API when starting each deck (flag if within about 2 weeks) and to update the expiry in both files whenever the invite is replaced, at Cole's request.
+- QR check (no file changes): decoded every QR in Meeting 5's `index.html`. Sign-in `https://forms.gle/AAN5yiHXcajJvhAe8` (opens the form), AI Pro `https://one.google.com/ai-student` (slide 4, goes to Google sign-in), build `https://pcolee.github.io/explorAI/meetings/meeting-5/build.html`, Instagram `https://www.instagram.com/explorai.rcc`, Discord `https://discord.gg/wymCa4EPj` (valid, the club server). All load.
+
+**Decided:** Meeting 6 (Oct 28) topic is "Under the Hood" (Cole). The Discord invite expiry date, not the meeting count, is the deadline for replacing it (Cole agreed).
 
 **Issues:** The `S` presenter popup could not be tested through browser automation (the popup is blocked without a real user gesture). Checked instead: the deck has the presenter hooks and scripts, `window.__presenter` loads, notes have 20 bridges for 21 slides, `scripts/check.sh` passes, and `?view=presenter` renders but waits for the deck window. Someone needs to press `S` on the live deck by hand once.
 
