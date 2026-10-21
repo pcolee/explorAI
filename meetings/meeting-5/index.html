@@ -241,6 +241,12 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 #tips .card:not(.pending):has(+ .card:not(.pending)){border-color:rgba(168,72,122,.3)}
 #tips .card:not(.pending):has(+ .card.pending),#tips .card:not(.pending):last-child{border-color:rgba(168,72,122,.7);box-shadow:0 0 0 3px rgba(168,72,122,.14),0 0 34px 6px rgba(168,72,122,.22),0 18px 36px -24px rgba(63,90,42,.35)}
 @media (prefers-reduced-motion:reduce){#tips .card{transition:none!important}}
+/* Meeting 5 ideas: four notes (three categories plus your own), two by two. */
+#ideas .ideas{grid-template-columns:1fr 1fr;gap:48px 64px}
+#ideas .ideas .sticky{padding:52px 48px 40px;gap:14px}
+#ideas .ideas .sticky .tag{font-size:24px}
+#ideas .ideas .sticky b{font-size:58px}
+#ideas .ideas .sticky p{font-size:32px}
 /* Meeting 3 recall card: the context window from Meeting 3's slide, so students recognize it. */
 .win{border:3px solid var(--ink);border-radius:28px;padding:22px;display:flex;flex-direction:column;gap:12px;background:rgba(255,254,251,.7)}
 .blk{border:2px solid var(--leaf);border-radius:16px;padding:14px 22px;background:var(--card)}
@@ -449,9 +455,7 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 <p class="eyebrow">Stuck on an idea?</p>
 <h2>Pick one and make it yours.</h2>
 <div class="ideas stickies">
-<div class="sticky" style="--r:-1.3deg"><span class="tag">School</span><b>Schedule Snapshot</b><p>A color-coded weekly class planner that flags time conflicts.</p></div>
 <div class="sticky g" style="--r:1deg"><span class="tag">School</span><b>3D Surface Explorer</b><p>Type z = f(x, y) and spin the 3D graph. Made for Calc 3.</p></div>
-<div class="sticky" style="--r:-.7deg"><span class="tag">Club</span><b>Club landing page</b><p>One link with meeting info, events, officers, and an FAQ.</p></div>
 <div class="sticky g" style="--r:.9deg"><span class="tag">Personal</span><b>Mood playlist picker</b><p>Pick a mood, and Gemini suggests 8 songs and why.</p></div>
 <div class="sticky" style="--r:-1.1deg"><span class="tag">Fun</span><b>Would You Rather</b><p>Gemini writes a new question every click. Game-show style.</p></div>
 <div class="sticky p" style="--r:1.4deg"><span class="tag">Yours</span><b>Your own idea</b><p>Anything you’d actually use this week.</p></div>
