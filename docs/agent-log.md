@@ -15,6 +15,7 @@ Remove a line once it is answered and note the answer in that day's entry.
 
 **Changed:**
 - `meetings/meeting-5/index.html` (slide 17, `af0cf6e`): removed the pink `hot` highlight on "A change broke something" (row class and CSS), so all six rows use the same colors, at Cole's request. People should pick whichever fix matches the error they see, not the one that looks most important. Notes did not mention it. Checked on a local copy in Chrome.
+- `meetings/meeting-5/build.html` (`f06278d`): the Your own idea textarea has a bold dashed pink border with a soft glow, white fill (solid border while focused), and the line above it starts with "Editable:", at Cole's request. Checked on a local copy in Chrome.
 - Created an empty `meetings/meeting-6/` folder (not tracked by git until it has files).
 
 **Issues:** The `S` presenter popup could not be tested through browser automation (the popup is blocked without a real user gesture). Checked instead: the deck has the presenter hooks and scripts, `window.__presenter` loads, notes have 20 bridges for 21 slides, `scripts/check.sh` passes, and `?view=presenter` renders but waits for the deck window. Someone needs to press `S` on the live deck by hand once.
