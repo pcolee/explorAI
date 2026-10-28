@@ -66,8 +66,11 @@ test('key check: lists models with the key in a header, picks the best one, ping
 });
 
 test('key check: no usable model, bad key, and no key each give a plain message', async () => {
-  const none = harness(() => ({ status: 200, body: { models: [{ name: 'models/gemma-4-31b-it', supportedGenerationMethods: ['generateContent'] }] } }));
+  const none = harness(c => (c.method === 'GET'
+    ? { status: 200, body: { models: [{ name: 'models/gemma-4-31b-it', supportedGenerationMethods: ['generateContent'] }] } }
+    : err(404, 'NOT_FOUND', 'model not found')));
   await assert.rejects(none.adapter.checkKey(), e => e.kind === 'nomodel' && /practice mode\.$/.test(e.friendly));
+  assert.equal(none.calls.filter(c => c.method === 'POST').length, PREFERRED_MODELS.length, 'every preferred model was tried before "no model"');
   const bad = harness(() => err(400, 'INVALID_ARGUMENT', 'API key not valid. Please pass a valid API key.', [errorInfo('API_KEY_INVALID')]));
   await assert.rejects(bad.adapter.checkKey(), e => e.kind === 'badKey' && e.friendly === FRIENDLY.badKey && e.retryable === false);
   const empty = createGeminiAdapter({ key: '' });
@@ -315,4 +318,95 @@ test('a setting is not remembered as unsupported when the retry without it also 
   await assert.rejects(h.adapter.generate(req()), e => e.kind === 'request');
   await h.adapter.generate(req());
   assert.ok(h.calls.at(-1).body.generationConfig.thinkingConfig, 'thinking was not turned off for good');
+});
+
+// Fixes from the real-key verify and the pre-mortem (LF, 2026-10-28).
+
+test('key check survives a new key: a failed models list pings the preference list in order, aliases last', async () => {
+  const order = [];
+  const h = harness(c => {
+    if (c.method === 'GET') return err(400, 'INVALID_ARGUMENT', 'Request is not supported for this kind of key.');
+    order.push(c.model);
+    return c.model === 'gemini-3.6-flash' ? ok('OK') : err(404, 'NOT_FOUND', 'model not found');
+  }, { adapter: { models: ['gemini-flash-lite-latest', 'gemini-3.5-flash-lite', 'gemini-3.1-flash-lite', 'gemini-3.6-flash'] } });
+  const info = await h.adapter.checkKey({ ping: false });
+  assert.equal(info.model, 'gemini-3.6-flash');
+  assert.equal(info.fromList, false);
+  assert.deepEqual(order, ['gemini-3.5-flash-lite', 'gemini-3.1-flash-lite', 'gemini-3.6-flash'], 'the -latest alias goes last, and the ping runs even with ping: false');
+  assert.deepEqual(h.switches, [], 'no switch notes while the key check walks the list');
+  assert.equal((await h.adapter.generate(req())).text, 'OK');
+  assert.equal(h.calls.at(-1).model, 'gemini-3.6-flash', 'later calls use the model the ping found');
+});
+
+test('key check: a models list that is a 500, a network error, or lists only unknown IDs still pings', async () => {
+  for (const list of [err(500, 'INTERNAL', 'boom'), 'network', { status: 200, body: { models: [{ name: 'models/gemini-9-flash-001', supportedGenerationMethods: ['generateContent'] }] } }, { status: 200, body: { models: [{ name: 'models/gemini-3.5-flash-lite' }] } }]) {
+    const h = harness(c => {
+      if (c.method === 'GET') { if (list === 'network') throw new TypeError('Failed to fetch'); return list; }
+      return ok('OK');
+    });
+    const info = await h.adapter.checkKey();
+    assert.equal(info.model, PREFERRED_MODELS[0]);
+    assert.equal(h.calls.filter(c => c.method === 'POST').length, 1);
+  }
+});
+
+test('key check: a models list that says the key or project is bad is final, with no ping', async () => {
+  const cases = [
+    [err(400, 'INVALID_ARGUMENT', 'API key not valid. Please pass a valid API key.', [errorInfo('API_KEY_INVALID')]), 'badKey'],
+    [err(403, 'PERMISSION_DENIED', 'Your project has been denied access.'), 'denied'],
+    [err(403, 'PERMISSION_DENIED', 'disabled', [errorInfo('SERVICE_DISABLED')]), 'disabled'],
+    [err(429, 'RESOURCE_EXHAUSTED', 'q', [quota('GenerateRequestsPerDayPerProjectPerModel-FreeTier', '20')]), 'quota'],
+  ];
+  for (const [reply, kind] of cases) {
+    const h = harness(() => reply);
+    await assert.rejects(h.adapter.checkKey(), e => e.kind === kind, kind);
+    assert.equal(h.calls.length, 1, `${kind}: no ping after the list said no`);
+  }
+});
+
+test('an unclassified 4xx shows Google\'s own message and is not offered as a retry', async () => {
+  const h = harness(() => err(402, 'FAILED_PRECONDITION', 'Billing is required for this project.'));
+  await assert.rejects(h.adapter.generate(req()), e => e.kind === 'request' && e.retryable === false
+    && /error 402/.test(e.friendly) && /Billing is required for this project\./.test(e.friendly) && /practice mode\.$/.test(e.friendly));
+});
+
+test('nextModel marks the model the failed request used: two daily-limit 429s at once skip only that model', async () => {
+  const h = harness(c => (c.model === 'gemini-3.5-flash-lite'
+    ? err(429, 'RESOURCE_EXHAUSTED', 'q', [quota('GenerateRequestsPerDayPerProjectPerModel-FreeTier', '20')])
+    : ok(`from ${c.model}`)), { fetchDelay: 5 });
+  const [a, b] = await Promise.all([h.adapter.generate(req()), h.adapter.generate(req())]);
+  assert.equal(h.calls.filter(c => c.model === 'gemini-3.5-flash-lite').length, 2, 'both requests were in flight on 3.5-flash-lite');
+  assert.equal(a.text, 'from gemini-3.1-flash-lite');
+  assert.equal(b.text, 'from gemini-3.1-flash-lite', 'the second request followed the first, it did not burn 3.1-flash-lite');
+  assert.equal(h.adapter.model, 'gemini-3.1-flash-lite');
+});
+
+test('a 429 with a quota of 0 moves to the next model at once instead of waiting', async () => {
+  const h = harness(c => (c.model === 'gemini-3.5-flash-lite'
+    ? err(429, 'RESOURCE_EXHAUSTED', 'Quota exceeded, limit: 0', [quota('GenerateRequestsPerMinutePerProjectPerModel-FreeTier', '0'), retryInfo('40s')])
+    : ok('ok')));
+  const waits = [];
+  assert.equal((await h.adapter.generate(req({ onWait: s => waits.push(s) }))).text, 'ok');
+  assert.deepEqual(waits, []);
+  assert.equal(h.clock.t < 40000, true);
+  assert.deepEqual(h.switches.map(s => s[0]), ['gemini-3.1-flash-lite']);
+});
+
+test('a model set aside for its per-minute limit comes back after a minute', async () => {
+  let busy = true;
+  const h = harness(c => (c.model === 'gemini-3.5-flash-lite' && busy ? err(429, 'RESOURCE_EXHAUSTED', 'q', [retryInfo('5s')]) : ok(c.model)));
+  assert.equal((await h.adapter.generate(req())).text, 'gemini-3.1-flash-lite');
+  busy = false;
+  h.clock.t += 61000;
+  assert.equal((await h.adapter.generate(req())).text, 'gemini-3.5-flash-lite');
+  assert.deepEqual(h.switches.map(s => s[1]), ['rate', 'back']);
+});
+
+test('the key check ping caps its 429 wait and moves on', async () => {
+  const h = harness(c => (c.method === 'GET' ? { status: 200, body: MODELS_ALL }
+    : c.model === 'gemini-3.5-flash-lite' ? err(429, 'RESOURCE_EXHAUSTED', 'q', [retryInfo('40s')]) : ok('OK')));
+  const waits = [];
+  const info = await h.adapter.checkKey({ onWait: s => waits.push(s), maxWaitSec: 15 });
+  assert.equal(info.model, 'gemini-3.1-flash-lite');
+  assert.deepEqual(waits, [], 'a 40 s wait is over the 15 s cap, so the check moved on');
 });
