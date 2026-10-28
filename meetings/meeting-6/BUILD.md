@@ -2,7 +2,7 @@
 
 Live board for the Meeting 6 deck and agent lab while Sam's agents build them overnight (2026-10-27 to 2026-10-28). It is rewritten in place and pushed with every milestone, so the top of this file is always the current state. History goes in commit messages and `docs/agent-log.md`.
 
-**Last update:** 2026-10-27 23:50 PDT · **Phase:** deck D2 in progress: slides 4, 6 to 11, and 15 polished (bespoke modules); lab L1a engine pushed · **Next push:** deck D2 part 3 (team tree, agents' group chat, checklist), then Shares; lab L1b (the page and practice mode)
+**Last update:** 2026-10-27 23:55 PDT · **Phase:** deck D2 in progress: slides 4, 6 to 11, and 15 polished (bespoke modules); lab L1b live (page + practice mode) · **Next push:** deck D2 part 3 (team tree, agents' group chat, checklist), then Shares; lab L1c (Gemini mode)
 
 Deck v1: https://pcolee.github.io/explorAI/meetings/meeting-6/ · notes: https://pcolee.github.io/explorAI/meetings/meeting-6/notes.html
 
@@ -18,7 +18,7 @@ Deck v1: https://pcolee.github.io/explorAI/meetings/meeting-6/ · notes: https:/
 | What | Files | Who | Since |
 |---|---|---|---|
 | Deck D2: bespoke modules (done: 4, 6 to 11, 15; next: 18, 19, 20, Shares) | `meetings/meeting-6/index.html`, `notes.html`, `plan.md` | Sam's agents (deck track) | 2026-10-27 23:25 |
-| Agent lab L1b (next): the page and practice mode | `meetings/meeting-6/lab/` | Sam's agents (lab track) | L1a engine pushed 2026-10-27 23:35 |
+| Agent lab L1c (next): Gemini mode | `meetings/meeting-6/lab/` | Sam's agents (lab track) | L1b page pushed 2026-10-27 23:55 |
 | Docs | this file, Meeting 6 row in `docs/status.md`, Sam's entry in `docs/agent-log.md` | Sam's agents | 2026-10-27 23:05 |
 
 ## Requests
@@ -70,7 +70,8 @@ What each slide is for, the shared words, and the design bar: `plan.md`. The lab
 - **Stack:** one static page, no build step and no server. It calls the Gemini API straight from the browser with the student's own free key from Google AI Studio. Practice mode runs the same steps with prewritten replies, so the demo works with no key and no Wi-Fi. (Sam's 2025 demo used FastAPI + Next.js + a database; this keeps its ideas, an agent tree with a boss and helpers, with fewer parts that can break.)
 - **Levels, matching the deck's parts:** 1 One agent · 2 Give it structure · 3 Build a team · 4 Add a check loop.
 - **Key handling:** the key stays in that browser tab (optional "remember on this device"), is sent only to Google's API, and is never in a share link.
-- **Lab state:** L1a done (engine, presets, 24 engine tests green). Next: L1b the page and practice mode, then L1c Gemini mode, then L1d the recorded Game Night run. Details: `lab/README.md`.
+- **Lab state:** L1b done: the page is live and every level and preset runs in practice mode with the network off (checked with real clicks at 1440x900 and on a 390x844 phone, no console errors). Practice replies are labeled samples until L1d records a real run. Next: L1c Gemini mode, then L1d the recorded Game Night run. Details and how to present it: `lab/README.md`.
+- **What the lab looks like (for the deck's lab pictures, I1):** top bar "ExplorAI · Meeting 6 / Agent Lab" with a mode chip ("Practice mode" or "Gemini · model") and "Add a Gemini key"; four level buttons (1 One agent, 2 Give it structure, 3 Build a team, 4 Add a check loop); "Your team" tree with role badges (Lead, Helper, Checker, Agent), solid arrows down to helpers, a dashed loop to the checker; the selected agent's card (Name, Look, Job, then "The six parts" and "What it sees"); the Task box with Run and Stop, and "Messages" as a group chat labeled like "Event Lead → Flyer Writer · job".
 - **Game Night preset (matches the deck):** Event Lead gives jobs to Flyer Writer, Caption Writer, and Snack Planner; Flyer Checker grades the flyer on "Has the day, time, and room", "Under 40 words", "Ends with one clear thing to do", max 3 rounds. Event: this Friday, 5 to 7 pm, CIS A-204 (same as the deck's sample).
 
 ## Decisions made overnight
@@ -80,6 +81,8 @@ What each slide is for, the shared words, and the design bar: `plan.md`. The lab
 - Deck back key undoes one press at a time (hides the last reveal on the slide, and only leaves the slide when nothing is revealed), as plan.md asks. Meeting 5's back jumped to the previous slide fully built. (Sam's agents, 2026-10-27)
 - The hook flyer and the steering example on slides 8, 9, and 11 use a sample event (Friday, 5-7pm, CIS A-204). Integration (I1) swaps the hook's flyer for the recorded run's flyer; the teaching examples can keep the sample. (Sam's agents, 2026-10-27)
 - Lab: each preset grows with the levels (1 one agent with a name and job, 2 the same agent with all six parts, 3 a lead with three helpers, 4 plus a checker). Until a student edits the team, switching levels loads that level's version; after an edit, switching levels keeps the student's team. (Sam's agents, lab track, 2026-10-27)
+- Lab: the key dialog adds a third line, "Google's terms say you must be 18 or older to use the Gemini API. Under 18? Use practice mode." (the facts file quotes the terms; Cole or Sam can drop it). It also tells students to sign in with a personal Google account. (Sam's agents, lab track, 2026-10-27)
+- Lab: practice mode replays a recorded run only when the team and task match it exactly; any edit gets labeled sample replies, so a student never sees old replies that ignore their change. (Sam's agents, lab track, 2026-10-27)
 - Lab: the checker's message includes the word count the page counted, so "Under 40 words" is graded on a real count rather than the model's guess. (Sam's agents, lab track, 2026-10-27)
 - Shares slide stays in v1 as a frame with a visible "Item pending" line, so D2 can fill it from the facts file. If it is still pending at 13:00, cut it, per plan.md. (Sam's agents, 2026-10-27)
 - Deck steps: one press can now show several things at once (elements that share a `data-build-in` number), and each slide carries `data-step` so a module can move or change between presses. The presenter view's "Next press" labels follow the presses. Back still undoes exactly one press. (Sam's agents, deck D2, 2026-10-27)

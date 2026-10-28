@@ -178,6 +178,13 @@ export function checkTeam(team, limits = DEFAULT_LIMITS) {
   const topList = tops(team || { agents: [] });
   if (agents.length && !topList.length) problems.push({ message: 'The team needs one agent at the top.' });
   if (topList.length > 1) problems.push({ message: `Only one agent can be at the top, and this team has ${topList.length}: ${topList.map(a => a.name).join(', ')}.` });
+  const seenNames = new Map();
+  for (const a of agents) {
+    const k = a.name.trim().toLowerCase();
+    if (!k) { problems.push({ message: 'Every agent needs a name.' }); break; }
+    if (seenNames.has(k)) { problems.push({ message: `Two agents are named ${a.name.trim()}. Give each one its own name, so jobs and reports reach the right one.` }); break; }
+    seenNames.set(k, a);
+  }
   if (agents.length > L.maxAgents) {
     problems.push({ limit: 'maxAgents', value: L.maxAgents, message: `This team has ${agents.length} agents. The lab's limit is ${L.maxAgents} agents per team, so remove one and run again.` });
   }
