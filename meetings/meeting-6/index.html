@@ -350,6 +350,8 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 .lp-btn{flex:none;font-size:22px;font-weight:700;line-height:1.2;white-space:nowrap;color:var(--ink);border-radius:999px;padding:10px 18px;box-shadow:inset 0 0 0 1.5px #DCE6C0}
 .lp-btn.run{color:#fff;background:var(--ink);box-shadow:0 12px 24px -14px rgba(63,90,42,.9)}
 .lp-btn.stop{color:rgba(63,90,42,.4)}
+.lp-btn.lp-ex{position:absolute;top:10px;right:12px;font-size:17px;padding:4px 12px;background:#FFFEFB}
+.lp-btn.walk{color:var(--accent);box-shadow:inset 0 0 0 1.5px #F2C1D6}
 .lp-tool{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;font-size:22px;font-weight:700;line-height:1.2;white-space:nowrap;color:var(--ink);background:#fff;border-radius:14px;padding:8px 10px;box-shadow:inset 0 0 0 1.5px #DCE6C0}
 .lp-tool.off{color:rgba(63,90,42,.4)}
 .lp-look{display:flex;align-items:center;gap:8px}
@@ -862,7 +864,7 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 <svg class="lp-wires" viewBox="0 0 1080 600" aria-hidden="true"><path d="M327,340 L327,380"/></svg>
 <div class="lp-you" style="left:327px;top:314px">You</div>
 <div class="lp-node sel" style="left:327px;top:432px;width:268px"><em>Agent</em><span class="em">📝</span><p><b>Flyer Writer</b><small>Writes the game night flyer.</small></p></div>
-<div class="lp-f lp-hud"><div class="lp-brand"><small>ExplorAI · Meeting 6</small><b>Agent Lab</b></div><div class="lp-steps"><span class="on"><i>1</i>One agent</span><i>2</i><i>3</i><i>4</i></div><div class="lp-note"><b>Level 1</b><p>Flyer Writer only has a name and a one-line job.</p></div></div>
+<div class="lp-f lp-hud"><div class="lp-brand"><small>ExplorAI · Meeting 6</small><b>Agent Lab</b></div><div class="lp-steps"><span class="on"><i>1</i>One agent</span><i>2</i><i>3</i><i>4</i></div><div class="lp-note"><b>Level 1</b><p>Flyer Writer only has a name and a one-line job.</p><span class="lp-btn lp-ex">See an example</span></div></div>
 <div class="lp-tools"><span class="lp-chip">🎲 Game Night ▾</span><span class="lp-chip mode">Practice mode</span><span class="lp-chip">Add a Gemini key</span></div>
 <div class="lp-f lp-panel"><div class="lp-ph"><span class="em">📝</span><em>AGENT</em><b>Flyer Writer</b><span class="x">×</span></div>
 <div class="lp-fld"><span>Name</span><p class="lp-in">Flyer Writer</p></div>
@@ -908,7 +910,7 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 <svg class="lp-wires" viewBox="0 0 1080 650" style="height:650px" aria-hidden="true"><path d="M312,360 L312,400"/></svg>
 <div class="lp-you" style="left:312px;top:334px">You</div>
 <div class="lp-node sel" style="left:312px;top:452px;width:268px"><em>Agent</em><span class="em">📝</span><p><b>Flyer Writer</b><small>Writes the game night flyer.</small></p></div>
-<div class="lp-f lp-hud"><div class="lp-brand"><small>ExplorAI · Meeting 6</small><b>Agent Lab</b></div><div class="lp-steps"><i>1</i><span class="on"><i>2</i>Give it structure</span><i>3</i><i>4</i></div><div class="lp-note"><b>Level 2</b><p>Flyer Writer now has all six parts.</p></div></div>
+<div class="lp-f lp-hud"><div class="lp-brand"><small>ExplorAI · Meeting 6</small><b>Agent Lab</b></div><div class="lp-steps"><i>1</i><span class="on"><i>2</i>Give it structure</span><i>3</i><i>4</i></div><div class="lp-note"><b>Level 2</b><p>Flyer Writer now has all six parts.</p><span class="lp-btn lp-ex">See an example</span></div></div>
 <div class="lp-tools"><span class="lp-chip">🎲 Game Night ▾</span><span class="lp-chip mode">Practice mode</span><span class="lp-chip">Add a Gemini key</span></div>
 <div class="lp-f lp-panel" style="width:440px"><div class="lp-ph"><span class="em">📝</span><em>AGENT</em><b>Flyer Writer</b><span class="x">×</span></div>
 <div class="lp-row"><span>Name</span><p class="lp-in">Flyer Writer</p></div>
@@ -1068,12 +1070,12 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 <div class="lp-node" style="left:925px;top:365px;width:236px"><em>Helper</em><span class="em">🍿</span><p><b>Snack Planner</b></p><span class="ok">✓ Done</span></div>
 <div class="lp-f lp-hud" style="width:450px"><div class="lp-brand"><small>ExplorAI · Meeting 6</small><b>Agent Lab</b></div><div class="lp-steps"><i>1</i><i>2</i><i>3</i><span class="on"><i>4</i>Add a check loop</span></div><div class="lp-tiles"><span>Agents<b>5</b></span><span class="m">Messages<b>12</b></span><span class="r">Check rounds<b>3</b></span><span class="c">Asked the AI<b>10</b></span></div></div>
 <div class="lp-tools"><span class="lp-chip">🎲 ▾</span><span class="lp-chip mode">Practice mode</span><span class="lp-chip">Add a Gemini key</span></div>
-<div class="lp-f lp-dock" style="left:140px;width:800px"><div class="lp-drow"><span class="lp-tool">🙋 + Helper</span><span class="lp-tool">🧭 + Lead above</span><span class="lp-tool off">✅ + Checker</span><span class="lp-tool">🗑️ Remove</span></div><div class="lp-drow"><p class="lp-task">Plan a board game night for ExplorAI: this Friday, 5 to 7 pm, in CIS A-204. …</p><span class="lp-btn run">Run</span><span class="lp-btn stop">Stop</span><span class="lp-btn">Messages</span></div></div>
+<div class="lp-f lp-dock" style="left:140px;width:800px"><div class="lp-drow"><span class="lp-tool">🙋 + Helper</span><span class="lp-tool">🧭 + Lead above</span><span class="lp-tool off">✅ + Checker</span><span class="lp-tool">🗑️ Remove</span></div><div class="lp-drow"><p class="lp-task">Plan a board game night for ExplorAI: this Friday, 5 to 7 pm, in CIS A-204. …</p><span class="lp-btn run">Run</span><span class="lp-btn stop">Stop</span><span class="lp-btn">Messages</span><span class="lp-btn walk">Walk through</span></div></div>
 </div>
 </div>
 <div class="side-col">
 <div class="trow"><div class="qr sm"><img class="labqr" alt="QR code: Meeting 6 Agent Lab" style="width:140px;height:140px"></div><div class="timer clock__digits" data-seconds="600">10:00</div></div>
-<div class="sticky" style="--r:-1deg"><span class="tag">Do</span><p>Start from Game Night, or build your own team. To add a checker: click an agent and press +&nbsp;Checker. The checker grades that agent’s Done when lines, so give it 2 or 3. Run it and read the messages.</p></div>
+<div class="sticky" style="--r:-1deg"><span class="tag">Do</span><p>Start from Game Night, or build your own team. To add a checker: click an agent and press +&nbsp;Checker. The checker grades that agent’s Done when lines, so give it 2 or 3. Run it, then press Walk through to watch each message go from agent to agent.</p></div>
 <div class="sticky p" style="--r:.9deg"><span class="tag">Challenge</span><p><b>Make the checker send a draft back at least once.</b></p></div>
 </div>
 </section>
