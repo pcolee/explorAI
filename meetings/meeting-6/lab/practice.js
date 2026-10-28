@@ -5,7 +5,7 @@
 import { buildInstructions, byId, sanitizeTeam } from './engine.js';
 
 // Only files that exist (a missing one would log a 404 in the console).
-export const RECORDING_FILES = [];
+export const RECORDING_FILES = ['game-night-run.json'];
 
 const SAMPLE = 'Sample reply (practice mode).';
 
