@@ -226,11 +226,13 @@ export function createGeminiAdapter({
       let boosted = false;    // one retry with a bigger cap after an empty MAX_TOKENS reply
       let timeouts = 0;
       let tokenBoost = 1;
+      const dropThinking = new Set(); // models tried without thinking in this call, after a 400
+      const dropSchema = new Set();   // models tried without the JSON schema in this call, after a 400
       for (;;) {
         if (signal?.aborted) throw abortError();
         const m = model();
         if (!m) throw new GeminiError('nomodel');
-        const opts = { thinking: !noThinking.has(m), schema: !noSchema.has(m), tokens: Math.round(((req.maxOutputTokens || 900) + (EXTRA_TOKENS[m] || 0)) * tokenBoost) };
+        const opts = { thinking: !noThinking.has(m) && !dropThinking.has(m), schema: !noSchema.has(m) && !dropSchema.has(m), tokens: Math.round(((req.maxOutputTokens || 900) + (EXTRA_TOKENS[m] || 0)) * tokenBoost) };
         await pace(signal, req.onWait);
         const r = await send(`${API}/models/${encodeURIComponent(m)}:generateContent`, {
           method: 'POST',
@@ -251,9 +253,14 @@ export function createGeminiAdapter({
           const cand = data?.candidates?.[0];
           const parts = Array.isArray(cand?.content?.parts) ? cand.content.parts : [];
           const text = parts.filter(p => !p.thought && typeof p.text === 'string').map(p => p.text).join('').trim();
-          if (text) return { text, model: data?.modelVersion || m, finishReason: cand?.finishReason, usage: data?.usageMetadata };
+          // A setting dropped after a 400 is remembered only once a request without it works.
+          if (dropThinking.has(m)) noThinking.add(m);
+          if (dropSchema.has(m)) noSchema.add(m);
+          // A JSON reply cut off at the length cap can't be read, so it gets one retry with a bigger cap.
+          const cut = cand?.finishReason === 'MAX_TOKENS';
+          if (text && !(cut && req.schema && !boosted)) return { text, model: data?.modelVersion || m, finishReason: cand?.finishReason, usage: data?.usageMetadata };
           const finish = cand?.finishReason || (data?.promptFeedback?.blockReason ? 'BLOCKED' : '');
-          if (finish === 'MAX_TOKENS' && !boosted) { boosted = true; tokenBoost = 2; continue; }
+          if (cut && !boosted) { boosted = true; tokenBoost = 2; continue; }
           if (finish === 'MAX_TOKENS') throw new GeminiError('cutoff');
           if (/SAFETY|BLOCK|PROHIBITED|RECITATION|SPII/i.test(finish)) throw new GeminiError('blocked');
           tries += 1;
@@ -273,8 +280,9 @@ export function createGeminiAdapter({
           }
           if (rateWaits < 3) {
             rateWaits += 1;
+            // Lower the pace only when Google names the per-minute limit; a bare 429 just waits.
             if (info.perMinuteLimit) limitPerMinute = Math.max(1, Math.min(limitPerMinute, info.perMinuteLimit));
-            else limitPerMinute = Math.max(2, Math.min(limitPerMinute, starts.length - 1));
+            else if (starts.length >= 6) limitPerMinute = Math.max(6, Math.min(limitPerMinute, starts.length - 1));
             const sec = Math.min(90, Math.max(1, Math.ceil(info.retryDelay ?? 10)));
             req.onWait?.(sec, 'rate');
             await sleep(sec * 1000, signal);
@@ -291,8 +299,13 @@ export function createGeminiAdapter({
 
         if (res.status === 400) {
           // An optional setting the model does not take: retry once without it, and remember.
-          if (opts.thinking && THINKING[m]) { noThinking.add(m); continue; }
-          if (req.schema && opts.schema) { noSchema.add(m); continue; }
+          // Drop the setting the message names first; otherwise the schema, then thinking.
+          const canThinking = opts.thinking && THINKING[m];
+          const canSchema = req.schema && opts.schema;
+          const thinkingFirst = /think/i.test(info.message || '') || !canSchema;
+          if (canThinking && thinkingFirst) { dropThinking.add(m); continue; }
+          if (canSchema) { dropSchema.add(m); continue; }
+          if (canThinking) { dropThinking.add(m); continue; }
           throw new GeminiError('request', { status: 400, retryable: false, detail: info.message.slice(0, 160) });
         }
 

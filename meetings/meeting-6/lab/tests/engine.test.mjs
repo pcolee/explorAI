@@ -426,3 +426,37 @@ test('word count', () => {
   assert.equal(wordCount('Game night! Friday, 6-8 pm in CIS A-204.'), 8);
   assert.equal(wordCount(''), 0);
 });
+
+// Fixes from the overnight lab review (2026-10-28).
+
+test('the check budget grows with the Done when list; a lead\'s revision gets the combine budget', async () => {
+  const t = gameTeam({ checker: true });
+  const flyer = t.agents.find(a => a.checkerId);
+  flyer.doneWhen = Array.from({ length: 8 }, (_, i) => `Line ${i + 1}`);
+  const a = fake(req => {
+    if (req.kind === 'plan') return allJobs;
+    if (req.kind === 'check') return JSON.stringify({ checks: req.meta.items.map(item => ({ item, pass: true, note: 'ok' })), feedback: 'Looks good' });
+    return 'draft';
+  });
+  await runTeam(t, 'T', { adapter: a });
+  assert.equal(a.calls.find(c => c.kind === 'check').maxOutputTokens, 200 + 110 * 8);
+  const lead = newAgent({ id: 'L', name: 'Lead', doneWhen: ['Has a title'] });
+  const helper = newAgent({ id: 'H', name: 'Helper', parentId: 'L' });
+  const chk = newAgent({ id: 'C', name: 'Checker' });
+  lead.checkerId = 'C';
+  let round = 0;
+  const b = fake(req => {
+    if (req.kind === 'plan') return JSON.stringify({ note: 'n', jobs: [{ helper: 'Helper', job: 'j' }] });
+    if (req.kind === 'check') { round += 1; return JSON.stringify({ checks: [{ item: 'Has a title', pass: round > 1, note: 'x' }], feedback: 'Add a title' }); }
+    return 'work';
+  });
+  await runTeam(team([lead, helper, chk]), 'T', { adapter: b });
+  assert.equal(b.calls.find(c => c.kind === 'revise').maxOutputTokens, b.calls.find(c => c.kind === 'combine').maxOutputTokens);
+});
+
+test('an adapter error names the agent whose request failed', async () => {
+  const a = fake(req => { if (req.meta.agentName === 'X') { const e = new Error('raw'); e.friendly = 'busy'; e.kind = 'server'; throw e; } return 'ok'; });
+  const ev = collect();
+  await runTeam(team([newAgent({ id: 'x', name: 'X' })]), 'T', { adapter: a, onEvent: ev.onEvent });
+  assert.equal(ev.of('error')[0].agentId, 'x');
+});

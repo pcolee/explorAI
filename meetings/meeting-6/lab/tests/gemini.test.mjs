@@ -273,3 +273,46 @@ test('readError and parseDelay read Google\'s error details', () => {
   assert.equal(classify(readError(403, { error: { status: 'PERMISSION_DENIED', message: 'Method doesn\'t allow unregistered callers' } })), 'nokey');
   assert.equal(classify(readError(500, null)), null);
 });
+
+// Fixes from the overnight lab review (2026-10-28).
+
+test('a bare 429 waits but does not lower the pace for the rest of the session', async () => {
+  const h = harness((c, n) => (n === 1 ? err(429, 'RESOURCE_EXHAUSTED', 'busy') : ok('done')));
+  const before = h.adapter.paceLimit;
+  await h.adapter.generate(req());
+  assert.equal(h.adapter.paceLimit, before);
+  const t0 = h.clock.t;
+  for (let i = 0; i < 8; i += 1) await h.adapter.generate(req());
+  assert.ok(h.clock.t - t0 < 60000, `8 more calls took ${h.clock.t - t0} ms on the fake clock`);
+});
+
+test('a JSON reply cut off at the length cap retries once with twice the room', async () => {
+  const cut = { status: 200, body: { candidates: [{ finishReason: 'MAX_TOKENS', content: { parts: [{ text: '{"checks":[{"item":"A","pa' }] } }] } };
+  const h = harness((c, n) => (n === 1 ? cut : ok('{"checks":[]}')));
+  const r = await h.adapter.generate(req({ schema: { type: 'object' }, maxOutputTokens: 600 }));
+  assert.equal(r.text, '{"checks":[]}');
+  assert.equal(h.calls[1].body.generationConfig.maxOutputTokens, 1200);
+  const plain = harness(() => cut);
+  assert.equal((await plain.adapter.generate(req())).text, '{"checks":[{"item":"A","pa', 'plain text that was cut is still shown');
+  assert.equal(plain.calls.length, 1);
+});
+
+test('a 400 caused by the schema drops the schema first and leaves thinking on', async () => {
+  const schema = { type: 'object' };
+  const h = harness(c => (c.body.generationConfig.responseJsonSchema ? err(400, 'INVALID_ARGUMENT', 'Invalid JSON payload: responseJsonSchema') : ok('{}')));
+  await h.adapter.generate(req({ schema }));
+  assert.equal(h.calls.length, 2);
+  assert.ok(h.calls[1].body.generationConfig.thinkingConfig, 'thinking stays on');
+  await h.adapter.generate(req());
+  assert.ok(h.calls[2].body.generationConfig.thinkingConfig, 'a later plain call keeps thinking');
+  await h.adapter.generate(req({ schema }));
+  assert.equal(h.calls.length, 4, 'a later schema call goes straight without the schema');
+});
+
+test('a setting is not remembered as unsupported when the retry without it also fails', async () => {
+  let n = 0;
+  const h = harness(c => { n += 1; return n <= 2 ? err(400, 'INVALID_ARGUMENT', 'Thinking level is wrong') : ok('fine'); });
+  await assert.rejects(h.adapter.generate(req()), e => e.kind === 'request');
+  await h.adapter.generate(req());
+  assert.ok(h.calls.at(-1).body.generationConfig.thinkingConfig, 'thinking was not turned off for good');
+});

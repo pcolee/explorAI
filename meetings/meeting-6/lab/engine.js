@@ -483,13 +483,14 @@ export async function runTeam(team, task, { adapter, limits = {}, signal, onEven
           system: instructions[agent.id],
           messages: conv.map(m => ({ ...m })),
           schema,
-          maxOutputTokens: MAX_TOKENS[kind] || 900,
+          maxOutputTokens: meta.maxTokens || MAX_TOKENS[kind] || 900,
           signal: inner.signal,
           onWait: (seconds, reason) => emit({ type: 'waiting', agentId: agent.id, seconds, reason }),
           meta: { agentId: agent.id, agentName: agent.name, job: agent.job, kind, round, task, ...meta },
         });
       } catch (err) {
         if (inner.signal.aborted || err?.name === 'AbortError') throw new StopError();
+        if (err && typeof err === 'object' && !err.agentId) err.agentId = agent.id;
         throw err;
       }
       throwIfStopped();
@@ -517,7 +518,7 @@ export async function runTeam(team, task, { adapter, limits = {}, signal, onEven
         `Done when (grade every line, in order):\n${items.map((x, i) => `${i + 1}. ${x}`).join('\n')}`,
         'For each line give item (the line exactly), pass (true or false), and note (one short sentence). Then feedback: exactly what to fix, or "Looks good" if every line passes.',
       ].filter(Boolean).join('\n\n');
-      const text = await call(checker, 'check', prompt, { schema: checkSchema(items), round, meta: { items, checkedName: agent.name } });
+      const text = await call(checker, 'check', prompt, { schema: checkSchema(items), round, meta: { items, checkedName: agent.name, maxTokens: Math.max(MAX_TOKENS.check, 200 + 110 * items.length) } });
       stats.checkRounds += 1;
       const graded = normalizeChecks(parseJSON(text), items);
       emit({ type: 'check-result', agentId: agent.id, checkerId: checker.id, round, maxRounds, ...graded });
@@ -538,7 +539,7 @@ export async function runTeam(team, task, { adapter, limits = {}, signal, onEven
       stats.sendBacks += 1;
       const notes = graded.checks.map(c => `- ${c.pass ? 'PASS' : 'FAIL'} ${c.item}${c.note ? `: ${c.note}` : ''}`).join('\n');
       const revisePrompt = `Notes from ${checker.name} (round ${round} of ${maxRounds}):\n${notes}${graded.feedback ? `\n\nWhat to fix: ${graded.feedback}` : ''}\n\nRevise your work so every line passes. Reply with the full new version only.`;
-      current = await call(agent, 'revise', revisePrompt, { round: round + 1 });
+      current = await call(agent, 'revise', revisePrompt, { round: round + 1, meta: helpersOf(team, agent.id).length ? { maxTokens: MAX_TOKENS.combine } : {} });
       message({ from: agent.id, to: checker.id, kind: 'revise', round: round + 1, maxRounds, text: current });
     }
     return current;
@@ -602,7 +603,7 @@ export async function runTeam(team, task, { adapter, limits = {}, signal, onEven
       return finish('limit', { limit: err.limit, message: err.message });
     }
     const friendly = err?.friendly || `Something went wrong: ${err?.message || err}. Press Retry, or switch to practice mode.`;
-    emit({ type: 'error', message: friendly, kind: err?.kind || 'unknown', retryable: err?.retryable !== false });
+    emit({ type: 'error', message: friendly, kind: err?.kind || 'unknown', retryable: err?.retryable !== false, agentId: err?.agentId });
     return finish('error', { error: friendly, errorKind: err?.kind || 'unknown' });
   } finally {
     if (signal) signal.removeEventListener('abort', onAbort);
