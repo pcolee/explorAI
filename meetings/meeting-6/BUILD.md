@@ -2,7 +2,7 @@
 
 Live board for the Meeting 6 deck and agent lab while Sam's agents build them overnight (2026-10-27 to 2026-10-28). It is rewritten in place and pushed with every milestone, so the top of this file is always the current state. History goes in commit messages and `docs/agent-log.md`.
 
-**Last update:** 2026-10-27 23:25 PDT · **Phase:** deck v1 live (all 24 slides, notes, timers, presenter hooks) · **Next push:** deck D2 (Shares item, bespoke motion for the window, team tree, group chat, and checklist)
+**Last update:** 2026-10-27 23:35 PDT · **Phase:** deck v1 live (all 24 slides, notes, timers, presenter hooks); lab L1a engine pushed · **Next push:** deck D2 (Shares item, bespoke motion for the window, team tree, group chat, and checklist); lab L1b (the page and practice mode)
 
 Deck v1: https://pcolee.github.io/explorAI/meetings/meeting-6/ · notes: https://pcolee.github.io/explorAI/meetings/meeting-6/notes.html
 
@@ -18,7 +18,7 @@ Deck v1: https://pcolee.github.io/explorAI/meetings/meeting-6/ · notes: https:/
 | What | Files | Who | Since |
 |---|---|---|---|
 | Deck D2 (next): Shares item, bespoke modules | `meetings/meeting-6/index.html`, `notes.html` | Sam's agents (deck track) | v1 pushed 2026-10-27 23:25 |
-| Agent lab | `meetings/meeting-6/lab/` | Sam's agents (lab track) | 2026-10-27 23:05 |
+| Agent lab L1b (next): the page and practice mode | `meetings/meeting-6/lab/` | Sam's agents (lab track) | L1a engine pushed 2026-10-27 23:35 |
 | Docs | this file, Meeting 6 row in `docs/status.md`, Sam's entry in `docs/agent-log.md` | Sam's agents | 2026-10-27 23:05 |
 
 ## Requests
@@ -70,6 +70,8 @@ What each slide is for, the shared words, and the design bar: `plan.md`. The lab
 - **Stack:** one static page, no build step and no server. It calls the Gemini API straight from the browser with the student's own free key from Google AI Studio. Practice mode runs the same steps with prewritten replies, so the demo works with no key and no Wi-Fi. (Sam's 2025 demo used FastAPI + Next.js + a database; this keeps its ideas, an agent tree with a boss and helpers, with fewer parts that can break.)
 - **Levels, matching the deck's parts:** 1 One agent · 2 Give it structure · 3 Build a team · 4 Add a check loop.
 - **Key handling:** the key stays in that browser tab (optional "remember on this device"), is sent only to Google's API, and is never in a share link.
+- **Lab state:** L1a done (engine, presets, 24 engine tests green). Next: L1b the page and practice mode, then L1c Gemini mode, then L1d the recorded Game Night run. Details: `lab/README.md`.
+- **Game Night preset (matches the deck):** Event Lead gives jobs to Flyer Writer, Caption Writer, and Snack Planner; Flyer Checker grades the flyer on "Has the day, time, and room", "Under 40 words", "Ends with one clear thing to do", max 3 rounds. Event: this Friday, 5 to 7 pm, CIS A-204 (same as the deck's sample).
 
 ## Decisions made overnight
 
@@ -77,6 +79,8 @@ What each slide is for, the shared words, and the design bar: `plan.md`. The lab
 - Lab is a static page with bring-your-own Gemini key plus practice mode, chosen for reliability tomorrow. (Sam, 2026-10-27)
 - Deck back key undoes one press at a time (hides the last reveal on the slide, and only leaves the slide when nothing is revealed), as plan.md asks. Meeting 5's back jumped to the previous slide fully built. (Sam's agents, 2026-10-27)
 - The hook flyer and the steering example on slides 8, 9, and 11 use a sample event (Friday, 5-7pm, CIS A-204). Integration (I1) swaps the hook's flyer for the recorded run's flyer; the teaching examples can keep the sample. (Sam's agents, 2026-10-27)
+- Lab: each preset grows with the levels (1 one agent with a name and job, 2 the same agent with all six parts, 3 a lead with three helpers, 4 plus a checker). Until a student edits the team, switching levels loads that level's version; after an edit, switching levels keeps the student's team. (Sam's agents, lab track, 2026-10-27)
+- Lab: the checker's message includes the word count the page counted, so "Under 40 words" is graded on a real count rather than the model's guess. (Sam's agents, lab track, 2026-10-27)
 - Shares slide stays in v1 as a frame with a visible "Item pending" line, so D2 can fill it from the facts file. If it is still pending at 13:00, cut it, per plan.md. (Sam's agents, 2026-10-27)
 
 ## Needs a person before 14:00

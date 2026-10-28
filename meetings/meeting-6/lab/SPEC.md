@@ -76,7 +76,7 @@ Replays a recorded real run for each preset's default task, with short delays so
 
 ## Done means
 
-- `node --test meetings/meeting-6/lab/tests/` passes: single agent, structured agent, delegation with valid and broken plans, nested helpers, check loop that passes early and one that hits the round cap, call limit, Stop, 429 wait then success, model fallback, 400 retry without the optional setting, bad key message.
+- `node --test meetings/meeting-6/lab/tests/*.test.mjs` passes (Node 22 needs the glob): single agent, structured agent, delegation with valid and broken plans, nested helpers, check loop that passes early and one that hits the round cap, call limit, Stop, 429 wait then success, model fallback, 400 retry without the optional setting, bad key message.
 - `tests/live.mjs` passes against the real API: one agent, a team of a lead and three helpers, and a check loop with at least one send-back.
 - In Chrome, with real clicks and key presses: every level and every preset runs end to end in practice mode with the network off, and in Gemini mode with a real key. Same on a 390px phone viewport. No console errors.
 - `examples/game-night-run.json` holds a real run: model, date, the messages, and counts of agents, messages, and check rounds.
