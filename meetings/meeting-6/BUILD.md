@@ -2,7 +2,7 @@
 
 Live board for the Meeting 6 deck and agent lab while Sam's agents build them overnight (2026-10-27 to 2026-10-28). It is rewritten in place and pushed with every milestone, so the top of this file is always the current state. History goes in commit messages and `docs/agent-log.md`.
 
-**Last update:** 2026-10-28 00:15 PDT · **Phase:** deck D2: all 11 bespoke modules, Shares, setup, and the three lab pictures polished; full walk forward and back and a reduced-motion walk clean; lab L1 done (page, practice mode, Gemini mode, recorded Game Night run) · **Next push:** deck: the recorded run's text and counts on the hook, group chat, and checklist; lab reviews and fixes (L2)
+**Last update:** 2026-10-28 00:30 PDT · **Phase:** deck D2 done: every slide polished, the hook, group chat, and checklist use the recorded Game Night run's real text and counts, full walks clean (forward and back, reduced motion); lab L1 done (page, practice mode, Gemini mode, recorded run) · **Next push:** deck reviews (design, copy, contract), then D3 fixes; lab reviews and fixes (L2)
 
 Deck v1: https://pcolee.github.io/explorAI/meetings/meeting-6/ · notes: https://pcolee.github.io/explorAI/meetings/meeting-6/notes.html
 
@@ -17,7 +17,7 @@ Deck v1: https://pcolee.github.io/explorAI/meetings/meeting-6/ · notes: https:/
 
 | What | Files | Who | Since |
 |---|---|---|---|
-| Deck D2: modules, Shares, setup, lab pictures done; next: the recorded run on slides 4, 19, 20 | `meetings/meeting-6/index.html`, `notes.html`, `plan.md` | Sam's agents (deck track) | 2026-10-27 23:25 |
+| Deck: D2 done; next the deck reviews (DR) and fixes (D3) | `meetings/meeting-6/index.html`, `notes.html`, `plan.md` | Sam's agents (deck track) | 2026-10-27 23:25 |
 | Agent lab: L1 done (page, practice, Gemini, recorded run); next the lab reviews and fixes (LR, L2) | `meetings/meeting-6/lab/` | Sam's agents (lab track) | L1d pushed 2026-10-28 00:10 |
 | Docs | this file, Meeting 6 row in `docs/status.md`, Sam's entry in `docs/agent-log.md` | Sam's agents | 2026-10-27 23:05 |
 
@@ -42,7 +42,7 @@ What each slide is for, the shared words, and the design bar: `plan.md`. The lab
 | 1 | cover | Under the Hood · How AI agents work · Wed, Oct 28 · 2-3pm · CIS A-204 | 2:00 | v1 |
 | 2 | signin | Title + sign-in QR (routine) | 2:01 | v1 (QR reused from Meeting 5, decoded) |
 | 3 | shares | explorAI Shares: one verified agents news item, with source | 2:04 | polished, 3 presses: "Google upgrades the agent you can try free in AI Studio" (Antigravity agent, Sept 17; free tier; Playground › Agents), sources on the slide, QR to aistudio.google.com (decoded) |
-| 4 | hook | A finished game night flyer. Guess how many AIs made it, then reveal the team, messages, and check rounds (numbers from a real lab run) | 2:07 | polished, 3 presses (flyer alone, then the guess, then the team of 5); sample flyer, no counts: integration pending the recorded run |
+| 4 | hook | A finished game night flyer. Guess how many AIs made it, then reveal the team, messages, and check rounds (numbers from a real lab run) | 2:07 | polished, 3 presses (flyer alone, then the guess, then the team of 5 with "12 messages" and "3 check rounds"); the flyer and counts are the recorded run's |
 | 5 | part1 | Part 1 · From chat to agent | 2:10 | v1 |
 | 6 | recall-chat | Meeting 3's group chat: part of the picture vs. everything | 2:10 | polished, 2 presses (Meeting 3's phone markup, last message then the whole chat) |
 | 7 | recall-window | The context window card, filled layer by layer. "It can't read what you didn't put in the window." | 2:12 | polished, 6 presses (empty slots fill one layer per press; reply tokens appear one by one) |
@@ -57,8 +57,8 @@ What each slide is for, the shared words, and the design bar: `plan.md`. The lab
 | 16 | build2 | Build 2: add structure, run again, compare | 2:28 | polished, timer 5:00; lab picture at level 2 (The six parts, What it sees) |
 | 17 | part3 | Part 3 · Build a team | 2:33 | v1 |
 | 18 | team | Who's in charge: jobs go down, reports come up, the boss makes the final call | 2:33 | polished, 4 presses (dots travel the tree lines: task down, jobs down, reports up, answer up; nodes ping on arrival; the rule in play glows) |
-| 19 | texting | What the agents say to each other (Meeting 3 style group chat) | 2:36 | polished, 6 presses ("Game Night Team" chat on Meeting 3's phone, one message per press, kinds named on the left); worked example text, integration pending the recorded run |
-| 20 | checkloop | "Done when": a checklist that sends work back, with a round limit | 2:38 | polished, 4 presses (draft above the checklist, marks stamp in, notes go back, round 2 draft passes, round dots 1 then 2 of 3); integration pending the recorded run |
+| 19 | texting | What the agents say to each other (Meeting 3 style group chat) | 2:36 | polished, 8 presses ("Game Night Team" chat on Meeting 3's phone: the lead's three jobs, then one real message per press through 3 check rounds to the lead's answer; kinds named on the left) |
+| 20 | checkloop | "Done when": a checklist that sends work back, with a round limit | 2:38 | polished, 6 presses (the run's 3 drafts at 51, 40, 38 words above the checklist; marks stamp in per round; the checker's real notes; round dots to 3 of 3) |
 | 21 | build3 | Build 3: make a team and add a checker | 2:40 | polished, timer 10:00; lab picture at level 4 (team tree with the checker loop); the how-to moved into a Do note |
 | 22 | wrong | When agents go wrong: Meeting 4's police tip, and the limits that prevent it | 2:50 | v1 (Meeting 4's wording and sources) |
 | 23 | takeaway | One thing to remember | 2:54 | v1 |
@@ -89,10 +89,9 @@ What each slide is for, the shared words, and the design bar: `plan.md`. The lab
 - Lab: the checker's message includes the word count the page counted, so "Under 40 words" is graded on a real count rather than the model's guess. (Sam's agents, lab track, 2026-10-27)
 - Shares slide stays in v1 as a frame with a visible "Item pending" line, so D2 can fill it from the facts file. If it is still pending at 13:00, cut it, per plan.md. (Sam's agents, 2026-10-27)
 - Deck steps: one press can now show several things at once (elements that share a `data-build-in` number), and each slide carries `data-step` so a module can move or change between presses. The presenter view's "Next press" labels follow the presses. Back still undoes exactly one press. (Sam's agents, deck D2, 2026-10-27)
-- The loop (slide 11), the agents' group chat (19), and the checklist (20) share one example round: draft 1 is "Game Night is back! Join ExplorAI this Friday from 5 to 7pm ... RSVP in our Discord." (42 words, no room, so it fails two lines and passes the third, as plan.md's checklist says), and draft 2 is the hook's flyer text. I1 swaps in the recorded run's text where it differs. (Sam's agents, deck D2, 2026-10-27)
-- The agents' group chat (19) shows a worked example in real message form (the lead's jobs, the draft, the checker's notes with "42 words", the fix, the pass, the lead's answer) instead of v1's placeholder bubbles; its notes say it is an example, not a recorded run. (Sam's agents, deck D2, 2026-10-28)
+- The hook (4), the agents' group chat (19), and the checklist (20) use the recorded run (`lab/examples/game-night-run.json`) word for word: its final flyer, its counts (5 agents, 12 messages between agents, 3 check rounds), the lead's three jobs, all three drafts, and the checker's marks and notes. The lead's final answer is shortened with "…" in the chat. The run took 3 rounds, so the checklist shows Round 1 to 3 and the chat has 8 presses (plan.md said 2 rounds and 6 bubbles). (Sam's agents, deck D2, 2026-10-28)
+- The loop slide (11) keeps a simpler worked example (a 42-word draft with no room, then a short draft that passes in round 2), matching plan.md's "too long, no room". Swap it for the real run's rounds if Cole wants one story throughout. (Sam's agents, deck D2, 2026-10-28)
 - plan.md and slide 18's notes now name the other terms as the facts file found them: Anthropic says orchestrator and workers, OpenAI says manager and specialists (v1 said "sub-agent"). (Sam's agents, deck D2, 2026-10-28)
-- The hook shows no message or round counts until the recorded run exists (no visible "pending" line on screen); I1 adds them from `lab/examples/game-night-run.json`. (Sam's agents, deck D2, 2026-10-27)
 - Shares uses the facts file's recommended item (A, Google's Antigravity agent upgrade, Sept 17) with the QR to aistudio.google.com, as the facts file suggests. It is 6 weeks old; the facts file's option B (Anthropic's Claude Duet, Oct 21 to 23) is newer but not free to try. Notes tell the room to try it after the meeting, since a run uses the same free quota as the lab. (Sam's agents, deck D2, 2026-10-28)
 - The lab pictures on slides 14, 16, and 21 copy the real lab's look (title and mode chip, level buttons, Your team, Task with Run and Stop). Their text uses the preset's lines with "…" where the preset is longer, so a later preset change only needs the picture text re-checked. (Sam's agents, deck D2, 2026-10-28)
 
@@ -102,4 +101,4 @@ What each slide is for, the shared words, and the design bar: `plan.md`. The lab
 - Cole or Sam: next week's (2026-11-04) topic for the thanks slide.
 - Speakers: assign who covers which part (`A` in the deck, or `?view=review`).
 - Presenter: make a Gemini key in AI Studio before the meeting and test one team run in the lab on the room's Wi-Fi. The lab was verified with an older key; a key made this week (Google calls new ones "auth keys") has not been tried.
-- The recorded lab run now exists (`lab/examples/game-night-run.json`, numbers under "Agent lab"); the hook's counts, the texting slide's messages, and the checkloop marks still need integration (stage I1).
+- Re-check slides 4, 19, and 20 if the Game Night run is re-recorded (they quote it word for word), and the lab pictures on 14, 16, and 21 if the preset text changes.

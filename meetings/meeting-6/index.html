@@ -158,6 +158,17 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 #hook .roles:not(.pending) span{animation:pop .5s cubic-bezier(.34,1.56,.64,1) backwards;animation-delay:calc(.3s + var(--j,0) * 110ms)}
 #hook .roles span:nth-child(2){--j:1}#hook .roles span:nth-child(3){--j:2}#hook .roles span:nth-child(4){--j:3}#hook .roles span:nth-child(5){--j:4}
 @keyframes flipIn{from{opacity:0;transform:rotateY(90deg) scale(.8)}}
+#hook .flyer.real .ft{font-size:54px;line-height:1.12}
+#hook .flyer.real p{font-size:30px}
+.stats{display:flex;gap:20px}
+.stat{flex:1;display:flex;align-items:center;gap:18px;background:#F5F9E8;border-radius:22px;padding:16px 22px;box-shadow:0 14px 30px -20px rgba(63,90,42,.45)}
+.stat.p{background:#FDF1F6}
+.stat b{font-family:var(--display);font-size:64px;font-weight:600;line-height:1;color:var(--ink)}
+.stat.p b{color:var(--accent)}
+.stat span{font-size:26px;line-height:1.3;color:var(--ink)}
+#hook .stats:not(.pending){animation:none}
+#hook .stats:not(.pending) .stat{animation:softIn .55s cubic-bezier(.2,.8,.2,1) .9s backwards}
+#hook .stats:not(.pending) .stat+.stat{animation-delay:1.1s}
 /* session: three turns of steering by hand. The meter counts what is sent each turn, and the earlier messages flash as they go again. */
 #stage>section#session{display:grid;grid-template-columns:1fr 500px;grid-template-rows:auto 1fr;column-gap:72px;row-gap:28px;padding:88px 128px 96px}
 #session .head{grid-column:1/3;display:flex;flex-direction:column;gap:14px}
@@ -412,9 +423,16 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 .draft{background:#fff;border-radius:26px;padding:22px 30px;display:flex;flex-direction:column;gap:8px;min-height:226px;rotate:-.5deg;box-shadow:0 26px 50px -30px rgba(63,90,42,.45),inset 0 0 0 2px rgba(242,193,214,.8)}
 .draft .dh{font-size:22px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent)}
 .draft .dt{font-size:26px;line-height:1.4;color:var(--ink)}
-#checkloop .d2.pending{display:none}
-#checkloop .draft:has(.dt.d2:not(.pending)) .d1{display:none}
-#checkloop .ck{align-self:stretch}
+#checkloop .d2.pending,#checkloop .d3.pending{display:none}
+#checkloop .draft:has(.dt.d2:not(.pending)) .d1,#checkloop .draft:has(.dt.d3:not(.pending)) .d2{display:none}
+#checkloop .ck{align-self:stretch;grid-template-columns:1fr 140px 140px 140px}
+#checkloop .notes{background:var(--card);border-radius:24px;padding:18px 26px;display:flex;flex-direction:column;gap:6px;box-shadow:0 14px 30px -18px rgba(63,90,42,.4)}
+#checkloop .notes .nh{font-size:22px;font-weight:700;color:var(--accent)}
+#checkloop .nt{font-size:28px;line-height:1.38;color:var(--ink)}
+#stage #checkloop .nt.pending{display:none}
+#checkloop .notes:has(.n2:not(.pending)) .n1,#checkloop .notes:has(.n3:not(.pending)) .n2{display:none}
+#checkloop .notes:not(:has(.nt:not(.pending))){visibility:hidden}
+#checkloop .n3{color:#2F6B1F;font-weight:700}
 .ck .marks>span{position:relative}
 .ck .marks>span::before{content:'';position:absolute;left:50%;top:50%;width:76px;height:76px;margin:-38px 0 0 -38px;border-radius:50%;box-sizing:border-box;border:2px dashed rgba(156,181,123,.55)}
 .ck .mk{position:relative}
@@ -431,6 +449,9 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 .cap .rn{font-family:var(--display);font-size:34px;font-weight:600;color:var(--ink)}
 .cap .rb,#checkloop[data-s~="3"] .cap .ra{display:none}
 #checkloop[data-s~="3"] .cap .rb{display:inline}
+.cap .rc,#checkloop[data-s~="5"] .cap .rb{display:none}
+#checkloop[data-s~="5"] .cap .rc{display:inline}
+#checkloop[data-s~="5"] .cap .dots i.r3{background:var(--accent)}
 /* texting: Meeting 3's phone holds the agents' group chat; each press adds one message and names its kind on the left */
 #texting .iphone-msgs .msg-bub{font-size:18px;line-height:1.42}
 #texting .iphone-msgs .msg-from{font-size:15px}
@@ -439,8 +460,14 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 .kinds li{counter-increment:k;display:flex;align-items:center;gap:20px;font-size:30px;line-height:1.3;color:var(--ink);transition:color .4s,opacity .4s}
 .kinds li::before{content:counter(k);flex:none;width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:26px;font-weight:600;background:var(--green);color:var(--ink);transition:background .4s,color .4s}
 .kinds li:not(.pending):has(+li:not(.pending)){opacity:.6}
-.kinds li:not(.pending):has(+.pending),#texting[data-step="6"] .kinds li:last-child{color:var(--accent);font-weight:700}
-.kinds li:not(.pending):has(+.pending)::before,#texting[data-step="6"] .kinds li:last-child::before{background:var(--accent);color:#fff}
+.kinds li:not(.pending):has(+.pending),#texting[data-step="8"] .kinds li:last-child{color:var(--accent);font-weight:700}
+.kinds li:not(.pending):has(+.pending)::before,#texting[data-step="8"] .kinds li:last-child::before{background:var(--accent);color:#fff}
+#texting .kinds{gap:10px}
+#texting .kinds li{font-size:28px}
+#texting .kinds li::before{width:44px;height:44px;font-size:24px}
+#texting .iphone-msgs>.j2{animation-delay:.3s}
+#texting .iphone-msgs>.j3{animation-delay:.6s}
+#texting .msg-bub b{font-weight:700}
 /* wrong */
 #wrong .qcard .q{font-size:64px}
 #wrong .qcard p{font-size:28px;line-height:1.42;color:var(--body)}
@@ -526,12 +553,11 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 </section>
 
 <section id="hook" class="cozy">
-<div class="flyer">
+<div class="flyer real">
 <p class="chip g">Game night flyer</p>
-<p class="ft">Game Night</p>
-<p>Board games, snacks, and new friends.</p>
-<p class="when">Friday · 5–7pm · CIS A-204</p>
-<p class="act">RSVP in our Discord</p>
+<p class="ft">This Friday, 5 to 7 pm, in <span class="nw">CIS A-204</span>, join our game night!</p>
+<p>Play Codenames, Catan, Uno, and Jenga to win a prize. All games are provided, admission is free, and beginners are welcome.</p>
+<p class="act">RSVP in our Discord.</p>
 </div>
 <div class="right">
 <p class="eyebrow" data-build-in="1" data-say="the guess">Guess</p>
@@ -540,6 +566,7 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 <div class="sticky p count" style="--r:2deg" data-build-in="1"><b class="qm">?</b><b class="n5" data-build-in="2" data-say="the team of 5">5</b></div>
 <div class="roles" data-build-in="2"><span>Event Lead</span><span>Flyer Writer</span><span>Caption Writer</span><span>Snack Planner</span><span>Flyer Checker</span></div>
 </div>
+<div class="stats" data-build-in="2"><p class="stat"><b>12</b><span>messages they sent each other</span></p><p class="stat p"><b>3</b><span>check rounds before the flyer passed</span></p></div>
 <p class="bubble" data-build-in="3" data-say="the question">Nobody steered them step by step. So how did they make one thing?</p>
 </div>
 </section>
@@ -815,11 +842,13 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 <h2 style="font-size:68px">You send one task. The team sends the rest.</h2>
 <ol class="kinds">
 <li data-build-in="1" data-say="jobs from the lead">Jobs from the lead</li>
-<li data-build-in="2" data-say="a draft">A draft</li>
+<li data-build-in="2" data-say="a draft: 51 words">A draft: 51 words</li>
 <li data-build-in="3" data-say="the checker's notes">The checker’s notes</li>
-<li data-build-in="4" data-say="the fix">The fix</li>
-<li data-build-in="5" data-say="the pass">The pass</li>
-<li data-build-in="6" data-say="the lead's answer to you">The lead’s answer to you</li>
+<li data-build-in="4" data-say="the fix: 40 words">The fix: 40 words</li>
+<li data-build-in="5" data-say="notes again">Notes again: 40 isn’t under 40</li>
+<li data-build-in="6" data-say="another fix: 38 words">Another fix: 38 words</li>
+<li data-build-in="7" data-say="the pass">The pass</li>
+<li data-build-in="8" data-say="the lead's answer to you">The lead’s answer to you</li>
 </ol>
 </div>
 <div class="hook-phone-panel"><div class="hook-scale">
@@ -828,12 +857,16 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 <div class="imsg-nav"><span class="imsg-nav-back">‹</span>
 <div class="imsg-nav-center"><div class="imsg-nav-avs"><div class="imsg-nav-av" style="background:#FF375F">EL</div><div class="imsg-nav-av" style="background:#34C759">FW</div><div class="imsg-nav-av" style="background:#007AFF">CW</div><div class="imsg-nav-av" style="background:#E08600">SP</div><div class="imsg-nav-av" style="background:#AF52DE">FC</div></div><span class="imsg-nav-name">Game Night Team ›</span><span class="imsg-nav-sub">5 agents</span></div><span style="width:40px"></span></div>
 <div class="iphone-msgs">
-<div class="msg-row" data-build-in="6"><div class="msg-av cp-av">EL</div><div class="msg-grp cp"><span class="msg-from">Event Lead → You</span><span class="msg-bub">Your game night kit is ready: the flyer, an Instagram caption, and a snack list under $30.</span></div></div>
-<div class="msg-row" data-build-in="5"><div class="msg-av cv-av">FC</div><div class="msg-grp cv"><span class="msg-from">Flyer Checker → Flyer Writer</span><span class="msg-bub">✓ Day, time, and room ✓ Under 40 words ✓ One thing to do. Pass.</span></div></div>
-<div class="msg-row" data-build-in="4"><div class="msg-av cd-av">FW</div><div class="msg-grp cd"><span class="msg-from">Flyer Writer → Flyer Checker</span><span class="msg-bub">Game Night! Board games, snacks, and new friends. Friday · 5–7pm · CIS A-204. RSVP in our Discord.</span></div></div>
-<div class="msg-row" data-build-in="3"><div class="msg-av cv-av">FC</div><div class="msg-grp cv"><span class="msg-from">Flyer Checker → Flyer Writer</span><span class="msg-bub">✗ No room. ✗ 42 words, so over 40. ✓ Ends with one thing to do. Add CIS A-204 and cut it down.</span></div></div>
-<div class="msg-row" data-build-in="2"><div class="msg-av cd-av">FW</div><div class="msg-grp cd"><span class="msg-from">Flyer Writer → Flyer Checker</span><span class="msg-bub">Game Night is back! Join ExplorAI this Friday from 5 to 7pm for an evening of board games, card games, snacks, and good company. Whether you are a strategy pro or brand new to games, everyone is welcome. RSVP in our Discord.</span></div></div>
-<div class="msg-row" data-build-in="1"><div class="msg-av cp-av">EL</div><div class="msg-grp cp"><span class="msg-from">Event Lead → helpers</span><span class="msg-bub">Flyer Writer: a flyer for game night, Friday 5–7pm, CIS A-204. Caption Writer: an Instagram caption. Snack Planner: snacks under $30.</span></div></div>
+<div class="msg-row" data-build-in="8"><div class="msg-av cp-av">EL</div><div class="msg-grp cp"><span class="msg-from">Event Lead → You</span><span class="msg-bub"><b>Flyer</b> This Friday, 5 to 7 pm, in CIS A-204, join our game night! …<br><b>Caption</b> Ready for game night? 🎲 …<br><b>Snacks</b> … Total Estimated Cost: $23.50</span></div></div>
+<div class="msg-row" data-build-in="7"><div class="msg-av cv-av">FC</div><div class="msg-grp cv"><span class="msg-from">Flyer Checker → Flyer Writer · round 3</span><span class="msg-bub">✓ Has the day, time, and room<br>✓ Under 40 words<br>✓ Ends with one clear thing to do<br>Looks good</span></div></div>
+<div class="msg-row" data-build-in="6"><div class="msg-av cd-av">FW</div><div class="msg-grp cd"><span class="msg-from">Flyer Writer → Flyer Checker</span><span class="msg-bub">This Friday, 5 to 7 pm, in CIS A-204, join our game night! Play Codenames, Catan, Uno, and Jenga to win a prize. All games are provided, admission is free, and beginners are welcome. RSVP in our Discord.</span></div></div>
+<div class="msg-row" data-build-in="5"><div class="msg-av cv-av">FC</div><div class="msg-grp cv"><span class="msg-from">Flyer Checker → Flyer Writer · round 2</span><span class="msg-bub">✓ Has the day, time, and room<br>✗ Under 40 words<br>✓ Ends with one clear thing to do<br>Cut the word count so it is strictly under 40 words.</span></div></div>
+<div class="msg-row" data-build-in="4"><div class="msg-av cd-av">FW</div><div class="msg-grp cd"><span class="msg-from">Flyer Writer → Flyer Checker</span><span class="msg-bub">Join us this Friday from 5 to 7 pm in CIS A-204 for game night. Play Codenames, Catan, Uno, and Jenga to win a prize. Admission is free for all students, and all games are provided. RSVP in our Discord.</span></div></div>
+<div class="msg-row" data-build-in="3"><div class="msg-av cv-av">FC</div><div class="msg-grp cv"><span class="msg-from">Flyer Checker → Flyer Writer · round 1</span><span class="msg-bub">✓ Has the day, time, and room<br>✗ Under 40 words<br>✗ Ends with one clear thing to do<br>Cut the word count to be under 40 words, and change the ending to have only one clear thing to do.</span></div></div>
+<div class="msg-row" data-build-in="2"><div class="msg-av cd-av">FW</div><div class="msg-grp cd"><span class="msg-from">Flyer Writer → Flyer Checker</span><span class="msg-bub">Join us this Friday from 5 to 7 pm in CIS A-204 for game night because all games are provided and beginner-friendly. Play Codenames, Catan, Uno, and Jenga to win a prize for the winning team. Everyone is welcome, and admission is free. Bring a friend and RSVP in our Discord.</span></div></div>
+<div class="msg-row j3" data-build-in="1"><div class="msg-av cp-av">EL</div><div class="msg-grp cp"><span class="msg-from">Event Lead → Snack Planner</span><span class="msg-bub">Plan the snack list under $30 for this Friday, 5 to 7 pm, in CIS A-204.</span></div></div>
+<div class="msg-row j2" data-build-in="1"><div class="msg-av cp-av">EL</div><div class="msg-grp cp"><span class="msg-from">Event Lead → Caption Writer</span><span class="msg-bub">Write the Instagram caption for this Friday, 5 to 7 pm, in CIS A-204, mentioning free admission, games Codenames, Catan, Uno, Jenga, a prize for the winning team, beginner-friendly details, all games provided, bring a friend, and RSVP in our Discord.</span></div></div>
+<div class="msg-row j1" data-build-in="1"><div class="msg-av cp-av">EL</div><div class="msg-grp cp"><span class="msg-from">Event Lead → Flyer Writer</span><span class="msg-bub">Write the game night flyer for this Friday, 5 to 7 pm, in CIS A-204, including free admission, games Codenames, Catan, Uno, Jenga, a prize for the winning team, beginner-friendly details, all games provided, bring a friend, and RSVP in our Discord.</span></div></div>
 </div>
 <div class="iphone-input"><span class="iphone-input-plus">+</span><div class="iphone-input-field">iMessage</div><span class="iphone-input-mic">🎙</span></div>
 <div class="iphone-home"></div>
@@ -844,19 +877,20 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 <section id="checkloop" class="cozy">
 <div class="head"><p class="eyebrow">Done when</p><h2>The checker grades against a written list.</h2></div>
 <div class="left">
-<div class="draft"><p class="dh"><span class="d1">Round 1 draft · 42 words</span><span class="d2" data-build-in="3">Round 2 draft</span></p><p class="dt d1">Game Night is back! Join ExplorAI this Friday from 5 to 7pm for an evening of board games, card games, snacks, and good company. Whether you are a strategy pro or brand new to games, everyone is welcome. RSVP in our Discord.</p><p class="dt d2" data-build-in="3">Game Night! Board games, snacks, and new friends. Friday · 5–7pm · <span class="nw">CIS A-204</span>. RSVP in our Discord.</p></div>
+<div class="draft"><p class="dh"><span class="d1">Round 1 draft · 51 words</span><span class="d2" data-build-in="3">Round 2 draft · 40 words</span><span class="d3" data-build-in="5">Round 3 draft · 38 words</span></p><p class="dt d1">Join us this Friday from 5 to 7 pm in <span class="nw">CIS A-204</span> for game night because all games are provided and beginner-friendly. Play Codenames, Catan, Uno, and Jenga to win a prize for the winning team. Everyone is welcome, and admission is free. Bring a friend and RSVP in our Discord.</p><p class="dt d2" data-build-in="3">Join us this Friday from 5 to 7 pm in <span class="nw">CIS A-204</span> for game night. Play Codenames, Catan, Uno, and Jenga to win a prize. Admission is free for all students, and all games are provided. RSVP in our Discord.</p><p class="dt d3" data-build-in="5">This Friday, 5 to 7 pm, in <span class="nw">CIS A-204</span>, join our game night! Play Codenames, Catan, Uno, and Jenga to win a prize. All games are provided, admission is free, and beginners are welcome. RSVP in our Discord.</p></div>
 <div class="ck">
-<p class="h">Flyer Checker · Done when</p><p class="h">Round 1</p><p class="h">Round 2</p>
+<p class="h">Flyer Checker · Done when</p><p class="h">Round 1</p><p class="h">Round 2</p><p class="h">Round 3</p>
 <div class="col lbls"><p>Has the day, time, and room</p><p>Under 40 words</p><p>Ends with one clear thing to do</p></div>
-<div class="col marks" data-build-in="1" data-say="round 1 marks: fail, fail, pass"><span><span class="mk n">✗</span></span><span><span class="mk n">✗</span></span><span><span class="mk y">✓</span></span></div>
-<div class="col marks" data-build-in="3" data-say="round 2: the new draft passes all three"><span><span class="mk y">✓</span></span><span><span class="mk y">✓</span></span><span><span class="mk y">✓</span></span></div>
+<div class="col marks" data-build-in="1" data-say="round 1: pass, fail, fail"><span><span class="mk y">✓</span></span><span><span class="mk n">✗</span></span><span><span class="mk n">✗</span></span></div>
+<div class="col marks" data-build-in="3" data-say="round 2: the 40-word draft"><span><span class="mk y">✓</span></span><span><span class="mk n">✗</span></span><span><span class="mk y">✓</span></span></div>
+<div class="col marks" data-build-in="5" data-say="round 3: all three pass"><span><span class="mk y">✓</span></span><span><span class="mk y">✓</span></span><span><span class="mk y">✓</span></span></div>
 </div>
 </div>
 <div class="right">
-<div class="cap"><p class="chip">Max 3 rounds</p><div class="dots"><i class="on"></i><i class="r2"></i><i></i></div><b class="rn"><span class="ra">Round 1 of 3</span><span class="rb">Round 2 of 3</span></b></div>
+<div class="cap"><p class="chip">Max 3 rounds</p><div class="dots"><i class="on"></i><i class="r2"></i><i class="r3"></i></div><b class="rn"><span class="ra">Round 1 of 3</span><span class="rb">Round 2 of 3</span><span class="rc">Round 3 of 3</span></b></div>
 <p class="lead ink">If the work still fails after 3 rounds, it stops and shows you why.</p>
-<p class="bubble" data-build-in="2" data-say="the notes go back">Notes back to Flyer Writer: add the room, and cut it to under 40 words.</p>
-<p class="callout" data-build-in="4" data-say="the last line">A checker only works if “done” is written down.</p>
+<div class="notes"><p class="nh">Flyer Checker → Flyer Writer</p><p class="nt n1" data-build-in="2" data-say="round 1 notes go back">Cut the word count to be under 40 words, and change the ending to have only one clear thing to do.</p><p class="nt n2" data-build-in="4" data-say="round 2 notes go back">Cut the word count so it is strictly under 40 words.</p><p class="nt n3" data-build-in="5">Looks good</p></div>
+<p class="callout" data-build-in="6" data-say="the last line">A checker only works if “done” is written down.</p>
 </div>
 </section>
 
