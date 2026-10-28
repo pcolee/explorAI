@@ -323,9 +323,11 @@ test('team limits: agents, depth, and helpers per lead are checked before any ca
   assert.equal(a.calls.length, 0);
   const five = team([newAgent({ id: 't', name: 'T' }), ...Array.from({ length: 5 }, (_, i) => newAgent({ id: `h${i}`, name: `H${i}`, parentId: 't' }))]);
   assert.equal(checkTeam(five).problems[0].limit, 'maxHelpers');
-  const deep = team([newAgent({ id: 'a', name: 'A' }), newAgent({ id: 'b', name: 'B', parentId: 'a' }), newAgent({ id: 'c', name: 'C', parentId: 'b' }), newAgent({ id: 'd', name: 'D', parentId: 'c' })]);
+  const chain = n => team(Array.from({ length: n }, (_, i) => newAgent({ id: `c${i}`, name: `C${i}`, parentId: i ? `c${i - 1}` : undefined })));
+  assert.equal(checkTeam(chain(4)).ok, true); // a lead above the level 3 team plus a helper's helper fits
+  const deep = chain(5);
   assert.equal(checkTeam(deep).problems[0].limit, 'maxDepth');
-  assert.match(checkTeam(deep).problems[0].message, /4 levels deep/);
+  assert.match(checkTeam(deep).problems[0].message, /5 levels deep/);
   const two = team([newAgent({ id: 'a', name: 'A' }), newAgent({ id: 'b', name: 'B' })]);
   assert.match(checkTeam(two).problems[0].message, /Only one agent can be at the top/);
   assert.equal(checkTeam(gameTeam({ checker: true })).ok, true);

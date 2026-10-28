@@ -5,7 +5,7 @@
 export const DEFAULT_LIMITS = Object.freeze({
   maxCalls: 24,     // model calls per run
   maxAgents: 8,     // agents on a team, checkers included
-  maxDepth: 3,      // levels: lead, helper, helper's helper
+  maxDepth: 4,      // levels from the top: room for a lead above the lead and a helper's helper
   maxHelpers: 4,    // helpers per lead
   maxRounds: 3,     // rounds per check loop
   maxConcurrent: 2, // model calls in flight at once
@@ -200,7 +200,7 @@ export function checkTeam(team, limits = DEFAULT_LIMITS) {
   if (!problems.length) {
     const depth = treeDepth(team);
     if (depth > L.maxDepth) {
-      problems.push({ limit: 'maxDepth', value: L.maxDepth, message: `This team is ${depth} levels deep. The lab's limit is ${L.maxDepth} levels (a lead, its helpers, and their helpers).` });
+      problems.push({ limit: 'maxDepth', value: L.maxDepth, message: `This team is ${depth} levels deep. The lab's limit is ${L.maxDepth} levels, counting down from the agent at the top.` });
     }
     for (const a of agents) {
       const n = helpersOf(team, a.id).length;
