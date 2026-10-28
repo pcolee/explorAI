@@ -288,67 +288,80 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 #setup .left{flex:1;display:flex;flex-direction:column;gap:30px}
 #setup .qr p{font-size:26px}
 #setup .url{font-family:var(--mono);font-size:22px;color:var(--ink);text-align:center;max-width:460px;line-height:1.4}
-/* Lab pictures: a small copy of the real Agent Lab page (title and mode chip, the four level buttons, Your team, Task with Run and Stop) */
-.labpic{background:radial-gradient(700px 400px at 100% 0%,rgba(242,193,214,.35),transparent 60%),var(--cream);border-radius:30px;padding:20px 24px;display:flex;flex-direction:column;gap:14px;box-shadow:0 30px 60px -32px rgba(63,90,42,.5),inset 0 0 0 1.5px rgba(156,181,123,.45)}
-.lp-top{display:flex;align-items:center;justify-content:space-between}
-.lp-top b{font-family:var(--display);font-size:38px;font-weight:600;line-height:1;color:var(--ink)}
-.lp-ttl{display:flex;flex-direction:column;gap:4px}
-.lp-ttl small{font-size:22px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);line-height:1}
-.lp-mode{display:flex;align-items:center;gap:10px;font-size:22px;font-weight:700;color:var(--ink);background:#F6EEDB;border-radius:999px;padding:8px 18px;box-shadow:inset 0 0 0 1.5px rgba(176,140,80,.35)}
-.lp-mode i{width:10px;height:10px;border-radius:50%;background:#C49A52}
-.lp-acts{display:flex;gap:10px}
-.lp-key{font-size:22px;font-weight:700;color:var(--ink);background:#fff;border-radius:999px;padding:8px 18px;box-shadow:inset 0 0 0 1.5px #DCE6C0}
-.lp-scroll{font-size:22px;font-weight:700;color:var(--body);margin:0}
-.lp-col{display:flex;flex-direction:column;gap:14px}
-.lp-levels{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
-.lp-levels span{display:flex;align-items:center;gap:10px;font-size:22px;font-weight:700;line-height:1.1;color:var(--ink);background:rgba(255,254,251,.85);border-radius:16px;padding:9px 10px;box-shadow:inset 0 0 0 1.5px #DCE6C0}
-.lp-levels i{flex:none;font-style:normal;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:600;background:var(--green);color:var(--ink)}
-.lp-levels .on{background:var(--ink);color:var(--cream);box-shadow:0 12px 24px -16px rgba(63,90,42,.9)}
-.lp-levels .on i{background:var(--cream);color:var(--ink)}
-.lp-body{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}
-.lp-body.wide{grid-template-columns:1.5fr 1fr}
-.lp-card{background:var(--card);border-radius:22px;padding:16px 18px;display:flex;flex-direction:column;gap:12px;box-shadow:inset 0 0 0 1.5px #DCE6C0}
-.lp-card h4{margin:0;font-family:var(--display);font-size:30px;font-weight:600;line-height:1.1;color:var(--ink)}
-.lp-hd{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.lp-legend{display:flex;align-items:center;gap:10px;font-size:22px;color:var(--body)}
-.lp-legend i{display:inline-block;width:34px;border-top:3px solid #7E9466}
-.lp-legend i.c{border-top:3px dashed var(--accent);margin-left:14px}
-.lp-tree{position:relative;border-radius:16px;background:radial-gradient(circle,rgba(63,90,42,.09) 1.2px,transparent 1.5px) 0 0/18px 18px,#F5F9E8}
-.lp-tree.solo{display:flex;justify-content:center;padding:34px 14px 18px}
-.lp-tree.team{width:980px;height:364px;align-self:center}
-.lp-tree svg{position:absolute;inset:0;width:100%;height:100%}
-.lp-tree svg path{fill:none;stroke:#7E9466;stroke-width:3}
-.lp-tree svg path.loop{stroke:var(--accent);stroke-dasharray:7 6}
-.lp-tree svg marker path{fill:#7E9466;stroke:none}
-.lp-tree svg #lpk path{fill:var(--accent)}
-.lp-node{position:relative;display:flex;align-items:center;gap:12px;background:#fff;border-radius:16px;padding:12px 16px;box-shadow:inset 0 0 0 2px #DCE6C0,0 10px 20px -14px rgba(63,90,42,.5)}
-.lp-tree.team .lp-node{position:absolute;transform:translate(-50%,-50%);width:280px}
-.lp-node.sel{box-shadow:inset 0 0 0 3px var(--accent),0 10px 20px -14px rgba(63,90,42,.5)}
+/* Lab pictures: a small drawing of the Agent Lab canvas as of a5686bb (the team tree fills the screen; the HUD card floats top left, Example team, mode, and key float top right, the agent card is a panel on the right, the dock sits at the bottom) */
+.labpic{position:relative;width:1080px;height:600px;flex:none;border-radius:30px;overflow:hidden;background:radial-gradient(circle,rgba(63,90,42,.09) 1.3px,transparent 1.6px) 0 0/22px 22px,radial-gradient(640px 420px at 0% 100%,rgba(217,232,173,.6),transparent 65%),radial-gradient(560px 360px at 100% 0%,rgba(242,193,214,.4),transparent 60%),var(--cream);box-shadow:0 30px 60px -32px rgba(63,90,42,.5),inset 0 0 0 1.5px rgba(156,181,123,.45)}
+.lp-f{position:absolute;background:var(--card);border-radius:22px;box-shadow:0 16px 32px -20px rgba(63,90,42,.45),inset 0 0 0 1.5px #DCE6C0}
+.lp-hud{left:16px;top:16px;width:384px;padding:14px;display:flex;flex-direction:column;gap:12px}
+.lp-brand{display:flex;flex-direction:column;gap:4px}
+.lp-brand small{font-size:22px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);line-height:1}
+.lp-brand b{font-family:var(--display);font-size:36px;font-weight:600;line-height:1;color:var(--ink)}
+.lp-steps{display:flex;align-items:center;gap:6px;align-self:start;background:#EEF3DD;border-radius:999px;padding:5px}
+.lp-steps i,.lp-steps .on{flex:none;font-style:normal;display:flex;align-items:center;justify-content:center}
+.lp-steps i{width:34px;height:34px;border-radius:50%;font-family:var(--display);font-size:22px;font-weight:600;background:var(--green);color:var(--ink)}
+.lp-steps .on{gap:10px;border-radius:999px;padding:3px 16px 3px 3px;font-size:22px;font-weight:700;white-space:nowrap;background:var(--ink);color:var(--cream)}
+.lp-steps .on i{background:var(--cream)}
+.lp-note{position:relative;background:#FFFDF4;border-radius:10px;padding:16px 14px 12px;box-shadow:0 10px 20px -14px rgba(63,90,42,.5),inset 0 0 0 1px #EFE6CC;display:flex;flex-direction:column;gap:4px}
+.lp-note::before{content:"";position:absolute;top:-9px;left:50%;width:64px;height:18px;margin-left:-32px;background:rgba(242,193,214,.85);rotate:-2deg}
+.lp-note b{font-size:22px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);line-height:1}
+.lp-note p{font-family:var(--display);font-size:22px;font-weight:600;line-height:1.3;color:var(--ink)}
+.lp-tiles{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.lp-tiles span{display:flex;align-items:baseline;justify-content:space-between;gap:8px;border-radius:14px;padding:8px 12px;font-size:22px;font-weight:700;line-height:1.1;color:var(--ink);background:#EEF4DA}
+.lp-tiles b{font-family:var(--display);font-size:32px;font-weight:600}
+.lp-tiles .m{background:var(--pinkwash);color:var(--accent)}
+.lp-tiles .r{background:#F6EEDB;color:#8A6A2E}
+.lp-tiles .c{background:#E4EDF4;color:#3E6480}
+.lp-tools{position:absolute;top:16px;right:16px;display:flex;gap:8px}
+.lp-chip{display:flex;align-items:center;gap:8px;font-size:22px;font-weight:700;line-height:1.2;white-space:nowrap;color:var(--ink);background:var(--card);border-radius:999px;padding:8px 16px;box-shadow:0 10px 20px -16px rgba(63,90,42,.5),inset 0 0 0 1.5px #DCE6C0}
+.lp-chip.mode{background:#F6EEDB;box-shadow:inset 0 0 0 1.5px rgba(176,140,80,.35)}
+.lp-chip.mode::before{content:"";width:10px;height:10px;border-radius:50%;background:#C49A52}
+.lp-wires{position:absolute;inset:0;width:1080px;height:600px}
+.lp-wires path{fill:none;stroke:#7E9466;stroke-width:3}
+.lp-wires path.loop{stroke:var(--accent);stroke-dasharray:7 6}
+.lp-wires marker path{stroke:none}
+.lp-you{position:absolute;transform:translate(-50%,-50%);font-family:var(--display);font-size:28px;font-weight:600;line-height:1;color:var(--ink);background:var(--green);border-radius:999px;padding:12px 26px;box-shadow:0 10px 20px -14px rgba(63,90,42,.6)}
+.lp-node{position:absolute;transform:translate(-50%,-50%);display:flex;align-items:center;gap:12px;background:#fff;border-radius:18px;padding:14px 14px 12px;box-shadow:inset 0 0 0 2px #DCE6C0,0 12px 22px -14px rgba(63,90,42,.5)}
+.lp-node.sel{box-shadow:inset 0 0 0 3px var(--accent),0 0 0 6px rgba(242,193,214,.55),0 12px 22px -14px rgba(63,90,42,.5)}
 .lp-node.chk{background:#FDF4F8}
-.lp-node em{position:absolute;top:-19px;left:14px;font-style:normal;font-size:22px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;line-height:1;padding:6px 10px;border-radius:999px;background:var(--green);color:var(--ink)}
+.lp-node em{position:absolute;top:-17px;left:14px;font-style:normal;font-size:22px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;line-height:1;padding:5px 10px;border-radius:999px;background:var(--green);color:var(--ink)}
 .lp-node.chk em{background:var(--pink);color:var(--accent)}
 .lp-node .em{flex:none;width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;background:var(--pinkwash);box-shadow:inset 0 0 0 1.5px rgba(168,72,122,.3)}
 .lp-node p{display:flex;flex-direction:column;gap:2px}
 .lp-node b{font-family:var(--display);font-size:26px;font-weight:600;line-height:1.1;color:var(--ink)}
 .lp-node small{font-size:22px;line-height:1.25;color:var(--body)}
-.lp-field{display:grid;grid-template-columns:120px minmax(0,1fr);column-gap:12px;align-items:center}
-.lp-card.six .lp-field{grid-template-columns:136px minmax(0,1fr)}
-.lp-field span{font-size:22px;font-weight:700;color:var(--ink)}
-.lp-field p{font-size:22px;line-height:1.3;color:var(--ink);background:#fff;border-radius:12px;padding:8px 12px;box-shadow:inset 0 0 0 1.5px #DCE6C0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.lp-task{font-size:22px;line-height:1.35;color:var(--ink);background:#fff;border-radius:14px;padding:10px 14px;box-shadow:inset 0 0 0 1.5px #DCE6C0}
-.lp-taskrow{display:flex;gap:16px;align-items:center;background:var(--card);border-radius:22px;padding:14px 18px;box-shadow:inset 0 0 0 1.5px #DCE6C0}
-.lp-taskrow .lp-task{flex:1}
-.lp-taskrow h4{flex:none;margin:0;font-family:var(--display);font-size:30px;font-weight:600;line-height:1.1;color:var(--ink)}
-.lp-run{display:flex;gap:10px;flex:none}
-.lp-run span{font-size:24px;font-weight:700;border-radius:999px;padding:10px 30px}
-.lp-run .run{color:#fff;background:var(--ink);box-shadow:0 12px 24px -14px rgba(63,90,42,.9)}
-.lp-run .stop{color:rgba(63,90,42,.4);box-shadow:inset 0 0 0 1.5px #DCE6C0}
-.lp-sees{align-self:start;font-size:22px;font-weight:700;color:var(--ink);border-radius:999px;padding:8px 18px;box-shadow:inset 0 0 0 1.5px var(--leaf)}
+.lp-node .ok{position:absolute;right:-6px;bottom:-15px;font-size:22px;font-weight:700;line-height:1;color:#fff;background:#4E7A34;border-radius:999px;padding:4px 10px}
+.lp-panel{right:16px;top:76px;bottom:16px;width:410px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.lp-ph{display:flex;align-items:center;gap:10px;padding-bottom:10px;border-bottom:1.5px solid #E6EDD0}
+.lp-ph .em{flex:none;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;background:var(--pinkwash);box-shadow:inset 0 0 0 1.5px rgba(168,72,122,.3)}
+.lp-ph em{font-style:normal;font-size:22px;font-weight:700;letter-spacing:1.5px;line-height:1;color:#fff;background:var(--accent);border-radius:999px;padding:5px 10px}
+.lp-ph b{flex:1;font-family:var(--display);font-size:28px;font-weight:600;line-height:1;color:var(--ink);white-space:nowrap}
+.lp-ph .x{font-size:28px;line-height:1;color:var(--ink)}
+.lp-fld{display:flex;flex-direction:column;gap:6px}
+.lp-fld>span,.lp-row>span{font-size:22px;font-weight:700;line-height:1;color:var(--ink)}
+.lp-in{font-size:22px;line-height:1.25;color:var(--ink);background:#fff;border-radius:12px;padding:8px 12px;box-shadow:inset 0 0 0 1.5px #DCE6C0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lp-row{display:grid;grid-template-columns:62px minmax(0,1fr);gap:10px;align-items:center}
+.lp-six{font-family:var(--display);font-size:26px;font-weight:600;line-height:1;color:var(--ink);margin-top:4px}
+.lp-part{display:grid;grid-template-columns:34px 112px minmax(0,1fr);gap:10px;align-items:center}
+.lp-part i{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-style:normal;font-size:20px;color:var(--accent);background:var(--pinkwash)}
+.lp-part span{font-family:var(--display);font-size:22px;font-weight:600;color:var(--accent);white-space:nowrap}
+.lp-part .lp-in{padding:5px 10px;background:#F7FAEC}
+.lp-dock{bottom:16px;padding:10px;display:flex;flex-direction:column;gap:8px}
+.lp-drow{display:flex;gap:8px;align-items:center}
+.lp-task{position:relative;flex:1;min-width:0;font-size:22px;line-height:1.3;color:var(--ink);background:#fff;border-radius:14px;padding:10px 12px;box-shadow:inset 0 0 0 1.5px #DCE6C0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lp-btn{flex:none;font-size:22px;font-weight:700;line-height:1.2;white-space:nowrap;color:var(--ink);border-radius:999px;padding:10px 18px;box-shadow:inset 0 0 0 1.5px #DCE6C0}
+.lp-btn.run{color:#fff;background:var(--ink);box-shadow:0 12px 24px -14px rgba(63,90,42,.9)}
+.lp-btn.stop{color:rgba(63,90,42,.4)}
+.lp-tool{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;font-size:22px;font-weight:700;line-height:1.2;white-space:nowrap;color:var(--ink);background:#fff;border-radius:14px;padding:8px 10px;box-shadow:inset 0 0 0 1.5px #DCE6C0}
+.lp-tool.off{color:rgba(63,90,42,.4)}
+.lp-look{display:flex;align-items:center;gap:8px}
+.lp-look i{width:28px;height:28px;border-radius:50%;font-style:normal}
+.lp-look i:first-child{width:56px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;background:#fff;box-shadow:inset 0 0 0 1.5px #DCE6C0}
+.lp-look i.on{box-shadow:0 0 0 3px #fff,0 0 0 5px var(--accent)}
+.lp-cap{font-size:24px;font-weight:700;line-height:1.3;color:var(--ink);margin:0}
 /* Build 2 compare: after the timer, the lab picture gives way to the two real flyers (level 1 and level 2 recordings). */
 #stage>section#build2{grid-template-rows:auto minmax(0,1fr)}
 #build2 .head+div{min-height:0}
 #build2 .cmp{display:none;flex:1;min-height:0;grid-template-columns:1fr 1fr;grid-template-rows:minmax(0,1fr) auto;column-gap:28px;row-gap:14px;align-items:start}
-#build2:not([data-step="0"]) .labpic{display:none}
+#build2:not([data-step="0"]) .labpic,#build2:not([data-step="0"]) .lp-cap{display:none}
 #build2:not([data-step="0"]) .cmp{display:grid}
 /* After the timer only the Look for question stays beside the two flyers. */
 #build2:not([data-step="0"]) .side-col .trow,#build2:not([data-step="0"]) .side-col .sticky:not(.p){display:none}
@@ -845,14 +858,17 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 <section id="build1" class="build cozy alt">
 <div class="head"><p class="eyebrow">Build 1 · 3 minutes</p><h2>Give one agent a job and run it.</h2></div>
 <div style="grid-column:1;grid-row:2;display:flex;flex-direction:column;gap:28px">
-<div class="labpic">
-<div class="lp-top"><span class="lp-ttl"><small>ExplorAI · Meeting 6</small><b>Agent Lab</b></span><span class="lp-acts"><span class="lp-mode"><i></i>Practice mode</span><span class="lp-key">Add a Gemini key</span></span></div>
-<div class="lp-levels"><span class="on"><i>1</i>One agent</span><span><i>2</i>Give it structure</span><span><i>3</i>Build a team</span><span><i>4</i>Add a check loop</span></div>
-<div class="lp-body">
-<div class="lp-col"><div class="lp-card"><h4>Your team</h4><div class="lp-tree solo"><div class="lp-node sel"><em>Agent</em><span class="em">📝</span><p><b>Flyer Writer</b><small>Writes the game night flyer.</small></p></div></div></div>
-<div class="lp-card"><div class="lp-field"><span>Name</span><p>Flyer Writer</p></div><div class="lp-field"><span>Job</span><p>Writes the game night flyer.</p></div></div></div>
-<div class="lp-card"><h4>Task</h4><p class="lp-task">Write a flyer for ExplorAI’s board game night: this Friday, 5 to 7 pm, in <span class="nw">CIS A-204</span>. …</p><div class="lp-run"><span class="run">Run</span><span class="stop">Stop</span></div></div>
-</div>
+<div class="labpic" role="img" aria-label="The Agent Lab at level 1: Flyer Writer under You on the canvas, its card open on the right with Name, Look, and Job, and the Task box with Run at the bottom">
+<svg class="lp-wires" viewBox="0 0 1080 600" aria-hidden="true"><path d="M327,340 L327,380"/></svg>
+<div class="lp-you" style="left:327px;top:314px">You</div>
+<div class="lp-node sel" style="left:327px;top:432px;width:268px"><em>Agent</em><span class="em">📝</span><p><b>Flyer Writer</b><small>Writes the game night flyer.</small></p></div>
+<div class="lp-f lp-hud"><div class="lp-brand"><small>ExplorAI · Meeting 6</small><b>Agent Lab</b></div><div class="lp-steps"><span class="on"><i>1</i>One agent</span><i>2</i><i>3</i><i>4</i></div><div class="lp-note"><b>Level 1</b><p>Flyer Writer only has a name and a one-line job.</p></div></div>
+<div class="lp-tools"><span class="lp-chip">🎲 Game Night ▾</span><span class="lp-chip mode">Practice mode</span><span class="lp-chip">Add a Gemini key</span></div>
+<div class="lp-f lp-panel"><div class="lp-ph"><span class="em">📝</span><em>AGENT</em><b>Flyer Writer</b><span class="x">×</span></div>
+<div class="lp-fld"><span>Name</span><p class="lp-in">Flyer Writer</p></div>
+<div class="lp-fld"><span>Look</span><p class="lp-look"><i>📝</i><i style="background:#3F5A2A"></i><i class="on" style="background:#A8487A"></i><i style="background:#4D7EA8"></i><i style="background:#C0663A"></i><i style="background:#7C8F2E"></i></p></div>
+<div class="lp-fld"><span>Job</span><p class="lp-in">Writes the game night flyer.</p></div></div>
+<div class="lp-f lp-dock" style="left:16px;width:622px"><div class="lp-drow"><p class="lp-task">Write a flyer for ExplorAI’s board game night: this Friday, 5 to 7 pm, in CIS A-204. …</p><span class="lp-btn run">Run</span><span class="lp-btn stop">Stop</span><span class="lp-btn">Messages</span></div></div>
 </div>
 <p class="lead ink">Press Run. Then change the Job line and run it again.</p>
 </div>
@@ -888,23 +904,26 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 <section id="build2" class="build cozy alt">
 <div class="head"><p class="eyebrow">Build 2 · 5 minutes</p><h2>Run the same task with the six parts filled in.</h2></div>
 <div style="grid-column:1;grid-row:2;display:flex;flex-direction:column;gap:24px">
-<div class="labpic">
-<div class="lp-top"><span class="lp-ttl"><small>ExplorAI · Meeting 6</small><b>Agent Lab</b></span><span class="lp-acts"><span class="lp-mode"><i></i>Practice mode</span><span class="lp-key">Add a Gemini key</span></span></div>
-<div class="lp-levels"><span><i>1</i>One agent</span><span class="on"><i>2</i>Give it structure</span><span><i>3</i>Build a team</span><span><i>4</i>Add a check loop</span></div>
-<p class="lp-scroll">↓ Scroll down, below Your team, Name, and Job</p>
-<div class="lp-body wide">
-<div class="lp-card six"><h4>The six parts</h4>
-<div class="lp-field"><span>Role</span><p>You write flyers for a college club’s events.</p></div>
-<div class="lp-field"><span>Goal</span><p>A flyer that makes game night sound fun…</p></div>
-<div class="lp-field"><span>Steps</span><p>Find the day, time, and room in your job. …</p></div>
-<div class="lp-field"><span>Rules</span><p>Use only facts from your job. …</p></div>
-<div class="lp-field"><span>Output</span><p>The flyer text only, ready to print.</p></div>
-<div class="lp-field"><span>Done when</span><p>Has the day, time, and room · Under 40 words · …</p></div>
-<span class="lp-sees">What it sees</span>
+<div class="labpic" style="height:650px" role="img" aria-label="The Agent Lab at level 2: Flyer Writer's card on the right shows Name, Look, and Job, then the six parts filled in">
+<svg class="lp-wires" viewBox="0 0 1080 650" style="height:650px" aria-hidden="true"><path d="M312,360 L312,400"/></svg>
+<div class="lp-you" style="left:312px;top:334px">You</div>
+<div class="lp-node sel" style="left:312px;top:452px;width:268px"><em>Agent</em><span class="em">📝</span><p><b>Flyer Writer</b><small>Writes the game night flyer.</small></p></div>
+<div class="lp-f lp-hud"><div class="lp-brand"><small>ExplorAI · Meeting 6</small><b>Agent Lab</b></div><div class="lp-steps"><i>1</i><span class="on"><i>2</i>Give it structure</span><i>3</i><i>4</i></div><div class="lp-note"><b>Level 2</b><p>Flyer Writer now has all six parts.</p></div></div>
+<div class="lp-tools"><span class="lp-chip">🎲 Game Night ▾</span><span class="lp-chip mode">Practice mode</span><span class="lp-chip">Add a Gemini key</span></div>
+<div class="lp-f lp-panel" style="width:440px"><div class="lp-ph"><span class="em">📝</span><em>AGENT</em><b>Flyer Writer</b><span class="x">×</span></div>
+<div class="lp-row"><span>Name</span><p class="lp-in">Flyer Writer</p></div>
+<div class="lp-row"><span>Look</span><p class="lp-look"><i>📝</i><i style="background:#3F5A2A"></i><i class="on" style="background:#A8487A"></i><i style="background:#4D7EA8"></i><i style="background:#C0663A"></i><i style="background:#7C8F2E"></i></p></div>
+<div class="lp-row"><span>Job</span><p class="lp-in">Writes the game night flyer.</p></div>
+<p class="lp-six">The six parts</p>
+<div class="lp-part"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-5 15-5 16 0"/></svg></i><span>Role</span><p class="lp-in">You write flyers for a college club’s events.</p></div>
+<div class="lp-part"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/></svg></i><span>Goal</span><p class="lp-in">A flyer that makes game night sound fun …</p></div>
+<div class="lp-part"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6h11M9 12h11M9 18h11M4 6h1M4 12h1M4 18h1"/></svg></i><span>Steps</span><p class="lp-in">Find the day, time, and room in your job. …</p></div>
+<div class="lp-part"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 3v6c0 5-4 8-8 9-4-1-8-4-8-9V6z"/></svg></i><span>Rules</span><p class="lp-in">Use only facts from your job. …</p></div>
+<div class="lp-part"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h9l4 4v14H6z"/><path d="M9 12h7M9 16h7"/></svg></i><span>Output</span><p class="lp-in">The flyer text only, ready to print.</p></div>
+<div class="lp-part"><i><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l5 5 9-10"/></svg></i><span>Done when</span><p class="lp-in">Has the day, time, and room …</p></div></div>
+<div class="lp-f lp-dock" style="left:16px;width:592px"><div class="lp-drow"><p class="lp-task">Write a flyer for ExplorAI’s board game night: this Friday, 5 to 7 pm, in CIS A-204. …</p><span class="lp-btn run">Run</span><span class="lp-btn stop">Stop</span><span class="lp-btn">Messages</span></div></div>
 </div>
-<div class="lp-card"><h4>Task</h4><p class="lp-task">Write a flyer for ExplorAI’s board game night: this Friday, 5 to 7 pm, in <span class="nw">CIS A-204</span>. …</p><div class="lp-run"><span class="run">Run</span><span class="stop">Stop</span></div></div>
-</div>
-</div>
+<p class="lp-cap">Click Flyer Writer. In its card on the right, the six parts are under Name and Job.</p>
 <div class="cmp">
 <div class="cmp-card b1" data-build-in="1" data-say="Build 1's flyer: 191 words">
 <div class="cmp-hd"><span class="cmp-tag">Build 1 · Name and job</span><span class="wc">191 words</span></div>
@@ -934,7 +953,7 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 </div>
 <div class="side-col">
 <div class="trow"><div class="qr sm"><img class="labqr" alt="QR code: Meeting 6 Agent Lab" style="width:140px;height:140px"></div><div class="timer clock__digits" data-seconds="300">5:00</div></div>
-<div class="sticky" style="--r:-1deg"><span class="tag">Do</span><p>Scroll down under Your team to the six parts and read them. Run the same task as Build 1. Then change one part and run again.</p></div>
+<div class="sticky" style="--r:-1deg"><span class="tag">Do</span><p>Click Flyer Writer and read the six parts in its card. Run the same task as Build 1. Then change one part and run again.</p></div>
 <div class="sticky p" style="--r:.9deg"><span class="tag">Look for</span><p><b>What did it stop guessing?</b></p></div>
 </div>
 </section>
@@ -1039,24 +1058,22 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 <section id="build3" class="build cozy alt">
 <div class="head"><p class="eyebrow">Build 3 · 10 minutes</p><h2>Make a team and add a checker.</h2></div>
 <div style="grid-column:1;grid-row:2;display:flex;flex-direction:column;gap:24px">
-<div class="labpic">
-<div class="lp-top"><span class="lp-ttl"><small>ExplorAI · Meeting 6</small><b>Agent Lab</b></span><span class="lp-acts"><span class="lp-mode"><i></i>Practice mode</span><span class="lp-key">Add a Gemini key</span></span></div>
-<div class="lp-levels"><span><i>1</i>One agent</span><span><i>2</i>Give it structure</span><span><i>3</i>Build a team</span><span class="on"><i>4</i>Add a check loop</span></div>
-<div class="lp-card"><div class="lp-hd"><h4>Your team</h4><span class="lp-legend">↓ Jobs go down these lines. Reports come back up them. <i class="c"></i>→ Check loop</span></div>
-<div class="lp-tree team">
-<svg viewBox="0 0 980 364" aria-hidden="true"><defs><marker id="lpm" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#7E9466"/></marker><marker id="lpk" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#A8487A"/></marker></defs><path d="M490,89 C490,116 170,108 170,134" marker-end="url(#lpm)"/><path d="M490,89 L490,134" marker-end="url(#lpm)"/><path d="M490,89 C490,116 810,108 810,134" marker-end="url(#lpm)"/><path class="loop" d="M252,229 C240,244 240,262 252,276" marker-end="url(#lpk)"/><path class="loop" d="M290,276 C302,262 302,244 290,229" marker-end="url(#lpk)"/></svg>
-<div class="lp-node" style="left:490px;top:52px"><em>Lead</em><span class="em">🎲</span><p><b>Event Lead</b></p></div>
-<div class="lp-node sel" style="left:170px;top:190px"><em>Helper</em><span class="em">📝</span><p><b>Flyer Writer</b></p></div>
-<div class="lp-node" style="left:490px;top:190px"><em>Helper</em><span class="em">📸</span><p><b>Caption Writer</b></p></div>
-<div class="lp-node" style="left:810px;top:190px"><em>Helper</em><span class="em">🍿</span><p><b>Snack Planner</b></p></div>
-<div class="lp-node chk" style="left:170px;top:316px"><em>Checker</em><span class="em">✅</span><p><b>Flyer Checker</b></p></div>
-</div></div>
-<div class="lp-taskrow"><h4>Task</h4><p class="lp-task">Plan a board game night for ExplorAI: this Friday, 5 to 7 pm, in <span class="nw">CIS A-204</span>. … We need a flyer, an Instagram caption, and a snack list under $30.</p><div class="lp-run"><span class="run">Run</span><span class="stop">Stop</span></div></div>
+<div class="labpic" role="img" aria-label="The Agent Lab at level 4 after a run: You, then Event Lead, then Flyer Writer, Flyer Checker on a dashed check loop beside it, Caption Writer, and Snack Planner, all marked Done; the run's counts in the top left; + Helper, + Lead above, + Checker, and Remove above the Task box">
+<svg class="lp-wires" viewBox="0 0 1080 600" aria-hidden="true"><defs><marker id="lpm" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#7E9466"/></marker><marker id="lpk" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#A8487A"/></marker></defs><path d="M720,130 L720,176"/><path d="M720,248 C720,290 140,282 140,322" marker-end="url(#lpm)"/><path d="M720,248 C720,290 662,282 662,322" marker-end="url(#lpm)"/><path d="M720,248 C720,290 925,282 925,322" marker-end="url(#lpm)"/><path class="loop" d="M256,344 C264,318 276,318 284,340" marker-end="url(#lpk)"/><path class="loop" d="M284,386 C276,412 264,412 256,390" marker-end="url(#lpk)"/></svg>
+<div class="lp-you" style="left:720px;top:104px">You</div>
+<div class="lp-node" style="left:720px;top:214px"><em>Lead</em><span class="em">🎲</span><p><b>Event Lead</b></p><span class="ok">✓ Done</span></div>
+<div class="lp-node sel" style="left:140px;top:365px;width:236px"><em>Helper</em><span class="em">📝</span><p><b>Flyer Writer</b></p><span class="ok">✓ Done</span></div>
+<div class="lp-node chk" style="left:402px;top:365px;width:236px"><em>Checker</em><span class="em">✅</span><p><b>Flyer Checker</b></p><span class="ok">✓ Done</span></div>
+<div class="lp-node" style="left:662px;top:365px;width:236px"><em>Helper</em><span class="em">📸</span><p><b>Caption Writer</b></p><span class="ok">✓ Done</span></div>
+<div class="lp-node" style="left:925px;top:365px;width:236px"><em>Helper</em><span class="em">🍿</span><p><b>Snack Planner</b></p><span class="ok">✓ Done</span></div>
+<div class="lp-f lp-hud" style="width:450px"><div class="lp-brand"><small>ExplorAI · Meeting 6</small><b>Agent Lab</b></div><div class="lp-steps"><i>1</i><i>2</i><i>3</i><span class="on"><i>4</i>Add a check loop</span></div><div class="lp-tiles"><span>Agents<b>5</b></span><span class="m">Messages<b>12</b></span><span class="r">Check rounds<b>3</b></span><span class="c">Asked the AI<b>10</b></span></div></div>
+<div class="lp-tools"><span class="lp-chip">🎲 ▾</span><span class="lp-chip mode">Practice mode</span><span class="lp-chip">Add a Gemini key</span></div>
+<div class="lp-f lp-dock" style="left:140px;width:800px"><div class="lp-drow"><span class="lp-tool">🙋 + Helper</span><span class="lp-tool">🧭 + Lead above</span><span class="lp-tool off">✅ + Checker</span><span class="lp-tool">🗑️ Remove</span></div><div class="lp-drow"><p class="lp-task">Plan a board game night for ExplorAI: this Friday, 5 to 7 pm, in CIS A-204. …</p><span class="lp-btn run">Run</span><span class="lp-btn stop">Stop</span><span class="lp-btn">Messages</span></div></div>
 </div>
 </div>
 <div class="side-col">
 <div class="trow"><div class="qr sm"><img class="labqr" alt="QR code: Meeting 6 Agent Lab" style="width:140px;height:140px"></div><div class="timer clock__digits" data-seconds="600">10:00</div></div>
-<div class="sticky" style="--r:-1deg"><span class="tag">Do</span><p>Start from Game Night, or build your own team. To add a checker: select an agent and press +&nbsp;Checker. The checker grades the selected agent’s Done when lines, so give it 2 or 3. Run it and read the messages.</p></div>
+<div class="sticky" style="--r:-1deg"><span class="tag">Do</span><p>Start from Game Night, or build your own team. To add a checker: click an agent and press +&nbsp;Checker. The checker grades that agent’s Done when lines, so give it 2 or 3. Run it and read the messages.</p></div>
 <div class="sticky p" style="--r:.9deg"><span class="tag">Challenge</span><p><b>Make the checker send a draft back at least once.</b></p></div>
 </div>
 </section>
