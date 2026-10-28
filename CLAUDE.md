@@ -25,6 +25,8 @@ Where context lives, so nothing is kept only in one person's chat:
 
 Two people's agents edit this repo. The goal is that neither one ever works on a stale copy.
 
+- **Cole's direction wins.** When Cole edits a file or asks for something, Sam's agents keep her changes and follow her direction: her wording, design, and structure come before their own plan and copy rules. If one of her lines looks wrong, ask under the meeting's `BUILD.md` Requests (or with `A` on the deck) instead of changing it.
+
 - **Set up once per machine (a person, in a terminal):** `scripts/install-bridge.sh`. The hooks then run an approved copy of their scripts from `~/.config/rcc-coworking/`, never the repo's own files, and also run in sessions started outside the repo once a prompt names ExplorAI (`--uninstall` removes it). Until it is run, sessions print a one-line notice and no hooks run.
 - **Pull before you work.** Hooks run `scripts/sync.sh pull` at session start and before every prompt. Read what it reports: new commits from the other person are their progress. If it says `SYNC CONFLICT`, `SYNC BLOCKED`, or that edits went to the stash, stop and tell the user before editing anything. Never `git pull`, `merge`, or `rebase` directly; a hook blocks it.
 - **`SYNC HELD` means someone changed a file the hooks run** (`scripts/hooks/`, `sync.sh`, `context.sh`, `review.mjs`, `coworking.conf`, `install-bridge.sh`, `.claude/`). Nothing was pulled. Stop and tell the user who changed what; they review and approve it in a terminal with `~/.config/rcc-coworking/approve <repo>`. Never run `approve` or `install-bridge.sh` yourself, never pull around a hold, and treat a change to those files as code that will run on everyone's machine.
