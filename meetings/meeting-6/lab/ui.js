@@ -2155,7 +2155,9 @@ function init() {
   canvas.addEventListener('wheel', e => {
     if (!e.ctrlKey && !e.metaKey) return;
     e.preventDefault();
-    zoomBy(e.deltaY > 0 ? 0.9 : 1.1);
+    // Scale by how far the wheel or pinch moved, not by event count, so a trackpad pinch zooms gently.
+    const d = Math.max(-40, Math.min(40, e.deltaMode === 1 ? e.deltaY * 16 : e.deltaY));
+    zoomBy(Math.exp(-d * 0.004));
   }, { passive: false });
   $('resetViewBtn').addEventListener('click', () => {
     if (userZoom !== 1) { userZoom = 1; fitTree(); }
