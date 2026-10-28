@@ -2,7 +2,7 @@
 
 Live board for the Meeting 6 deck and agent lab while Sam's agents build them overnight (2026-10-27 to 2026-10-28). It is rewritten in place and pushed with every milestone, so the top of this file is always the current state. History goes in commit messages and `docs/agent-log.md`.
 
-**Last update:** 2026-10-27 23:35 PDT · **Phase:** deck v1 live (all 24 slides, notes, timers, presenter hooks); lab L1a engine pushed · **Next push:** deck D2 (Shares item, bespoke motion for the window, team tree, group chat, and checklist); lab L1b (the page and practice mode)
+**Last update:** 2026-10-27 23:45 PDT · **Phase:** deck D2 in progress: slides 4 and 6 to 10 polished (bespoke modules); lab L1a engine pushed · **Next push:** deck D2 part 2 (loop and structure), then team, group chat, checklist, Shares; lab L1b (the page and practice mode)
 
 Deck v1: https://pcolee.github.io/explorAI/meetings/meeting-6/ · notes: https://pcolee.github.io/explorAI/meetings/meeting-6/notes.html
 
@@ -17,7 +17,7 @@ Deck v1: https://pcolee.github.io/explorAI/meetings/meeting-6/ · notes: https:/
 
 | What | Files | Who | Since |
 |---|---|---|---|
-| Deck D2 (next): Shares item, bespoke modules | `meetings/meeting-6/index.html`, `notes.html` | Sam's agents (deck track) | v1 pushed 2026-10-27 23:25 |
+| Deck D2: bespoke modules (done: 4, 6 to 10; next: 11, 15, 18, 19, 20, Shares) | `meetings/meeting-6/index.html`, `notes.html`, `plan.md` | Sam's agents (deck track) | 2026-10-27 23:25 |
 | Agent lab L1b (next): the page and practice mode | `meetings/meeting-6/lab/` | Sam's agents (lab track) | L1a engine pushed 2026-10-27 23:35 |
 | Docs | this file, Meeting 6 row in `docs/status.md`, Sam's entry in `docs/agent-log.md` | Sam's agents | 2026-10-27 23:05 |
 
@@ -42,13 +42,13 @@ What each slide is for, the shared words, and the design bar: `plan.md`. The lab
 | 1 | cover | Under the Hood · How AI agents work · Wed, Oct 28 · 2-3pm · CIS A-204 | 2:00 | v1 |
 | 2 | signin | Title + sign-in QR (routine) | 2:01 | v1 (QR reused from Meeting 5, decoded) |
 | 3 | shares | explorAI Shares: one verified agents news item, with source | 2:04 | v1 frame, item pending (visible "Item pending" line; D2 fills it from the facts file) |
-| 4 | hook | A finished game night flyer. Guess how many AIs made it, then reveal the team, messages, and check rounds (numbers from a real lab run) | 2:07 | v1: sample flyer + team of 5; message and round counts pending the recorded run |
+| 4 | hook | A finished game night flyer. Guess how many AIs made it, then reveal the team, messages, and check rounds (numbers from a real lab run) | 2:07 | polished, 3 presses (flyer alone, then the guess, then the team of 5); sample flyer, no counts: integration pending the recorded run |
 | 5 | part1 | Part 1 · From chat to agent | 2:10 | v1 |
-| 6 | recall-chat | Meeting 3's group chat: part of the picture vs. everything | 2:10 | v1 (Meeting 3's phone and chat) |
-| 7 | recall-window | The context window card, filled layer by layer. "It can't read what you didn't put in the window." | 2:12 | v1 |
-| 8 | session | A chat session is a window you keep filling, one turn at a time | 2:13 | v1 (3 turns + "sent this turn" box: 1, 3, 5 messages) |
-| 9 | pin | Write the instructions once: you fill the "instructions from the app" slot yourself | 2:15 | v1 |
-| 10 | agent | Agent = model + instructions + tools + a loop + "done when". The session card turns into an agent card, one labeled piece per press | 2:16 | v1 (static card, one row per press) |
+| 6 | recall-chat | Meeting 3's group chat: part of the picture vs. everything | 2:10 | polished, 2 presses (Meeting 3's phone markup, last message then the whole chat) |
+| 7 | recall-window | The context window card, filled layer by layer. "It can't read what you didn't put in the window." | 2:12 | polished, 6 presses (empty slots fill one layer per press; reply tokens appear one by one) |
+| 8 | session | A chat session is a window you keep filling, one turn at a time | 2:13 | polished, 3 presses (meter: 1, 3, 5 messages; earlier messages flash as they are sent again) |
+| 9 | pin | Write the instructions once: you fill the "instructions from the app" slot yourself | 2:15 | polished, 4 presses (the app's layer becomes "written by you") |
+| 10 | agent | Agent = model + instructions + tools + a loop + "done when". The session card turns into an agent card, one labeled piece per press | 2:16 | polished, 5 presses (chat session card gains 4 pieces, then becomes the Flyer Writer agent card) |
 | 11 | loop | The loop: think, do, check, again or done (flyer example, round counter) | 2:18 | v1 (step list + round counter) |
 | 12 | part2 | Part 2 · Build one agent | 2:20 | v1 |
 | 13 | setup | Open the lab (QR), get a free Gemini key or use practice mode | 2:20 | v1 (lab QR decoded; key steps to check against the facts file in D2) |
@@ -82,6 +82,8 @@ What each slide is for, the shared words, and the design bar: `plan.md`. The lab
 - Lab: each preset grows with the levels (1 one agent with a name and job, 2 the same agent with all six parts, 3 a lead with three helpers, 4 plus a checker). Until a student edits the team, switching levels loads that level's version; after an edit, switching levels keeps the student's team. (Sam's agents, lab track, 2026-10-27)
 - Lab: the checker's message includes the word count the page counted, so "Under 40 words" is graded on a real count rather than the model's guess. (Sam's agents, lab track, 2026-10-27)
 - Shares slide stays in v1 as a frame with a visible "Item pending" line, so D2 can fill it from the facts file. If it is still pending at 13:00, cut it, per plan.md. (Sam's agents, 2026-10-27)
+- Deck steps: one press can now show several things at once (elements that share a `data-build-in` number), and each slide carries `data-step` so a module can move or change between presses. The presenter view's "Next press" labels follow the presses. Back still undoes exactly one press. (Sam's agents, deck D2, 2026-10-27)
+- The hook shows no message or round counts until the recorded run exists (no visible "pending" line on screen); I1 adds them from `lab/examples/game-night-run.json`. (Sam's agents, deck D2, 2026-10-27)
 
 ## Needs a person before 14:00
 
@@ -89,4 +91,4 @@ What each slide is for, the shared words, and the design bar: `plan.md`. The lab
 - Cole or Sam: next week's (2026-11-04) topic for the thanks slide.
 - Speakers: assign who covers which part (`A` in the deck, or `?view=review`).
 - Presenter: make a Gemini key in AI Studio before the meeting and test one team run in the lab on the room's Wi-Fi.
-- Pending the recorded lab run (`lab/examples/game-night-run.json`): the hook's message and round counts, the texting slide's real messages, and the checkloop marks. Until then those slides show plan.md's wording and say "pending" where a number would go.
+- Pending the recorded lab run (`lab/examples/game-night-run.json`): the hook's message and round counts, the texting slide's real messages, and the checkloop marks. Until then those slides show plan.md's example wording and no counts (integration pending, stage I1).
