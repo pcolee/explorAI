@@ -73,6 +73,8 @@ const NEW_EMOJI = ['🤖', '🧠', '🎨', '🔎', '💡', '🛠️', '📣', '�
 const REDUCED = typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const $ = id => document.getElementById(id);
+const PHONE = () => typeof matchMedia === 'function' && matchMedia('(max-width: 700px)').matches;
+const WIDE = () => !PHONE() && innerWidth >= 1200;
 
 function el(tag, cls, text) {
   const n = document.createElement(tag);
@@ -114,6 +116,8 @@ const S = {
   last: null,
   recordings: [],
   recordingsReady: null,
+  stats: { msgs: 0, rounds: 0, calls: 0 },
+  unread: 0,
   nodeState: new Map(),
   paths: new Map(),
 };
@@ -306,6 +310,7 @@ function renderLevels() {
   $('levelGoal').textContent = goalText(S.level, S.presetId);
   for (const b of $('presetSel').children) b.setAttribute('aria-pressed', String(b.dataset.preset === S.presetId));
   const p = getPreset(S.presetId);
+  $('teamMenuCur').replaceChildren(el('span', 'em', p.emoji), el('span', 'nm', ` ${p.name}`));
   $('dirtyNote').hidden = !S.dirty;
   $('loadLevelBtn').textContent = `Load ${p.name} for level ${S.level}`;
   renderTaskNote();
@@ -334,6 +339,9 @@ function setLevel(n) {
   $('runStatus').textContent = '';
   renderAll();
   save();
+  // Levels 1 and 2 are about one agent's card; levels 3 and 4 are about the team, so the tree gets the room.
+  if (n >= 3) closeSheet();
+  else if (WIDE()) openSheet('agent');
 }
 
 function withUndo(label, fn) {
@@ -376,8 +384,52 @@ function nodeEl(agent) {
   const lead = agent.parentId ? byId(S.team, agent.parentId) : null;
   b.setAttribute('aria-label', `${agent.name}, ${roleLabel(role)}${lead ? `, reports to ${lead.name}` : ''}. Select to edit.`);
   applyNodeState(b, S.nodeState.get(agent.id));
-  b.addEventListener('click', () => { S.selectedId = agent.id; save(); renderTreeSelection(); renderEditor(); renderTools(); });
+  b.addEventListener('click', () => { S.selectedId = agent.id; save(); renderTreeSelection(); renderEditor(); renderTools(); openSheet('agent'); });
   return b;
+}
+
+// ---------- side sheet (the selected agent, or Messages) ----------
+
+function openSheet(tab) {
+  document.body.dataset.sheet = tab;
+  $('tabAgent').setAttribute('aria-selected', String(tab === 'agent'));
+  $('tabMsgs').setAttribute('aria-selected', String(tab === 'messages'));
+  $('editor').hidden = tab !== 'agent';
+  $('chatPanel').hidden = tab !== 'messages';
+  $('msgsBtn').setAttribute('aria-expanded', String(tab === 'messages'));
+  if (tab === 'messages') { S.unread = 0; renderCount(); }
+  if (tab === 'agent') requestAnimationFrame(growAll);
+  requestAnimationFrame(fitTree);
+}
+
+function closeSheet() {
+  delete document.body.dataset.sheet;
+  $('msgsBtn').setAttribute('aria-expanded', 'false');
+  requestAnimationFrame(fitTree);
+}
+
+function renderCount() {
+  $('msgCount').textContent = S.unread > 0 && document.body.dataset.sheet !== 'messages' ? String(S.unread) : '';
+}
+
+// ---------- run stats (the HUD tiles) ----------
+
+function setStat(id, n) {
+  const num = $(id);
+  if (num.textContent === String(n)) return;
+  num.textContent = String(n);
+  const tile = num.closest('.tile');
+  if (!REDUCED && tile) { tile.classList.remove('bump'); void tile.offsetWidth; tile.classList.add('bump'); }
+}
+
+function resetStats() {
+  S.stats = { msgs: 0, rounds: 0, calls: 0 };
+  if (S.runNo > 0) $('stats').hidden = false;
+  setStat('statAgents', S.team.agents.length);
+  setStat('statMsgs', 0);
+  setStat('statRounds', 0);
+  setStat('statCalls', 0);
+  $('statCallsSub').textContent = 'times this run';
 }
 
 // Agents whose work a checker sent back this run stay pink until a check passes.
@@ -432,6 +484,7 @@ function renderTree() {
   tree.append(roots.length > 1 ? row : (row.firstChild || el('p', 'hint', 'No agents yet.')));
   requestAnimationFrame(fitTree);
   renderFaces();
+  if (!S.running) setStat('statAgents', S.team.agents.length);
 }
 
 // The chat's title bar shows the team's faces, like the deck's group chat.
@@ -456,9 +509,19 @@ function modelPillText() {
 function fitTree() {
   const canvas = $('canvas');
   const box = $('treeBox');
+  const stage = $('stage');
+  const cs = getComputedStyle(stage);
+  // The room left of the side sheet and between the HUD and the dock.
+  const availW = canvas.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+  const availH = canvas.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+  box.style.zoom = '';
   canvas.classList.remove('compact', 'tight');
-  if (box.scrollWidth > canvas.clientWidth - 16) canvas.classList.add('compact');
-  if (box.scrollWidth > canvas.clientWidth - 16) canvas.classList.add('tight');
+  // Too wide: first narrower cards, then each checker under its agent.
+  if (box.offsetWidth > availW) canvas.classList.add('tight');
+  if (box.offsetWidth * 0.8 > availW) canvas.classList.add('compact');
+  // Then the whole team shrinks to fit the screen, like a camera zooming out (never below 60%).
+  const z = Math.max(0.6, Math.min(1, availW / box.offsetWidth, availH / box.offsetHeight));
+  if (z < 0.99 && !PHONE()) box.style.zoom = String(Math.round(z * 100) / 100);
   drawWires();
 }
 
@@ -467,15 +530,20 @@ function renderTreeSelection() {
   for (const b of document.querySelectorAll('.node')) b.setAttribute('aria-pressed', String(b.dataset.id === id));
 }
 
+// Positions inside the tree box, in its own (unzoomed) units, so the wires line up at any zoom.
 function rectIn(node, box) {
   const r = node.getBoundingClientRect();
-  return { l: r.left - box.left, r: r.right - box.left, t: r.top - box.top, b: r.bottom - box.top, cx: (r.left + r.right) / 2 - box.left, cy: (r.top + r.bottom) / 2 - box.top };
+  const k = box.k || 1;
+  const l = (r.left - box.left) / k, t = (r.top - box.top) / k, w = r.width / k, h = r.height / k;
+  return { l, r: l + w, t, b: t + h, cx: l + w / 2, cy: t + h / 2 };
 }
 
 function drawWires() {
   const svg = $('wires');
   const boxEl = $('treeBox');
   const box = boxEl.getBoundingClientRect();
+  // Some browsers report zoomed sizes and some don't; measuring both handles either.
+  box.k = boxEl.offsetWidth ? box.width / boxEl.offsetWidth : 1;
   svg.replaceChildren();
   S.paths.clear();
   svg.setAttribute('width', String(Math.ceil(boxEl.scrollWidth)));
@@ -1306,7 +1374,6 @@ function setRunning(on) {
   $('resetBtn').disabled = on;
   $('loadLevelBtn').disabled = on;
   for (const b of document.querySelectorAll('.level')) b.disabled = on;
-  $('fabRun').textContent = on ? 'See messages' : 'Run';
   renderModes();
   renderTools();
 }
@@ -1371,23 +1438,38 @@ async function run() {
   }
   addItem(div);
   addItem(el('li', 'source', source));
+  resetStats();
+  S.unread = 0;
+  // On a wide screen Messages opens beside the team; on a smaller one it opens when the run ends, so the team stays in view.
+  if (WIDE()) openSheet('messages'); else { if (document.body.dataset.sheet === 'agent') closeSheet(); renderCount(); }
   showRunStart(div);
   $('runStatus').textContent = 'Running…';
 
   const onEvent = ev => {
     switch (ev.type) {
-      case 'agent-start': setNode(ev.agentId, 'thinking', PHASE[ev.phase] || 'Working'); $('fabRun').textContent = 'See messages'; break;
+      case 'agent-start': {
+        const lab = PHASE[ev.phase] || 'Working';
+        setNode(ev.agentId, 'thinking', ev.round > 1 && (ev.phase === 'check' || ev.phase === 'revise') ? `${lab}, round ${ev.round}` : lab);
+        S.stats.calls += 1;
+        setStat('statCalls', S.stats.calls);
+        break;
+      }
       case 'agent-idle': if (['thinking', 'waiting'].includes(S.nodeState.get(ev.agentId)?.state)) setNode(ev.agentId, null); break;
-      // On a phone the thread is far down the page, so the floating button says a wait is on.
-      case 'waiting': setNode(ev.agentId, 'waiting', `Waiting ${ev.seconds}s`); addWait(ev, runState); $('fabRun').textContent = `Waiting ${ev.seconds}s`; break;
+      case 'waiting': setNode(ev.agentId, 'waiting', `Waiting ${ev.seconds}s`); addWait(ev, runState); break;
       case 'message':
         addMessage(ev, runState);
+        if (!ev.lab) {
+          if (ev.from !== 'you' && ev.to !== 'you' && ev.to !== 'team') { S.stats.msgs += 1; setStat('statMsgs', S.stats.msgs); }
+          if (document.body.dataset.sheet !== 'messages') { S.unread += 1; renderCount(); }
+        }
         if (ev.kind === 'job') pulse(ev.from, ev.to, 'down');
         else if (ev.kind === 'final') pulse(ev.from, ev.to, 'up');
         else if (ev.kind === 'report') pulse(ev.from, ev.to, 'up');
         else if (ev.kind === 'draft' || ev.kind === 'revise' || ev.kind === 'check') pulse(ev.from, ev.to, 'check');
         break;
       case 'check-result':
+        S.stats.rounds += 1;
+        setStat('statRounds', S.stats.rounds);
         if (ev.pass) sentBack.delete(ev.agentId); else sentBack.add(ev.agentId);
         // A checker whose check passed keeps a Done badge, like every other agent at the end.
         setNode(ev.checkerId, ev.pass ? 'done' : null, ev.pass ? 'Done' : undefined);
@@ -1421,13 +1503,16 @@ async function run() {
   setRunning(false);
   S.ctl = null;
   const st = res.stats || {};
+  if (Number.isFinite(st.calls)) setStat('statCalls', st.calls);
+  $('statCallsSub').textContent = `times this run (limit ${L.maxCalls})`;
+  if (!WIDE() && res.status === 'done') openSheet('messages');
   if (res.status === 'done') {
     const bits = [`Finished in ${(res.ms / 1000).toFixed(1)} s`, `${st.agents} agent${st.agents === 1 ? '' : 's'}`];
     if (st.agentMessages) bits.push(`${st.agentMessages} messages between agents`);
     if (st.checkRounds) bits.push(`${st.checkRounds} check round${st.checkRounds === 1 ? '' : 's'}`);
     if (st.sendBacks) bits.push(`sent back ${st.sendBacks} time${st.sendBacks === 1 ? '' : 's'}`);
     addItem(el('li', 'summary', bits.join(' · ')));
-    $('runStatus').textContent = 'Done. Read the final answer below.';
+    $('runStatus').textContent = 'Done. The final answer is at the end of Messages.';
   } else if (res.status === 'stopped') {
     addLabNote('Stopped. Nothing else was sent.');
     $('runStatus').textContent = 'Stopped.';
@@ -1663,20 +1748,69 @@ function init() {
   $('keyForget').addEventListener('click', forgetKey);
   $('keyDialog').addEventListener('click', e => { if (e.target === $('keyDialog')) closeKeyDialog(); });
 
-  // On a phone the Run button can be far from the editor; a floating one shows while it is off screen.
-  const fab = $('fabRun');
-  fab.addEventListener('click', () => {
-    if (!S.running) run();
-    $('runTitle').closest('section').scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth', block: 'start' });
+  // Example team menu (top right): the presets, Reset, and Copy link.
+  const menu = $('teamMenu');
+  const setMenu = open => { menu.hidden = !open; $('teamMenuBtn').setAttribute('aria-expanded', String(open)); };
+  $('teamMenuBtn').addEventListener('click', () => setMenu(menu.hidden));
+  document.addEventListener('pointerdown', e => { if (!menu.hidden && !e.target.closest('.menu-wrap')) setMenu(false); });
+  menu.addEventListener('click', e => { if (e.target.closest('button')) setTimeout(() => setMenu(false), 0); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !menu.hidden) { e.stopImmediatePropagation(); setMenu(false); $('teamMenuBtn').focus(); } });
+
+  // The side sheet: the selected agent's card, or Messages.
+  $('tabAgent').addEventListener('click', () => openSheet('agent'));
+  $('tabMsgs').addEventListener('click', () => openSheet('messages'));
+  $('sheetClose').addEventListener('click', closeSheet);
+  $('msgsBtn').addEventListener('click', () => (document.body.dataset.sheet === 'messages' ? closeSheet() : openSheet('messages')));
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && document.body.dataset.sheet && !$('keyDialog').open && menu.hidden) closeSheet();
   });
-  if (typeof IntersectionObserver === 'function') {
-    // Hidden while Messages is on screen, so it never covers the final answer.
-    let runSeen = true;
-    let threadSeen = false;
-    const upd = () => fab.classList.toggle('show', !runSeen && !threadSeen);
-    new IntersectionObserver(([e]) => { runSeen = e.isIntersecting; upd(); }).observe($('runBtn'));
-    new IntersectionObserver(([e]) => { threadSeen = e.isIntersecting; upd(); }).observe(thread());
+  $('canvasHint').textContent = typeof matchMedia === 'function' && matchMedia('(pointer: coarse)').matches ? 'Tap an agent to edit it.' : 'Click an agent to edit it.';
+  if (WIDE() && S.level <= 2) openSheet('agent');
+  else { $('editor').hidden = false; $('chatPanel').hidden = true; }
+
+  // The floating HUD and dock set how much room the tree keeps clear around itself.
+  const sizeVars = () => {
+    document.body.style.setProperty('--hud-h', `${Math.round($('hud').getBoundingClientRect().height)}px`);
+    document.body.style.setProperty('--dock-h', `${Math.round($('dock').getBoundingClientRect().height)}px`);
+  };
+  sizeVars();
+  if (typeof ResizeObserver === 'function') {
+    const ro = new ResizeObserver(() => { sizeVars(); requestAnimationFrame(fitTree); });
+    ro.observe($('hud'));
+    ro.observe($('dock'));
   }
+
+  // Drag the empty canvas to move around a big team (touch scrolls on its own).
+  const canvas = $('canvas');
+  let pan = null;
+  canvas.addEventListener('pointerdown', e => {
+    if (e.pointerType !== 'mouse' || e.button !== 0 || e.target.closest('button, a, input, textarea')) return;
+    pan = { x: e.clientX, y: e.clientY, l: canvas.scrollLeft, t: canvas.scrollTop };
+    canvas.classList.add('panning');
+  });
+  window.addEventListener('pointermove', e => {
+    if (!pan) return;
+    canvas.scrollLeft = pan.l - (e.clientX - pan.x);
+    canvas.scrollTop = pan.t - (e.clientY - pan.y);
+  });
+  window.addEventListener('pointerup', () => { pan = null; canvas.classList.remove('panning'); });
+  $('resetViewBtn').addEventListener('click', () => {
+    const box = $('treeBox');
+    const c = canvas.getBoundingClientRect();
+    const b = box.getBoundingClientRect();
+    const st = getComputedStyle($('stage'));
+    const padL = parseFloat(st.paddingLeft), padR = parseFloat(st.paddingRight), padT = parseFloat(st.paddingTop), padB = parseFloat(st.paddingBottom);
+    const midX = padL + (c.width - padL - padR) / 2;
+    const midY = padT + (c.height - padT - padB) / 2;
+    const left = canvas.scrollLeft + (b.left - c.left) + Math.min(b.width, c.width - padL - padR) / 2 - midX;
+    const top = canvas.scrollTop + (b.top - c.top) + Math.min(b.height, c.height - padT - padB) / 2 - midY;
+    canvas.scrollTo({ left: Math.max(0, left), top: Math.max(0, top), behavior: REDUCED ? 'auto' : 'smooth' });
+  });
+
+  // The task box shows two lines until you click into it.
+  $('task').addEventListener('focus', () => requestAnimationFrame(growTask));
+  $('task').addEventListener('blur', () => requestAnimationFrame(growTask));
+  resetStats();
 
   let rz = 0;
   let lastW = 0;
