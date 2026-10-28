@@ -373,7 +373,7 @@ export function normalizeChecks(raw, items) {
   const checks = items.map((item, i) => {
     let k = list.findIndex((c, j) => !used.has(j) && norm(c?.item) === norm(item));
     if (k < 0 && list[i] && !used.has(i) && !items.some(it => norm(it) === norm(list[i]?.item))) k = i;
-    if (k < 0) return { item, pass: false, note: 'The checker did not grade this line.', missing: true };
+    if (k < 0) return { item, pass: false, note: 'The checker skipped this line.', missing: true };
     used.add(k);
     const c = list[k];
     return { item, pass: c?.pass === true, note: typeof c?.note === 'string' ? c.note.trim() : '' };
@@ -467,7 +467,7 @@ export async function runTeam(team, task, { adapter, limits = {}, signal, onEven
   async function call(agent, kind, userText, { schema, round, meta = {} } = {}) {
     throwIfStopped();
     if (stats.calls >= L.maxCalls) {
-      throw new LimitError('maxCalls', L.maxCalls, `Stopped: this run reached the limit of ${L.maxCalls} model calls. The limit keeps a team from running forever.`);
+      throw new LimitError('maxCalls', L.maxCalls, `Stopped. The agents asked the AI ${L.maxCalls} times, and the lab stops every run there.`);
     }
     stats.calls += 1;
     touched.add(agent.id);
@@ -563,7 +563,7 @@ export async function runTeam(team, task, { adapter, limits = {}, signal, onEven
       if (plan.broken) {
         message({ from: 'lab', to: 'team', kind: 'note', lab: true, text: `${agent.name}'s plan came back empty or broken, so every helper gets the whole task.` });
       } else if (plan.dropped) {
-        message({ from: 'lab', to: 'team', kind: 'note', lab: true, text: `The lab dropped ${plan.dropped} job${plan.dropped === 1 ? '' : 's'} in ${agent.name}'s plan that named someone who is not one of its helpers.` });
+        message({ from: 'lab', to: 'team', kind: 'note', lab: true, text: `${agent.name} gave ${plan.dropped === 1 ? 'a job' : `${plan.dropped} jobs`} to someone who isn't on the team, so the lab skipped ${plan.dropped === 1 ? 'it' : 'them'}.` });
       }
       const assigned = helpers.filter(h => plan.jobs.has(h.id));
       for (const h of helpers) {

@@ -310,7 +310,7 @@ test('call limit: the run ends cleanly and names the limit', async () => {
   assert.equal(r.status, 'limit');
   assert.equal(r.limit, 'maxCalls');
   assert.equal(a.calls.length, 5);
-  assert.match(ev.of('limit')[0].message, /limit of 5 model calls/);
+  assert.match(ev.of('limit')[0].message, /asked the AI 5 times/);
   assert.equal(ev.events.at(-1).type, 'run-done');
 });
 

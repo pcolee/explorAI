@@ -283,7 +283,7 @@ function renderModes() {
   }
   $('keyBtn').textContent = S.key ? 'Your key' : 'Add a Gemini key';
   const mp = $('modelPill');
-  if (mp) mp.textContent = modelPillText();
+  if (mp) { mp.textContent = modelPillText(); mp.hidden = S.mode !== 'gemini'; }
   chip.disabled = S.running;
   $('keyBtn').disabled = S.running;
 }
@@ -599,7 +599,8 @@ function renderTools() {
     const merged = rows.length >= 2 && deep(rows[0][1]) && rows[1][0] === '+ Lead above' && deep(rows[1][1]) && rows[0][0] === '+ Helper'
       ? [['+ Helper and + Lead above', `The team can be at most ${L.maxDepth} levels deep.`], ...rows.slice(2)]
       : rows;
-    $('treeHint').textContent = [`Selected: ${a.name}.`, ...merged.map(([b, r]) => `${b}: ${r}`)].join('\n');
+    // Only the reasons a button is off; the pink ring already shows which agent is selected.
+    $('treeHint').textContent = [...new Set(merged.map(([, r]) => r))].join('\n');
   }
 }
 
@@ -764,10 +765,16 @@ function renderEditor() {
   hdText.append(el('span', 'sr', 'Selected agent: '), topLine, rel);
   const mp = el('span', 'model-pill', modelPillText());
   mp.id = 'modelPill';
+  // The header chip already says Practice mode; the card names the model only with a key.
+  mp.hidden = S.mode !== 'gemini';
   hd.append(av, hdText, mp);
   ed.append(hd);
 
-  const grid = el('div', 'fields');
+  // Two columns at projector widths: Name, Look, Job, Role, Goal (and Steps at level 4) on the left;
+  // the other parts and the check loop on the right. One column on a phone.
+  const grid = el('div', 'ed-cols');
+  const colA = el('div', 'ed-col');
+  const colB = el('div', 'ed-col need-2');
   const basics = el('div', 'basics');
   basics.append(field({
     id: 'f-name', label: 'Name', hint: 'What the team calls this agent.', value: a.name, maxLength: 40,
@@ -813,12 +820,21 @@ function renderEditor() {
     placeholder: role === 'checker' ? 'Example: Checks the flyer against its Done when list.' : 'Example: Writes the game night flyer.',
     onInput: v => { a.job = v; markDirty(); renderTree(); refreshSoon(); },
   }));
-  grid.append(basics);
+  colA.append(basics);
 
   const parts = el('div', 'part-group need-2');
   parts.append(el('span', 'label', 'The six parts'), el('p', 'hint', 'Each part goes into the instructions under its own heading. Empty parts are skipped.'));
-  const pg = el('div', 'fields');
+  const pgA = el('div', 'fields');
+  parts.append(pgA);
+  colA.append(parts);
+  const partsB = el('div', 'part-group');
+  const pgB = el('div', 'fields');
+  partsB.append(pgB);
+  colB.append(partsB);
   for (const p of PART_FIELDS) {
+    // Steps sits on the right unless the check loop box fills that column, so the two stay close in height.
+    const leftKeys = S.level >= 4 && role !== 'checker' ? ['role', 'goal', 'steps'] : ['role', 'goal'];
+    const pg = leftKeys.includes(p.key) ? pgA : pgB;
     if (p.key === 'doneWhen' && role === 'checker') {
       const t = checkedBy(S.team, a.id);
       const box = el('div', 'field wide part');
@@ -839,14 +855,13 @@ function renderEditor() {
       onInput: v => { a[p.key] = p.key === 'doneWhen' ? lines(v).slice(0, 8) : v; markDirty(); refreshSoon(); if (p.key === 'doneWhen') renderCheckBox(); },
     }));
   }
-  parts.append(pg);
-  grid.append(parts);
 
   if (role !== 'checker') {
     const cb = el('div', 'chk-box need-4');
     cb.id = 'chkBox';
-    grid.append(cb);
+    colB.append(cb);
   }
+  grid.append(colA, colB);
   ed.append(grid);
   renderCheckBox();
 
@@ -957,8 +972,24 @@ function renderTask() {
 
 function growTask() {
   const t = $('task');
+  t.style.paddingBottom = '';
+  t.style.minHeight = '';
   t.style.height = 'auto';
-  t.style.height = `${Math.min(280, t.scrollHeight + 4)}px`;
+  // Cap the box on a whole line, so it never ends with half a line showing.
+  const cs = getComputedStyle(t);
+  const lh = parseFloat(cs.lineHeight) || 23;
+  const pad = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom);
+  const want = Math.min(280, t.scrollHeight + 4);
+  t.style.height = `${want}px`;
+  // The CSS max-height may have clamped the box; round what is left down to whole lines.
+  const got = t.getBoundingClientRect().height;
+  // Text shows through the bottom padding, so a capped box drops it and ends exactly on a line.
+  if (got < t.scrollHeight + 3) {
+    const lines = Math.max(2, Math.floor((got - pad) / lh));
+    t.style.paddingBottom = '0px';
+    t.style.minHeight = '0px';
+    t.style.height = `${lines * lh + parseFloat(cs.paddingTop)}px`;
+  }
 }
 
 // ---------- thread ----------
@@ -1079,7 +1110,8 @@ function addMessage(m, run) {
   head.append(el('span', 'who', from.name), el('span', 'arrow', '→'), el('span', 'to', to.name));
   // Check and fix messages say their round in the header, like the deck's group chat.
   if ((m.kind === 'check' || m.kind === 'revise') && m.round) head.append(el('span', 'rnd', `· round ${m.round}`));
-  head.append(el('span', `kind ${m.kind}`, m.from === 'you' ? 'task' : KIND[m.kind] || m.kind));
+  // A check already shows its ticks and round, so it needs no kind pill.
+  if (m.kind !== 'check') head.append(el('span', `kind ${m.kind}`, m.from === 'you' ? 'task' : KIND[m.kind] || m.kind));
   body.append(head);
   const bub = el('div', 'bub');
   if (m.kind === 'check') {
@@ -1357,7 +1389,8 @@ async function run() {
         break;
       case 'check-result':
         if (ev.pass) sentBack.delete(ev.agentId); else sentBack.add(ev.agentId);
-        setNode(ev.checkerId, null);
+        // A checker whose check passed keeps a Done badge, like every other agent at the end.
+        setNode(ev.checkerId, ev.pass ? 'done' : null, ev.pass ? 'Done' : undefined);
         setNode(ev.agentId, ev.pass ? 'passed' : 'sent-back', ev.pass ? 'Passed' : 'Sent back');
         break;
       case 'limit':
@@ -1394,7 +1427,7 @@ async function run() {
     if (st.checkRounds) bits.push(`${st.checkRounds} check round${st.checkRounds === 1 ? '' : 's'}`);
     if (st.sendBacks) bits.push(`sent back ${st.sendBacks} time${st.sendBacks === 1 ? '' : 's'}`);
     addItem(el('li', 'summary', bits.join(' · ')));
-    $('runStatus').textContent = 'Done.';
+    $('runStatus').textContent = 'Done. Read the final answer below.';
   } else if (res.status === 'stopped') {
     addLabNote('Stopped. Nothing else was sent.');
     $('runStatus').textContent = 'Stopped.';
@@ -1637,7 +1670,12 @@ function init() {
     $('runTitle').closest('section').scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth', block: 'start' });
   });
   if (typeof IntersectionObserver === 'function') {
-    new IntersectionObserver(([e]) => fab.classList.toggle('show', !e.isIntersecting)).observe($('runBtn'));
+    // Hidden while Messages is on screen, so it never covers the final answer.
+    let runSeen = true;
+    let threadSeen = false;
+    const upd = () => fab.classList.toggle('show', !runSeen && !threadSeen);
+    new IntersectionObserver(([e]) => { runSeen = e.isIntersecting; upd(); }).observe($('runBtn'));
+    new IntersectionObserver(([e]) => { threadSeen = e.isIntersecting; upd(); }).observe(thread());
   }
 
   let rz = 0;
