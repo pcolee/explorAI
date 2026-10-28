@@ -559,6 +559,8 @@ function sizeVars() {
   body.classList.toggle('dock-wide', 14 + Math.max(0, (free - 14 - 720) / 2) < 190);
 }
 
+let userZoom = 1; // set by the − and + buttons and Ctrl or ⌘ plus scroll; Reset view puts it back to 1
+
 function fitTree() {
   const canvas = $('canvas');
   const box = $('treeBox');
@@ -595,9 +597,11 @@ function fitTree() {
   // Too wide: first narrower cards, then each checker under its agent.
   if (box.offsetWidth > availW) canvas.classList.add('tight');
   if (box.offsetWidth * 0.8 > availW) canvas.classList.add('compact');
-  // Then the whole team shrinks to fit the screen, like a camera zooming out (never below 60%).
-  const z = Math.max(0.6, Math.min(1, availW / box.offsetWidth, availH / box.offsetHeight));
-  if (z < 0.99 && !PHONE()) box.style.zoom = String(Math.round(z * 100) / 100);
+  // Then the whole team shrinks to fit the screen, like a camera zooming out (never below 35%),
+  // and the − and + buttons zoom further out or in from there.
+  const fit = PHONE() ? 1 : Math.max(0.35, Math.min(1, availW / box.offsetWidth, availH / box.offsetHeight));
+  const z = Math.max(0.25, Math.min(1.6, fit * userZoom));
+  if (Math.abs(z - 1) > 0.01) box.style.zoom = String(Math.round(z * 100) / 100);
   drawWires();
 }
 
@@ -2140,7 +2144,16 @@ function init() {
     canvas.scrollTop = pan.t - (e.clientY - pan.y);
   });
   window.addEventListener('pointerup', () => { pan = null; canvas.classList.remove('panning'); });
+  const zoomBy = f => { userZoom = Math.max(0.3, Math.min(2, userZoom * f)); fitTree(); };
+  $('zoomOutBtn').addEventListener('click', () => zoomBy(0.8));
+  $('zoomInBtn').addEventListener('click', () => zoomBy(1.25));
+  canvas.addEventListener('wheel', e => {
+    if (!e.ctrlKey && !e.metaKey) return;
+    e.preventDefault();
+    zoomBy(e.deltaY > 0 ? 0.9 : 1.1);
+  }, { passive: false });
   $('resetViewBtn').addEventListener('click', () => {
+    if (userZoom !== 1) { userZoom = 1; fitTree(); }
     const box = $('treeBox');
     const c = canvas.getBoundingClientRect();
     const b = box.getBoundingClientRect();

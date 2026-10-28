@@ -394,6 +394,7 @@ body.tools-under .menu{right:auto;left:0}
 /* With the sheet open, the sheet starts below these buttons. */
 
 /* ---------- canvas tools, bottom left corner (above the dock when the dock reaches the corner) ---------- */
+.zoom-row{display:flex;gap:6px}.zoom-btn{min-width:42px;justify-content:center;padding:6px 12px;font-size:1.15rem}
 .view-tools{position:fixed;z-index:4;left:var(--gap);bottom:calc(var(--gap) + 4px);display:flex;flex-direction:column;align-items:flex-start;gap:8px}
 body.dock-wide .view-tools{bottom:auto;top:calc(var(--gap) + var(--hud-h) + 10px)}.legend{display:flex;flex-direction:column;gap:2px;font-size:.8rem;color:var(--body);padding:7px 12px;border-radius:14px;background:rgba(255,254,251,.85);box-shadow:inset 0 0 0 1px var(--line)}
 .legend span{display:inline-flex;align-items:center;gap:6px}
@@ -649,7 +650,7 @@ li.ex-line{list-style:none;margin-bottom:6px}
     <span><svg width="12" height="22" aria-hidden="true"><path d="M6 2v13" stroke="#3F5A2A" stroke-width="2.2"/><path d="M2 14l4 6 4-6z" fill="#3F5A2A"/></svg>Jobs go down the lines and finished work comes back up.</span>
     <span class="need-4"><svg width="30" height="12" aria-hidden="true"><path d="M2 6h22" stroke="#A8487A" stroke-width="2.2" stroke-dasharray="5 4"/><path d="M22 2l6 4-6 4z" fill="#A8487A"/></svg>Check loop</span>
   </p>
-  <button type="button" class="pill-btn" id="resetViewBtn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/><circle cx="12" cy="12" r="2.5"/></svg>Reset view</button>
+  <div class="zoom-row"><button type="button" class="pill-btn" id="resetViewBtn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/><circle cx="12" cy="12" r="2.5"/></svg>Reset view</button><button type="button" class="pill-btn zoom-btn" id="zoomOutBtn" aria-label="Zoom out">−</button><button type="button" class="pill-btn zoom-btn" id="zoomInBtn" aria-label="Zoom in">+</button></div>
 </div>
 
 <section class="dock float" id="dock" aria-labelledby="runTitle">
