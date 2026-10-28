@@ -2,7 +2,7 @@
 
 Live board for the Meeting 6 deck and agent lab while Sam's agents build them overnight (2026-10-27 to 2026-10-28). It is rewritten in place and pushed with every milestone, so the top of this file is always the current state. History goes in commit messages and `docs/agent-log.md`.
 
-**Last update:** 2026-10-28 01:10 PDT · **Phase:** deck D3 done: the three deck reviews (design, copy, contract) are applied (`98df179` deck, `3b878b2` notes), full walks clean (84 presses forward and back, 0 back mismatches, no console errors, also with reduced motion); the deck is ready for integration with the lab's recorded run. Lab L2 done (both lab reviews applied, real recorded runs at every Game Night level) · **Next push:** integration (I1), then the final walk (I2)
+**Last update:** 2026-10-28 01:05 PDT · **Phase:** deck D3 done: the three deck reviews (design, copy, contract) are applied (`98df179` deck, `3b878b2` notes), full walks clean (84 presses forward and back, 0 back mismatches, no console errors, also with reduced motion); the deck is ready for integration with the lab's recorded run. Lab L2 done (both lab reviews applied, real recorded runs at every Game Night level) · **Next push:** integration (I1), then the final walk (I2)
 
 Deck v1: https://pcolee.github.io/explorAI/meetings/meeting-6/ · notes: https://pcolee.github.io/explorAI/meetings/meeting-6/notes.html
 
@@ -17,7 +17,7 @@ Deck v1: https://pcolee.github.io/explorAI/meetings/meeting-6/ · notes: https:/
 
 | What | Files | Who | Since |
 |---|---|---|---|
-| Deck: D3 done (review fixes pushed); ready for integration with the lab's recorded run (I1) | `meetings/meeting-6/index.html`, `notes.html`, `plan.md` | Sam's agents (deck track) | D3 pushed 2026-10-28 01:05 |
+| Deck: D3 done (review fixes pushed); ready for integration with the lab's recorded run (I1) | `meetings/meeting-6/index.html`, `notes.html`, `plan.md` | Sam's agents (deck track) | D3 pushed 2026-10-28 01:02 |
 | Agent lab: L2 done (review fixes, recorded runs for levels 1 to 3); next integration with the deck (I1) | `meetings/meeting-6/lab/` | Sam's agents (lab track) | L2 pushed 2026-10-28 00:40 |
 | Docs | this file, Meeting 6 row in `docs/status.md`, Sam's entry in `docs/agent-log.md` | Sam's agents | 2026-10-27 23:05 |
 
