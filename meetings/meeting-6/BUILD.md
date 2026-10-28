@@ -2,7 +2,9 @@
 
 Live board for the Meeting 6 deck and agent lab while Sam's agents build them overnight (2026-10-27 to 2026-10-28). It is rewritten in place and pushed with every milestone, so the top of this file is always the current state. History goes in commit messages and `docs/agent-log.md`.
 
-**Last update:** 2026-10-27 23:05 PDT · **Phase:** kickoff · **Next push:** deck v1 (all slides, content in place)
+**Last update:** 2026-10-27 23:25 PDT · **Phase:** deck v1 live (all 24 slides, notes, timers, presenter hooks) · **Next push:** deck D2 (Shares item, bespoke motion for the window, team tree, group chat, and checklist)
+
+Deck v1: https://pcolee.github.io/explorAI/meetings/meeting-6/ · notes: https://pcolee.github.io/explorAI/meetings/meeting-6/notes.html
 
 ## If you are Cole's agent, read this first
 
@@ -15,7 +17,7 @@ Live board for the Meeting 6 deck and agent lab while Sam's agents build them ov
 
 | What | Files | Who | Since |
 |---|---|---|---|
-| Deck v1 | `meetings/meeting-6/index.html`, `notes.html` | Sam's agents (deck track) | 2026-10-27 23:05 |
+| Deck D2 (next): Shares item, bespoke modules | `meetings/meeting-6/index.html`, `notes.html` | Sam's agents (deck track) | v1 pushed 2026-10-27 23:25 |
 | Agent lab | `meetings/meeting-6/lab/` | Sam's agents (lab track) | 2026-10-27 23:05 |
 | Docs | this file, Meeting 6 row in `docs/status.md`, Sam's entry in `docs/agent-log.md` | Sam's agents | 2026-10-27 23:05 |
 
@@ -37,30 +39,30 @@ What each slide is for, the shared words, and the design bar: `plan.md`. The lab
 
 | # | id | Slide | Time | State |
 |---|---|---|---|---|
-| 1 | cover | Under the Hood · How AI agents work · Wed, Oct 28 · 2-3pm · CIS A-204 | 2:00 | planned |
-| 2 | signin | Title + sign-in QR (routine) | 2:01 | planned |
-| 3 | shares | explorAI Shares: one verified agents news item, with source | 2:04 | planned |
-| 4 | hook | A finished game night flyer. Guess how many AIs made it, then reveal the team, messages, and check rounds (numbers from a real lab run) | 2:07 | planned |
-| 5 | part1 | Part 1 · From chat to agent | 2:10 | planned |
-| 6 | recall-chat | Meeting 3's group chat: part of the picture vs. everything | 2:10 | planned |
-| 7 | recall-window | The context window card, filled layer by layer. "It can't read what you didn't put in the window." | 2:12 | planned |
-| 8 | session | A chat session is a window you keep filling, one turn at a time | 2:13 | planned |
-| 9 | pin | Write the instructions once: you fill the "instructions from the app" slot yourself | 2:15 | planned |
-| 10 | agent | Agent = model + instructions + tools + a loop + "done when". The session card turns into an agent card, one labeled piece per press | 2:16 | planned |
-| 11 | loop | The loop: think, do, check, again or done (flyer example, round counter) | 2:18 | planned |
-| 12 | part2 | Part 2 · Build one agent | 2:20 | planned |
-| 13 | setup | Open the lab (QR), get a free Gemini key or use practice mode | 2:20 | planned |
-| 14 | build1 | Build 1: one agent, one job | 2:22 | planned |
-| 15 | structure | Give it structure: Role, Goal, Steps, Rules, Output, Done when, and the window they fill | 2:26 | planned |
-| 16 | build2 | Build 2: add structure, run again, compare | 2:28 | planned |
-| 17 | part3 | Part 3 · Build a team | 2:33 | planned |
-| 18 | team | Who's in charge: jobs go down, reports come up, the boss makes the final call | 2:33 | planned |
-| 19 | texting | What the agents say to each other (Meeting 3 style group chat) | 2:36 | planned |
-| 20 | checkloop | "Done when": a checklist that sends work back, with a round limit | 2:38 | planned |
-| 21 | build3 | Build 3: make a team and add a checker | 2:40 | planned |
-| 22 | wrong | When agents go wrong: Meeting 4's police tip, and the limits that prevent it | 2:50 | planned |
-| 23 | takeaway | One thing to remember | 2:54 | planned |
-| 24 | thanks | Thank you, next week card, Instagram + Discord QRs | 2:56 | planned |
+| 1 | cover | Under the Hood · How AI agents work · Wed, Oct 28 · 2-3pm · CIS A-204 | 2:00 | v1 |
+| 2 | signin | Title + sign-in QR (routine) | 2:01 | v1 (QR reused from Meeting 5, decoded) |
+| 3 | shares | explorAI Shares: one verified agents news item, with source | 2:04 | v1 frame, item pending (visible "Item pending" line; D2 fills it from the facts file) |
+| 4 | hook | A finished game night flyer. Guess how many AIs made it, then reveal the team, messages, and check rounds (numbers from a real lab run) | 2:07 | v1: sample flyer + team of 5; message and round counts pending the recorded run |
+| 5 | part1 | Part 1 · From chat to agent | 2:10 | v1 |
+| 6 | recall-chat | Meeting 3's group chat: part of the picture vs. everything | 2:10 | v1 (Meeting 3's phone and chat) |
+| 7 | recall-window | The context window card, filled layer by layer. "It can't read what you didn't put in the window." | 2:12 | v1 |
+| 8 | session | A chat session is a window you keep filling, one turn at a time | 2:13 | v1 (3 turns + "sent this turn" box: 1, 3, 5 messages) |
+| 9 | pin | Write the instructions once: you fill the "instructions from the app" slot yourself | 2:15 | v1 |
+| 10 | agent | Agent = model + instructions + tools + a loop + "done when". The session card turns into an agent card, one labeled piece per press | 2:16 | v1 (static card, one row per press) |
+| 11 | loop | The loop: think, do, check, again or done (flyer example, round counter) | 2:18 | v1 (step list + round counter) |
+| 12 | part2 | Part 2 · Build one agent | 2:20 | v1 |
+| 13 | setup | Open the lab (QR), get a free Gemini key or use practice mode | 2:20 | v1 (lab QR decoded; key steps to check against the facts file in D2) |
+| 14 | build1 | Build 1: one agent, one job | 2:22 | v1, timer 3:00; lab picture follows SPEC, match to the real lab in I1 |
+| 15 | structure | Give it structure: Role, Goal, Steps, Rules, Output, Done when, and the window they fill | 2:26 | v1 |
+| 16 | build2 | Build 2: add structure, run again, compare | 2:28 | v1, timer 5:00 |
+| 17 | part3 | Part 3 · Build a team | 2:33 | v1 |
+| 18 | team | Who's in charge: jobs go down, reports come up, the boss makes the final call | 2:33 | v1 (static tree, flow chips one per press) |
+| 19 | texting | What the agents say to each other (Meeting 3 style group chat) | 2:36 | v1: bubbles name each message's kind; real text pending the recorded run |
+| 20 | checkloop | "Done when": a checklist that sends work back, with a round limit | 2:38 | v1: marks follow plan.md's example; match to the recorded run in I1 |
+| 21 | build3 | Build 3: make a team and add a checker | 2:40 | v1, timer 10:00 |
+| 22 | wrong | When agents go wrong: Meeting 4's police tip, and the limits that prevent it | 2:50 | v1 (Meeting 4's wording and sources) |
+| 23 | takeaway | One thing to remember | 2:54 | v1 |
+| 24 | thanks | Thank you, next week card, Instagram + Discord QRs | 2:56 | v1 ("Topic coming soon"; QRs reused from Meeting 5, decoded) |
 
 ## Agent lab (the hands-on demo)
 
@@ -73,6 +75,9 @@ What each slide is for, the shared words, and the design bar: `plan.md`. The lab
 
 - Title stays "Under the Hood" with the subtitle "How AI agents work", so Meeting 5's thanks slide still matches. (Sam's agents, 2026-10-27)
 - Lab is a static page with bring-your-own Gemini key plus practice mode, chosen for reliability tomorrow. (Sam, 2026-10-27)
+- Deck back key undoes one press at a time (hides the last reveal on the slide, and only leaves the slide when nothing is revealed), as plan.md asks. Meeting 5's back jumped to the previous slide fully built. (Sam's agents, 2026-10-27)
+- The hook flyer and the steering example on slides 8, 9, and 11 use a sample event (Friday, 5-7pm, CIS A-204). Integration (I1) swaps the hook's flyer for the recorded run's flyer; the teaching examples can keep the sample. (Sam's agents, 2026-10-27)
+- Shares slide stays in v1 as a frame with a visible "Item pending" line, so D2 can fill it from the facts file. If it is still pending at 13:00, cut it, per plan.md. (Sam's agents, 2026-10-27)
 
 ## Needs a person before 14:00
 
@@ -80,3 +85,4 @@ What each slide is for, the shared words, and the design bar: `plan.md`. The lab
 - Cole or Sam: next week's (2026-11-04) topic for the thanks slide.
 - Speakers: assign who covers which part (`A` in the deck, or `?view=review`).
 - Presenter: make a Gemini key in AI Studio before the meeting and test one team run in the lab on the room's Wi-Fi.
+- Pending the recorded lab run (`lab/examples/game-night-run.json`): the hook's message and round counts, the texting slide's real messages, and the checkloop marks. Until then those slides show plan.md's wording and say "pending" where a number would go.
