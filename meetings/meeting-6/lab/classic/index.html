@@ -1,0 +1,550 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Agent Lab · ExplorAI</title>
+<meta name="description" content="Build one AI agent, give it structure, then grow it into a team with a lead, helpers, and a checker.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%233F5A2A'/%3E%3Ccircle cx='22' cy='30' r='6' fill='%23D9E8AD'/%3E%3Ccircle cx='42' cy='30' r='6' fill='%23F2C1D6'/%3E%3Crect x='20' y='42' width='24' height='5' rx='2.5' fill='%23FFFBF5'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght,SOFT@0,400..700,0..100;1,400..700,0..100&family=DM+Sans:wght@400..700&display=swap">
+<style>
+:root{
+  --ink:#3F5A2A;--body:#4D5845;--accent:#A8487A;--green:#D9E8AD;--pink:#F2C1D6;--mint:#F4F7E6;--cream:#FFFBF5;--card:#FFFEFB;
+  --pinkwash:#FBE6EF;--leaf:#9CB57B;--sand:#F4ECDD;--line:rgba(63,90,42,.16);--shadow:0 18px 36px -24px rgba(63,90,42,.38);
+  --display:'Fraunces',Georgia,serif;--sans:'DM Sans',Arial,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{font-size:17px;-webkit-text-size-adjust:100%}
+@media (min-width:1100px){html{font-size:18px}}
+body{margin:0;min-height:100vh;font-family:var(--sans);color:var(--body);line-height:1.5;
+  background:radial-gradient(900px 700px at 100% 0%,rgba(242,193,214,.55),transparent 62%),radial-gradient(1000px 800px at 0% 100%,rgba(217,232,173,.7),transparent 60%),var(--cream);background-attachment:fixed}
+body::after{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.06;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .25 0 0 0 0 .35 0 0 0 0 .16 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+h1,h2,h3,p,ol,ul{margin:0}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer}
+button:disabled{cursor:not-allowed}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:10px}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------- top bar ---------- */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px 16px;flex-wrap:wrap;max-width:1520px;margin:0 auto;padding:14px 32px 4px}
+.brand{display:flex;flex-direction:column;gap:0}
+.brand .eyebrow{font-size:.74rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
+.brand h1{font-family:var(--display);font-variation-settings:'SOFT' 100;font-weight:600;font-size:2rem;line-height:1.1;color:var(--ink)}
+.top-tools{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:999px;min-height:40px;padding:6px 16px;white-space:nowrap;font-weight:700;font-size:.9rem;background:var(--sand);color:var(--ink);box-shadow:inset 0 0 0 1.5px rgba(63,90,42,.18)}
+.chip::before{content:'';width:10px;height:10px;border-radius:50%;background:#C9A86A}
+.chip.gemini{background:var(--green)}
+.chip.gemini::before{background:var(--ink)}
+.chip .model{font-weight:500;opacity:.85}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:999px;padding:10px 20px;font-weight:700;font-size:.95rem;background:var(--card);color:var(--ink);box-shadow:inset 0 0 0 1.5px rgba(63,90,42,.28);min-height:44px;transition:transform .12s,box-shadow .12s,background .12s}
+.btn:hover:not(:disabled){box-shadow:inset 0 0 0 2px var(--ink)}
+.btn:active:not(:disabled){transform:translateY(1px)}
+.btn:disabled{opacity:.45}
+.btn.primary{background:var(--ink);color:var(--cream);box-shadow:0 10px 22px -14px rgba(63,90,42,.8)}
+.btn.primary:hover:not(:disabled){background:#344B22;box-shadow:0 10px 22px -12px rgba(63,90,42,.9)}
+.btn.accent{background:var(--accent);color:#fff;box-shadow:0 10px 22px -14px rgba(168,72,122,.8)}
+.btn.small{min-height:40px;padding:6px 16px;font-size:.86rem;white-space:nowrap}
+.btn.ghost{background:transparent;box-shadow:none;text-decoration:underline;text-underline-offset:3px;padding-left:8px;padding-right:8px}
+.btn.ghost:hover:not(:disabled){box-shadow:none;color:var(--accent)}
+
+/* ---------- levels ---------- */
+.levels-wrap{max-width:1520px;margin:0 auto;padding:8px 32px 0}
+.levels{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;padding:4px;border-radius:22px;background:rgba(255,254,251,.8);box-shadow:inset 0 0 0 1.5px var(--line)}
+.level{display:flex;align-items:center;gap:12px;border:0;border-radius:20px;padding:9px 16px;text-align:left;background:transparent;color:var(--ink);box-shadow:none;min-height:52px;position:relative;transition:background .15s,box-shadow .15s}
+.level:hover:not([aria-pressed="true"]){background:var(--mint)}
+/* The steps are joined in order: a short line runs from each step to the next. */
+.level:not(:last-child)::after{content:'';position:absolute;right:-8px;top:50%;width:12px;height:2px;margin-top:-1px;background:var(--leaf);z-index:1}
+.level .n{flex:none;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:600;font-size:1.1rem;background:var(--green);color:var(--ink)}
+.level .t{display:flex;flex-direction:column;line-height:1.2}
+.level .t b{font-size:1rem;white-space:nowrap}
+.level .t small{font-size:.78rem;color:var(--body);font-weight:500}
+.level[aria-pressed="true"]{background:var(--ink);color:var(--cream);box-shadow:0 14px 28px -18px rgba(63,90,42,.9)}
+.level[aria-pressed="true"] .n{background:var(--cream);color:var(--ink)}
+.level[aria-pressed="true"] .t small{color:var(--green)}
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px 16px;margin-top:12px}
+.tb-right{display:flex;align-items:center;gap:8px;flex:none}
+/* The level's goal is the deck's taped sticky note (one per level). */
+.goal-note{position:relative;grid-column:1/-1;justify-self:start;width:100%;max-width:980px;margin-top:10px;rotate:-.4deg;background:#FFFDF7;border-radius:20px;padding:14px 22px 12px;box-shadow:0 1px 0 rgba(63,90,42,.05),0 20px 36px -22px rgba(63,90,42,.42)}
+.goal-note::before{content:'';position:absolute;top:-12px;left:50%;width:104px;height:26px;margin-left:-52px;rotate:-3deg;background:rgba(242,193,214,.8);border-radius:6px}
+.goal-note .tag{display:block;font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:2px}
+.goal{font-family:var(--display);font-variation-settings:'SOFT' 100;font-size:1.06rem;font-weight:500;color:var(--ink);line-height:1.3}
+.goal b{font-weight:650}
+.goal-note.swap{animation:place .55s cubic-bezier(.2,.8,.2,1)}
+@keyframes place{from{opacity:0;transform:translateY(-10px) rotate(-2deg)}}
+.preset-tools{display:flex;align-items:center;gap:10px;min-width:0}
+.preset-tools>.label{font-size:.9rem}
+.presets{display:flex;gap:2px;padding:3px;border-radius:999px;background:rgba(255,254,251,.85);box-shadow:inset 0 0 0 1.5px var(--line)}
+.presets button{border:0;border-radius:999px;padding:4px 14px;min-height:34px;background:transparent;font-weight:700;font-size:.86rem;color:var(--ink);white-space:nowrap}
+.presets button:hover:not(:disabled){background:var(--mint)}
+.presets button[aria-pressed="true"]{background:var(--green);box-shadow:inset 0 0 0 1.5px rgba(63,90,42,.35)}
+.presets button:disabled{opacity:.5}
+.dirty-note{margin-top:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:.9rem;background:rgba(244,236,221,.75);border-radius:14px;padding:6px 8px 6px 14px;width:fit-content;max-width:100%}
+
+/* ---------- layout ---------- */
+.layout{max-width:1520px;margin:0 auto;padding:12px 32px 40px;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(400px,1fr);grid-template-areas:"goal goal" "team run" "ed ed";gap:22px;align-items:start}
+.layout>.goal-note{grid-area:goal}
+.team-col{grid-area:team}
+.run-col{grid-area:run}
+.layout>#editor{grid-area:ed}
+/* The editor uses the full width in two columns, so it is not one long scroll. */
+.ed-cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px 22px;align-items:start}
+.ed-col{display:flex;flex-direction:column;gap:14px;min-width:0}
+body[data-level="1"] .ed-cols{grid-template-columns:minmax(0,1fr)}
+@media (max-width:860px){.ed-cols{grid-template-columns:minmax(0,1fr)}}
+.col{display:flex;flex-direction:column;gap:22px;min-width:0}
+.card{background:var(--card);border-radius:28px;padding:24px 26px;box-shadow:inset 0 0 0 1.5px rgba(217,232,173,.95),0 30px 60px -38px rgba(63,90,42,.45);min-width:0;animation:rise .6s cubic-bezier(.2,.8,.2,1) backwards}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}}
+.card-hd{display:flex;align-items:baseline;justify-content:space-between;gap:10px 16px;flex-wrap:wrap;margin-bottom:14px}
+.card-hd h2{font-family:var(--display);font-variation-settings:'SOFT' 100;font-size:1.6rem;font-weight:600;color:var(--ink);line-height:1.2}
+.legend{display:flex;gap:6px 16px;flex-wrap:wrap;font-size:.88rem;color:var(--body)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend svg{flex:none}
+
+/* ---------- canvas ---------- */
+.canvas{position:relative;overflow-x:auto;overflow-y:hidden;border-radius:22px;background:
+  radial-gradient(circle,rgba(63,90,42,.1) 1.4px,transparent 1.6px) 0 0/26px 26px,linear-gradient(160deg,rgba(244,247,230,.9),rgba(251,230,239,.45));padding:34px 16px 36px;min-height:240px;-webkit-overflow-scrolling:touch;box-shadow:inset 0 0 0 1.5px rgba(217,232,173,.8)}
+.tree-box{position:relative;display:flex;justify-content:center;min-width:min-content;margin:0 auto}
+.wires{position:absolute;left:0;top:0;pointer-events:none;overflow:visible}
+.wire{fill:none;stroke:#7E9A5C;stroke-width:2.6;opacity:.75;stroke-linecap:round}
+.wire.loop{stroke:var(--accent);stroke-dasharray:7 7;opacity:.8}
+.wire.lit{opacity:1;stroke-width:3.6;stroke:var(--ink)}
+.wire.loop.lit{stroke:var(--accent)}
+.pulse{fill:var(--ink);stroke:#fff;stroke-width:2.5}
+.pulse.up{fill:#7E9A5C}
+.pulse.check{fill:var(--accent)}
+.sub{display:flex;flex-direction:column;align-items:center}
+.you-pill{width:fit-content;margin:0 auto 46px;padding:8px 26px;border-radius:999px;background:var(--green);font-family:var(--display);font-variation-settings:'SOFT' 100;font-size:1.2rem;font-weight:600;color:var(--ink);box-shadow:0 12px 24px -16px rgba(63,90,42,.6)}
+.wire.you{stroke-dasharray:none}
+.sub-row{display:flex;align-items:center;gap:72px}
+.canvas.compact .sub-row{flex-direction:column;gap:64px}
+@media (min-width:701px){
+  .canvas.compact .node.checker{width:220px}
+  .canvas.tight .node,.canvas.tight .node.checker{width:180px;column-gap:8px;padding:14px 8px 12px 9px}
+  .canvas.tight .node-av{width:34px;height:34px;font-size:1rem}
+  .canvas.tight .node-name{font-size:.98rem}
+  .canvas.tight .node-job{display:none}
+  .canvas.tight .sub-kids{gap:12px}
+}
+.sub-kids{display:flex;align-items:flex-start;justify-content:center;gap:20px;margin-top:60px}
+/* A node is the deck's tree node: role pill on the top edge, emoji in a circle, Fraunces name. */
+.node{position:relative;display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto auto;column-gap:12px;align-items:center;width:232px;padding:16px 16px 14px 14px;border:0;border-radius:22px;background:var(--card);text-align:left;color:var(--ink);
+  box-shadow:inset 0 0 0 1.5px rgba(156,181,123,.55),0 16px 30px -18px rgba(63,90,42,.55);transition:box-shadow .2s,transform .2s,background .3s}
+.node:hover{transform:translateY(-2px)}
+.node[aria-pressed="true"]{box-shadow:inset 0 0 0 3px var(--c),0 0 0 6px color-mix(in srgb,var(--c) 16%,transparent),0 18px 30px -18px rgba(63,90,42,.65)}
+.node.checker{width:210px;background:#FFF7FA;box-shadow:inset 0 0 0 1.5px rgba(168,72,122,.4),0 16px 30px -18px rgba(168,72,122,.5)}
+.node.checker[aria-pressed="true"]{box-shadow:inset 0 0 0 3px var(--c),0 0 0 6px color-mix(in srgb,var(--c) 16%,transparent),0 18px 30px -18px rgba(168,72,122,.6)}
+.node-av{grid-row:1/3;width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;background:color-mix(in srgb,var(--c) 16%,#fff);box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--c) 50%,#fff)}
+.node-name{font-family:var(--display);font-variation-settings:'SOFT' 100;font-weight:600;font-size:1.14rem;line-height:1.15;overflow-wrap:anywhere}
+.node-job{font-size:.8rem;line-height:1.3;color:var(--body);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:2px}
+.node-badge{position:absolute;top:-13px;left:16px;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 11px;border-radius:999px;background:var(--green);color:var(--ink)}
+.node-badge.helper{background:#E8F0CF}
+.node-badge.checker{background:var(--pink);color:var(--accent)}
+.node-badge.solo{background:var(--green)}
+.node-state{position:absolute;right:-8px;bottom:-13px;display:none;align-items:center;gap:6px;font-size:.74rem;font-weight:700;padding:3px 11px 3px 6px;border-radius:999px;background:var(--ink);color:var(--cream);box-shadow:0 6px 14px -8px rgba(0,0,0,.5);white-space:nowrap}
+.node-state::before{content:'';width:15px;height:15px;border-radius:50%;flex:none;background:rgba(255,255,255,.28)}
+.node[data-state] .node-state{display:inline-flex;animation:pop .35s cubic-bezier(.34,1.56,.64,1)}
+.node[data-state="thinking"]{animation:breathe 1.3s ease-in-out infinite}
+.node[data-state="thinking"] .node-state::before{border:2.5px solid rgba(255,255,255,.85);border-top-color:transparent;background:transparent;width:10px;height:10px;animation:spin 1s linear infinite}
+.node[data-state="waiting"] .node-state{background:#B07A1E}
+.node.back:not([data-state="thinking"]),.node[data-state="sent-back"]{background:#FCEAF2;box-shadow:inset 0 0 0 3px var(--accent),0 16px 30px -18px rgba(168,72,122,.6)}
+.node[data-state="sent-back"] .node-state,.node.back[data-state="thinking"] .node-state{background:var(--accent)}
+.node.back{background:#FCEAF2}
+.node[data-state="sent-back"] .node-state::before{content:'✗';display:flex;align-items:center;justify-content:center;font-size:.66rem;background:#fff;color:var(--accent)}
+.node[data-state="passed"] .node-state,.node[data-state="done"] .node-state{background:#5E7F33}
+.node[data-state="passed"] .node-state::before,.node[data-state="done"] .node-state::before{content:'✓';display:flex;align-items:center;justify-content:center;font-size:.7rem;background:var(--green);color:var(--ink)}
+.node[data-state="error"] .node-state{background:#9B2C2C}
+@keyframes breathe{0%,100%{box-shadow:inset 0 0 0 2.5px var(--c),0 0 0 0 color-mix(in srgb,var(--c) 45%,transparent)}50%{box-shadow:inset 0 0 0 2.5px var(--c),0 0 0 12px color-mix(in srgb,var(--c) 0%,transparent)}}
+@keyframes pop{from{opacity:0;transform:scale(.6)}}
+.tree-tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:16px}
+.tree-tools .hint{flex-basis:100%;white-space:pre-line}
+
+/* ---------- editor ---------- */
+/* The editor is the deck's agent card: role pill, Fraunces name, model pill, then one row per part. */
+#editor{box-shadow:inset 0 0 0 3px color-mix(in srgb,var(--c) 45%,#fff),0 0 0 8px rgba(242,193,214,.28),0 30px 60px -38px rgba(63,90,42,.45)}
+.ed-hd{display:flex;align-items:center;gap:14px;padding-bottom:16px;margin-bottom:18px;border-bottom:2px solid rgba(217,232,173,.9);flex-wrap:wrap}
+.ed-av{width:56px;height:56px;flex:none;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.7rem;background:color-mix(in srgb,var(--c) 16%,#fff);box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--c) 50%,#fff)}
+.ed-title{flex:1 1 200px;min-width:0}
+.ed-title .top-line{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.role-pill{display:inline-block;font-size:.74rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:4px 12px;border-radius:999px;background:var(--accent);color:#fff}
+.role-pill.checker{background:var(--pink);color:var(--accent)}
+.ed-hd h2{font-family:var(--display);font-variation-settings:'SOFT' 100;font-size:1.7rem;font-weight:600;color:var(--ink);line-height:1.15;overflow-wrap:anywhere}
+.model-pill{flex:none;font-size:.82rem;font-weight:700;letter-spacing:.02em;padding:6px 14px;border-radius:999px;background:var(--green);color:var(--ink)}
+.ed-rel{font-size:.9rem;margin-top:2px}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:14px 18px}
+.basics{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:14px 18px}
+/* One row per part, with the deck's pink rounded-square icon. */
+.field.part{display:grid;grid-template-columns:48px minmax(0,1fr);column-gap:14px;row-gap:3px;padding:14px 0;border-top:1.5px solid rgba(217,232,173,.7)}
+.field.part:first-child{border-top:0;padding-top:4px}
+.field.part .ic{grid-row:1/4;width:48px;height:48px;padding:10px;border-radius:15px;background:var(--pinkwash);fill:none;stroke:var(--accent);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.field.part>label,.field.part>.label{font-family:var(--display);font-variation-settings:'SOFT' 100;font-size:1.3rem;font-weight:600;color:var(--accent);line-height:1.15}
+.field.part>.hint,.field.part>textarea,.field.part>ul,.field.part>.ck-list{grid-column:2}
+.field.part textarea{margin-top:4px;background:var(--mint);box-shadow:inset 0 0 0 1.5px rgba(156,181,123,.45)}
+.field.part textarea:focus{background:#fff}
+.field{display:flex;flex-direction:column;gap:4px;min-width:0}
+.field.wide{grid-column:1/-1}
+.field label,.label{font-weight:700;font-size:.95rem;color:var(--ink)}
+.hint{font-size:.84rem;line-height:1.4;color:var(--body)}
+.field input[type=text],.field textarea,.task textarea,.dlg input[type=password],.dlg input[type=text]{width:100%;border:0;border-radius:14px;padding:10px 14px;background:#fff;box-shadow:inset 0 0 0 1.5px rgba(63,90,42,.25);font-size:1rem;line-height:1.45;color:#2E3A26;transition:box-shadow .12s}
+.field textarea,.task textarea{resize:vertical;min-height:72px}
+.field input:focus,.field textarea:focus,.task textarea:focus,.dlg input:focus{outline:none;box-shadow:inset 0 0 0 2.5px var(--ink)}
+.field ::placeholder,.task ::placeholder{color:#8B937F}
+.part-group{grid-column:1/-1;border-radius:22px;padding:18px 20px 10px;background:#fff;box-shadow:inset 0 0 0 1.5px rgba(217,232,173,.95)}
+.part-group>.label{display:block;font-family:var(--display);font-variation-settings:'SOFT' 100;font-size:1.4rem;font-weight:600}
+.part-group>.hint{margin-bottom:6px}
+.part-group>.fields{display:block}
+.look{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.look input[type=text]{width:72px;text-align:center;font-size:1.25rem;padding:6px}
+.swatches{display:flex;gap:6px;flex-wrap:wrap}
+.swatch{width:30px;height:30px;border-radius:50%;border:0;background:var(--sw);box-shadow:inset 0 0 0 2px rgba(255,255,255,.7)}
+.swatch[aria-pressed="true"]{box-shadow:0 0 0 3px var(--cream),0 0 0 5px var(--sw)}
+.chk-box{grid-column:1/-1;border-radius:22px;padding:18px 20px;background:#FFF7FA;box-shadow:inset 0 0 0 1.5px rgba(168,72,122,.32);display:flex;flex-direction:column;gap:8px}
+.chk-box>.label{font-family:var(--display);font-variation-settings:'SOFT' 100;font-size:1.3rem;font-weight:600;color:var(--accent)}
+.ck-list{list-style:none;padding:0;margin:2px 0 4px;display:flex;flex-direction:column;gap:6px}
+.ck-list li{display:flex;align-items:center;gap:10px;font-size:.95rem;color:var(--ink)}
+.ck-list li::before{content:'';flex:none;width:22px;height:22px;border-radius:50%;box-shadow:inset 0 0 0 2px rgba(168,72,122,.45);background:#fff}
+.cap{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:6px}
+.cap-pill{font-size:.74rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:6px 14px;border-radius:999px;background:var(--pinkwash);color:var(--accent);box-shadow:inset 0 0 0 1px rgba(168,72,122,.25)}
+.dots{display:inline-flex;gap:6px}
+.dots i{width:14px;height:14px;border-radius:50%;box-shadow:inset 0 0 0 2px var(--accent);background:transparent;transition:background .3s}
+.dots i.on{background:var(--accent)}
+.rounds{display:flex;gap:6px}
+.rounds button{min-width:44px;min-height:44px;border:0;border-radius:50%;background:#fff;font-family:var(--display);font-size:1.1rem;font-weight:600;color:var(--ink);box-shadow:inset 0 0 0 1.5px rgba(168,72,122,.35)}
+.rounds button[aria-pressed="true"]{background:var(--accent);color:#fff;box-shadow:0 8px 16px -10px rgba(168,72,122,.8)}
+.warn{font-size:.86rem;color:#8A3B62;font-weight:600}
+
+/* what it sees: Meeting 3's context window */
+.sees{margin-top:18px}
+.sees summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:10px;font-family:var(--display);font-size:1.15rem;font-weight:600;color:var(--ink)}
+.sees summary::-webkit-details-marker{display:none}
+.sees summary::before{content:'';width:10px;height:10px;border-right:2.5px solid var(--ink);border-bottom:2.5px solid var(--ink);transform:rotate(-45deg);transition:transform .15s;margin:0 4px}
+.sees[open] summary::before{transform:rotate(45deg)}
+.sees summary{flex-wrap:wrap}
+.sees summary .hint{font-family:var(--sans);font-weight:500}
+.win{margin-top:10px;border:2.5px solid var(--ink);border-radius:22px;padding:12px;display:flex;flex-direction:column;gap:8px;background:rgba(255,254,251,.7)}
+.blk{border:2px solid var(--leaf);border-radius:14px;padding:10px 14px;background:var(--card);min-width:0}
+.blk>b{display:flex;justify-content:space-between;gap:8px;font-family:var(--display);font-size:1rem;font-weight:600;color:var(--ink)}
+.blk>b small{font-family:var(--sans);font-size:.74rem;font-weight:600;color:var(--body)}
+.blk pre,.blk .txt{margin:6px 0 0;font-family:var(--sans);font-size:.84rem;line-height:1.45;white-space:pre-wrap;overflow-wrap:anywhere;color:#2E3A26;max-height:260px;overflow:auto}
+.blk.mine{border-color:var(--accent);background:var(--pinkwash)}
+.blk.mine>b{color:var(--accent)}
+.blk.you{background:var(--green)}
+.blk.next{border:2px dashed var(--accent);background:transparent}
+.blk.next>b{color:var(--accent)}
+.turn{font-size:.82rem;padding:6px 10px;border-radius:10px;background:var(--mint);margin-top:6px;white-space:pre-wrap;overflow-wrap:anywhere;max-height:140px;overflow:auto}
+.turn b{display:block;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink)}
+
+/* ---------- run panel ---------- */
+.run-card{display:flex;flex-direction:column;gap:12px}
+@media (min-width:1101px){.run-card{max-height:calc(100vh - 24px)}}
+.task{display:flex;flex-direction:column;gap:4px}
+.task>.label{font-family:var(--display);font-variation-settings:'SOFT' 100;font-size:1.4rem;font-weight:600;line-height:1.2}
+.task textarea{background:var(--mint);box-shadow:inset 0 0 0 1.5px rgba(156,181,123,.5)}
+.task textarea:focus{background:#fff}
+.task textarea{min-height:96px;max-height:280px}
+@media (min-width:1101px){.task textarea{max-height:min(280px,17vh)}}
+@media (min-width:1101px) and (max-height:800px){.task>.hint{display:none}}
+.run-btns{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.run-btns .btn.primary{min-width:120px;font-size:1.05rem}
+.run-status{font-size:.88rem;font-weight:600;color:var(--ink)}
+/* The thread is the deck's group chat: a title bar with the team's faces, then bubbles in each agent's color. */
+.chat{display:flex;flex-direction:column;min-height:0;flex:1;border-radius:24px;background:#fff;box-shadow:inset 0 0 0 1.5px rgba(217,232,173,.95);overflow:hidden}
+.thread-hd{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px 10px 16px;background:rgba(244,247,230,.85);border-bottom:1.5px solid rgba(217,232,173,.9)}
+.chat-id{display:flex;align-items:center;gap:12px;min-width:0}
+.faces{display:flex;flex:none}
+.faces span{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.05rem;background:color-mix(in srgb,var(--c) 18%,#fff);box-shadow:0 0 0 2.5px #fff,inset 0 0 0 2px color-mix(in srgb,var(--c) 50%,#fff)}
+.faces span+span{margin-left:-9px}
+.chat-id h2{font-family:var(--display);font-variation-settings:'SOFT' 100;font-size:1.3rem;font-weight:600;color:var(--ink);line-height:1.1}
+.chat-id small{display:block;font-size:.8rem;color:var(--body)}
+.thread{list-style:none;padding:14px 14px 12px;margin:0;display:flex;flex-direction:column;gap:14px;overflow-y:auto;min-height:200px;flex:1}
+.empty{padding:26px 18px;border-radius:18px;background:rgba(244,247,230,.8);text-align:center;font-size:.95rem}
+.empty b{display:block;font-family:var(--display);font-size:1.15rem;color:var(--ink);margin-bottom:4px}
+.divider{display:flex;align-items:center;gap:10px;font-size:.8rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);margin-top:6px}
+.divider::before,.divider::after{content:'';flex:1;height:1.5px;background:var(--line)}
+.divider span{text-align:center;max-width:80%}
+.source{font-size:.82rem;text-align:center;color:var(--body);margin-top:-6px}
+.msg{display:grid;grid-template-columns:40px minmax(0,1fr);gap:10px;align-items:start;animation:msgIn .35s cubic-bezier(.2,.8,.2,1) backwards}
+@keyframes msgIn{from{opacity:0;transform:translateY(8px)}}
+.msg-av{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;background:color-mix(in srgb,var(--c) 18%,#fff);box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--c) 55%,#fff);align-self:end}
+.msg-from{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;font-size:.88rem;font-weight:700;line-height:1.3;margin:0 0 4px 6px}
+.msg-from .who{color:color-mix(in srgb,var(--c) 85%,#000)}
+.msg-from .arrow{color:var(--body);font-weight:500}
+.msg-from .to{color:color-mix(in srgb,var(--c2,var(--body)) 85%,#000)}
+.msg-from .rnd{color:var(--accent)}
+.kind{font-size:.66rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:999px;background:var(--mint);color:var(--ink);box-shadow:inset 0 0 0 1px rgba(63,90,42,.2);align-self:center}
+.kind.check,.kind.revise{background:var(--pinkwash);color:var(--accent);box-shadow:inset 0 0 0 1px rgba(168,72,122,.3)}
+.bub{background:color-mix(in srgb,var(--c) 11%,#fff);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--c) 22%,transparent);border-radius:20px 20px 20px 6px;padding:11px 15px;font-size:.98rem;line-height:1.5;color:#26301F;overflow-wrap:anywhere;max-width:100%}
+.bub p+p,.bub p+ul,.bub ul+p,.bub p+ol,.bub ol+p{margin-top:8px}
+.bub ul,.bub ol{padding-left:1.25em}
+.bub li+li{margin-top:2px}
+.bub .h{font-weight:700;color:var(--ink)}
+.msg.note .bub{background:transparent;box-shadow:inset 0 0 0 1.5px rgba(63,90,42,.2)}
+.msg.you{grid-template-columns:minmax(0,1fr) 40px}
+.msg.you .msg-av{grid-column:2;grid-row:1;background:var(--pinkwash);box-shadow:inset 0 0 0 2px rgba(168,72,122,.4)}
+.msg.you .msg-body{grid-column:1;grid-row:1;display:flex;flex-direction:column;align-items:flex-end}
+.msg.you .bub{background:var(--accent);color:#fff;border-radius:20px 6px 20px 20px}
+.msg.you .msg-from{margin-right:4px}
+.labnote{font-size:.84rem;text-align:center;color:var(--body);padding:4px 12px;border-radius:12px;background:rgba(244,236,221,.7);align-self:center;max-width:92%}
+.labnote b{color:var(--ink)}
+.checks,.bub ul.checks{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px}
+.checks li{display:grid;grid-template-columns:32px 1fr;gap:10px;align-items:start}
+.checks .mk{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:800;color:#2F6B1F;background:var(--green);animation:pop .4s cubic-bezier(.34,1.56,.64,1) backwards}
+.checks li:nth-child(2) .mk{animation-delay:.15s}.checks li:nth-child(3) .mk{animation-delay:.3s}.checks li:nth-child(n+4) .mk{animation-delay:.45s}
+.checks .fail .mk{background:var(--pink);color:var(--accent)}
+.checks .it{font-weight:700;color:#26301F;line-height:1.35;padding-top:4px;display:block}
+.checks .nt{display:block;font-size:.86rem;color:var(--body)}
+.msg.check .bub{background:#fff;box-shadow:inset 0 0 0 1.5px rgba(168,72,122,.3)}
+.verdict{display:flex;align-items:center;gap:8px 10px;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1.5px solid rgba(217,232,173,.8);font-size:.88rem}
+.round-badge{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:999px;background:var(--pinkwash);color:var(--accent);box-shadow:inset 0 0 0 1px rgba(168,72,122,.25)}
+.verdict .res{font-weight:700}
+.verdict .res.fail{color:var(--accent)}
+.verdict .res.pass{color:#4C6B26}
+.fb{margin-top:6px;font-size:.9rem}
+.more{margin-top:6px}
+.more summary{cursor:pointer;font-size:.84rem;font-weight:700;color:var(--ink)}
+.wait{display:flex;align-items:center;gap:10px;align-self:center;font-size:.88rem;font-weight:600;color:#7A5410;background:#FBF0D9;border-radius:999px;padding:6px 14px}
+.wait .clock{width:16px;height:16px;border-radius:50%;border:2.5px solid currentColor;border-top-color:transparent;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.final{border-radius:24px;padding:16px 18px 18px;background:var(--card);box-shadow:inset 0 0 0 3px rgba(168,72,122,.55),0 0 0 6px rgba(242,193,214,.35),0 18px 34px -24px rgba(63,90,42,.6);margin:6px 8px;animation:rise .5s cubic-bezier(.2,.8,.2,1) backwards}
+.final-hd{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:10px;padding-bottom:10px;border-bottom:2px solid rgba(217,232,173,.9)}
+.final-hd .ft{display:flex;align-items:center;gap:10px;min-width:0}
+.final-hd .ft .msg-av{align-self:center;flex:none}
+.final-hd b{font-family:var(--display);font-variation-settings:'SOFT' 100;font-size:1.2rem;font-weight:600;color:var(--ink);line-height:1.2}
+.final-hd .tag{display:block;font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.final .bub{background:transparent;box-shadow:none;padding:0;border-radius:0}
+.alert{border-radius:20px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.alert.err{background:#FCEBEF;box-shadow:inset 0 0 0 2px rgba(168,72,122,.45)}
+.alert.limit{background:#FBF0D9;box-shadow:inset 0 0 0 2px rgba(176,122,30,.45)}
+.alert b{font-family:var(--display);font-size:1.05rem;color:var(--ink)}
+.alert p{font-size:.95rem;color:#3A2A30}
+.alert .btns{display:flex;gap:8px;flex-wrap:wrap}
+.summary{align-self:center;font-size:.84rem;font-weight:600;color:var(--ink);text-align:center}
+
+/* ---------- key dialog ---------- */
+dialog.dlg{border:0;border-radius:26px;padding:0;max-width:min(560px,calc(100vw - 24px));width:100%;background:var(--card);color:var(--body);box-shadow:0 30px 80px -30px rgba(40,50,30,.6)}
+dialog.dlg::backdrop{background:rgba(48,60,36,.45)}
+.dlg form{display:flex;flex-direction:column;gap:12px;padding:24px 24px 0;max-height:calc(100vh - 40px);max-height:calc(100dvh - 40px);overflow:auto}
+/* Children keep their full height (a min-height on one of them would otherwise let the column squeeze it). */
+.dlg form>*{flex-shrink:0}
+/* The result line and the buttons stay in view at the bottom while the rest scrolls. */
+.dlg-ft{position:sticky;bottom:0;margin:0 -24px;padding:10px 24px 20px;background:var(--card);display:flex;flex-direction:column;gap:8px;box-shadow:0 -10px 14px -12px rgba(40,50,30,.35)}
+.key-row{display:flex;gap:8px;align-items:center}
+.key-row input{flex:1;min-width:0}
+.key-row .btn{flex:none}
+.dlg-hd{display:flex;justify-content:space-between;align-items:start;gap:10px}
+.dlg h2{font-family:var(--display);font-variation-settings:'SOFT' 100;font-size:1.5rem;font-weight:600;color:var(--ink);line-height:1.2}
+.x{border:0;background:transparent;font-size:1.6rem;line-height:1;padding:4px 10px;border-radius:10px;color:var(--ink);min-width:44px;min-height:44px}
+.steps{padding-left:1.3em;display:flex;flex-direction:column;gap:6px;font-size:.95rem}
+.check-row{display:flex;align-items:center;gap:10px;font-weight:600;color:var(--ink);font-size:.95rem;min-height:36px}
+.check-row input{width:20px;height:20px;accent-color:var(--ink)}
+.facts{list-style:none;padding:12px 14px;margin:0;border-radius:16px;background:var(--mint);display:flex;flex-direction:column;gap:6px;font-size:.88rem}
+.facts li{padding-left:18px;position:relative}
+.facts li::before{content:'';position:absolute;left:2px;top:.55em;width:7px;height:7px;border-radius:50%;background:var(--leaf)}
+.key-status{font-size:.92rem;font-weight:600;min-height:1.4em}
+.key-status.bad{color:#8A2846}
+.key-status.ok{color:#3F5A2A}
+.dlg .btns{display:flex;gap:8px;flex-wrap:wrap}
+#keyForget[disabled]{display:none}
+/* On a short screen the footer scrolls with the rest, so it never covers the notes about the key. */
+@media (max-height:820px){.dlg-ft{position:static;box-shadow:none}}
+
+.fab{position:fixed;right:16px;bottom:16px;z-index:15;display:none;min-height:52px;padding:12px 22px;font-size:1.05rem;box-shadow:0 16px 32px -14px rgba(40,50,30,.7)}
+@media (max-width:1100px){.fab.show{display:inline-flex}}
+.toast{position:fixed;left:12px;right:12px;margin:0 auto;width:fit-content;bottom:20px;display:flex;align-items:center;gap:10px;background:var(--ink);color:var(--cream);padding:10px 12px 10px 18px;border-radius:999px;font-weight:600;font-size:.92rem;box-shadow:0 18px 40px -18px rgba(0,0,0,.6);z-index:20;max-width:calc(100vw - 24px)}
+.toast[hidden]{display:none}
+.toast .btn{min-height:32px;padding:4px 12px;background:var(--cream);color:var(--ink)}
+@media (max-width:1100px){.toast{bottom:84px}}
+
+/* level gating: each level shows more controls */
+body[data-level="1"] .need-2,body[data-level="1"] .need-3,body[data-level="1"] .need-4,
+body[data-level="2"] .need-3,body[data-level="2"] .need-4,
+body[data-level="3"] .need-4{display:none!important}
+
+/* ---------- phone ---------- */
+@media (max-width:1100px){
+  .level .t small{display:none}
+  .level{padding:8px 10px;gap:8px}
+  .level .t b{font-size:.92rem}
+  .layout{grid-template-columns:minmax(0,1fr);grid-template-areas:"goal" "team" "ed" "run"}
+  .thread{max-height:none;overflow:visible}
+  /* Room under the last message, so it can scroll clear of the floating Run button. */
+  .run-card{padding-bottom:84px}
+}
+.task-note{margin-top:6px}
+@media (max-width:700px){
+  .final{margin:6px 0;box-shadow:inset 0 0 0 2px rgba(168,72,122,.55),0 18px 34px -24px rgba(63,90,42,.6);padding:14px 14px 16px}
+  .thread{padding:12px 2px}
+}
+@media (max-width:700px){
+  .top{padding:14px 16px 4px}
+  .brand h1{font-size:1.6rem}
+  .levels-wrap{padding:8px 16px 0}
+  .toolbar{flex-direction:column;align-items:stretch;gap:8px}
+  .preset-tools{flex-direction:column;align-items:stretch;gap:6px}
+  .presets{overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}
+  .presets button{flex:1 0 auto}
+  .tb-right>.btn{flex:1 1 auto}
+  .level:not(:last-child)::after{display:none}
+  .levels{grid-template-columns:1fr 1fr;gap:8px}
+  .level{padding:10px 12px;min-height:54px;gap:10px}
+  .level .n{width:30px;height:30px;font-size:1rem}
+  .level .t small{display:none}
+  .layout{padding:12px 16px 32px;gap:16px}
+  .col{gap:16px}
+  .card{padding:16px;border-radius:22px}
+  .fields,.basics{grid-template-columns:1fr}
+  .part-group{padding:16px 14px 8px}
+  .field.part{grid-template-columns:40px minmax(0,1fr);column-gap:12px}
+  .field.part .ic{grid-row:1/3;width:40px;height:40px;padding:8px;border-radius:13px}
+  .field.part>textarea,.field.part>ul{grid-column:1/-1}
+  .field.part>label,.field.part>.label{font-size:1.18rem}
+  .goal-note{flex-basis:100%;rotate:-.3deg;padding:20px 18px 14px}
+  .goal{font-size:1.12rem}
+  .ed-hd h2{font-size:1.45rem}
+  .thread{padding:12px 10px}
+  .canvas{padding:24px 4px 72px}
+  .sub-row{flex-direction:column;gap:30px}
+  .sub-kids{gap:6px;margin-top:44px}
+  .node{width:112px;grid-template-columns:1fr;grid-template-rows:auto auto;justify-items:center;text-align:center;padding:16px 6px 10px;row-gap:4px}
+  .node-av{grid-row:auto;width:38px;height:38px;font-size:1.15rem}
+  .node-name{white-space:normal;font-size:.84rem;overflow-wrap:anywhere}
+  .node-job{display:none}
+  .node.checker{width:112px}
+  .node-badge{left:50%;transform:translateX(-50%);font-size:.62rem}
+  .node-state{right:-4px;top:auto;bottom:-11px;font-size:.66rem;padding:2px 8px 2px 4px;gap:4px}
+  .node-state::before{width:12px;height:12px}
+  .node[data-state="passed"] .node-state::before,.node[data-state="done"] .node-state::before,.node[data-state="sent-back"] .node-state::before{font-size:.55rem}
+  .node{padding-bottom:20px}
+  .you-pill{font-size:1.05rem;padding:6px 20px;margin-bottom:40px}
+  .sub-kids>.sub>.sub-row>.node:not(.checker),.sub-kids .node.checker{width:100px}
+  .msg{grid-template-columns:32px minmax(0,1fr);gap:8px}
+  .msg.you{grid-template-columns:minmax(0,1fr) 32px}
+  .msg-av{width:32px;height:32px;font-size:1rem}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
+</style>
+</head>
+<body data-level="1">
+<header class="top">
+  <div class="brand"><span class="eyebrow">ExplorAI · Meeting 6</span><h1>Agent Lab</h1></div>
+  <div class="top-tools">
+    <button type="button" id="modeChip" class="chip" aria-haspopup="dialog" title="Change mode">Practice mode</button>
+    <button type="button" id="keyBtn" class="btn small">Add a Gemini key</button>
+  </div>
+</header>
+
+<div class="levels-wrap">
+  <nav class="levels" aria-label="Levels">
+    <button type="button" class="level" data-level="1" aria-pressed="true"><span class="n">1</span><span class="t"><b>One agent</b><small>Name, job, task</small></span></button>
+    <button type="button" class="level" data-level="2" aria-pressed="false"><span class="n">2</span><span class="t"><b>Give it structure</b><small>Six labeled parts</small></span></button>
+    <button type="button" class="level" data-level="3" aria-pressed="false"><span class="n">3</span><span class="t"><b>Build a team</b><small>A lead and helpers</small></span></button>
+    <button type="button" class="level" data-level="4" aria-pressed="false"><span class="n">4</span><span class="t"><b>Add a check loop</b><small>Checker agent</small></span></button>
+  </nav>
+  <div class="toolbar">
+    <div class="preset-tools">
+      <span class="label" id="presetLabel">Example team</span>
+      <div class="presets" id="presetSel" role="group" aria-labelledby="presetLabel"></div>
+    </div>
+    <div class="tb-right">
+      <button type="button" id="resetBtn" class="btn small">Reset</button>
+      <button type="button" id="shareBtn" class="btn small">Copy link to this team</button>
+    </div>
+  </div>
+  <div class="dirty-note" id="dirtyNote" hidden><span id="dirtyText">You changed this team, so it stays when you switch levels.</span><button type="button" id="loadLevelBtn" class="btn small"></button></div>
+</div>
+
+<main class="layout">
+  <div class="goal-note" id="goalNote"><span class="tag" id="goalTag">Level 1</span><p class="goal" id="levelGoal"></p></div>
+  <div class="col team-col">
+    <section class="card" aria-labelledby="teamTitle">
+      <div class="card-hd">
+        <h2 id="teamTitle">Your team</h2>
+        <p class="legend need-3" aria-label="How to read the team">
+          <span><svg width="12" height="22" aria-hidden="true"><path d="M6 2v13" stroke="#3F5A2A" stroke-width="2.2"/><path d="M2 14l4 6 4-6z" fill="#3F5A2A"/></svg>Jobs go down the lines and finished work comes back up.</span>
+          <span class="need-4"><svg width="30" height="12" aria-hidden="true"><path d="M2 6h22" stroke="#A8487A" stroke-width="2.2" stroke-dasharray="5 4"/><path d="M22 2l6 4-6 4z" fill="#A8487A"/></svg>Check loop</span>
+        </p>
+      </div>
+      <div class="canvas" id="canvas">
+        <div class="tree-box" id="treeBox"><svg class="wires" id="wires" aria-hidden="true"></svg><div id="tree"></div></div>
+      </div>
+      <div class="tree-tools need-3" id="treeTools">
+        <button type="button" class="btn small" id="addHelperBtn">+ Helper</button>
+        <button type="button" class="btn small" id="addLeadBtn">+ Lead above</button>
+        <button type="button" class="btn small need-4" id="addCheckerBtn">+ Checker</button>
+        <button type="button" class="btn small" id="removeBtn">Remove</button>
+        <p class="hint" id="treeHint" aria-live="polite"></p>
+      </div>
+    </section>
+  </div>
+  <section class="card" id="editor" aria-label="Selected agent"></section>
+
+  <div class="col run-col">
+    <section class="card run-card" aria-labelledby="runTitle">
+      <h2 class="sr" id="runTitle">Run</h2>
+      <div class="task">
+        <label class="label" for="task">Task</label>
+        <p class="hint" id="taskHint">What you ask for. The top agent gets it as the new message.</p>
+        <textarea id="task" rows="4" aria-describedby="taskHint"></textarea>
+        <div class="dirty-note task-note" id="taskNote" hidden><span>You typed this task, so it stays at every level.</span><button type="button" id="teamTaskBtn" class="btn small"></button></div>
+      </div>
+      <div class="run-btns">
+        <button type="button" class="btn primary" id="runBtn">Run</button>
+        <button type="button" class="btn" id="stopBtn" disabled>Stop</button>
+        <span class="run-status" id="runStatus" role="status"></span>
+      </div>
+      <div class="chat">
+        <div class="thread-hd"><div class="chat-id"><div class="faces" id="faces" aria-hidden="true"></div><div><h2>Messages</h2><small id="chatSub"></small></div></div><button type="button" class="btn ghost small" id="clearBtn">Clear</button></div>
+        <ol class="thread" id="thread" aria-live="polite" aria-relevant="additions"></ol>
+      </div>
+    </section>
+  </div>
+</main>
+
+<dialog class="dlg" id="keyDialog" aria-labelledby="keyTitle">
+  <form method="dialog" id="keyForm">
+    <div class="dlg-hd"><h2 id="keyTitle">Use your own Gemini key</h2><button type="button" class="x" id="keyClose" aria-label="Close">×</button></div>
+    <p>With a free key, real Gemini models do the work. Without one, practice mode replays real recorded runs of Game Night and shows sample replies for everything else.</p>
+    <ol class="steps">
+      <li>Open <a href="https://aistudio.google.com/api-keys" target="_blank" rel="noopener noreferrer">Google AI Studio's API keys page</a> and sign in with a personal Google account.</li>
+      <li>New accounts get a key made for them. To make another, press <b>Create API key</b>.</li>
+      <li>Copy the key and paste it here.</li>
+    </ol>
+    <div class="field">
+      <label for="keyInput">Your key</label>
+      <div class="key-row">
+        <input type="password" id="keyInput" autocomplete="off" spellcheck="false" autocapitalize="off" autocorrect="off" placeholder="Paste your key">
+        <button type="button" class="btn small" id="keyShow" aria-pressed="false" aria-label="Show the key">Show</button>
+      </div>
+    </div>
+    <label class="check-row"><input type="checkbox" id="keyRemember"> Remember on this device</label>
+    <p class="hint">Without this box, the key is forgotten when you close the tab.</p>
+    <ul class="facts">
+      <li>Your key goes only to Google. It is never in a share link.</li>
+      <li>On the free tier, Google may use what you type to improve its products, and people may read it. Don't paste anything private.</li>
+      <li>Google's terms say you must be 18 or older to use the Gemini API. Under 18? Use practice mode.</li>
+    </ul>
+    <div class="dlg-ft">
+      <p class="key-status" id="keyStatus" role="status"></p>
+      <div class="btns">
+        <button type="button" class="btn primary" id="keyCheck">Check key and use Gemini</button>
+        <button type="button" class="btn" id="keyPractice">Use practice mode</button>
+        <button type="button" class="btn ghost" id="keyForget">Forget key</button>
+      </div>
+    </div>
+  </form>
+</dialog>
+
+<button type="button" class="btn primary fab" id="fabRun" aria-label="Run the team">Run</button>
+<div class="toast" id="toast" role="status" hidden><span id="toastText"></span><button type="button" class="btn" id="toastBtn" hidden></button></div>
+
+<script type="module" src="ui.js"></script>
+</body>
+</html>
