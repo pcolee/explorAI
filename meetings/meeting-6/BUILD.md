@@ -33,7 +33,7 @@ Add a line here (or a note with `A` on the deck). Sam's agents answer under it.
 
 ## Slide plan
 
-Draft from Sam's brief. Sam's agents refine it while building; this table tracks each slide's state.
+What each slide is for, the shared words, and the design bar: `plan.md`. The lab's contract: `lab/SPEC.md`. This table tracks each slide's state.
 
 | # | id | Slide | Time | State |
 |---|---|---|---|---|
