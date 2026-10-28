@@ -1,4 +1,4 @@
-# Meeting 6 plan: Under the Hood (how AI agents work)
+# Meeting 6 plan: From Chatbot to Agent (how AI agents work)
 
 The content spec the deck is built from. Slide states live in `BUILD.md`; this file says what each slide is for. Edit it if the plan changes, so every agent builds from the same plan.
 
@@ -31,7 +31,7 @@ A game night kit for the club. **Event Lead** gets the task and gives jobs to **
 
 Times are slide start times. The meeting is 2:00 to 3:00 pm. The build slots (14, 16, 21) include the demo before the timer and the answers after it, so Part 1 runs on its words in about 6 minutes (D5, from the rehearsal review's timing).
 
-1. **cover** (2:00). ExplorAI · Meeting 6 / Under the Hood / How AI agents work / Wed, Oct 28 · 2-3pm · CIS A-204. Below the title, the three parts as small cards, each drawn from its own module: the chat (slide 8), the agent card (slide 10), the team tree (slide 18). The part slides (5, 12, 17) repeat the same three cards with that part lit and the others faded.
+1. **cover** (2:00). ExplorAI · Meeting 6 / From Chatbot to Agent / How AI agents work / Wed, Oct 28 · 2-3pm · CIS A-204. Below the title, the three parts as small cards, each drawn from its own module: the chat (slide 8), the agent card (slide 10), the team tree (slide 18). The part slides (5, 12, 17) repeat the same three cards with that part lit and the others faded.
 2. **signin** (2:01). Same title + sign-in QR (reuse Meeting 5's). Title, date, QR only. Stays up until about 2:04 so people scan as they arrive.
 3. **shares** (2:04). One verified, recent news item about AI agents, with a source line. If nothing is verified in time, cut the slide rather than guess.
 4. **hook** (2:07). A finished game night flyer. "Guess: how many AIs worked on this?" Next press reveals the team, the number of messages they sent each other, and the check rounds, from the recorded run. The question it opens: how does a pile of AIs make one thing without a person steering each step?
