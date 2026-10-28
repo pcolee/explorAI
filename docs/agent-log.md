@@ -12,6 +12,19 @@ Remove a line once it is answered and note the answer in that day's entry.
 
 <!-- newest entry below: add "## YYYY-MM-DD · Name (via Claude Code)" here and end it with a blank line -->
 
+## 2026-10-28 · Sam (via Claude Code)
+
+**Changed:**
+- `meetings/meeting-6/lab/` (new, live at https://pcolee.github.io/explorAI/meetings/meeting-6/lab/): the Agent Lab, built to `lab/SPEC.md`. `engine.js` runs a team (the lead plans in JSON, helpers report back, check loops graded line by line with a 3-round cap, limits that name themselves); `presets.js` has Game Night, Study Kit, and Trip Day, each growing with the four levels; `index.html` + `ui.js` are the page (levels, team tree, agent editor with a hint per field and "What it sees", a group-chat thread, the key dialog, share links); `practice.js` replays an exact recorded run or gives labeled sample replies; `gemini.js` handles the key check, model pick, pacing, 429 waits, fallbacks, retries, and plain errors. Commits `6562b48` (engine), `000a01c` (page and practice mode), `ba0db26` (Gemini mode), `9ae9f14` (recorded run).
+- `meetings/meeting-6/lab/examples/game-night-run.json`: a real gemini-3.5-flash-lite run of Game Night level 4, recorded 2026-10-27 23:59 PDT. 5 agents, 12 messages between agents, 3 check rounds, 2 send-backs (the flyer was 51 words, then exactly 40, then 38 and passed). The numbers and the passing flyer are in `BUILD.md` for the deck's hook, texting, and checkloop slides.
+- Checks: `node --test meetings/meeting-6/lab/tests/*.test.mjs` (54 tests, green); `tests/live.mjs` passed against the real API. In headless Chrome with real clicks and typing: practice mode with the network off at 1440x900 and 390x844 (every level and preset, tree tools, Stop, Reset and Undo, share link, reload, no console errors), and one Gemini run of each level with a real key, plus the bad-key and error paths.
+
+**Decided:** Lab track: the Game Night preset was tuned so the Flyer Checker's send-back is likely and honest (Flyer Writer rules: full sentences, every game named; Flyer Checker rule: two actions fail "one clear thing to do"; the task adds free entry, Jenga, and RSVP in Discord; the deck's three Done when lines are unchanged). The key dialog adds Google's 18-or-older line. Gemini pacing is 15 requests a minute, a guess. All three are listed under "Decisions made overnight" in `BUILD.md` for Cole to reverse.
+
+**Issues:** Google doesn't publish free-tier rate limits for these models outside AI Studio. A brand-new AI Studio key has not been tried in the lab; the presenter should test one on the room's Wi-Fi before 14:00.
+
+**Next:** Lab reviews (robustness, UX) and fixes, then integration with the deck (I1).
+
 ## 2026-10-27 · Sam (via Claude Code)
 
 **Changed:**
