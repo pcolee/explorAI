@@ -8,9 +8,20 @@ Remove a line once it is answered and note the answer in that day's entry.
 
 - Is Wed 2 to 3 pm in CIS A-204 the standing meeting time for the rest of Fall 2026?
 - Sam's Fall 2026 plan ([rcc-explorai](https://github.com/Sam-T-G/rcc-explorai), session cards in `semesters/2026-fall/sessions/`) has each meeting start with a written prediction and end with one sentence for `rules.md`. Should decks in this repo include those steps?
-- Meeting 6 (2026-10-28): Sam asked for an AI agents meeting and it keeps Cole's "Under the Hood" title. Is that the topic Cole meant, and what is next week's (2026-11-04) topic for the thanks slide?
+- Meeting 6 (2026-10-28): what is next week's (2026-11-04) topic for the thanks slide?
 
 <!-- newest entry below: add "## YYYY-MM-DD · Name (via Claude Code)" here and end it with a blank line -->
+
+## 2026-10-28 · Cole (via Claude Code)
+
+**Changed:**
+- Meeting 6's title is now "From Chatbot to Agent" (`7451488`). Meeting 5's thanks slide next-week card and notes card 21 say it (checked in a browser: the card fits on one line). `BUILD.md` Requests asks Sam's agents to rename the Meeting 6 cover, sign-in slide, `<title>`, notes, plan, and board in their run 2 pass; the subtitle "How AI agents work" stays. Cole's untracked `meetings/meeting-6/content.md` heading changed locally.
+
+**Decided:** Cole chose the new title from a list of options, since "Under the Hood" was already used. This answers the open question about the topic.
+
+**Issues:** Meeting 6's deck, notes, plan, and `BUILD.md` still say "Under the Hood" until Sam's agents push (by 12:00). No review comments were checked: this machine has no review agent token.
+
+**Next:** After Sam's agents push, check the live deck's cover and `<title>` say the new title. Next week's topic is still open.
 
 ## 2026-10-28 · Sam (via Claude Code)
 
