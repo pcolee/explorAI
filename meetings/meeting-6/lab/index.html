@@ -551,6 +551,45 @@ body.tools-tight .tile .tl i{display:none}
   .sheet,.chat-panel,body:not([data-chat]) .chat-panel{left:0;right:0;bottom:0;top:auto;width:auto;height:min(84vh,84dvh);border-radius:24px 24px 0 0;transform:translateY(calc(100% + 30px));z-index:9}
   .sheet #editor{padding:14px 14px 30px}
 }
+
+/* ---------- walk-through and the built-in example ---------- */
+.ex-btn{margin-top:6px}
+.walk-btn[hidden]{display:none}
+body[data-walk] .dock,body[data-walk] .sheet,body[data-walk] #viewTools .legend{display:none!important}
+body[data-walk] .node{opacity:.32;transition:opacity .25s,box-shadow .25s}
+body[data-walk] .node.w-on{opacity:1;box-shadow:0 0 0 4px var(--pink),0 18px 36px -18px rgba(63,90,42,.6)}
+body[data-walk] .node.w-to{box-shadow:0 0 0 4px var(--accent),0 18px 36px -18px rgba(63,90,42,.6)}
+body[data-walk] .you-pill{opacity:.4}
+body[data-walk] .you-pill.w-on{opacity:1;box-shadow:0 0 0 4px var(--accent)}
+body[data-walk] .wire{opacity:.18}
+body[data-walk] .wire.w-lit{opacity:1;stroke-width:4;stroke:var(--accent)}
+.walk-badge{width:fit-content;margin:0 auto 12px;padding:6px 16px;border-radius:999px;background:var(--accent);color:#fff;font-weight:700;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;box-shadow:0 10px 22px -12px rgba(168,72,122,.8)}
+.walk-card{top:var(--gap);right:var(--gap);bottom:calc(var(--walkbar,72px) + 2 * var(--gap));width:var(--sheet-w);overflow:auto;overscroll-behavior:contain;padding:14px 16px 16px;z-index:8;display:flex;flex-direction:column;gap:8px}
+.walk-card>*{flex:none}
+body[data-walk]{--sheet-w:clamp(340px,30vw,460px);--sg:var(--gap)}
+body[data-walk] .goal-note{display:none}
+.walk-card[hidden],.walk-bar[hidden],.walk-badge[hidden]{display:none}
+.walk-card .wtag{font-size:max(.72rem,12px);font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.walk-card h2{font-family:var(--display);font-variation-settings:'SOFT' 100;font-size:1.25rem;font-weight:600;color:var(--ink);line-height:1.2}
+.walk-card .wmsg{font-size:.92rem;line-height:1.45;color:#2E3A26;background:var(--mint);border-radius:14px;padding:10px 12px;max-height:240px;overflow:auto;overflow-wrap:anywhere}
+.walk-card .wmsg .checks{margin:0}
+.walk-card .wsaw[hidden]{display:none}
+.walk-card .win{margin-top:0}
+.ex-line{font-size:.85rem;line-height:1.4;color:var(--body);background:var(--pinkwash);border-radius:12px;padding:8px 10px}
+.ex-line b{display:inline-block;margin-right:6px;padding:1px 9px;border-radius:999px;background:var(--accent);color:#fff;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase}
+li.ex-line{list-style:none;margin-bottom:6px}
+.walk-bar{left:calc(var(--gap) + (100vw - var(--rw) - var(--gap)) / 2);translate:-50% 0;bottom:var(--gap);z-index:8;display:flex;align-items:center;gap:8px;padding:8px 10px;flex-wrap:wrap;justify-content:center;width:max-content;max-width:calc(100vw - var(--rw) - var(--gap))}
+.walk-bar .count{min-width:110px;text-align:center;font-weight:700;color:var(--ink);font-size:.95rem}
+@media (max-width:700px){
+  body[data-walk]{--sheet-w:0px;--sg:0px}
+  /* No room beside the chat's title on a phone; Walk through stays on the dock. */
+  #walkBtn2{display:none!important}
+  .walk-card{left:8px;right:8px;top:auto;width:auto;bottom:calc(var(--walkbar,72px) + 14px);max-height:min(46vh,46dvh)}
+  .walk-bar{left:8px;right:8px;translate:none;width:auto;max-width:none;gap:6px;padding:6px}
+  body[data-walk] .stage{padding-bottom:55vh}
+  .walk-bar .btn{padding:8px 12px}
+  .walk-bar .count{min-width:0;flex:1 0 100%;order:-1;font-size:.88rem}
+}
 @media (prefers-reduced-motion:reduce){
   .sheet,.dock{transition:none!important}
 }
@@ -578,7 +617,7 @@ body.tools-tight .tile .tl i{display:none}
   </nav>
   </div>
   <div class="hud-bottom">
-  <div class="goal-note" id="goalNote"><span class="tag" id="goalTag">Level 1</span><p class="goal" id="levelGoal"></p></div>
+  <div class="goal-note" id="goalNote"><span class="tag" id="goalTag">Level 1</span><p class="goal" id="levelGoal"></p><button type="button" class="btn small ex-btn" id="exampleBtn">See an example</button></div>
   <div class="stats" id="stats" aria-label="Last run" hidden>
     <div class="tile t-agents" id="tileAgents"><span class="tl"><i aria-hidden="true">🤖</i>Agents</span><span class="num" id="statAgents">1</span><span class="sub">on the team</span></div>
     <div class="tile t-msgs need-3" id="tileMsgs"><span class="tl"><i aria-hidden="true">💬</i>Messages</span><span class="num" id="statMsgs">0</span><span class="sub">between agents</span></div>
@@ -631,6 +670,7 @@ body.tools-tight .tile .tl i{display:none}
     </div>
     <button type="button" class="btn primary" id="runBtn">Run</button>
     <button type="button" class="btn" id="stopBtn" disabled>Stop</button>
+    <button type="button" class="btn walk-btn" id="walkBtn" hidden>Walk through</button>
     <button type="button" class="btn msgs-btn" id="msgsBtn" aria-controls="sheet" aria-expanded="false"><span class="lbl">Messages</span><span class="count" id="msgCount"></span></button>
   </div>
   <div class="dirty-note task-note" id="taskNote" hidden><span>You typed this task, so it stays at every level.</span><button type="button" id="teamTaskBtn" class="btn small"></button></div>
@@ -646,10 +686,27 @@ body.tools-tight .tile .tl i{display:none}
 
 <aside class="chat-panel float" id="chatDock" aria-labelledby="chatTitle">
   <div class="chat" id="chatPanel">
-    <div class="thread-hd"><div class="chat-id"><div class="faces" id="faces" aria-hidden="true"></div><div><h2 id="chatTitle">Messages</h2><small id="chatSub"></small></div></div><div class="chat-btns"><button type="button" class="btn ghost small" id="clearBtn">Clear</button><button type="button" class="x" id="chatClose" aria-label="Close Messages">×</button></div></div>
+    <div class="thread-hd"><div class="chat-id"><div class="faces" id="faces" aria-hidden="true"></div><div><h2 id="chatTitle">Messages</h2><small id="chatSub"></small></div></div><div class="chat-btns"><button type="button" class="btn small walk-btn" id="walkBtn2" hidden>Walk through</button><button type="button" class="btn ghost small" id="clearBtn">Clear</button><button type="button" class="x" id="chatClose" aria-label="Close Messages">×</button></div></div>
     <ol class="thread" id="thread" aria-live="polite" aria-relevant="additions"></ol>
   </div>
 </aside>
+
+<section class="walk-card float" id="walkCard" aria-labelledby="walkLabel" hidden>
+  <p class="ex-line" id="walkEx" hidden></p>
+  <span class="wtag" id="walkTag"></span>
+  <h2 id="walkLabel" aria-live="polite"></h2>
+  <div class="wmsg" id="walkMsg"></div>
+  <button type="button" class="btn small" id="walkSawBtn" aria-expanded="false" aria-controls="walkSaw">What it saw</button>
+  <div class="wsaw" id="walkSaw" hidden></div>
+</section>
+<div class="walk-bar float" id="walkBar" role="toolbar" aria-label="Walk through" hidden>
+  <button type="button" class="btn" id="walkBack">Back</button>
+  <span class="count" id="walkCount" aria-live="polite"></span>
+  <button type="button" class="btn primary" id="walkNext">Next</button>
+  <button type="button" class="btn" id="walkPlay" aria-pressed="false">Play</button>
+  <button type="button" class="btn" id="walkMsgs" aria-controls="chatDock">Messages</button>
+  <button type="button" class="btn ghost" id="walkExit">Exit</button>
+</div>
 
 <dialog class="dlg" id="keyDialog" aria-labelledby="keyTitle">
   <form method="dialog" id="keyForm">

@@ -7,6 +7,8 @@ import {
 } from './engine.js';
 import { PRESETS, DEFAULT_PRESET, getPreset, presetTeam, presetTask } from './presets.js';
 import { createPracticeAdapter, loadRecordings } from './practice.js';
+import { recorder, stepsOf, stepTag, stepLabel, exampleTrace } from './walk.js';
+import EXAMPLE_RUN from './example-run.js';
 
 const STORE_TEAM = 'm6-lab-team';
 const STORE_KEY = 'm6-lab-key';
@@ -122,6 +124,9 @@ const S = {
   paths: new Map(),
 };
 
+// The walk-through in progress (null when off). See walk.js and the walk-through section below.
+let W = null;
+
 const clampLevel = n => Math.min(4, Math.max(1, Math.round(Number(n)) || 1));
 const selected = () => byId(S.team, S.selectedId) || topAgent(S.team) || S.team.agents[0] || null;
 
@@ -153,6 +158,8 @@ function restore(snap) {
 
 let saveTimer = 0;
 function save() {
+  // During a walk-through the canvas shows the run's team, never saved over yours.
+  if (W) return;
   clearTimeout(saveTimer);
   saveTimer = setTimeout(() => {
     store.set('localStorage', STORE_TEAM, JSON.stringify({ v: 1, presetId: S.presetId, level: S.level, team: S.team, task: S.task, dirty: S.dirty, taskDirty: S.taskDirty, selectedId: S.selectedId }));
@@ -384,7 +391,7 @@ function nodeEl(agent) {
   const lead = agent.parentId ? byId(S.team, agent.parentId) : null;
   b.setAttribute('aria-label', `${agent.name}, ${roleLabel(role)}${lead ? `, reports to ${lead.name}` : ''}. Select to edit.`);
   applyNodeState(b, S.nodeState.get(agent.id));
-  b.addEventListener('click', () => { S.selectedId = agent.id; save(); renderTreeSelection(); renderEditor(); renderTools(); openSheet('agent'); });
+  b.addEventListener('click', () => { if (W) return; S.selectedId = agent.id; save(); renderTreeSelection(); renderEditor(); renderTools(); openSheet('agent'); });
   return b;
 }
 
@@ -494,6 +501,12 @@ function renderTree() {
     you.id = 'youPill';
     tree.append(you);
   }
+  // The built-in example is labeled on the canvas, above the team.
+  if (W?.trace.example) {
+    const badge = el('div', 'walk-badge', 'Example');
+    badge.id = 'walkBadge';
+    tree.prepend(badge);
+  }
   tree.append(roots.length > 1 ? row : (row.firstChild || el('p', 'hint', 'No agents yet.')));
   requestAnimationFrame(fitTree);
   renderFaces();
@@ -524,7 +537,8 @@ function rightRoom() {
   const gap = PHONE() ? 8 : 14;
   if (PHONE()) return gap;
   let rw = gap;
-  if (document.body.dataset.sheet) rw += $('sheet').offsetWidth + gap;
+  if (W) rw += $('walkCard').offsetWidth + gap;
+  else if (document.body.dataset.sheet) rw += $('sheet').offsetWidth + gap;
   if (chatOpen()) rw += $('chatDock').offsetWidth + gap;
   return rw;
 }
@@ -533,7 +547,7 @@ function rightRoom() {
 function sizeVars() {
   const body = document.body;
   body.style.setProperty('--hud-h', `${Math.round($('hud').getBoundingClientRect().height)}px`);
-  body.style.setProperty('--dock-h', `${Math.round($('dock').getBoundingClientRect().height)}px`);
+  body.style.setProperty('--dock-h', `${Math.round((W ? $('walkBar') : $('dock')).getBoundingClientRect().height)}px`);
   if (PHONE()) { body.classList.remove('tools-under', 'tools-tight', 'dock-wide'); return; }
   const free = innerWidth - rightRoom();
   body.classList.toggle('tools-tight', free < 1150);
@@ -558,7 +572,7 @@ function fitTree() {
     const tools = $('topTools').getBoundingClientRect();
     const under = document.body.classList.contains('tools-under');
     const padR = rightRoom() + 16;
-    const padB = $('dock').getBoundingClientRect().height + 14 + 14;
+    const padB = (W ? $('walkBar') : $('dock')).getBoundingClientRect().height + 14 + 14;
     const w = box.offsetWidth || 1, h = box.offsetHeight || 1;
     const beside = { l: Math.max(hud.right, under ? tools.right : 0) + 20, t: (under ? 14 : tools.bottom) + 16 };
     const top = Math.max(hud.bottom, under ? tools.bottom : 0) + 16;
@@ -668,6 +682,7 @@ function drawWires() {
     S.paths.set(`${a.id}>${chk.id}`, { d: fwd, path: pf });
     S.paths.set(`${chk.id}>${a.id}`, { d: back, path: pb });
   }
+  if (W) litWalk();
 }
 
 function pulse(fromId, toId, cls) {
@@ -1129,7 +1144,11 @@ let waitTimers = [];
 
 function renderEmpty() {
   const li = el('li', 'empty');
-  li.append(el('b', null, 'No messages yet'), document.createTextNode('Press Run to start.'));
+  li.append(el('b', null, 'No messages yet'), document.createTextNode('Press Run to start, or see a finished run first.'));
+  const ex = el('button', 'btn small ex-btn', 'See an example');
+  ex.type = 'button';
+  ex.addEventListener('click', () => startExample(ex));
+  li.append(el('br'), ex);
   thread().replaceChildren(li);
   $('runStatus').textContent = '';
 }
@@ -1435,7 +1454,8 @@ function setRunning(on) {
   for (const b of $('presetSel').children) b.disabled = on;
   $('resetBtn').disabled = on;
   $('loadLevelBtn').disabled = on;
-  for (const b of document.querySelectorAll('.level')) b.disabled = on;
+  for (const b of document.querySelectorAll('.level')) b.disabled = on || !!W;
+  $('exampleBtn').disabled = on;
   renderModes();
   renderTools();
 }
@@ -1485,6 +1505,10 @@ async function run() {
   }
 
   S.runNo += 1;
+  // Watches the messages and what each agent was sent, for Walk through. The calls and their order stay the same.
+  const rec = recorder(adapter);
+  S.lastTrace = null;
+  renderWalkBtns();
   const div = el('li', 'divider');
   let source;
   if (adapter.mode === 'practice') {
@@ -1519,6 +1543,7 @@ async function run() {
       case 'agent-idle': if (['thinking', 'waiting'].includes(S.nodeState.get(ev.agentId)?.state)) setNode(ev.agentId, null); break;
       case 'waiting': setNode(ev.agentId, 'waiting', `Waiting ${ev.seconds}s`); addWait(ev, runState); break;
       case 'message':
+        rec.onMessage(ev);
         addMessage(ev, runState);
         if (!ev.lab) {
           if (ev.from !== 'you' && ev.to !== 'you' && ev.to !== 'team') { S.stats.msgs += 1; setStat('statMsgs', S.stats.msgs); }
@@ -1562,7 +1587,10 @@ async function run() {
   follow = false;
   for (const [id, st] of S.nodeState) if (st.state === 'thinking' || st.state === 'waiting') setNode(id, null);
   S.last = { conversations: res.conversations || {}, instructions: res.instructions || {} };
+  const tr = rec.trace(team, task, { status: res.status });
+  S.lastTrace = tr.messages.length > 1 ? tr : null;
   setRunning(false);
+  renderWalkBtns();
   S.ctl = null;
   const st = res.stats || {};
   if (Number.isFinite(st.calls)) setStat('statCalls', st.calls);
@@ -1574,6 +1602,15 @@ async function run() {
     if (st.checkRounds) bits.push(`${st.checkRounds} check round${st.checkRounds === 1 ? '' : 's'}`);
     if (st.sendBacks) bits.push(`sent back ${st.sendBacks} time${st.sendBacks === 1 ? '' : 's'}`);
     addItem(el('li', 'summary', bits.join(' · ')));
+    if (S.lastTrace) {
+      // On a phone this sheet covers the dock, so Walk through is offered here too.
+      const li = el('li', 'summary');
+      const wb = el('button', 'btn small walk-again', 'Walk through this run');
+      wb.type = 'button';
+      wb.addEventListener('click', () => startWalk(S.lastTrace, $('walkBtn')));
+      li.append(wb);
+      addItem(li);
+    }
     $('runStatus').textContent = 'Done. The final answer is at the end of Messages.';
   } else if (res.status === 'stopped') {
     addLabNote('Stopped. Nothing else was sent.');
@@ -1590,6 +1627,254 @@ function stop() {
     S.ctl.abort();
     $('runStatus').textContent = 'Stopping…';
   }
+}
+
+// ---------- walk-through and the built-in example ----------
+// One code path: a trace (your last run, or the recorded Game Night example) becomes steps, one message per step.
+// While walking, the canvas shows the trace's team. Your team, task, panels, and numbers come back on Exit.
+
+const EXAMPLE_LINE = 'Example: a real run of the Game Night team, recorded Oct 27 with Gemini. Your own runs show up here when you press Run.';
+const WALK_MS = 2500;
+
+function renderWalkBtns() {
+  const show = !!S.lastTrace && !S.running && !W;
+  $('walkBtn').hidden = !show;
+  $('walkBtn2').hidden = !show;
+}
+
+async function startExample(from) {
+  if (S.running || W) return;
+  let trace;
+  try {
+    trace = await exampleTrace(EXAMPLE_RUN);
+  } catch (err) {
+    toast(`The example could not load: ${err?.message || err}`);
+    return;
+  }
+  startWalk(trace, from);
+}
+
+function startWalk(trace, from) {
+  if (S.running || W || !trace) return;
+  const steps = stepsOf(trace);
+  if (!steps.length) return;
+  W = {
+    trace, steps, i: 0, timer: 0, from,
+    saved: {
+      team: S.team, selectedId: S.selectedId, nodeState: new Map(S.nodeState), sentBack: new Set(sentBack),
+      sheet: document.body.dataset.sheet, chat: chatOpen(), statsHidden: $('stats').hidden,
+      stats: ['statAgents', 'statMsgs', 'statRounds', 'statCalls', 'statCallsSub'].map(id => [id, $(id).textContent]),
+      thread: null, level: document.body.dataset.level,
+    },
+  };
+  // The example is a level 4 team, so its message and check-round tiles show at any level.
+  if (trace.example) document.body.dataset.level = '4';
+  S.team = trace.team;
+  S.selectedId = null;
+  S.nodeState.clear();
+  sentBack.clear();
+  document.body.dataset.walk = trace.example ? 'example' : 'run';
+  closeSheet();
+  if (trace.example) {
+    // The example gets its own thread in Messages, labeled; yours is put back on Exit.
+    const frag = document.createDocumentFragment();
+    frag.append(...thread().childNodes);
+    W.saved.thread = frag;
+    const line = el('li', 'ex-line');
+    line.append(el('b', null, 'Example'), document.createTextNode(EXAMPLE_LINE));
+    thread().replaceChildren(line);
+    const runState = { team: trace.team, lastText: new Map(), passed: new Set(), lastLimitText: '' };
+    for (const m of trace.messages) addMessage(m, runState);
+    $('chatTitle').textContent = 'Messages · Example';
+  }
+  if (!BOTH_FIT() || !trace.example) closeChat();
+  for (const b of document.querySelectorAll('.level')) b.disabled = true;
+  $('teamMenuBtn').disabled = true;
+  $('exampleBtn').disabled = true;
+  const ex = $('walkEx');
+  ex.hidden = !trace.example;
+  ex.replaceChildren(el('b', null, 'Example'), document.createTextNode(EXAMPLE_LINE));
+  $('stats').hidden = false;
+  setStat('statAgents', trace.team.agents.length);
+  $('statCallsSub').textContent = 'times so far';
+  $('walkCard').hidden = false;
+  $('walkBar').hidden = false;
+  renderWalkBtns();
+  renderTree();
+  renderTools();
+  // The bar can wrap to two rows on a phone, so keep the card's bottom edge above it whenever its height changes.
+  const setBar = () => document.documentElement.style.setProperty('--walkbar', `${$('walkBar').offsetHeight || 72}px`);
+  setBar();
+  if (!startWalk.barObserver && 'ResizeObserver' in window) { startWalk.barObserver = new ResizeObserver(setBar); startWalk.barObserver.observe($('walkBar')); }
+  requestAnimationFrame(() => { walkTo(0); $('walkNext').focus({ preventScroll: true }); });
+}
+
+function exitWalk() {
+  if (!W) return;
+  const { saved, from } = W;
+  clearInterval(W.timer);
+  W = null;
+  delete document.body.dataset.walk;
+  document.body.dataset.level = saved.level;
+  S.team = saved.team;
+  S.selectedId = saved.selectedId;
+  S.nodeState = saved.nodeState;
+  sentBack.clear();
+  for (const id of saved.sentBack) sentBack.add(id);
+  if (saved.thread) {
+    thread().replaceChildren(saved.thread);
+    $('chatTitle').textContent = 'Messages';
+  }
+  for (const [id, v] of saved.stats) $(id).textContent = v;
+  $('stats').hidden = saved.statsHidden;
+  $('walkCard').hidden = true;
+  $('walkBar').hidden = true;
+  $('teamMenuBtn').disabled = false;
+  setRunning(false);
+  if (saved.sheet) openSheet('agent');
+  if (saved.chat) openSheet('messages'); else closeChat();
+  renderTree();
+  renderEditor();
+  renderTools();
+  renderWalkBtns();
+  const back = from && !from.hidden && from.isConnected ? from : $('exampleBtn');
+  back.focus({ preventScroll: true });
+}
+
+function setPlaying(on) {
+  if (!W) return;
+  clearInterval(W.timer);
+  W.timer = 0;
+  if (on && W.i >= W.steps.length - 1) walkTo(0);
+  if (on) W.timer = setInterval(() => { if (!W) return; if (W.i >= W.steps.length - 1) setPlaying(false); else walkTo(W.i + 1); }, WALK_MS);
+  $('walkPlay').textContent = on ? 'Pause' : 'Play';
+  $('walkPlay').setAttribute('aria-pressed', String(on));
+}
+
+function walkNode(id) {
+  if (id === 'you') return $('youPill');
+  if (id === 'team') return null;
+  return document.querySelector(`.node[data-id="${CSS.escape(id)}"]`);
+}
+
+function walkTo(i) {
+  if (!W) return;
+  W.i = Math.max(0, Math.min(W.steps.length - 1, i));
+  const step = W.steps[W.i];
+  const team = W.trace.team;
+  // Agents whose latest check up to this step failed show pink, as in a live run.
+  sentBack.clear();
+  for (const s of W.steps.slice(0, W.i + 1)) if (s.kind === 'check') { if (s.pass) sentBack.delete(s.to); else sentBack.add(s.to); }
+  for (const b of document.querySelectorAll('.node')) { b.classList.remove('w-on', 'w-to'); applyNodeState(b, null); }
+  $('youPill')?.classList.remove('w-on');
+  const fromEl = walkNode(step.from);
+  const toEl = step.to === 'team' ? null : walkNode(step.to);
+  fromEl?.classList.add('w-on');
+  toEl?.classList.add('w-on', 'w-to');
+  if (step.to === 'team') for (const a of team.agents) if (a.parentId === step.from) walkNode(a.id)?.classList.add('w-on');
+  litWalk();
+  if (step.to !== 'team') {
+    pulse(step.from, step.to, step.kind === 'job' ? 'down' : ['draft', 'revise', 'check'].includes(step.kind) ? 'check' : 'up');
+  }
+
+  $('walkTag').textContent = stepTag(step, team);
+  $('walkLabel').textContent = stepLabel(step, team);
+  const msg = $('walkMsg');
+  msg.replaceChildren();
+  if (step.kind === 'check') {
+    msg.append(checklist(step.checks || []));
+    if (step.text && !step.pass) {
+      const fb = el('p', 'fb');
+      fb.append(el('strong', null, 'What to fix: '), document.createTextNode(step.text));
+      msg.append(fb);
+    }
+  } else {
+    msg.append(rich(step.text || ''));
+  }
+  msg.scrollTop = 0;
+  const sawBtn = $('walkSawBtn');
+  const saw = $('walkSaw');
+  sawBtn.hidden = !step.saw;
+  const open = !!step.saw && sawBtn.getAttribute('aria-expanded') === 'true';
+  saw.hidden = !open;
+  if (open) renderSaw(step);
+
+  $('walkCount').textContent = `Step ${W.i + 1} of ${W.steps.length}`;
+  $('walkBack').disabled = W.i === 0;
+  $('walkNext').disabled = W.i === W.steps.length - 1;
+  setStat('statMsgs', step.stats.msgs);
+  setStat('statRounds', step.stats.rounds);
+  setStat('statCalls', step.stats.calls);
+  // On a phone the card covers the lower half, so bring the agent getting the message into view.
+  if (PHONE()) {
+    const node = toEl || fromEl;
+    if (node) {
+      const r = node.getBoundingClientRect();
+      const mid = ($('hud').getBoundingClientRect().bottom + $('walkCard').getBoundingClientRect().top) / 2;
+      $('canvas').scrollBy({ top: r.top + r.height / 2 - mid, left: r.left + r.width / 2 - innerWidth / 2, behavior: REDUCED ? 'auto' : 'smooth' });
+    }
+  }
+}
+
+// The line between this step's two agents stays lit (drawWires calls this again after a redraw).
+function litWalk() {
+  for (const p of document.querySelectorAll('.wire.w-lit')) p.classList.remove('w-lit');
+  if (!W) return;
+  const step = W.steps[W.i];
+  const p = S.paths.get(`${step.from}>${step.to}`) || S.paths.get(`${step.to}>${step.from}`);
+  p?.path.classList.add('w-lit');
+}
+
+function renderSaw(step) {
+  const box = $('walkSaw');
+  box.replaceChildren();
+  if (!step.saw) return;
+  const name = who(step.to, W.trace.team).name;
+  const win = el('div', 'win');
+  const ins = blk('mine', 'Instructions', 'your parts, plus team lines the lab adds');
+  ins.append(el('pre', null, step.saw.instructions));
+  win.append(ins);
+  const chat = blk('', 'The whole chat so far');
+  if (!step.saw.before.length) chat.append(el('p', 'txt', 'Nothing before this message.'));
+  for (const m of step.saw.before) {
+    const t = el('div', 'turn');
+    t.append(el('b', null, m.role === 'model' ? `${name} replied` : 'Message to it'), document.createTextNode(m.text));
+    chat.append(t);
+  }
+  win.append(chat);
+  const nm = blk('you', 'New message');
+  nm.append(el('p', 'txt', step.saw.message));
+  win.append(nm);
+  box.append(win);
+}
+
+function walkKey(e) {
+  if (!W || $('keyDialog').open) return;
+  if (e.target.closest?.('input, textarea')) return;
+  const onButton = e.target.closest?.('button');
+  if (e.key === 'Escape') { e.preventDefault(); e.stopImmediatePropagation(); exitWalk(); }
+  else if (e.key === 'ArrowRight') { e.preventDefault(); setPlaying(false); walkTo(W.i + 1); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); setPlaying(false); walkTo(W.i - 1); }
+  else if (e.key === ' ' && !onButton) { e.preventDefault(); setPlaying(!W.timer); }
+}
+
+function initWalk() {
+  $('exampleBtn').addEventListener('click', () => startExample($('exampleBtn')));
+  $('walkBtn').addEventListener('click', () => startWalk(S.lastTrace, $('walkBtn')));
+  $('walkBtn2').addEventListener('click', () => startWalk(S.lastTrace, $('walkBtn2')));
+  $('walkBack').addEventListener('click', () => { setPlaying(false); walkTo(W.i - 1); });
+  $('walkNext').addEventListener('click', () => { setPlaying(false); walkTo(W.i + 1); });
+  $('walkPlay').addEventListener('click', () => setPlaying(!W.timer));
+  $('walkExit').addEventListener('click', exitWalk);
+  $('walkMsgs').addEventListener('click', () => { if (chatOpen()) closeChat(); else openSheet('messages'); });
+  $('walkSawBtn').addEventListener('click', () => {
+    const b = $('walkSawBtn');
+    const open = b.getAttribute('aria-expanded') !== 'true';
+    b.setAttribute('aria-expanded', String(open));
+    b.textContent = open ? 'Hide what it saw' : 'What it saw';
+    if (W) walkTo(W.i);
+  });
+  document.addEventListener('keydown', walkKey, true);
 }
 
 // ---------- key dialog ----------
@@ -1892,6 +2177,7 @@ function init() {
   if (typeof ResizeObserver === 'function') new ResizeObserver(redraw).observe($('canvas'));
   document.fonts?.ready?.then(redraw).catch(() => {});
 
+  initWalk();
   S.recordingsReady = loadRecordings(new URL('./examples/', import.meta.url)).then(r => { S.recordings = r; }).catch(() => { S.recordings = []; });
 }
 
