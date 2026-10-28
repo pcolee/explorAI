@@ -264,19 +264,65 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 .step p{font-size:28px;line-height:1.38;color:var(--ink)}
 .step .no{color:var(--accent);font-weight:700}
 .step .ok{color:#2F6B1F;font-weight:700}
+/* shares: three cards, one per press, with the QR up from the start */
+#shares .sh{display:flex;gap:40px;align-items:stretch}
+#shares .cards{flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+#shares .card h3{font-size:36px}
+#shares .qr{flex:none;justify-content:center}
 /* setup */
 #stage>section#setup{flex-direction:row;align-items:center;gap:80px;padding:96px 128px 120px}
 #setup .left{flex:1;display:flex;flex-direction:column;gap:30px}
 #setup .qr p{font-size:26px}
 #setup .url{font-family:var(--mono);font-size:22px;color:var(--ink);text-align:center;max-width:460px;line-height:1.4}
-/* lab card pictures (match the lab's level 1 to 4 controls in lab/SPEC.md) */
-.lab{background:#fff;border-radius:26px;padding:28px 34px;display:flex;flex-direction:column;gap:16px;box-shadow:0 30px 60px -32px rgba(63,90,42,.5),inset 0 0 0 1.5px rgba(156,181,123,.45)}
-.lab .bar{display:flex;align-items:center;justify-content:space-between;padding-bottom:12px;border-bottom:1.5px solid rgba(217,232,173,.9)}
-.lab .bar b{font-family:var(--display);font-size:30px;font-weight:600;color:var(--ink)}
-.fld{display:grid;grid-template-columns:200px 1fr;column-gap:20px;align-items:center}
-.fld>span{font-size:22px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink)}
-.fld>p{font-size:26px;line-height:1.35;color:var(--ink);background:var(--mint);border-radius:14px;padding:10px 18px;box-shadow:inset 0 0 0 1.5px rgba(156,181,123,.4)}
-.runbtn{align-self:end;font-size:26px;font-weight:700;color:#fff;background:var(--ink);border-radius:999px;padding:12px 40px}
+/* Lab pictures: a small copy of the real Agent Lab page (title and mode chip, the four level buttons, Your team, Task with Run and Stop) */
+.labpic{background:radial-gradient(700px 400px at 100% 0%,rgba(242,193,214,.35),transparent 60%),var(--cream);border-radius:30px;padding:20px 24px;display:flex;flex-direction:column;gap:14px;box-shadow:0 30px 60px -32px rgba(63,90,42,.5),inset 0 0 0 1.5px rgba(156,181,123,.45)}
+.lp-top{display:flex;align-items:center;justify-content:space-between}
+.lp-top b{font-family:var(--display);font-size:38px;font-weight:600;line-height:1;color:var(--ink)}
+.lp-mode{display:flex;align-items:center;gap:10px;font-size:22px;font-weight:700;color:var(--ink);background:#F6EEDB;border-radius:999px;padding:8px 18px;box-shadow:inset 0 0 0 1.5px rgba(176,140,80,.35)}
+.lp-mode i{width:10px;height:10px;border-radius:50%;background:#C49A52}
+.lp-levels{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.lp-levels span{display:flex;align-items:center;gap:10px;font-size:22px;font-weight:700;line-height:1.1;color:var(--ink);background:rgba(255,254,251,.85);border-radius:16px;padding:9px 10px;box-shadow:inset 0 0 0 1.5px #DCE6C0}
+.lp-levels i{flex:none;font-style:normal;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:600;background:var(--green);color:var(--ink)}
+.lp-levels .on{background:var(--ink);color:var(--cream);box-shadow:0 12px 24px -16px rgba(63,90,42,.9)}
+.lp-levels .on i{background:var(--cream);color:var(--ink)}
+.lp-body{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}
+.lp-body.wide{grid-template-columns:1.5fr 1fr}
+.lp-card{background:var(--card);border-radius:22px;padding:16px 18px;display:flex;flex-direction:column;gap:12px;box-shadow:inset 0 0 0 1.5px #DCE6C0}
+.lp-card h4{margin:0;font-family:var(--display);font-size:30px;font-weight:600;line-height:1.1;color:var(--ink)}
+.lp-hd{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.lp-legend{display:flex;align-items:center;gap:10px;font-size:22px;color:var(--body)}
+.lp-legend i{display:inline-block;width:34px;border-top:3px solid #7E9466}
+.lp-legend i.c{border-top:3px dashed var(--accent);margin-left:14px}
+.lp-tree{position:relative;border-radius:16px;background:radial-gradient(circle,rgba(63,90,42,.09) 1.2px,transparent 1.5px) 0 0/18px 18px,#F5F9E8}
+.lp-tree.solo{display:flex;justify-content:center;padding:34px 14px 18px}
+.lp-tree.team{width:980px;height:364px;align-self:center}
+.lp-tree svg{position:absolute;inset:0;width:100%;height:100%}
+.lp-tree svg path{fill:none;stroke:#7E9466;stroke-width:3}
+.lp-tree svg path.loop{stroke:var(--accent);stroke-dasharray:7 6}
+.lp-tree svg marker path{fill:#7E9466;stroke:none}
+.lp-tree svg #lpk path{fill:var(--accent)}
+.lp-node{position:relative;display:flex;align-items:center;gap:12px;background:#fff;border-radius:16px;padding:12px 16px;box-shadow:inset 0 0 0 2px #DCE6C0,0 10px 20px -14px rgba(63,90,42,.5)}
+.lp-tree.team .lp-node{position:absolute;transform:translate(-50%,-50%);width:280px}
+.lp-node.sel{box-shadow:inset 0 0 0 3px var(--accent),0 10px 20px -14px rgba(63,90,42,.5)}
+.lp-node.chk{background:#FDF4F8}
+.lp-node em{position:absolute;top:-17px;left:14px;font-style:normal;font-size:20px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;line-height:1;padding:6px 10px;border-radius:999px;background:var(--green);color:var(--ink)}
+.lp-node.chk em{background:var(--pink);color:var(--accent)}
+.lp-node .em{flex:none;width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;background:var(--pinkwash);box-shadow:inset 0 0 0 1.5px rgba(168,72,122,.3)}
+.lp-node p{display:flex;flex-direction:column;gap:2px}
+.lp-node b{font-family:var(--display);font-size:26px;font-weight:600;line-height:1.1;color:var(--ink)}
+.lp-node small{font-size:22px;line-height:1.25;color:var(--body)}
+.lp-field{display:grid;grid-template-columns:120px minmax(0,1fr);column-gap:12px;align-items:center}
+.lp-card.six .lp-field{grid-template-columns:136px minmax(0,1fr)}
+.lp-field span{font-size:22px;font-weight:700;color:var(--ink)}
+.lp-field p{font-size:22px;line-height:1.3;color:var(--ink);background:#fff;border-radius:12px;padding:8px 12px;box-shadow:inset 0 0 0 1.5px #DCE6C0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lp-task{font-size:22px;line-height:1.35;color:var(--ink);background:#fff;border-radius:14px;padding:10px 14px;box-shadow:inset 0 0 0 1.5px #DCE6C0}
+.lp-taskrow{display:flex;gap:16px;align-items:center;background:var(--card);border-radius:22px;padding:14px 18px;box-shadow:inset 0 0 0 1.5px #DCE6C0}
+.lp-taskrow .lp-task{flex:1}
+.lp-run{display:flex;gap:10px;flex:none}
+.lp-run span{font-size:24px;font-weight:700;border-radius:999px;padding:10px 30px}
+.lp-run .run{color:#fff;background:var(--ink);box-shadow:0 12px 24px -14px rgba(63,90,42,.9)}
+.lp-run .stop{color:rgba(63,90,42,.4);box-shadow:inset 0 0 0 1.5px #DCE6C0}
+.lp-sees{align-self:start;font-size:22px;font-weight:700;color:var(--ink);border-radius:999px;padding:8px 18px;box-shadow:inset 0 0 0 1.5px var(--leaf)}
 /* structure */
 #stage>section#structure{display:grid;grid-template-columns:1fr 520px;grid-template-rows:auto 1fr;column-gap:64px;row-gap:24px;padding:88px 128px 96px}
 #structure .head{grid-column:1/3;display:flex;flex-direction:column;gap:14px}
@@ -408,7 +454,7 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 .qcard .w{--o:.24s}
 .eyebrow,.lead:not([data-build-in]),.sub:not([data-build-in]){animation:fadeIn .7s ease .1s backwards}
 .src{animation:fadeIn .8s ease .6s backwards}
-.qcard,.card:not([data-build-in]),.flyer,.win,.acard,.lab,.ck,.ring{animation:rise .7s cubic-bezier(.2,.8,.2,1) backwards}
+.qcard,.card:not([data-build-in]),.flyer,.win,.acard,.labpic,.ck,.ring{animation:rise .7s cubic-bezier(.2,.8,.2,1) backwards}
 .qr{animation:pop .6s cubic-bezier(.34,1.56,.64,1) .3s backwards}
 .qr+.qr{animation-delay:.42s}
 .timer{animation:pop .6s cubic-bezier(.34,1.56,.64,1) .2s backwards}
@@ -467,9 +513,16 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 
 <section id="shares" class="cozy alt">
 <p class="eyebrow">explorAI Shares</p>
-<h2>AI agents in the news</h2>
-<p class="pending-line">Item pending: one recent, verified news story about AI agents goes here, with its source. If nothing is verified by 1:00 pm, cut this slide.</p>
-<p class="src">Source pending</p>
+<h2>Google upgrades the agent you can try free in AI Studio</h2>
+<div class="sh">
+<div class="cards">
+<div class="card" data-build-in="1" data-say="Sept 17: a new version"><h3>Sept 17 · A new version</h3><p>Google’s Antigravity agent now gets its own computer, run by Google. It writes and runs code, manages files, and searches the web on its own.</p></div>
+<div class="card" data-build-in="2" data-say="what it costs"><h3>What it costs</h3><p>It works on the free tier, with a free usage limit. It’s still a preview.</p></div>
+<div class="card pink" data-build-in="3" data-say="try it after the meeting"><h3>Try it after the meeting</h3><p>In AI Studio, open the Playground and switch the toggle to Agents. Google says to review what the agent does before you rely on it.</p></div>
+</div>
+<div class="qr"><img src="data:image/png;base64,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" alt="QR code: aistudio.google.com" style="width:300px;height:300px;image-rendering:pixelated"><p>aistudio.google.com</p></div>
+</div>
+<p class="src">Google, Gemini API release notes, Sept 17, 2026 · Google AI for Developers: Antigravity agent and AI Studio agents pages</p>
 </section>
 
 <section id="hook" class="cozy">
@@ -642,9 +695,9 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 <div class="left">
 <p class="eyebrow">Set up · 2 minutes</p>
 <h2>Open the Agent Lab.</h2>
-<div class="card"><h3>Path 1 · Your own free key</h3><p>Make a free Gemini API key in Google AI Studio (aistudio.google.com) and paste it into the lab.</p></div>
+<div class="card"><h3>Path 1 · Your own free key</h3><p>Make a free Gemini API key at aistudio.google.com/api-keys and paste it into the lab. For ages 18 and up, with a personal Google account.</p></div>
 <div class="card pink"><h3>Path 2 · Practice mode</h3><p>No key needed. Prewritten replies, same steps.</p></div>
-<p class="callout">Your key stays in your browser tab. Don’t paste anything private.</p>
+<p class="callout">Your key stays in your browser tab. On the free tier, Google may use what you type to improve its products, and people may read it. Don’t paste anything private.</p>
 </div>
 <div class="qr"><img src="data:image/png;base64,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" alt="QR code: Meeting 6 Agent Lab" style="width:400px;height:400px"><p>Scan to open the lab</p><p class="url">pcolee.github.io/explorAI/ meetings/meeting-6/lab</p></div>
 </section>
@@ -652,12 +705,14 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 <section id="build1" class="build cozy alt">
 <div class="head"><p class="eyebrow">Build 1 · 3 minutes</p><h2>One agent, one job.</h2></div>
 <div style="grid-column:1;grid-row:2;display:flex;flex-direction:column;gap:28px">
-<div class="lab">
-<div class="bar"><b>Level 1 · One agent</b><span class="chip">Practice mode</span></div>
-<div class="fld"><span>Name</span><p>Flyer Writer</p></div>
-<div class="fld"><span>Job</span><p>Write a flyer for a club event.</p></div>
-<div class="fld"><span>Task</span><p>Game night flyer: Friday, 5–7pm, CIS A-204.</p></div>
-<span class="runbtn">Run</span>
+<div class="labpic">
+<div class="lp-top"><b>Agent Lab</b><span class="lp-mode"><i></i>Practice mode</span></div>
+<div class="lp-levels"><span class="on"><i>1</i>One agent</span><span><i>2</i>Give it structure</span><span><i>3</i>Build a team</span><span><i>4</i>Add a check loop</span></div>
+<div class="lp-body">
+<div class="lp-card"><h4>Your team</h4><div class="lp-tree solo"><div class="lp-node sel"><em>Agent</em><span class="em">📝</span><p><b>Flyer Writer</b><small>Writes the game night flyer.</small></p></div></div>
+<div class="lp-field"><span>Name</span><p>Flyer Writer</p></div><div class="lp-field"><span>Job</span><p>Writes the game night flyer.</p></div></div>
+<div class="lp-card"><h4>Task</h4><p class="lp-task">Write a flyer for ExplorAI’s board game night: this Friday, 5 to 7 pm, in <span class="nw">CIS A-204</span>. …</p><div class="lp-run"><span class="run">Run</span><span class="stop">Stop</span></div></div>
+</div>
 </div>
 <p class="lead ink">Name it. Give it one line of job. Give it a task. Run it.</p>
 </div>
@@ -693,13 +748,20 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 <section id="build2" class="build cozy alt">
 <div class="head"><p class="eyebrow">Build 2 · 5 minutes</p><h2>Add structure. Run the same task. Compare.</h2></div>
 <div style="grid-column:1;grid-row:2;display:flex;flex-direction:column;gap:24px">
-<div class="lab">
-<div class="bar"><b>Level 2 · Give it structure</b><span class="chip">Practice mode</span></div>
-<div class="fld"><span>Role</span><p>You write flyers for ExplorAI.</p></div>
-<div class="fld"><span>Goal</span><p>Get new students to game night.</p></div>
-<div class="fld"><span>Rules</span><p>Never make up a day, time, or room.</p></div>
-<div class="fld"><span>Done when</span><p>Under 40 words · ends with one thing to do</p></div>
-<span class="runbtn">Run</span>
+<div class="labpic">
+<div class="lp-top"><b>Agent Lab</b><span class="lp-mode"><i></i>Practice mode</span></div>
+<div class="lp-levels"><span><i>1</i>One agent</span><span class="on"><i>2</i>Give it structure</span><span><i>3</i>Build a team</span><span><i>4</i>Add a check loop</span></div>
+<div class="lp-body wide">
+<div class="lp-card six"><h4>The six parts</h4>
+<div class="lp-field"><span>Role</span><p>You write flyers for a college club’s events.</p></div>
+<div class="lp-field"><span>Goal</span><p>A flyer that makes game night sound fun…</p></div>
+<div class="lp-field"><span>Steps</span><p>Find the day, time, and room in your job. …</p></div>
+<div class="lp-field"><span>Rules</span><p>Use only facts from your job. …</p></div>
+<div class="lp-field"><span>Output</span><p>The flyer text only, ready to print.</p></div>
+<div class="lp-field"><span>Done when</span><p>Has the day, time, and room · Under 40 words · …</p></div>
+</div>
+<div class="lp-card"><h4>Task</h4><p class="lp-task">The same task as Build 1.</p><div class="lp-run"><span class="run">Run</span><span class="stop">Stop</span></div><span class="lp-sees">What it sees</span></div>
+</div>
 </div>
 </div>
 <div class="side-col">
@@ -801,17 +863,24 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 <section id="build3" class="build cozy alt">
 <div class="head"><p class="eyebrow">Build 3 · 10 minutes</p><h2>Make a team.</h2></div>
 <div style="grid-column:1;grid-row:2;display:flex;flex-direction:column;gap:24px">
-<div class="lab">
-<div class="bar"><b>Levels 3 and 4 · Team and check loop</b><span class="chip">Practice mode</span></div>
-<div class="fld"><span>Lead</span><p>Event Lead</p></div>
-<div class="fld"><span>Helpers</span><p>Flyer Writer · Caption Writer · Snack Planner</p></div>
-<div class="fld"><span>Checker</span><p>Flyer Checker, for Flyer Writer · max 3 rounds</p></div>
-<span class="runbtn">Run</span>
+<div class="labpic">
+<div class="lp-top"><b>Agent Lab</b><span class="lp-mode"><i></i>Practice mode</span></div>
+<div class="lp-levels"><span><i>1</i>One agent</span><span><i>2</i>Give it structure</span><span><i>3</i>Build a team</span><span class="on"><i>4</i>Add a check loop</span></div>
+<div class="lp-card"><div class="lp-hd"><h4>Your team</h4><span class="lp-legend"><i class="a"></i>Jobs go down, reports come back up <i class="c"></i>Check loop</span></div>
+<div class="lp-tree team">
+<svg viewBox="0 0 980 364" aria-hidden="true"><defs><marker id="lpm" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#7E9466"/></marker><marker id="lpk" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#A8487A"/></marker></defs><path d="M490,89 C490,116 170,108 170,134" marker-end="url(#lpm)"/><path d="M490,89 L490,134" marker-end="url(#lpm)"/><path d="M490,89 C490,116 810,108 810,134" marker-end="url(#lpm)"/><path class="loop" d="M252,229 C240,244 240,262 252,276" marker-end="url(#lpk)"/><path class="loop" d="M290,276 C302,262 302,244 290,229" marker-end="url(#lpk)"/></svg>
+<div class="lp-node" style="left:490px;top:52px"><em>Lead</em><span class="em">🎲</span><p><b>Event Lead</b></p></div>
+<div class="lp-node sel" style="left:170px;top:190px"><em>Helper</em><span class="em">📝</span><p><b>Flyer Writer</b></p></div>
+<div class="lp-node" style="left:490px;top:190px"><em>Helper</em><span class="em">📸</span><p><b>Caption Writer</b></p></div>
+<div class="lp-node" style="left:810px;top:190px"><em>Helper</em><span class="em">🍿</span><p><b>Snack Planner</b></p></div>
+<div class="lp-node chk" style="left:170px;top:316px"><em>Checker</em><span class="em">✅</span><p><b>Flyer Checker</b></p></div>
+</div></div>
+<div class="lp-taskrow"><p class="lp-task">Plan a board game night for ExplorAI: this Friday, 5 to 7 pm, in <span class="nw">CIS A-204</span>. … We need a flyer, an Instagram caption, and a snack list under $30.</p><div class="lp-run"><span class="run">Run</span><span class="stop">Stop</span></div></div>
 </div>
-<p class="lead ink">Start from the Game Night preset, or add helpers to your own agent. Add a checker with 2 or 3 “done when” lines. Run it and read the messages.</p>
 </div>
 <div class="side-col">
 <div class="timer" data-seconds="600">10:00</div>
+<div class="sticky" style="--r:-1deg"><span class="tag">Do</span><p>Start from Game Night, or add helpers to your own agent. Add a checker with 2 or 3 “Done when” lines. Run it and read the messages.</p></div>
 <div class="sticky p" style="--r:.9deg"><span class="tag">Challenge</span><p><b>Make the checker send something back at least once.</b></p></div>
 </div>
 </section>
@@ -825,11 +894,11 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 </div>
 <div class="side-col">
 <div class="rules">
-<div class="card" data-build-in><span class="n">1</span><p><b>Write the rules:</b> what it may never do.</p></div>
-<div class="card" data-build-in><span class="n">2</span><p><b>Cap the rounds and steps.</b></p></div>
-<div class="card pink" data-build-in><span class="n">3</span><p><b>A person checks</b> before anything leaves.</p></div>
+<div class="card" data-build-in data-say="limit 1: write the rules"><span class="n">1</span><p><b>Write the rules:</b> what it may never do.</p></div>
+<div class="card" data-build-in data-say="limit 2: cap the rounds and steps"><span class="n">2</span><p><b>Cap the rounds and steps.</b></p></div>
+<div class="card pink" data-build-in data-say="limit 3: a person checks"><span class="n">3</span><p><b>A person checks</b> before anything leaves.</p></div>
 </div>
-<p class="bubble" data-build-in>Our lab has a step cap, and its agents can only write.</p>
+<p class="bubble" data-build-in data-say="our lab's limits">Our lab has a step cap, and its agents can only write.</p>
 </div>
 <p class="src">ABC News, Oct 12, 2026 · Al Jazeera, Oct 10, 2026</p>
 </section>
