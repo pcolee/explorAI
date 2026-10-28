@@ -49,3 +49,31 @@ test('recording: matches the current Game Night preset, so practice mode replays
 test('recording: nothing email-like', () => {
   assert.ok(!/[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+\.[A-Za-z]{2,}/.test(fs.readFileSync(file, 'utf8')));
 });
+
+// Levels 1 to 3, so practice mode shows real answers in Build 1 and Build 2 (and the team at level 3).
+for (const level of [1, 2, 3]) {
+  const name = `game-night-l${level}.json`;
+  test(`recording ${name}: listed, matches the level ${level} preset, replays to the same answer, nothing email-like`, async () => {
+    const raw = fs.readFileSync(new URL(`../examples/${name}`, import.meta.url), 'utf8');
+    const r = JSON.parse(raw);
+    assert.ok(RECORDING_FILES.includes(name));
+    assert.equal(r.preset, 'game-night');
+    assert.equal(r.level, level);
+    assert.match(r.model, /^gemini-/);
+    assert.equal(r.calls.length, r.counts.modelCalls);
+    const adapter = createPracticeAdapter({ recordings: [prepareRecording(r, name)], delay: [0, 0] });
+    const out = await runTeam(presetTeam('game-night', level), presetTask('game-night', level), { adapter });
+    assert.ok(adapter.replaying, `the level ${level} preset still matches ${name}; re-record with tests/record.mjs after changing the Game Night preset`);
+    assert.equal(out.final, r.final);
+    assert.ok(!/[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+\.[A-Za-z]{2,}/.test(raw));
+  });
+}
+
+test('recordings: each level of Game Night replays its own run, not another level\'s', async () => {
+  const recs = RECORDING_FILES.map(f => prepareRecording(JSON.parse(fs.readFileSync(new URL(`../examples/${f}`, import.meta.url), 'utf8')), f));
+  for (const level of [1, 2, 3, 4]) {
+    const adapter = createPracticeAdapter({ recordings: recs, delay: [0, 0] });
+    adapter.begin(presetTeam('game-night', level), presetTask('game-night', level));
+    assert.equal(adapter.replaying?.level, level);
+  }
+});

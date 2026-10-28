@@ -1,0 +1,61 @@
+{
+  "about": "A real run of this preset, recorded from the Gemini API by tests/record.mjs. Every reply is the model's text as it came back. Practice mode replays it when the team and task match exactly.",
+  "preset": "game-night",
+  "level": 1,
+  "model": "gemini-3.5-flash-lite",
+  "date": "2026-10-28",
+  "recordedAt": "2026-10-28T07:29:27.944Z",
+  "task": "Write a flyer for ExplorAI's board game night: this Friday, 5 to 7 pm, in CIS A-204. Beginners welcome, all games provided, bring a friend.",
+  "counts": {
+    "agents": 1,
+    "messages": 2,
+    "messagesBetweenAgents": 0,
+    "checkRounds": 0,
+    "sendBacks": 0,
+    "modelCalls": 1,
+    "seconds": 1.5
+  },
+  "messages": [
+    {
+      "from": "you",
+      "to": "Flyer Writer",
+      "kind": "job",
+      "text": "Write a flyer for ExplorAI's board game night: this Friday, 5 to 7 pm, in CIS A-204. Beginners welcome, all games provided, bring a friend."
+    },
+    {
+      "from": "Flyer Writer",
+      "to": "you",
+      "kind": "final",
+      "text": "🎲 **LEVEL UP YOUR FRIDAY NIGHT!** 🎲\n\nJoin us for the ultimate **ExplorAI Board Game Night**! Whether you're a seasoned strategist or have never rolled a 20-sided die in your life, come hang out, unwind, and play some games with us.\n\n📅 **When:** This Friday  \n⏰ **Time:** 5:00 PM – 7:00 PM  \n📍 **Where:** CIS A-204  \n\n**Why you should drop by:**\n* 🧠 **Beginners Welcome!** We’ll teach you the rules—no prior experience needed.\n* 📦 **All Games Provided!** Just bring yourself (though your favorite game is always welcome too).\n* 👥 **Bring a Friend!** The more, the merrier. \n\nGrab a snack, grab a seat, and let the games begin. See you there!"
+    }
+  ],
+  "calls": [
+    {
+      "agent": "Flyer Writer",
+      "kind": "work",
+      "round": null,
+      "text": "🎲 **LEVEL UP YOUR FRIDAY NIGHT!** 🎲\n\nJoin us for the ultimate **ExplorAI Board Game Night**! Whether you're a seasoned strategist or have never rolled a 20-sided die in your life, come hang out, unwind, and play some games with us.\n\n📅 **When:** This Friday  \n⏰ **Time:** 5:00 PM – 7:00 PM  \n📍 **Where:** CIS A-204  \n\n**Why you should drop by:**\n* 🧠 **Beginners Welcome!** We’ll teach you the rules—no prior experience needed.\n* 📦 **All Games Provided!** Just bring yourself (though your favorite game is always welcome too).\n* 👥 **Bring a Friend!** The more, the merrier. \n\nGrab a snack, grab a seat, and let the games begin. See you there!"
+    }
+  ],
+  "final": "🎲 **LEVEL UP YOUR FRIDAY NIGHT!** 🎲\n\nJoin us for the ultimate **ExplorAI Board Game Night**! Whether you're a seasoned strategist or have never rolled a 20-sided die in your life, come hang out, unwind, and play some games with us.\n\n📅 **When:** This Friday  \n⏰ **Time:** 5:00 PM – 7:00 PM  \n📍 **Where:** CIS A-204  \n\n**Why you should drop by:**\n* 🧠 **Beginners Welcome!** We’ll teach you the rules—no prior experience needed.\n* 📦 **All Games Provided!** Just bring yourself (though your favorite game is always welcome too).\n* 👥 **Bring a Friend!** The more, the merrier. \n\nGrab a snack, grab a seat, and let the games begin. See you there!",
+  "team": {
+    "agents": [
+      {
+        "id": "gn-flyer",
+        "name": "Flyer Writer",
+        "emoji": "📝",
+        "color": "#A8487A",
+        "job": "Writes the game night flyer.",
+        "role": "",
+        "goal": "",
+        "steps": "",
+        "rules": "",
+        "output": "",
+        "doneWhen": [],
+        "parentId": null,
+        "checkerId": null,
+        "maxRounds": 3
+      }
+    ]
+  }
+}

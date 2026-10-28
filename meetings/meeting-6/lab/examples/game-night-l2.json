@@ -1,0 +1,65 @@
+{
+  "about": "A real run of this preset, recorded from the Gemini API by tests/record.mjs. Every reply is the model's text as it came back. Practice mode replays it when the team and task match exactly.",
+  "preset": "game-night",
+  "level": 2,
+  "model": "gemini-3.5-flash-lite",
+  "date": "2026-10-28",
+  "recordedAt": "2026-10-28T07:29:29.706Z",
+  "task": "Write a flyer for ExplorAI's board game night: this Friday, 5 to 7 pm, in CIS A-204. Beginners welcome, all games provided, bring a friend.",
+  "counts": {
+    "agents": 1,
+    "messages": 2,
+    "messagesBetweenAgents": 0,
+    "checkRounds": 0,
+    "sendBacks": 0,
+    "modelCalls": 1,
+    "seconds": 1
+  },
+  "messages": [
+    {
+      "from": "you",
+      "to": "Flyer Writer",
+      "kind": "job",
+      "text": "Write a flyer for ExplorAI's board game night: this Friday, 5 to 7 pm, in CIS A-204. Beginners welcome, all games provided, bring a friend."
+    },
+    {
+      "from": "Flyer Writer",
+      "to": "you",
+      "kind": "final",
+      "text": "ExplorAI Board Game Night is this Friday from 5 to 7 pm in CIS A-204. It will be fun because all games are provided and beginners are welcome. Bring a friend."
+    }
+  ],
+  "calls": [
+    {
+      "agent": "Flyer Writer",
+      "kind": "work",
+      "round": null,
+      "text": "ExplorAI Board Game Night is this Friday from 5 to 7 pm in CIS A-204. It will be fun because all games are provided and beginners are welcome. Bring a friend."
+    }
+  ],
+  "final": "ExplorAI Board Game Night is this Friday from 5 to 7 pm in CIS A-204. It will be fun because all games are provided and beginners are welcome. Bring a friend.",
+  "team": {
+    "agents": [
+      {
+        "id": "gn-flyer",
+        "name": "Flyer Writer",
+        "emoji": "📝",
+        "color": "#A8487A",
+        "job": "Writes the game night flyer.",
+        "role": "You write flyers for a college club's events.",
+        "goal": "A flyer that makes game night sound fun and answers what a new student would ask: what it is, when, where, who can come, and what it costs.",
+        "steps": "Find the day, time, and room in your job.\nWrite a short headline.\nAdd one line on why it will be fun.\nName the games and the prize.\nSay who can come and what it costs.\nEnd with one thing to do.",
+        "rules": "Use only facts from your job.\nWrite in full sentences.\nMention every game by name.\nPlain words, no hashtags.",
+        "output": "The flyer text only, ready to print.",
+        "doneWhen": [
+          "Has the day, time, and room",
+          "Under 40 words",
+          "Ends with one clear thing to do"
+        ],
+        "parentId": null,
+        "checkerId": null,
+        "maxRounds": 3
+      }
+    ]
+  }
+}

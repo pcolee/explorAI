@@ -5,7 +5,8 @@
 import { buildInstructions, byId, sanitizeTeam } from './engine.js';
 
 // Only files that exist (a missing one would log a 404 in the console).
-export const RECORDING_FILES = ['game-night-run.json'];
+// game-night-run.json is level 4 (the deck quotes it); the others are levels 1 to 3.
+export const RECORDING_FILES = ['game-night-l1.json', 'game-night-l2.json', 'game-night-l3.json', 'game-night-run.json'];
 
 const SAMPLE = 'Sample reply (practice mode).';
 
@@ -88,7 +89,6 @@ function sampleWork(req) {
       : 'It was given a name and a job line only, so it would have to guess the rest.',
   ];
   if (have.length && missing.length) lines.push(`Parts it would have to guess: ${missing.join(', ')}.`);
-  lines.push('Add a Gemini key to see the real reply.');
   return lines.join('\n\n');
 }
 
@@ -103,7 +103,7 @@ function samplePlan(req) {
 function sampleCombine(req) {
   const last = req.messages[req.messages.length - 1]?.text || '';
   const names = [...last.matchAll(/^### (.+)$/gm)].map(m => m[1].trim());
-  return `${SAMPLE} ${req.meta?.agentName || 'The lead'} would put the reports together here${names.length ? `, from ${names.join(', ')}` : ''}.\n\nAdd a Gemini key to see the real reply.`;
+  return `${SAMPLE} ${req.meta?.agentName || 'The lead'} would put the reports together here${names.length ? `, from ${names.join(', ')}` : ''}.`;
 }
 
 function sampleCheck(req) {
@@ -120,7 +120,7 @@ function sampleCheck(req) {
 }
 
 function sampleRevise(req) {
-  return `${SAMPLE} ${req.meta?.agentName || 'The agent'} would send a new version here that fixes every note (round ${req.meta?.round || 2}).\n\nAdd a Gemini key to see the real reply.`;
+  return `${SAMPLE} ${req.meta?.agentName || 'The agent'} would send a new version here that fixes every note (round ${req.meta?.round || 2}).`;
 }
 
 /**

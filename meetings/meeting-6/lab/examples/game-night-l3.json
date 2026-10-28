@@ -1,0 +1,188 @@
+{
+  "about": "A real run of this preset, recorded from the Gemini API by tests/record.mjs. Every reply is the model's text as it came back. Practice mode replays it when the team and task match exactly.",
+  "preset": "game-night",
+  "level": 3,
+  "model": "gemini-3.5-flash-lite",
+  "date": "2026-10-28",
+  "recordedAt": "2026-10-28T07:29:31.059Z",
+  "task": "Plan a board game night for ExplorAI: this Friday, 5 to 7 pm, in CIS A-204. It's free. We'll play Codenames, Catan, Uno, and Jenga, and the winning team gets a prize. Beginners are welcome, all games are provided, and you can bring a friend. RSVP in our Discord. We need a flyer, an Instagram caption, and a snack list under $30.",
+  "counts": {
+    "agents": 4,
+    "messages": 9,
+    "messagesBetweenAgents": 6,
+    "checkRounds": 0,
+    "sendBacks": 0,
+    "modelCalls": 5,
+    "seconds": 4.6
+  },
+  "messages": [
+    {
+      "from": "you",
+      "to": "Event Lead",
+      "kind": "job",
+      "text": "Plan a board game night for ExplorAI: this Friday, 5 to 7 pm, in CIS A-204. It's free. We'll play Codenames, Catan, Uno, and Jenga, and the winning team gets a prize. Beginners are welcome, all games are provided, and you can bring a friend. RSVP in our Discord. We need a flyer, an Instagram caption, and a snack list under $30."
+    },
+    {
+      "from": "Event Lead",
+      "to": "team",
+      "kind": "note",
+      "text": "Let's get this game night kit ready to post today!"
+    },
+    {
+      "from": "Event Lead",
+      "to": "Flyer Writer",
+      "kind": "job",
+      "text": "Write the game night flyer for this Friday, 5 to 7 pm, in CIS A-204, including details about free entry, games provided, beginners welcome, bringing a friend, the prize for the winning team, and Discord RSVP."
+    },
+    {
+      "from": "Event Lead",
+      "to": "Caption Writer",
+      "kind": "job",
+      "text": "Write the Instagram caption for this Friday, 5 to 7 pm, in CIS A-204, highlighting Codenames, Catan, Uno, and Jenga, free admission, bringing a friend, and Discord RSVP."
+    },
+    {
+      "from": "Event Lead",
+      "to": "Snack Planner",
+      "kind": "job",
+      "text": "Plan the snack list for the game night on this Friday, keeping the total cost strictly under $30."
+    },
+    {
+      "from": "Flyer Writer",
+      "to": "Event Lead",
+      "kind": "report",
+      "text": "Join us this Friday from 5 to 7 pm in CIS A-204 for game night because it will be a blast. We provide Mario Kart, Smash Bros, and Uno, with a pizza party prize for the winning team. Everyone is welcome, and entry is totally free, so bring a friend. RSVP on Discord today."
+    },
+    {
+      "from": "Caption Writer",
+      "to": "Event Lead",
+      "kind": "report",
+      "text": "Ready for game night? 🎮\n\nJoin us this Friday from 5 to 7 pm in CIS A-204 for Codenames, Catan, Uno, and Jenga! Admission is free, so bring a friend and RSVP on our Discord. \n\n#CollegeClub #GameNight #CampusLife"
+    },
+    {
+      "from": "Snack Planner",
+      "to": "Event Lead",
+      "kind": "report",
+      "text": "Here is the snack plan for Friday's game night. Please note that all prices are estimates.\n\n- Party-size Tortilla Chips: $4.50\n- Medium Salsa (Jar): $3.00\n- Pretzels (No nuts): $2.50\n- Cheddar Cheese Cubes: $5.00\n- Chocolate Chip Cookies: $4.00\n- 2-Liter Soda (Cola): $2.00\n- 2-Liter Soda (Lemon-Lime): $2.00\n- Paper Plates and Napkins: $3.00\n\nTotal: $26.00"
+    },
+    {
+      "from": "Event Lead",
+      "to": "you",
+      "kind": "final",
+      "text": "### Flyer\nJoin us this Friday from 5 to 7 pm in CIS A-204 for game night. We provide Codenames, Catan, Uno, and Jenga, with a prize for the winning team. Everyone is welcome, and entry is totally free, so bring a friend. RSVP on Discord today.\n\n### Caption\nReady for game night? 🎮\n\nJoin us this Friday from 5 to 7 pm in CIS A-204 for Codenames, Catan, Uno, and Jenga! Admission is free, so bring a friend and RSVP on our Discord. \n\n#CollegeClub #GameNight #CampusLife\n\n### Snacks\nHere is the snack plan for Friday's game night. Please note that all prices are estimates.\n\n- Party-size Tortilla Chips: $4.50\n- Medium Salsa (Jar): $3.00\n- Pretzels (No nuts): $2.50\n- Cheddar Cheese Cubes: $5.00\n- Chocolate Chip Cookies: $4.00\n- 2-Liter Soda (Cola): $2.00\n- 2-Liter Soda (Lemon-Lime): $2.00\n- Paper Plates and Napkins: $3.00\n\nTotal: $26.00"
+    }
+  ],
+  "calls": [
+    {
+      "agent": "Event Lead",
+      "kind": "plan",
+      "round": null,
+      "text": "{\n  \"note\": \"Let's get this game night kit ready to post today!\",\n  \"jobs\": [\n    {\n      \"helper\": \"Flyer Writer\",\n      \"job\": \"Write the game night flyer for this Friday, 5 to 7 pm, in CIS A-204, including details about free entry, games provided, beginners welcome, bringing a friend, the prize for the winning team, and Discord RSVP.\"\n    },\n    {\n      \"helper\": \"Caption Writer\",\n      \"job\": \"Write the Instagram caption for this Friday, 5 to 7 pm, in CIS A-204, highlighting Codenames, Catan, Uno, and Jenga, free admission, bringing a friend, and Discord RSVP.\"\n    },\n    {\n      \"helper\": \"Snack Planner\",\n      \"job\": \"Plan the snack list for the game night on this Friday, keeping the total cost strictly under $30.\"\n    }\n  ]\n}"
+    },
+    {
+      "agent": "Flyer Writer",
+      "kind": "work",
+      "round": null,
+      "text": "Join us this Friday from 5 to 7 pm in CIS A-204 for game night because it will be a blast. We provide Mario Kart, Smash Bros, and Uno, with a pizza party prize for the winning team. Everyone is welcome, and entry is totally free, so bring a friend. RSVP on Discord today."
+    },
+    {
+      "agent": "Caption Writer",
+      "kind": "work",
+      "round": null,
+      "text": "Ready for game night? 🎮\n\nJoin us this Friday from 5 to 7 pm in CIS A-204 for Codenames, Catan, Uno, and Jenga! Admission is free, so bring a friend and RSVP on our Discord. \n\n#CollegeClub #GameNight #CampusLife"
+    },
+    {
+      "agent": "Snack Planner",
+      "kind": "work",
+      "round": null,
+      "text": "Here is the snack plan for Friday's game night. Please note that all prices are estimates.\n\n- Party-size Tortilla Chips: $4.50\n- Medium Salsa (Jar): $3.00\n- Pretzels (No nuts): $2.50\n- Cheddar Cheese Cubes: $5.00\n- Chocolate Chip Cookies: $4.00\n- 2-Liter Soda (Cola): $2.00\n- 2-Liter Soda (Lemon-Lime): $2.00\n- Paper Plates and Napkins: $3.00\n\nTotal: $26.00"
+    },
+    {
+      "agent": "Event Lead",
+      "kind": "combine",
+      "round": null,
+      "text": "### Flyer\nJoin us this Friday from 5 to 7 pm in CIS A-204 for game night. We provide Codenames, Catan, Uno, and Jenga, with a prize for the winning team. Everyone is welcome, and entry is totally free, so bring a friend. RSVP on Discord today.\n\n### Caption\nReady for game night? 🎮\n\nJoin us this Friday from 5 to 7 pm in CIS A-204 for Codenames, Catan, Uno, and Jenga! Admission is free, so bring a friend and RSVP on our Discord. \n\n#CollegeClub #GameNight #CampusLife\n\n### Snacks\nHere is the snack plan for Friday's game night. Please note that all prices are estimates.\n\n- Party-size Tortilla Chips: $4.50\n- Medium Salsa (Jar): $3.00\n- Pretzels (No nuts): $2.50\n- Cheddar Cheese Cubes: $5.00\n- Chocolate Chip Cookies: $4.00\n- 2-Liter Soda (Cola): $2.00\n- 2-Liter Soda (Lemon-Lime): $2.00\n- Paper Plates and Napkins: $3.00\n\nTotal: $26.00"
+    }
+  ],
+  "final": "### Flyer\nJoin us this Friday from 5 to 7 pm in CIS A-204 for game night. We provide Codenames, Catan, Uno, and Jenga, with a prize for the winning team. Everyone is welcome, and entry is totally free, so bring a friend. RSVP on Discord today.\n\n### Caption\nReady for game night? 🎮\n\nJoin us this Friday from 5 to 7 pm in CIS A-204 for Codenames, Catan, Uno, and Jenga! Admission is free, so bring a friend and RSVP on our Discord. \n\n#CollegeClub #GameNight #CampusLife\n\n### Snacks\nHere is the snack plan for Friday's game night. Please note that all prices are estimates.\n\n- Party-size Tortilla Chips: $4.50\n- Medium Salsa (Jar): $3.00\n- Pretzels (No nuts): $2.50\n- Cheddar Cheese Cubes: $5.00\n- Chocolate Chip Cookies: $4.00\n- 2-Liter Soda (Cola): $2.00\n- 2-Liter Soda (Lemon-Lime): $2.00\n- Paper Plates and Napkins: $3.00\n\nTotal: $26.00",
+  "team": {
+    "agents": [
+      {
+        "id": "gn-lead",
+        "name": "Event Lead",
+        "emoji": "🎲",
+        "color": "#3F5A2A",
+        "job": "Runs the game night team: gives out jobs and makes the final call.",
+        "role": "You are the event lead for ExplorAI, a college AI club.",
+        "goal": "Turn the task into one game night kit the club can post today: a flyer, an Instagram caption, and a snack list.",
+        "steps": "Give each helper one job with the facts it needs.\nRead every report.\nPut the reports together into one kit.",
+        "rules": "Keep the day, time, and room the same in every part.\nDon't add facts that were not in the task.",
+        "output": "Three parts with headings: Flyer, Caption, Snacks.",
+        "doneWhen": [
+          "Has a flyer, a caption, and a snack list",
+          "The day, time, and room match in every part"
+        ],
+        "parentId": null,
+        "checkerId": null,
+        "maxRounds": 3
+      },
+      {
+        "id": "gn-flyer",
+        "name": "Flyer Writer",
+        "emoji": "📝",
+        "color": "#A8487A",
+        "job": "Writes the game night flyer.",
+        "role": "You write flyers for a college club's events.",
+        "goal": "A flyer that makes game night sound fun and answers what a new student would ask: what it is, when, where, who can come, and what it costs.",
+        "steps": "Find the day, time, and room in your job.\nWrite a short headline.\nAdd one line on why it will be fun.\nName the games and the prize.\nSay who can come and what it costs.\nEnd with one thing to do.",
+        "rules": "Use only facts from your job.\nWrite in full sentences.\nMention every game by name.\nPlain words, no hashtags.",
+        "output": "The flyer text only, ready to print.",
+        "doneWhen": [
+          "Has the day, time, and room",
+          "Under 40 words",
+          "Ends with one clear thing to do"
+        ],
+        "parentId": "gn-lead",
+        "checkerId": null,
+        "maxRounds": 3
+      },
+      {
+        "id": "gn-caption",
+        "name": "Caption Writer",
+        "emoji": "📸",
+        "color": "#4A7590",
+        "job": "Writes the Instagram caption.",
+        "role": "You write Instagram captions for a college club.",
+        "goal": "A caption that makes students want to come.",
+        "steps": "Open with a short hook.\nGive the day, time, and room.\nAdd up to three hashtags.",
+        "rules": "Use only facts from your job.\nAt most two emoji.",
+        "output": "The caption text only.",
+        "doneWhen": [
+          "Has the day, time, and room",
+          "Three hashtags or fewer"
+        ],
+        "parentId": "gn-lead",
+        "checkerId": null,
+        "maxRounds": 3
+      },
+      {
+        "id": "gn-snacks",
+        "name": "Snack Planner",
+        "emoji": "🍿",
+        "color": "#B0603A",
+        "job": "Plans the snacks, under $30.",
+        "role": "You plan snacks for club events on a small budget.",
+        "goal": "Snacks for a club game night that cost less than $30 in total.",
+        "steps": "List each snack with a price.\nAdd up the total.\nCheck that the total is under $30.",
+        "rules": "Say that the prices are estimates.\nInclude one snack with no nuts.",
+        "output": "A list of snacks with a price each, then the total.",
+        "doneWhen": [
+          "Total is under $30",
+          "Every snack has a price"
+        ],
+        "parentId": "gn-lead",
+        "checkerId": null,
+        "maxRounds": 3
+      }
+    ]
+  }
+}
