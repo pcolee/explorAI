@@ -13,12 +13,18 @@ const STORE_KEY = 'm6-lab-key';
 const STORE_MODE = 'm6-lab-mode';
 const L = DEFAULT_LIMITS;
 
+// Each level's goal names the agents the preset loads, so it matches what is on screen.
+const COUNT_WORD = ['no', 'one', 'two', 'three', 'four', 'five'];
 const GOALS = {
-  1: 'Give one agent a name, a one-line job, and a task. Press Run and see what it had to guess.',
-  2: 'Fill in the six parts, run the same task again, and compare the two answers.',
-  3: 'Add helpers under a lead. The lead gives out jobs, reads the reports, and makes the final call.',
-  4: 'Add a checker and write its Done when list. Try to make it send something back at least once.',
+  1: () => 'Give one agent a name, a one-line job, and a task. Press Run and see what the agent had to guess.',
+  2: (p, main) => `${main.name} now has all six parts. Run the same task again and compare the two answers, then change one part and run again.`,
+  3: p => `${p.lead.name} gives jobs to ${COUNT_WORD[p.helpers.length] || p.helpers.length} helpers, reads their reports, and makes the final call. Press Run, then add a helper of your own.`,
+  4: (p, main) => `${p.checker.name} grades ${main.name}'s work on its Done when list and sends it back until it passes. Press Run, then change a Done when line.`,
 };
+function goalText(level, presetId) {
+  const p = getPreset(presetId);
+  return GOALS[level](p, p.helpers.find(h => h.id === p.main) || p.helpers[0]);
+}
 
 const PART_FIELDS = [
   { key: 'role', label: 'Role', hint: 'Who the agent is.', ph: 'Example: You write flyers for a college club\'s events.', rows: 2 },
@@ -153,13 +159,15 @@ function fromB64Url(s) {
   return new TextDecoder().decode(Uint8Array.from(bin, c => c.charCodeAt(0)));
 }
 
+const SHARE_MAX = 40006; // '#team=' plus at most 40,000 characters
+
 function shareUrl() {
   const data = { v: 1, preset: S.presetId, level: S.level, task: S.task, team: { agents: S.team.agents } };
   return `${location.origin}${location.pathname}#team=${toB64Url(JSON.stringify(data))}`;
 }
 
 function loadFromHash() {
-  const m = location.hash.match(/^#team=([A-Za-z0-9_-]{1,40000})$/);
+  const m = location.hash.match(new RegExp(`^#team=([A-Za-z0-9_-]{1,${SHARE_MAX - 6}})$`));
   if (!m) return false;
   try {
     const d = JSON.parse(fromB64Url(m[1]));
@@ -236,7 +244,7 @@ function renderModes() {
   if (S.mode === 'gemini') {
     chip.className = 'chip gemini';
     chip.append(document.createTextNode('Gemini'));
-    chip.append(el('span', 'model', S.gemini?.model ? `· ${S.gemini.model}` : '· key not checked yet'));
+    chip.append(el('span', 'model', S.geminiReady && S.gemini?.model ? `· ${S.gemini.model}` : '· key not checked yet'));
   } else {
     chip.className = 'chip practice';
     chip.append(document.createTextNode('Practice mode'));
@@ -257,7 +265,7 @@ function setMode(mode) {
 function renderLevels() {
   document.body.dataset.level = String(S.level);
   for (const b of document.querySelectorAll('.level')) b.setAttribute('aria-pressed', String(Number(b.dataset.level) === S.level));
-  $('levelGoal').textContent = GOALS[S.level];
+  $('levelGoal').textContent = goalText(S.level, S.presetId);
   for (const b of $('presetSel').children) b.setAttribute('aria-pressed', String(b.dataset.preset === S.presetId));
   const p = getPreset(S.presetId);
   $('dirtyNote').hidden = !S.dirty;
@@ -275,6 +283,7 @@ function setLevel(n) {
   }
   if (!S.taskDirty) S.task = presetTask(S.presetId, n);
   S.nodeState.clear();
+  $('runStatus').textContent = '';
   renderAll();
   save();
 }
@@ -285,7 +294,10 @@ function withUndo(label, fn) {
   S.nodeState.clear();
   renderAll();
   save();
-  toast(label, 'Undo', () => { restore(before); S.nodeState.clear(); renderAll(); save(); toast('Back to your team.'); });
+  toast(label, 'Undo', () => {
+    if (S.running) return;
+    restore(before); S.nodeState.clear(); renderAll(); save(); toast('Back to your team.');
+  });
 }
 
 function markDirty() {
@@ -429,7 +441,7 @@ function drawWires() {
       fwd = `M${x1} ${A.cy - 10} Q${mx} ${A.cy - 46}, ${x2} ${K.cy - 10}`;
       back = `M${x2} ${K.cy + 10} Q${mx} ${K.cy + 46}, ${x1} ${A.cy + 10}`;
     } else {
-      const y1 = A.b + 3; const y2 = K.t - 3; const my = (y1 + y2) / 2;
+      const y1 = A.b + 3; const y2 = K.t - 14; const my = (y1 + y2) / 2;
       fwd = `M${A.cx + 14} ${y1} Q${A.cx + 44} ${my}, ${K.cx + 14} ${y2}`;
       back = `M${K.cx - 14} ${y2} Q${K.cx - 44} ${my}, ${A.cx - 14} ${y1}`;
     }
@@ -476,7 +488,7 @@ function toolState() {
     : full || (checkerOf(S.team, a) ? `${a.name} already has a checker.` : '');
   const top = !a.parentId && !chk;
   out.remove = n <= 1 ? 'A team needs at least one agent.'
-    : top && helpersOf(S.team, a.id).length > 1 ? `Remove ${a.name}'s helpers first, or select a helper to remove.` : '';
+    : top && helpersOf(S.team, a.id).length > 1 ? `To remove ${a.name}, remove its helpers first.` : '';
   return out;
 }
 
@@ -493,9 +505,14 @@ function renderTools() {
   $('removeBtn').title = st.remove || `Remove ${a?.name}`;
   if (S.running) $('treeHint').textContent = 'The team is locked while it runs.';
   else if (a) {
-    const why = [['+ Helper', st.helper], ['+ Lead above', st.lead], ['+ Checker', S.level >= 4 ? st.checker : ''], ['Remove', st.remove]]
-      .filter(([, r]) => r).map(([b, r]) => `${b}: ${r}`);
-    $('treeHint').textContent = [`Selected: ${a.name}.`, ...why].join(' ');
+    const rows = [['+ Helper', st.helper], ['+ Lead above', st.lead], ['+ Checker', S.level >= 4 ? st.checker : ''], ['Remove', st.remove]]
+      .filter(([, r]) => r);
+    // When both add buttons are off for the depth limit, say it once.
+    const deep = r => / levels deep\. The limit is /.test(r);
+    const merged = rows.length >= 2 && deep(rows[0][1]) && rows[1][0] === '+ Lead above' && deep(rows[1][1]) && rows[0][0] === '+ Helper'
+      ? [['+ Helper and + Lead above', `The team can be at most ${L.maxDepth} levels deep.`], ...rows.slice(2)]
+      : rows;
+    $('treeHint').textContent = [`Selected: ${a.name}.`, ...merged.map(([b, r]) => `${b}: ${r}`)].join('\n');
   }
 }
 
@@ -558,22 +575,24 @@ function addChecker() {
 function removeSelected() {
   const a = selected();
   if (!a || toolState().remove) return;
-  const team = S.team;
-  if (isChecker(team, a.id)) {
-    const target = checkedBy(team, a.id);
-    if (target) target.checkerId = null;
-    S.selectedId = target?.id || null;
-  } else {
-    const kids = helpersOf(team, a.id);
-    for (const k of kids) k.parentId = a.parentId;
-    const chk = checkerOf(team, a);
-    if (chk) team.agents.splice(team.agents.indexOf(chk), 1);
-    S.selectedId = a.parentId || kids[0]?.id || null;
-  }
-  team.agents.splice(team.agents.indexOf(a), 1);
-  if (!byId(team, S.selectedId)) S.selectedId = topAgent(team)?.id || null;
-  afterStructureChange(false);
-  toast(`Removed ${a.name}.`);
+  withUndo(`Removed ${a.name}.`, () => {
+    const team = S.team;
+    if (isChecker(team, a.id)) {
+      const target = checkedBy(team, a.id);
+      if (target) target.checkerId = null;
+      S.selectedId = target?.id || null;
+    } else {
+      const kids = helpersOf(team, a.id);
+      for (const k of kids) k.parentId = a.parentId;
+      const chk = checkerOf(team, a);
+      if (chk) team.agents.splice(team.agents.indexOf(chk), 1);
+      S.selectedId = a.parentId || kids[0]?.id || null;
+    }
+    team.agents.splice(team.agents.indexOf(a), 1);
+    if (!byId(team, S.selectedId)) S.selectedId = topAgent(team)?.id || null;
+    S.last = null;
+    S.dirty = true;
+  });
 }
 
 // ---------- editor ----------
@@ -594,7 +613,22 @@ function field({ id, label, hint, value, multiline, rows = 2, placeholder, wide,
   input.setAttribute('aria-describedby', h.id);
   input.addEventListener('input', () => onInput(input.value));
   f.append(lab, h, input);
+  // A box grows to fit its text, so every step and rule shows without scrolling inside it.
+  if (multiline) {
+    input.addEventListener('input', () => growBox(input));
+    requestAnimationFrame(() => growBox(input));
+  }
   return f;
+}
+
+function growBox(t) {
+  if (!t.isConnected || !t.offsetParent) return;
+  t.style.height = 'auto';
+  t.style.height = `${t.scrollHeight + 4}px`;
+}
+
+function growAll() {
+  for (const t of document.querySelectorAll('#editor textarea')) growBox(t);
 }
 
 function relLine(a) {
@@ -725,7 +759,7 @@ function renderEditor() {
   const sees = el('details', 'sees need-2');
   sees.open = true;
   const sum = el('summary');
-  sum.append(document.createTextNode('What it sees '), el('span', 'hint', 'The exact text the model gets, top to bottom'));
+  sum.append(document.createTextNode('What it sees '), el('span', 'hint', 'The exact text the model gets, top to bottom. Lines that start with ## are headings.'));
   const box = el('div');
   box.id = 'seesBox';
   sees.append(sum, box);
@@ -782,7 +816,7 @@ function renderSees(box, a) {
   const conv = S.last && S.last.instructions?.[a.id] === current ? S.last.conversations?.[a.id] : null;
   const w = windowFor(S.team, a, S.task, conv);
   const win = el('div', 'win');
-  const ins = blk('mine', 'Instructions', 'you wrote these');
+  const ins = blk('mine', 'Instructions', 'your parts, plus team lines the lab adds');
   ins.append(el('pre', null, w.instructions));
   win.append(ins);
   const chat = blk('', 'The whole chat so far', w.fromRun ? 'from the last run' : 'before a run');
@@ -827,15 +861,37 @@ function renderEmpty() {
   const li = el('li', 'empty');
   li.append(el('b', null, 'No messages yet'), document.createTextNode('Press Run to start.'));
   thread().replaceChildren(li);
+  $('runStatus').textContent = '';
 }
+
+// During a run the list follows new messages unless the reader scrolls up to read.
+let follow = false;
+let autoScrolling = false;
 
 function addItem(node) {
   const t = thread();
   t.querySelector('.empty')?.remove();
   const nearBottom = t.scrollHeight - t.scrollTop - t.clientHeight < 140;
   t.append(node);
-  if (nearBottom && t.scrollHeight > t.clientHeight + 4 && getComputedStyle(t).overflowY === 'auto') t.scrollTop = t.scrollHeight;
+  if ((follow || nearBottom) && t.scrollHeight > t.clientHeight + 4 && getComputedStyle(t).overflowY === 'auto') {
+    autoScrolling = true;
+    t.scrollTop = t.scrollHeight;
+    requestAnimationFrame(() => { autoScrolling = false; });
+  }
   return node;
+}
+
+// Brings the start of a new run into view, on the scrolling list (desktop) or the page (phone).
+function showRunStart(div) {
+  const t = thread();
+  follow = true;
+  if (getComputedStyle(t).overflowY === 'auto') {
+    autoScrolling = true;
+    t.scrollTop += div.getBoundingClientRect().top - t.getBoundingClientRect().top - 8;
+    requestAnimationFrame(() => { autoScrolling = false; });
+  } else {
+    div.scrollIntoView({ block: 'nearest', behavior: REDUCED ? 'auto' : 'smooth' });
+  }
 }
 
 function who(id, team) {
@@ -954,12 +1010,27 @@ function addWait(ev, run) {
   paint();
   li.append(clock, txt);
   addItem(li);
-  const timer = setInterval(() => {
+  const w = { done: false };
+  w.timer = setInterval(() => {
     left -= 1;
     paint();
-    if (left <= 0) { clearInterval(timer); clock.remove(); }
+    if (left <= 0) {
+      clearInterval(w.timer);
+      w.done = true;
+      clock.remove();
+      // The wait is over and the request goes out, so the node shows it working again.
+      if (S.nodeState.get(ev.agentId)?.state === 'waiting') setNode(ev.agentId, 'thinking', 'Working');
+    }
   }, 1000);
-  waitTimers.push(timer);
+  // Called when the run ends (Stop or an error) while this row is still counting.
+  w.end = () => {
+    clearInterval(w.timer);
+    if (w.done) return;
+    w.done = true;
+    clock.remove();
+    txt.textContent = `${name} stopped waiting`;
+  };
+  waitTimers.push(w);
 }
 
 function addAlert(kind, title, text, buttons = []) {
@@ -1051,7 +1122,7 @@ async function geminiAdapter() {
     S.geminiReady = false;
   }
   if (!S.geminiReady) {
-    await S.gemini.checkKey({ ping: false });
+    await S.gemini.checkKey({ ping: false, signal: S.ctl?.signal });
     S.geminiReady = true;
     renderModes();
   }
@@ -1066,6 +1137,7 @@ function onModelSwitch(model, reason) {
 
 function setRunning(on) {
   S.running = on;
+  if (on) $('toast').hidden = true;
   $('runBtn').disabled = on;
   $('stopBtn').disabled = !on;
   for (const b of $('presetSel').children) b.disabled = on;
@@ -1103,7 +1175,17 @@ async function run() {
   try {
     adapter = S.mode === 'gemini' ? await geminiAdapter() : await practiceAdapter();
   } catch (err) {
+    const stopped = S.ctl?.signal.aborted;
+    S.ctl = null;
     setRunning(false);
+    if (stopped) {
+      $('runStatus').textContent = 'Stopped.';
+      addLabNote('Stopped. Nothing else was sent.');
+      return;
+    }
+    // The key check failed, so the next Run checks the key again from the start.
+    S.gemini = null;
+    S.geminiReady = false;
     $('runStatus').textContent = '';
     addAlert('err', 'Gemini mode could not start', err?.friendly || String(err?.message || err), errorButtons(err?.retryable !== false, err?.kind));
     renderModes();
@@ -1119,19 +1201,20 @@ async function run() {
     div.append(el('span', null, `Run ${S.runNo} · Practice mode`));
     source = rec
       ? `Replaying a real run recorded with ${rec.model} on ${rec.date}.`
-      : 'Sample replies: no recorded run matches this exact team and task.';
+      : 'Sample replies: no recorded run matches this exact team and task. Add a Gemini key to see real replies.';
   } else {
     div.append(el('span', null, `Run ${S.runNo} · Gemini`));
     source = `Live replies from ${adapter.model}.`;
   }
   addItem(div);
   addItem(el('li', 'source', source));
+  showRunStart(div);
   $('runStatus').textContent = 'Running…';
 
   const onEvent = ev => {
     switch (ev.type) {
       case 'agent-start': setNode(ev.agentId, 'thinking', PHASE[ev.phase] || 'Working'); break;
-      case 'agent-idle': if (S.nodeState.get(ev.agentId)?.state === 'thinking') setNode(ev.agentId, null); break;
+      case 'agent-idle': if (['thinking', 'waiting'].includes(S.nodeState.get(ev.agentId)?.state)) setNode(ev.agentId, null); break;
       case 'waiting': setNode(ev.agentId, 'waiting', `Waiting ${ev.seconds}s`); addWait(ev, runState); break;
       case 'message':
         addMessage(ev, runState);
@@ -1148,7 +1231,8 @@ async function run() {
         addAlert('limit', ev.fatal ? 'Limit reached' : 'Round limit reached', ev.message);
         break;
       case 'error':
-        addAlert('err', 'The run stopped', ev.message, errorButtons(ev.retryable, ev.kind));
+        if (ev.agentId) setNode(ev.agentId, 'error', 'Error');
+        addAlert('err', ev.agentId ? `The run stopped at ${who(ev.agentId, runState.team).name}` : 'The run stopped', ev.message, errorButtons(ev.retryable, ev.kind));
         break;
       case 'agent-done': setNode(ev.agentId, 'done', 'Done'); break;
       default: break;
@@ -1162,8 +1246,9 @@ async function run() {
     res = { status: 'error', stats: {}, conversations: {}, instructions: {} };
     addAlert('err', 'The run stopped', `Something went wrong in the lab: ${err?.message || err}. Press Retry, or reload the page.`, errorButtons(true));
   }
-  waitTimers.forEach(clearInterval);
+  waitTimers.forEach(w => w.end());
   waitTimers = [];
+  follow = false;
   for (const [id, st] of S.nodeState) if (st.state === 'thinking' || st.state === 'waiting') setNode(id, null);
   S.last = { conversations: res.conversations || {}, instructions: res.instructions || {} };
   setRunning(false);
@@ -1204,7 +1289,8 @@ function openKeyDialog() {
   $('keyStatus').className = 'key-status';
   $('keyForget').disabled = !S.key;
   if (typeof d.showModal === 'function') d.showModal(); else d.setAttribute('open', '');
-  $('keyInput').focus();
+  // On a phone, focusing the box opens the keyboard over the steps, so only a mouse or trackpad gets focus here.
+  if (typeof matchMedia === 'function' && matchMedia('(pointer: fine)').matches) $('keyInput').focus();
 }
 
 function closeKeyDialog() {
@@ -1237,8 +1323,8 @@ async function checkKeyFromDialog() {
     status.className = 'key-status ok';
     status.textContent = `The key works. Using ${info.model}.`;
     $('keyInput').value = '';
-    setTimeout(closeKeyDialog, 900);
-    toast(`Gemini is on: ${info.model}.`);
+    $('keyForget').disabled = false;
+    setTimeout(() => { closeKeyDialog(); toast(`Gemini is on: ${info.model}.`); }, 900);
   } catch (err) {
     status.className = 'key-status bad';
     status.textContent = err?.friendly || 'Gemini mode could not load on this page. Use practice mode for now.';
@@ -1287,7 +1373,11 @@ function init() {
     sel.append(b);
   }
 
+  const hadLink = location.hash.startsWith('#team=');
   const fromLink = loadFromHash();
+  if (hadLink && !fromLink) {
+    try { history.replaceState(null, '', location.pathname + location.search); } catch { /* ignore */ }
+  }
   if (!fromLink && !loadSaved()) loadPreset(DEFAULT_PRESET, 1);
 
   S.key = store.get('sessionStorage', STORE_KEY) || store.get('localStorage', STORE_KEY) || '';
@@ -1297,6 +1387,7 @@ function init() {
   renderAll();
   renderEmpty();
   if (fromLink) toast('Loaded the team from the link.');
+  else if (hadLink) toast('That link could not be read, so the lab opened your saved team.');
 
   for (const b of document.querySelectorAll('.level')) b.addEventListener('click', () => setLevel(Number(b.dataset.level)));
   $('resetBtn').addEventListener('click', () => {
@@ -1309,6 +1400,10 @@ function init() {
   });
   $('shareBtn').addEventListener('click', async () => {
     const url = shareUrl();
+    if (url.length - url.indexOf('#') > SHARE_MAX) {
+      toast('This team is too long for a link. Shorten some parts and try again.');
+      return;
+    }
     if (await copyText(url)) toast('Link copied. It holds the team and task, never your key.');
     else {
       try { history.replaceState(null, '', url); } catch { /* ignore */ }
@@ -1359,9 +1454,15 @@ function init() {
     cancelAnimationFrame(rz);
     rz = requestAnimationFrame(() => {
       const w = $('canvas').clientWidth;
-      if (w !== lastW) { lastW = w; fitTree(); } else drawWires();
+      if (w !== lastW) { lastW = w; fitTree(); growAll(); } else drawWires();
     });
   };
+  // Scrolling up during a run stops the list from jumping to each new message.
+  thread().addEventListener('scroll', () => {
+    if (autoScrolling || !S.running) return;
+    const t = thread();
+    follow = t.scrollHeight - t.scrollTop - t.clientHeight < 140;
+  }, { passive: true });
   window.addEventListener('resize', redraw);
   if (typeof ResizeObserver === 'function') new ResizeObserver(redraw).observe($('canvas'));
   document.fonts?.ready?.then(redraw).catch(() => {});
