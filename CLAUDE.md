@@ -41,6 +41,7 @@ Two people's agents edit this repo. The goal is that neither one ever works on a
 - `meetings/meeting-N/index.html` is the deck; `meetings/meeting-N/notes.html` is the speaker notes. One folder per meeting.
 - Served by GitHub Pages from `main` at `/`: `https://pcolee.github.io/explorAI/meetings/meeting-N/`. Pushing to `main` publishes immediately.
 - No build step. Plain single-file HTML.
+- `meetings/meeting-N/BUILD.md`, when present, is a live build board (who is editing which files, slide states, requests). Read it before editing that meeting, and ask for changes under its Requests heading or with `A` on the deck.
 
 ## Deck contract (`index.html`)
 

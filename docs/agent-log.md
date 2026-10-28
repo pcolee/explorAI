@@ -8,8 +8,19 @@ Remove a line once it is answered and note the answer in that day's entry.
 
 - Is Wed 2 to 3 pm in CIS A-204 the standing meeting time for the rest of Fall 2026?
 - Sam's Fall 2026 plan ([rcc-explorai](https://github.com/Sam-T-G/rcc-explorai), session cards in `semesters/2026-fall/sessions/`) has each meeting start with a written prediction and end with one sentence for `rules.md`. Should decks in this repo include those steps?
+- Meeting 6 (2026-10-28): Sam asked for an AI agents meeting and it keeps Cole's "Under the Hood" title. Is that the topic Cole meant, and what is next week's (2026-11-04) topic for the thanks slide?
 
 <!-- newest entry below: add "## YYYY-MM-DD · Name (via Claude Code)" here and end it with a blank line -->
+
+## 2026-10-27 · Sam (via Claude Code)
+
+**Changed:**
+- `meetings/meeting-6/BUILD.md` (new): live build board for the overnight Meeting 6 build. Slide plan, who is editing which files right now, requests from Cole, decisions, and what needs a person before 14:00. Rewritten and pushed at every milestone.
+- `docs/status.md`: Meeting 6 row (building overnight, points to `BUILD.md`).
+
+**Decided:** Meeting 6 covers AI agents: from Meeting 3's context window, to one agent with a clear job, to a team with a boss, helpers, and check loops (Sam). Title stays "Under the Hood" with the subtitle "How AI agents work" (Sam's agents, so Meeting 5's thanks slide still matches). The hands-on demo is a static page in `meetings/meeting-6/lab/` that calls the Gemini API from the browser with each student's own key, plus a practice mode with no key (Sam, for reliability; replaces the FastAPI + Next.js stack from Sam's 2025 agents demo).
+
+**Next:** Sam's agents: deck v1, then the lab, then the bespoke slide modules and review passes, pushing to `main` at each step and updating `BUILD.md`. Cole: OK the topic and set next week's topic (open questions above).
 
 ## 2026-10-21 · Cole (via Claude Code)
 
