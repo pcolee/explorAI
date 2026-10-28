@@ -476,17 +476,74 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 #texting .iphone-msgs>.j2{animation-delay:.3s}
 #texting .iphone-msgs>.j3{animation-delay:.6s}
 #texting .msg-bub b{font-weight:700}
-/* wrong */
-#wrong .qcard .q{font-size:64px}
-#wrong .qcard p{font-size:28px;line-height:1.42;color:var(--body)}
-#wrong .side-col{justify-content:center;gap:22px}
-#wrong .rules .card p{font-size:28px}
-#wrong .bubble{max-width:none;align-self:stretch;border-radius:24px}
+/* wrong: Meeting 4's police tip told one press at a time, then the limits that stop it and what the lab does for each */
+#stage>section#wrong{display:grid;grid-template-columns:860px 1fr;grid-template-rows:auto 1fr;column-gap:64px;row-gap:32px;align-content:start;padding:88px 128px 120px}
+#wrong .head{grid-column:1/3;display:flex;flex-direction:column;gap:14px}
+#wrong .story,#wrong .limits{display:flex;flex-direction:column;gap:22px}
+.tipform{position:relative;background:#fff;border-radius:24px;padding:22px 32px 28px;display:flex;flex-direction:column;gap:12px;rotate:-.6deg;box-shadow:inset 0 0 0 2px rgba(217,232,173,.9),0 30px 60px -34px rgba(63,90,42,.5)}
+.tipform .fbar{display:flex;align-items:baseline;justify-content:space-between;padding-bottom:12px;border-bottom:2px solid rgba(217,232,173,.9)}
+.tipform .fbar span{font-size:22px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--body)}
+.tipform .fbar b{font-family:var(--display);font-size:36px;font-weight:600;color:var(--accent);margin-right:150px}
+.tipform p{font-size:28px;line-height:1.4;color:var(--ink)}
+.tipform .stamp{position:absolute;right:26px;top:14px;rotate:-9deg;font-size:30px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--accent);border:4px solid var(--accent);border-radius:12px;padding:2px 16px;opacity:.85;animation:stamp .55s cubic-bezier(.2,.8,.2,1) .9s backwards}
+#wrong .told{border:2px solid var(--leaf);border-radius:20px;padding:18px 26px;background:var(--card);display:flex;flex-direction:column;gap:10px}
+#wrong .told .lbl,#wrong .lim .lab span{font-size:22px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink)}
+#wrong .told p{font-size:28px;line-height:1.4;color:var(--ink)}
+#wrong .told .gap{border:2px dashed var(--accent);border-radius:14px;padding:10px 20px;color:var(--accent);font-weight:700;background:rgba(251,230,239,.5)}
+#wrong .told:not(.pending) .gap{animation:softIn .55s cubic-bezier(.2,.8,.2,1) .7s backwards}
+#wrong .later{font-size:28px;line-height:1.4;color:var(--body);padding-left:26px;border-left:4px solid var(--pink)}
+#wrong .limits .eyebrow{margin-bottom:-4px}
+#wrong .lim{display:grid;grid-template-columns:56px 1fr;column-gap:22px;align-items:start;background:var(--card);border:1.5px solid var(--green);border-radius:24px;padding:18px 28px;box-shadow:0 18px 36px -24px rgba(63,90,42,.35)}
+#wrong .lim.pink{border-color:var(--pink)}
+#wrong .lim .n{font-family:var(--display);font-size:52px;font-weight:600;line-height:1;color:var(--accent)}
+#wrong .lim .t{font-size:30px;line-height:1.3;font-weight:700;color:var(--ink)}
+#wrong .lim .lab{display:flex;align-items:baseline;gap:14px;font-size:28px;line-height:1.35;color:var(--body);margin-top:8px}
+#wrong .lim .lab span{flex:none;background:var(--green);border-radius:999px;padding:3px 14px;position:relative;top:-2px}
+#wrong .src{right:auto}
 /* no one-word last lines */
 #stage p:not(.node),#stage li{text-wrap-style:pretty}
 .tree .node{white-space:nowrap}
-/* thanks */
+/* takeaway: slide 10's finished agent card, then slide 18's team, where Flyer Writer is that same card */
+#takeaway .head{display:flex;flex-direction:column;gap:20px}
+#takeaway .stmt{font-size:72px;max-width:1600px}
+#takeaway .tk{display:grid;grid-template-columns:860px 740px;column-gap:64px;align-items:center;margin-top:16px}
+#takeaway .acard{padding:22px 36px 12px;box-shadow:inset 0 0 0 3px rgba(168,72,122,.55),0 0 0 10px rgba(242,193,214,.35),0 30px 60px -34px rgba(63,90,42,.45)}
+#takeaway .acard .top{padding-bottom:14px}
+#takeaway .prow{grid-template-columns:64px 236px 1fr;padding:12px 0}
+#takeaway .prow.dim{opacity:.4}
+.tkt{position:relative;width:740px;height:440px}
+.tkt svg{position:absolute;left:-64px;top:0;width:804px;height:440px;overflow:visible}
+.tkt .ln{fill:none;stroke:rgba(156,181,123,.6);stroke-width:5;stroke-linecap:round}
+.tkt .link{fill:none;stroke:var(--accent);stroke-width:4;stroke-dasharray:4 12;stroke-linecap:round}
+.tkt .node{position:absolute;transform:translate(-50%,-50%);font-size:26px;padding:12px 22px}
+.tkt .node.fw{box-shadow:inset 0 0 0 3px rgba(168,72,122,.55),0 0 0 8px rgba(242,193,214,.45),0 18px 34px -20px rgba(63,90,42,.5)}
+/* thanks: the next-week card hugs its text */
 .frost .eyebrow{font-size:22px}
+#thanks .frost{align-self:start;padding-right:56px}
+/* cover and part dividers: the meeting's three parts, each drawn small from its own module
+   (the chat from slide 8, the agent card from slide 10, the team tree from slide 18); the part on screen is lit */
+.map{display:flex;gap:36px;margin-top:28px}
+.map figure{margin:0;width:420px;display:flex;flex-direction:column;gap:16px;animation:rise .7s cubic-bezier(.2,.8,.2,1) backwards;animation-delay:calc(.3s + var(--j,0) * 100ms)}
+.map figure:nth-child(2){--j:1}.map figure:nth-child(3){--j:2}
+.map .mt{height:236px;border-radius:28px;padding:24px 40px;background:rgba(255,254,251,.72);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;box-shadow:inset 0 0 0 2px rgba(217,232,173,.9),0 24px 48px -30px rgba(63,90,42,.45);transition:box-shadow .6s}
+.map figcaption{display:flex;align-items:baseline;gap:12px;font-size:22px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink)}
+.map figcaption b{font-family:var(--display);font-size:32px;font-weight:600;letter-spacing:0;color:var(--accent)}
+#part1 .map figure:not(:nth-child(1)),#part2 .map figure:not(:nth-child(2)),#part3 .map figure:not(:nth-child(3)){opacity:.4}
+#part1 .map figure:nth-child(1) .mt,#part2 .map figure:nth-child(2) .mt,#part3 .map figure:nth-child(3) .mt{box-shadow:inset 0 0 0 3px rgba(168,72,122,.55),0 0 0 10px rgba(242,193,214,.35),0 24px 48px -30px rgba(63,90,42,.45)}
+.mt i{display:block;height:10px;border-radius:5px;background:rgba(63,90,42,.22)}
+.mt.mchat{align-items:stretch}
+.mb{display:flex;flex-direction:column;gap:8px;padding:14px 18px;border-radius:20px 20px 20px 6px;background:var(--card);align-self:flex-start;box-shadow:0 8px 18px -12px rgba(63,90,42,.5)}
+.mb.me{align-self:flex-end;background:var(--green);border-radius:20px 20px 6px 20px}
+.ma{width:300px;background:var(--card);border-radius:18px;padding:12px 18px 8px;box-shadow:inset 0 0 0 2px rgba(168,72,122,.45),0 10px 22px -14px rgba(63,90,42,.5)}
+.ma .mtop{display:flex;align-items:center;gap:10px;padding-bottom:8px;border-bottom:2px solid rgba(217,232,173,.9)}
+.ma .pill{width:46px;height:18px;border-radius:9px;background:var(--accent)}
+.ma .ttl{width:120px;height:14px;border-radius:7px;background:var(--ink);opacity:.75}
+.ma .mrow{display:flex;align-items:center;gap:12px;padding:5px 0}
+.ma .mrow+.mrow{border-top:1.5px solid rgba(217,232,173,.6)}
+.ma svg{width:26px;height:26px;padding:4px;border-radius:8px;background:var(--pinkwash);fill:none;stroke:var(--accent);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.mtree{width:340px;height:190px;overflow:visible}
+.mtree path{fill:none;stroke:rgba(156,181,123,.7);stroke-width:4;stroke-linecap:round}
+#stage>section.pdiv{padding-top:96px;padding-bottom:120px}
 /* Motion from Meeting 4 and 5: things settle in softly, in reading order, and replay each time a slide shows. */
 [data-build-in]:not(.pending){animation:softIn .55s cubic-bezier(.2,.8,.2,1) backwards}
 .w{display:inline-block;animation:wordIn .6s cubic-bezier(.2,.8,.2,1) backwards;animation-delay:calc(var(--o,.08s) + var(--w,0) * 38ms)}
@@ -537,11 +594,12 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 </style></head><body>
 <div id="stage">
 
-<section id="cover" class="grad center">
+<section id="cover" class="grad center pdiv">
 <p class="eyebrow">ExplorAI · Meeting 6</p>
 <h1 class="title">Under the Hood</h1>
 <p class="sub">How AI agents work</p>
 <p class="lead ink">Wed, Oct 28 · 2–3pm · CIS A-204</p>
+<div class="map"><figure><div class="mt mchat"><div class="mb me"><i style="width:120px"></i></div><div class="mb"><i style="width:210px"></i><i style="width:150px"></i></div><div class="mb me"><i style="width:84px"></i></div></div><figcaption><b>1</b>From chat to agent</figcaption></figure><figure><div class="mt"><div class="ma"><div class="mtop"><span class="pill"></span><i class="ttl"></i></div><div class="mrow"><svg viewBox="0 0 24 24"><path d="M6 3h8.5L19 7.5V21H6z"/><path d="M14 3v5h5"/><path d="M9 12.5h7M9 16.5h5"/></svg><i style="width:150px"></i></div><div class="mrow"><svg viewBox="0 0 24 24"><path d="M14.5 5.5a4.2 4.2 0 0 0-5.6 5.3L3.5 16.2a1.9 1.9 0 0 0 2.7 2.7l5.4-5.4a4.2 4.2 0 0 0 5.3-5.6l-2.6 2.6-2.3-.4-.4-2.3z"/></svg><i style="width:190px"></i></div><div class="mrow"><svg viewBox="0 0 24 24"><path d="M19.5 12a7.5 7.5 0 1 1-2.2-5.3"/><path d="M19.5 3.5v4.5H15"/></svg><i style="width:130px"></i></div><div class="mrow"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3.5"/><path d="M8.5 12.2l2.4 2.4 4.8-5.2"/></svg><i style="width:170px"></i></div></div></div><figcaption><b>2</b>Build one agent</figcaption></figure><figure><div class="mt"><svg class="mtree" viewBox="0 0 340 190"><path d="M170,34 L170,70"/><path d="M170,106 C170,130 55,126 55,150"/><path d="M170,106 L170,150"/><path d="M170,106 C170,130 285,126 285,150"/><rect x="143" y="4" width="54" height="30" rx="15" fill="#D9E8AD"/><rect x="157" y="15" width="26" height="8" rx="4" fill="rgba(63,90,42,.3)"/><rect x="118" y="70" width="104" height="36" rx="18" fill="#FBE6EF" stroke="rgba(168,72,122,.55)" stroke-width="2"/><rect x="140" y="84" width="60" height="8" rx="4" fill="rgba(168,72,122,.5)"/><rect x="10" y="150" width="90" height="32" rx="16" fill="#FFFEFB" stroke="#D9E8AD" stroke-width="2.5"/><rect x="30" y="162" width="50" height="8" rx="4" fill="rgba(63,90,42,.25)"/><rect x="125" y="150" width="90" height="32" rx="16" fill="#FFFEFB" stroke="#D9E8AD" stroke-width="2.5"/><rect x="145" y="162" width="50" height="8" rx="4" fill="rgba(63,90,42,.25)"/><rect x="240" y="150" width="90" height="32" rx="16" fill="#FFFEFB" stroke="#D9E8AD" stroke-width="2.5"/><rect x="260" y="162" width="50" height="8" rx="4" fill="rgba(63,90,42,.25)"/></svg></div><figcaption><b>3</b>Build a team</figcaption></figure></div>
 </section>
 
 <section id="signin" class="grad center">
@@ -583,10 +641,11 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 </div>
 </section>
 
-<section id="part1" class="grad center">
+<section id="part1" class="grad center pdiv">
 <p class="eyebrow">Part 1</p>
 <h1 class="divider">From chat to agent</h1>
 <p class="sub">It starts with the window you already know.</p>
+<div class="map"><figure><div class="mt mchat"><div class="mb me"><i style="width:120px"></i></div><div class="mb"><i style="width:210px"></i><i style="width:150px"></i></div><div class="mb me"><i style="width:84px"></i></div></div><figcaption><b>1</b>From chat to agent</figcaption></figure><figure><div class="mt"><div class="ma"><div class="mtop"><span class="pill"></span><i class="ttl"></i></div><div class="mrow"><svg viewBox="0 0 24 24"><path d="M6 3h8.5L19 7.5V21H6z"/><path d="M14 3v5h5"/><path d="M9 12.5h7M9 16.5h5"/></svg><i style="width:150px"></i></div><div class="mrow"><svg viewBox="0 0 24 24"><path d="M14.5 5.5a4.2 4.2 0 0 0-5.6 5.3L3.5 16.2a1.9 1.9 0 0 0 2.7 2.7l5.4-5.4a4.2 4.2 0 0 0 5.3-5.6l-2.6 2.6-2.3-.4-.4-2.3z"/></svg><i style="width:190px"></i></div><div class="mrow"><svg viewBox="0 0 24 24"><path d="M19.5 12a7.5 7.5 0 1 1-2.2-5.3"/><path d="M19.5 3.5v4.5H15"/></svg><i style="width:130px"></i></div><div class="mrow"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3.5"/><path d="M8.5 12.2l2.4 2.4 4.8-5.2"/></svg><i style="width:170px"></i></div></div></div><figcaption><b>2</b>Build one agent</figcaption></figure><figure><div class="mt"><svg class="mtree" viewBox="0 0 340 190"><path d="M170,34 L170,70"/><path d="M170,106 C170,130 55,126 55,150"/><path d="M170,106 L170,150"/><path d="M170,106 C170,130 285,126 285,150"/><rect x="143" y="4" width="54" height="30" rx="15" fill="#D9E8AD"/><rect x="157" y="15" width="26" height="8" rx="4" fill="rgba(63,90,42,.3)"/><rect x="118" y="70" width="104" height="36" rx="18" fill="#FBE6EF" stroke="rgba(168,72,122,.55)" stroke-width="2"/><rect x="140" y="84" width="60" height="8" rx="4" fill="rgba(168,72,122,.5)"/><rect x="10" y="150" width="90" height="32" rx="16" fill="#FFFEFB" stroke="#D9E8AD" stroke-width="2.5"/><rect x="30" y="162" width="50" height="8" rx="4" fill="rgba(63,90,42,.25)"/><rect x="125" y="150" width="90" height="32" rx="16" fill="#FFFEFB" stroke="#D9E8AD" stroke-width="2.5"/><rect x="145" y="162" width="50" height="8" rx="4" fill="rgba(63,90,42,.25)"/><rect x="240" y="150" width="90" height="32" rx="16" fill="#FFFEFB" stroke="#D9E8AD" stroke-width="2.5"/><rect x="260" y="162" width="50" height="8" rx="4" fill="rgba(63,90,42,.25)"/></svg></div><figcaption><b>3</b>Build a team</figcaption></figure></div>
 </section>
 
 <section id="recall-chat" class="hook-slide" style="background:radial-gradient(circle,rgba(63,90,42,.04) 1.5px,transparent 1.5px) 0 0/28px 28px,linear-gradient(135deg,#FFFBF5 0%,#FDF3F8 55%,#F2C1D6 100%)">
@@ -724,10 +783,11 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 </div>
 </section>
 
-<section id="part2" class="grad center">
+<section id="part2" class="grad center pdiv">
 <p class="eyebrow">Part 2</p>
 <h1 class="divider">Build one agent</h1>
 <p class="sub">One job, written well.</p>
+<div class="map"><figure><div class="mt mchat"><div class="mb me"><i style="width:120px"></i></div><div class="mb"><i style="width:210px"></i><i style="width:150px"></i></div><div class="mb me"><i style="width:84px"></i></div></div><figcaption><b>1</b>From chat to agent</figcaption></figure><figure><div class="mt"><div class="ma"><div class="mtop"><span class="pill"></span><i class="ttl"></i></div><div class="mrow"><svg viewBox="0 0 24 24"><path d="M6 3h8.5L19 7.5V21H6z"/><path d="M14 3v5h5"/><path d="M9 12.5h7M9 16.5h5"/></svg><i style="width:150px"></i></div><div class="mrow"><svg viewBox="0 0 24 24"><path d="M14.5 5.5a4.2 4.2 0 0 0-5.6 5.3L3.5 16.2a1.9 1.9 0 0 0 2.7 2.7l5.4-5.4a4.2 4.2 0 0 0 5.3-5.6l-2.6 2.6-2.3-.4-.4-2.3z"/></svg><i style="width:190px"></i></div><div class="mrow"><svg viewBox="0 0 24 24"><path d="M19.5 12a7.5 7.5 0 1 1-2.2-5.3"/><path d="M19.5 3.5v4.5H15"/></svg><i style="width:130px"></i></div><div class="mrow"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3.5"/><path d="M8.5 12.2l2.4 2.4 4.8-5.2"/></svg><i style="width:170px"></i></div></div></div><figcaption><b>2</b>Build one agent</figcaption></figure><figure><div class="mt"><svg class="mtree" viewBox="0 0 340 190"><path d="M170,34 L170,70"/><path d="M170,106 C170,130 55,126 55,150"/><path d="M170,106 L170,150"/><path d="M170,106 C170,130 285,126 285,150"/><rect x="143" y="4" width="54" height="30" rx="15" fill="#D9E8AD"/><rect x="157" y="15" width="26" height="8" rx="4" fill="rgba(63,90,42,.3)"/><rect x="118" y="70" width="104" height="36" rx="18" fill="#FBE6EF" stroke="rgba(168,72,122,.55)" stroke-width="2"/><rect x="140" y="84" width="60" height="8" rx="4" fill="rgba(168,72,122,.5)"/><rect x="10" y="150" width="90" height="32" rx="16" fill="#FFFEFB" stroke="#D9E8AD" stroke-width="2.5"/><rect x="30" y="162" width="50" height="8" rx="4" fill="rgba(63,90,42,.25)"/><rect x="125" y="150" width="90" height="32" rx="16" fill="#FFFEFB" stroke="#D9E8AD" stroke-width="2.5"/><rect x="145" y="162" width="50" height="8" rx="4" fill="rgba(63,90,42,.25)"/><rect x="240" y="150" width="90" height="32" rx="16" fill="#FFFEFB" stroke="#D9E8AD" stroke-width="2.5"/><rect x="260" y="162" width="50" height="8" rx="4" fill="rgba(63,90,42,.25)"/></svg></div><figcaption><b>3</b>Build a team</figcaption></figure></div>
 </section>
 
 <section id="setup" class="cozy">
@@ -810,10 +870,11 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 </div>
 </section>
 
-<section id="part3" class="grad center">
+<section id="part3" class="grad center pdiv">
 <p class="eyebrow">Part 3</p>
 <h1 class="divider">Build a team</h1>
 <p class="sub">One lead, clear jobs, and checks that send work back.</p>
+<div class="map"><figure><div class="mt mchat"><div class="mb me"><i style="width:120px"></i></div><div class="mb"><i style="width:210px"></i><i style="width:150px"></i></div><div class="mb me"><i style="width:84px"></i></div></div><figcaption><b>1</b>From chat to agent</figcaption></figure><figure><div class="mt"><div class="ma"><div class="mtop"><span class="pill"></span><i class="ttl"></i></div><div class="mrow"><svg viewBox="0 0 24 24"><path d="M6 3h8.5L19 7.5V21H6z"/><path d="M14 3v5h5"/><path d="M9 12.5h7M9 16.5h5"/></svg><i style="width:150px"></i></div><div class="mrow"><svg viewBox="0 0 24 24"><path d="M14.5 5.5a4.2 4.2 0 0 0-5.6 5.3L3.5 16.2a1.9 1.9 0 0 0 2.7 2.7l5.4-5.4a4.2 4.2 0 0 0 5.3-5.6l-2.6 2.6-2.3-.4-.4-2.3z"/></svg><i style="width:190px"></i></div><div class="mrow"><svg viewBox="0 0 24 24"><path d="M19.5 12a7.5 7.5 0 1 1-2.2-5.3"/><path d="M19.5 3.5v4.5H15"/></svg><i style="width:130px"></i></div><div class="mrow"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3.5"/><path d="M8.5 12.2l2.4 2.4 4.8-5.2"/></svg><i style="width:170px"></i></div></div></div><figcaption><b>2</b>Build one agent</figcaption></figure><figure><div class="mt"><svg class="mtree" viewBox="0 0 340 190"><path d="M170,34 L170,70"/><path d="M170,106 C170,130 55,126 55,150"/><path d="M170,106 L170,150"/><path d="M170,106 C170,130 285,126 285,150"/><rect x="143" y="4" width="54" height="30" rx="15" fill="#D9E8AD"/><rect x="157" y="15" width="26" height="8" rx="4" fill="rgba(63,90,42,.3)"/><rect x="118" y="70" width="104" height="36" rx="18" fill="#FBE6EF" stroke="rgba(168,72,122,.55)" stroke-width="2"/><rect x="140" y="84" width="60" height="8" rx="4" fill="rgba(168,72,122,.5)"/><rect x="10" y="150" width="90" height="32" rx="16" fill="#FFFEFB" stroke="#D9E8AD" stroke-width="2.5"/><rect x="30" y="162" width="50" height="8" rx="4" fill="rgba(63,90,42,.25)"/><rect x="125" y="150" width="90" height="32" rx="16" fill="#FFFEFB" stroke="#D9E8AD" stroke-width="2.5"/><rect x="145" y="162" width="50" height="8" rx="4" fill="rgba(63,90,42,.25)"/><rect x="240" y="150" width="90" height="32" rx="16" fill="#FFFEFB" stroke="#D9E8AD" stroke-width="2.5"/><rect x="260" y="162" width="50" height="8" rx="4" fill="rgba(63,90,42,.25)"/></svg></div><figcaption><b>3</b>Build a team</figcaption></figure></div>
 </section>
 
 <section id="team" class="cozy alt">
@@ -931,27 +992,42 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 </div>
 </section>
 
-<section id="wrong" class="round cozy">
-<div class="qcard">
-<p class="eyebrow">When agents go wrong</p>
-<h2 class="q">Nothing said not to send forms.</h2>
-<p>During a test, Claude filled out a Philadelphia police tip form about an unsolved murder with a made-up tip.</p>
-<p>It was told not to log in, make accounts, or do anything destructive. Nothing said not to send forms.</p>
+<section id="wrong" class="cozy">
+<div class="head"><p class="eyebrow">When agents go wrong · From Meeting 4</p><h2>It did something nobody told it not to do.</h2></div>
+<div class="story">
+<div class="tipform"><div class="fbar"><span>Police tip form</span><b>July 18</b></div><p>During a test, Claude filled out a Philadelphia police tip form about an unsolved murder with a made-up tip. Police flagged it as spam.</p><span class="stamp" aria-hidden="true">Spam</span></div>
+<div class="told" data-build-in="1" data-say="what it was told"><p class="lbl">What it was told</p><p>Claude was told not to log in, make accounts, or do anything destructive.</p><p class="gap">Nothing said not to send forms.</p></div>
+<p class="later" data-build-in="2" data-say="two months later">Anthropic found the tip about two months later, and police called the delay “unacceptable.”</p>
 </div>
-<div class="side-col">
-<div class="rules">
-<div class="card" data-build-in data-say="limit 1: write the rules"><span class="n">1</span><p><b>Write the rules:</b> what it may never do.</p></div>
-<div class="card" data-build-in data-say="limit 2: cap the rounds and steps"><span class="n">2</span><p><b>Cap the rounds and steps.</b></p></div>
-<div class="card pink" data-build-in data-say="limit 3: a person checks"><span class="n">3</span><p><b>A person checks</b> before anything leaves.</p></div>
-</div>
-<p class="bubble" data-build-in data-say="our lab's limits">Our lab caps rounds and model calls, and its agents can only write.</p>
+<div class="limits">
+<p class="eyebrow" data-build-in="3">Limits that stop this</p>
+<div class="lim" data-build-in="3" data-say="limit 1: write the rules"><span class="n">1</span><div><p class="t">Write the rules: what it may never do.</p><p class="lab"><span>Our lab</span>Each agent has a Rules part.</p></div></div>
+<div class="lim" data-build-in="4" data-say="limit 2: limit what it can use"><span class="n">2</span><div><p class="t">Limit what it can use.</p><p class="lab"><span>Our lab</span>Agents can only write. No forms, no web.</p></div></div>
+<div class="lim" data-build-in="5" data-say="limit 3: cap the rounds and steps"><span class="n">3</span><div><p class="t">Cap the rounds and steps.</p><p class="lab"><span>Our lab</span>At most 3 check rounds, 24 model calls a run, 8 agents, 3 levels.</p></div></div>
+<div class="lim pink" data-build-in="6" data-say="limit 4: a person checks"><span class="n">4</span><div><p class="t">A person checks before anything leaves.</p><p class="lab"><span>Our lab</span>The lead’s final answer comes back to you.</p></div></div>
 </div>
 <p class="src">ABC News, Oct 12, 2026 · Al Jazeera, Oct 10, 2026</p>
 </section>
 
 <section id="takeaway" class="grad center">
-<p class="eyebrow">One thing to remember</p>
-<h1 class="stmt" style="font-size:92px;max-width:1560px">An agent is the same AI with a written job, a loop, and a checklist for done. You write all three.</h1>
+<div class="head"><p class="eyebrow">One thing to remember</p><h1 class="stmt">An agent is the same AI plus three things you write: a job, a loop, and a checklist for done.</h1></div>
+<div class="tk">
+<div class="acard">
+<div class="top"><span class="kind"><b class="k1">Agent</b></span><h3>Flyer Writer</h3><span class="chip g">Model: Gemini</span></div>
+<div class="prow"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8.5L19 7.5V21H6z"/><path d="M14 3v5h5"/><path d="M9 12.5h7M9 16.5h5"/></svg><p class="k">Instructions</p><p class="d">Its job, written once.</p></div>
+<div class="prow dim"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 5.5a4.2 4.2 0 0 0-5.6 5.3L3.5 16.2a1.9 1.9 0 0 0 2.7 2.7l5.4-5.4a4.2 4.2 0 0 0 5.3-5.6l-2.6 2.6-2.3-.4-.4-2.3z"/></svg><p class="k">Tools</p><p class="d">Our lab’s agents only write.</p></div>
+<div class="prow"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M19.5 12a7.5 7.5 0 1 1-2.2-5.3"/><path d="M19.5 3.5v4.5H15"/></svg><p class="k">Loop</p><p class="d">It keeps going on its own: do, check, redo.</p></div>
+<div class="prow"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3.5"/><path d="M8.5 12.2l2.4 2.4 4.8-5.2"/></svg><p class="k">Done when</p><p class="d">The checklist that tells it to stop.</p></div>
+</div>
+<div class="tkt" data-build-in="1" data-say="the team is more of these">
+<svg viewBox="-64 0 804 440" aria-hidden="true"><path class="ln" d="M370,58 L370,146"/><path class="ln" d="M370,196 C370,262 108,262 108,322"/><path class="ln" d="M370,196 L370,322"/><path class="ln" d="M370,196 C370,262 632,262 632,322"/><path class="link" d="M-60,217 C-20,217 -24,350 6,350"/></svg>
+<p class="node you" style="left:370px;top:34px">You</p>
+<p class="node lead" style="left:370px;top:172px">Event Lead</p>
+<p class="node fw" style="left:108px;top:350px">Flyer Writer</p>
+<p class="node" style="left:370px;top:350px">Caption Writer</p>
+<p class="node" style="left:632px;top:350px">Snack Planner</p>
+</div>
+</div>
 </section>
 
 <section id="thanks" class="grad">
@@ -963,7 +1039,7 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 </div>
 <div style="display:flex;gap:28px;align-items:flex-start">
 <div class="qr sm"><img src="data:image/png;base64,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" alt="QR code: Instagram @explorai.rcc" style="width:220px;height:220px"><p>@explorai.rcc</p></div>
-<div class="qr sm"><img src="data:image/png;base64,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" alt="QR code: Discord server" style="width:220px;height:220px"><p>Discord</p></div>
+<div class="qr sm"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUoAAAFKCAIAAAD0S4FSAAAFJUlEQVR42u3dwXEUMRCG0X8psiEJ8iA+50ESxCMy4DJ0dbfmvbu96/F8JR26pM85J8CNvnkEIG9A3oC8AXkD8gbkDfIG5A3IG5A3IG9A3iBvQN6AvAF5A/IG5A1v9v3JD//89eOyx/H760/R3/vv3/zkOT/5zXVmPqv73kmrN9icA/IG5A3IG5A3IG9A3iBvIK+aWkvZtE0WTlPdNy9lAmz7c7Z6g805IG9A3oC8AXkD8gZ5A/IG8qqptTRN6sycTOo6AW7mpF3dX+SdtHqDzTkgb0DegLwBeQPyBnkD8gZiai3OHqv83K65tCefu/HOU6s3IG9A3oC8AXmDvAF5A/IG5A3E1FreMQ9XN5c2c+INqzcgb5A3IG9A3oC8AXkD8gbkDTG1FnNLU2/MTNO03MbPfds7afUGm3NA3oC8AXkD8gbkDfIG5A3kVVNrXfdpZuHk2ZN5qbrP3fidvZNWb5A3IG9A3oC8AXkD8gZ5A/IGcvHUmvPS5s9pbTwBrm4ezuoNyBuQNyBvQN6AvEHegLwBeQNZPbW28X7JrtO2Zn7njWePzfzOdSfAPfnNVm+wOQfkDcgbkDcgb0DeIG9A3sBAn3NO7po92nja1syz1ja67w5QU2uAvEHegLwBeQPyBuQNyBvkDcRZa/kfE0J1N2bWfauZTyMLbwit++/PPPOsa9LO6g0254C8AXkD8gbkDcgb5A3IG8hlU2tdM14b72rsmtJ78rP3zeHNfM5Wb0DegLxB3oC8AXkD8gbkDcgbYmots29F3Dg/FLepLj+Jre5Z1f1mqzfYnAPyBuQNyBuQNyBvkDcgb2Cgzzkn8+7EzML5sK4z3jbe0zrzlL4snOC0eoPNOSBvQN6AvAF5A/IG5A3yBuKstcy+yTFN91rOnACbeQJc19ly932u1RtszgF5A/IG5A3IG5A3yBuQN5DLzlrLyKm1jWetbXySM888mzn/1/VeWb3B5hyQNyBvQN6AvAF5g7wBeQO57Ky1uhmgrpsrN36r+6b03AFq9QbkDfIG5A3IG5A3IG9A3oC8IabWcssJYXWni3V9q7fpusV143tl9Qabc0DegLwBeQPyBuQN8gbkDeSyqbWuWau6U826Zo9mntM287bNmW/szP+g1RtszgF5A/IG5A3IG5A3yBuQNxBnraV+yue+6bE0TZ7V/UVdJ6LVnaY2892weoPNOSBvQN6AvAF5A/IGeQPyBnLZ1NrMOa2NJ6LNPE3tvv9+15vjrDVA3oC8Qd6AvAF5A/IG5A3IG8jqG0Jn3j6Zl03pdc20zbzl0+oNyBuQNyBvkDcgb0DegLwBeQNx1lomnT1WNx+2cXaw6+7Rru/c9T+yeoPNOSBvQN6AvAF5A/IGeQPyBnLZ1FoWnohWN3s0c6qp617L+87h23ibqtUbbM4BeQPyBuQNyBuQN8gbkDeQV02txQ2S46flZn6rmRNgG+8PtXqDzTkgb0DegLwBeQPyBnkD8gZiai1vvT+07jd3zUttvDHzbe+V1RtszgF5A/IG5A3IG5A3yBuQNxBTa2TSBFjX/aF1p9Z1nbSXkae4Wb3B5hyQNyBvQN6AvAF5g7wBeQMxtZZ7T9vquj+0buapbqZt4180875UqzfYnAPyBuQNyBuQNyBvQN4gbyCm1tI9qbNxLq1uEitmB8e/sW4IBeQNyBvkDcgbkDcgb0DegLzhVT7nHE8BrN6AvAF5A/IG5A3IG+QNyBuQNyBvQN6AvEHegLwBeQPyBuQNyBvkDdzmLwzmGA334MD+AAAAAElFTkSuQmCC" alt="QR code: Discord server" style="width:220px;height:220px"><p>Discord</p></div>
 </div>
 </div>
 </section>
