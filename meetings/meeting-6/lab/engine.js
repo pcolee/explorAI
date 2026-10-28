@@ -414,6 +414,7 @@ export async function runTeam(team, task, { adapter, limits = {}, signal, onEven
   const conversations = {};
   const instructions = {};
   const touched = new Set();
+  const passedBy = new Map(); // agent id -> name of the checker its work passed
   let msgSeq = 0;
   const emit = ev => { try { onEvent(ev); } catch { /* a UI error never breaks the run */ } };
   const message = m => {
@@ -528,7 +529,7 @@ export async function runTeam(team, task, { adapter, limits = {}, signal, onEven
         text: graded.feedback || (graded.pass ? 'Looks good.' : 'Some lines did not pass.'),
         checks: graded.checks, pass: graded.pass, capped,
       });
-      if (graded.pass) return current;
+      if (graded.pass) { passedBy.set(agent.id, checker.name); return current; }
       if (capped) {
         const failing = graded.checks.filter(c => !c.pass).map(c => c.item).join('; ');
         const m = `${checker.name} stopped after ${maxRounds} round${maxRounds === 1 ? '' : 's'} (the round limit). Still failing: ${failing}. The run goes on with ${agent.name}'s last version.`;
@@ -570,9 +571,15 @@ export async function runTeam(team, task, { adapter, limits = {}, signal, onEven
       }
       for (const h of assigned) message({ from: agent.id, to: h.id, kind: 'job', text: plan.jobs.get(h.id) });
       const reports = await Promise.all(assigned.map(h => runAgent(h, plan.jobs.get(h.id), agent.id)));
-      const reportText = assigned.map((h, i) => `### ${h.name}\n${reports[i]}`).join('\n\n');
+      // A report that passed its checker is marked, and the lead is told to copy it as is,
+      // so the combine step can't undo what the check loop fixed.
+      const reportText = assigned.map((h, i) => {
+        const passed = passedBy.get(h.id);
+        return `### ${h.name}${passed ? ` (passed ${passed}: copy it word for word)` : ''}\n${reports[i]}`;
+      }).join('\n\n');
+      const anyPassed = assigned.some(h => passedBy.has(h.id));
       const target = fromAgent ? fromAgent.name : 'the person who asked';
-      const combinePrompt = `Reports from your helpers:\n\n${reportText}\n\nNow put the reports together into the final answer for ${target}. Keep each helper's work, fix anything that does not fit together, and reply with the finished answer only.`;
+      const combinePrompt = `Reports from your helpers:\n\n${reportText}\n\nNow put the reports together into the final answer for ${target}. Keep each helper's work, fix anything that does not fit together, and reply with the finished answer only.${anyPassed ? ' Copy any part marked as passed exactly; do not add to it or change it.' : ''}`;
       result = await call(agent, 'combine', combinePrompt);
       if (checker) message({ from: agent.id, to: checker.id, kind: 'draft', round: 1, text: result });
     } else {

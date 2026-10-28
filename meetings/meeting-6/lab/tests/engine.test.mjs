@@ -460,3 +460,31 @@ test('an adapter error names the agent whose request failed', async () => {
   await runTeam(team([newAgent({ id: 'x', name: 'X' })]), 'T', { adapter: a, onEvent: ev.onEvent });
   assert.equal(ev.of('error')[0].agentId, 'x');
 });
+
+test('combine: a report that passed its checker is marked, and the lead is told to copy it word for word', async () => {
+  let round = 0;
+  const a = fake(req => {
+    if (req.kind === 'plan') return allJobs;
+    if (req.kind === 'check') { round += 1; return round === 1 ? checkReply([false, true]) : checkReply([true, true], 'Looks good'); }
+    if (req.kind === 'revise') return 'flyer v2';
+    if (req.kind === 'combine') return 'KIT';
+    return req.meta.agentName === 'Flyer Writer' ? 'flyer v1' : 'w';
+  });
+  await runTeam(gameTeam({ checker: true }), 'T', { adapter: a });
+  const text = a.calls.find(c => c.kind === 'combine').messages.at(-1).text;
+  assert.match(text, /### Flyer Writer \(passed Flyer Checker: copy it word for word\)\nflyer v2/);
+  assert.match(text, /### Caption Writer\nw/, 'an unchecked report has no mark');
+  assert.match(text, /Copy any part marked as passed exactly; do not add to it or change it\./);
+});
+
+test('combine: a report that hit the round limit without passing is not marked', async () => {
+  const a = fake(req => {
+    if (req.kind === 'plan') return allJobs;
+    if (req.kind === 'check') return checkReply([false, true]);
+    if (req.kind === 'combine') return 'KIT';
+    return 'w';
+  });
+  await runTeam(gameTeam({ checker: true, maxRounds: 2 }), 'T', { adapter: a });
+  const text = a.calls.find(c => c.kind === 'combine').messages.at(-1).text;
+  assert.doesNotMatch(text, /passed|Copy any part/);
+});
