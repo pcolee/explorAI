@@ -10,7 +10,9 @@ export const PRESETS = [
     name: 'Game Night',
     emoji: '🎲',
     blurb: 'A flyer, an Instagram caption, and snacks for a club game night.',
-    singleTask: 'Write a flyer for ExplorAI\'s board game night: this Friday, 5 to 7 pm, in CIS A-204. Beginners welcome, all games provided, bring a friend.',
+    // Same facts as the team task (games, prize, cost, RSVP), so the level 2 steps "Name the games and the prize"
+    // and "Say who can come and what it costs" have facts to use instead of guesses.
+    singleTask: 'Write a flyer for ExplorAI\'s board game night: this Friday, 5 to 7 pm, in CIS A-204. It\'s free. We\'ll play Codenames, Catan, Uno, and Jenga, and the winning team gets a prize. Beginners are welcome, all games are provided, and you can bring a friend. RSVP in our Discord.',
     teamTask: 'Plan a board game night for ExplorAI: this Friday, 5 to 7 pm, in CIS A-204. It\'s free. We\'ll play Codenames, Catan, Uno, and Jenga, and the winning team gets a prize. Beginners are welcome, all games are provided, and you can bring a friend. RSVP in our Discord. We need a flyer, an Instagram caption, and a snack list under $30.',
     main: 'gn-flyer',
     lead: {
