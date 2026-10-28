@@ -2130,6 +2130,11 @@ function init() {
     ro.observe($('topTools'));
   }
 
+  // The page itself never scrolls; only the canvas does. Focusing a card at the edge used to shift the whole
+  // page and push the HUD and Reset view off screen, so put the page back whenever that happens.
+  const pin = () => { if (window.scrollX || window.scrollY) window.scrollTo(0, 0); if (document.body.scrollLeft || document.body.scrollTop) { document.body.scrollLeft = 0; document.body.scrollTop = 0; } };
+  window.addEventListener('scroll', pin, { passive: true });
+  document.body.addEventListener('scroll', pin, { passive: true });
   // Drag the empty canvas to move around a big team (touch scrolls on its own).
   const canvas = $('canvas');
   let pan = null;

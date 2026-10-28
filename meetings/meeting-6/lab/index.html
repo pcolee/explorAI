@@ -301,7 +301,8 @@ body[data-level="3"] .need-4{display:none!important}
 html{font-size:16px}
 @media (min-width:1500px) and (min-height:900px){html{font-size:17px}}
 html,body{height:100%}
-body{overflow:hidden;min-height:0;background:var(--cream)}
+html{overflow:clip}
+body{overflow:clip;min-height:0;background:var(--cream)}
 /* --rw is the room the open side panels take on the right (the agent card and Messages). --pad-t and --pad-l are set by fitTree. */
 body{--sheet-w:0px;--chat-w:0px;--sg:0px;--cg:0px;--gap:14px;--hud-h:160px;--dock-h:120px;--pad-t:180px;--pad-l:32px;
   --rw:calc(var(--gap) + var(--sheet-w) + var(--sg) + var(--chat-w) + var(--cg))}
