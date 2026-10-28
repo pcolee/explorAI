@@ -223,15 +223,43 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 .prow .d{font-size:28px;line-height:1.35;color:var(--ink)}
 .prow .x{font-size:26px;line-height:1.35;color:var(--body);background:var(--mint);border-radius:16px;padding:12px 20px}
 @keyframes rowIn{from{opacity:0;translate:-40px 0}}
-/* loop */
-#stage>section#loop{gap:28px;padding:88px 128px 96px}
-#loop .hd{display:flex;justify-content:space-between;align-items:end}
-.counter{font-family:var(--display);font-size:44px;font-weight:600;color:var(--ink);background:#fff;border-radius:999px;padding:12px 36px;box-shadow:0 14px 30px -18px rgba(63,90,42,.45)}
-.counter .r2,#loop:has(.r2s:not(.pending)) .counter .r1{display:none}
-#loop:has(.r2s:not(.pending)) .counter .r2{display:inline}
+/* loop: a soft spotlight travels the ring (think, do, check, again) as the log fills; round 2 passes and the spotlight exits to Done */
+#stage>section#loop{gap:24px;padding:80px 128px 72px}
+#loop .head{display:flex;flex-direction:column;gap:12px}
+.lp{display:grid;grid-template-columns:620px 1fr;column-gap:64px;align-items:start}
+.lcol{display:flex;flex-direction:column;gap:20px}
+.ring{position:relative;width:620px;height:520px}
+.ring svg{position:absolute;inset:0;width:620px;height:520px;overflow:visible}
+.ring .track{fill:none;stroke:rgba(156,181,123,.2);stroke-width:24}
+.ring .arc{fill:none;stroke:var(--leaf);stroke-width:4;stroke-linecap:round;transition:stroke .4s}
+#loop[data-step="3"] .ring .arc.again{stroke:var(--accent)}
+.ring .exit{fill:none;stroke:var(--accent);stroke-width:4;stroke-linecap:round;stroke-dasharray:80;stroke-dashoffset:80;transition:stroke-dashoffset .4s ease}
+#loop[data-step="6"] .ring .exit{stroke-dashoffset:0;transition-delay:.9s}
+.spot{position:absolute;left:0;top:0;width:0;height:0;offset-path:path('M300,90 A180,180 0 0 1 300,450 A180,180 0 0 1 300,90 A180,180 0 0 1 300,450 A180,180 0 0 1 300,90');offset-rotate:0deg;offset-distance:0%;opacity:0;transition:offset-distance 1s cubic-bezier(.45,0,.2,1),opacity .4s}
+.spot i{position:absolute;left:-90px;top:-90px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(242,193,214,.95) 0%,rgba(242,193,214,.6) 42%,rgba(242,193,214,0) 70%);transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+#loop:not([data-step="0"]) .spot{opacity:1}
+#loop[data-step="2"] .spot{offset-distance:12.5%}#loop[data-step="3"] .spot{offset-distance:25%}#loop[data-step="4"] .spot{offset-distance:50%}#loop[data-step="5"] .spot{offset-distance:62.5%}#loop[data-step="6"] .spot{offset-distance:75%}
+#loop[data-step="6"] .spot i{transform:translateX(210px);transition:transform .7s cubic-bezier(.2,.8,.2,1) 1s}
+.ring .nd,.ring .pill,.ring .round{position:absolute;transform:translate(-50%,-50%)}
+.ring .nd{width:132px;height:132px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:36px;font-weight:600;color:var(--ink);background:var(--card);box-shadow:inset 0 0 0 3px var(--leaf),0 16px 30px -18px rgba(63,90,42,.5);transition:color .4s,box-shadow .4s,scale .4s}
+#loop[data-step="1"] .nd.think,#loop[data-step="4"] .nd.think,#loop[data-step="2"] .nd.do,#loop[data-step="5"] .nd.do,#loop[data-step="3"] .nd.chk,#loop[data-step="6"] .nd.chk{color:var(--accent);box-shadow:inset 0 0 0 4px var(--accent),0 18px 34px -16px rgba(168,72,122,.55);scale:1.07;transition-delay:.6s}
+.ring .pill{font-size:24px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:10px 22px;border-radius:999px;background:var(--mint);color:var(--ink);box-shadow:inset 0 0 0 2px rgba(156,181,123,.6);transition:background .4s,color .4s,box-shadow .4s}
+.ring .pill.done{background:#fff;color:rgba(63,90,42,.5)}
+#loop[data-step="3"] .pill.again{background:var(--accent);color:#fff;box-shadow:none;transition-delay:.6s}
+#loop[data-step="6"] .pill.done{background:var(--accent);color:#fff;box-shadow:none;transition-delay:1.4s}
+.ring .round{display:flex;flex-direction:column;align-items:center;gap:4px}
+.ring .round span{font-size:22px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--body)}
+.ring .round b{font-family:var(--display);font-size:60px;font-weight:600;line-height:1;color:var(--ink);white-space:nowrap}
+.ring .round i{font-style:normal;display:inline-block}
+.ring .round .r2,#loop[data-s~="4"] .ring .round .r1{display:none}
+#loop[data-s~="4"] .ring .round .r2{display:inline-block;color:var(--accent);animation:pop .5s cubic-bezier(.34,1.56,.64,1) .7s backwards}
+.log{display:flex;flex-direction:column;gap:10px}
+.log .rl{font-size:22px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--accent)}
+.log .rl+.step{margin-top:-2px}
+#loop[data-step="1"] .step:nth-of-type(1),#loop[data-step="2"] .step:nth-of-type(2),#loop[data-step="3"] .step:nth-of-type(3),#loop[data-step="4"] .step:nth-of-type(4),#loop[data-step="5"] .step:nth-of-type(5),#loop[data-step="6"] .step:nth-of-type(6){box-shadow:inset 0 0 0 3px rgba(168,72,122,.45),0 16px 32px -20px rgba(168,72,122,.5)}
 .steps{display:flex;flex-direction:column;gap:14px}
-.step{display:grid;grid-template-columns:230px 1fr;column-gap:28px;align-items:center;background:var(--card);border-radius:22px;padding:16px 26px;box-shadow:0 14px 30px -22px rgba(63,90,42,.45)}
-.step .k{font-size:24px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink);background:var(--green);border-radius:999px;padding:10px 20px;text-align:center}
+.step{display:grid;grid-template-columns:150px 1fr;column-gap:24px;align-items:center;background:var(--card);border-radius:22px;padding:13px 24px;transition:box-shadow .4s;box-shadow:0 14px 30px -22px rgba(63,90,42,.45)}
+.step .k{font-size:22px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink);background:var(--green);border-radius:999px;padding:8px 14px;text-align:center}
 .step.chk .k{background:var(--pink);color:var(--accent)}
 .step p{font-size:28px;line-height:1.38;color:var(--ink)}
 .step .no{color:var(--accent);font-weight:700}
@@ -253,13 +281,27 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 #stage>section#structure{display:grid;grid-template-columns:1fr 520px;grid-template-rows:auto 1fr;column-gap:64px;row-gap:24px;padding:88px 128px 96px}
 #structure .head{grid-column:1/3;display:flex;flex-direction:column;gap:14px}
 .parts{display:flex;flex-direction:column;gap:12px}
-.part{display:grid;grid-template-columns:210px 1fr 150px;column-gap:24px;align-items:center;background:var(--card);border-radius:20px;padding:14px 24px;box-shadow:0 14px 30px -22px rgba(63,90,42,.45)}
+.part{display:grid;grid-template-columns:210px 1fr 170px;column-gap:24px;align-items:center;background:var(--card);border-radius:20px;padding:14px 24px;box-shadow:0 14px 30px -22px rgba(63,90,42,.45)}
 .part .k{font-family:var(--display);font-size:36px;font-weight:600;color:var(--accent)}
 .part p{font-size:28px;line-height:1.35;color:var(--ink)}
 .part .m3{font-size:22px;font-weight:700;letter-spacing:1px;color:var(--ink);background:var(--green);border-radius:999px;padding:6px 14px;text-align:center}
 .part .m3.none{background:transparent}
 #structure .right{display:flex;flex-direction:column;gap:22px}
 #structure .win .blk b{font-size:30px}
+/* structure: each part's name slides into the instructions slot as its row appears; the slot starts with six empty places */
+.parts .ph{display:grid;grid-template-columns:210px 1fr 170px;column-gap:24px;padding:0 24px}
+.parts .ph span{font-size:22px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--body)}
+.parts .ph span:last-child{text-align:center}
+#structure .part{transition:box-shadow .4s}
+#structure .part:not(.pending){animation:rowIn .55s cubic-bezier(.2,.8,.2,1) backwards}
+#structure .part:not(.pending):has(+.pending),#structure[data-step="6"] .part:last-child{box-shadow:inset 0 0 0 3px rgba(168,72,122,.45),0 16px 32px -20px rgba(168,72,122,.5)}
+.slot{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.slot i{font-style:normal;font-size:24px;font-weight:700;color:var(--accent);background:#fff;border-radius:999px;padding:6px 18px;box-shadow:inset 0 0 0 2px rgba(168,72,122,.5)}
+#stage .slot i.pending{opacity:1;transform:none;color:transparent;background:transparent;box-shadow:inset 0 0 0 2px rgba(168,72,122,.3);border:0;outline:2px dashed rgba(168,72,122,.35);outline-offset:-2px;box-shadow:none}
+.slot i:not(.pending){animation:slideIn .6s cubic-bezier(.2,.8,.2,1) .15s backwards}
+#structure .win{transition:box-shadow .5s}
+#structure[data-step="7"] .win .blk.mine{box-shadow:0 0 0 5px rgba(168,72,122,.18)}
+@keyframes slideIn{from{opacity:0;translate:-90px 0}}
 /* team */
 #stage>section#team{display:grid;grid-template-columns:1fr 600px;grid-template-rows:auto 1fr;column-gap:64px;row-gap:20px;padding:88px 128px 96px}
 #team .head{grid-column:1/3;display:flex;flex-direction:column;gap:14px}
@@ -308,7 +350,7 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 .qcard .w{--o:.24s}
 .eyebrow,.lead:not([data-build-in]),.sub:not([data-build-in]){animation:fadeIn .7s ease .1s backwards}
 .src{animation:fadeIn .8s ease .6s backwards}
-.qcard,.card:not([data-build-in]),.flyer,.win,.acard,.lab,.ck,.counter{animation:rise .7s cubic-bezier(.2,.8,.2,1) backwards}
+.qcard,.card:not([data-build-in]),.flyer,.win,.acard,.lab,.ck,.ring{animation:rise .7s cubic-bezier(.2,.8,.2,1) backwards}
 .qr{animation:pop .6s cubic-bezier(.34,1.56,.64,1) .3s backwards}
 .qr+.qr{animation-delay:.42s}
 .timer{animation:pop .6s cubic-bezier(.34,1.56,.64,1) .2s backwards}
@@ -498,15 +540,38 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 </section>
 
 <section id="loop" class="cozy alt">
-<div class="hd"><div style="display:flex;flex-direction:column;gap:14px"><p class="eyebrow">The loop</p><h2>Think, do, check. Again, or done.</h2></div><p class="counter"><span class="r1">Round 1 of 3</span><span class="r2">Round 2 of 3</span></p></div>
-<div class="steps">
-<div class="step" data-build-in><span class="k">Think</span><p>Job: a game night flyer. It needs the day, time, and room.</p></div>
-<div class="step" data-build-in><span class="k">Do</span><p>“Join us for an epic Game Night! Board games, card games, snacks, and music. Everyone is welcome…”</p></div>
-<div class="step chk" data-build-in><span class="k">Check</span><p><span class="no">✗ Over 40 words · ✗ No room.</span> Notes go back: cut it down, add the room.</p></div>
-<div class="step r2s" data-build-in><span class="k">Do again</span><p>“Game Night! Board games, snacks, and new friends. Friday · 5–7pm · CIS A-204. RSVP in our Discord.”</p></div>
-<div class="step chk" data-build-in><span class="k">Check</span><p><span class="ok">✓ Day, time, room · ✓ Under 40 words · ✓ One thing to do.</span> Done.</p></div>
+<div class="head"><p class="eyebrow">The loop</p><h2>Think, do, check. Again, or done.</h2></div>
+<div class="lp">
+<div class="lcol">
+<div class="ring">
+<svg viewBox="0 0 620 520" aria-hidden="true"><defs><marker id="lpa" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9CB57B"/></marker><marker id="lpd" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#A8487A"/></marker></defs>
+<circle cx="300" cy="270" r="180" class="track"/>
+<path class="arc" d="M373.2,105.6 A180,180 0 0 1 464.4,196.8" marker-end="url(#lpa)"/>
+<path class="arc" d="M464.4,343.2 A180,180 0 0 1 373.2,434.4" marker-end="url(#lpa)"/>
+<path class="arc again" d="M226.8,434.4 A180,180 0 0 1 125.3,313.5" marker-end="url(#lpa)"/>
+<path class="arc again" d="M125.3,226.5 A180,180 0 0 1 226.8,105.6" marker-end="url(#lpa)"/>
+<path class="exit" d="M364,450 L426,450" marker-end="url(#lpd)"/></svg>
+<div class="spot"><i></i></div>
+<p class="nd think" style="left:300px;top:90px">Think</p>
+<p class="nd do" style="left:480px;top:270px">Do</p>
+<p class="nd chk" style="left:300px;top:450px">Check</p>
+<p class="pill again" style="left:120px;top:270px">Again</p>
+<p class="pill done" style="left:510px;top:450px">Done</p>
+<div class="round" style="left:300px;top:270px"><span>Round</span><b><i class="r1">1</i><i class="r2">2</i> of 3</b></div>
 </div>
-<p class="callout">The cap of 3 rounds is a guardrail. Without it, a loop can run forever.</p>
+<p class="callout" data-build-in="6">The cap of 3 rounds is a guardrail. Without it, a loop can run forever.</p>
+</div>
+<div class="log">
+<p class="rl" data-build-in="1">Round 1</p>
+<div class="step" data-build-in="1" data-say="think"><span class="k">Think</span><p>Job: a game night flyer with the day, time, and room.</p></div>
+<div class="step" data-build-in="2" data-say="do: the first draft"><span class="k">Do</span><p>“Game Night is back! Join ExplorAI this Friday from 5 to 7pm for an evening of board games…”</p></div>
+<div class="step chk" data-build-in="3" data-say="check: two fails, again"><span class="k">Check</span><p><span class="no">✗ No room · ✗ Over 40 words</span> · <span class="ok">✓ One thing to do</span>. Again.</p></div>
+<p class="rl" data-build-in="4">Round 2</p>
+<div class="step" data-build-in="4" data-say="think: read the notes"><span class="k">Think</span><p>Read the notes: add the room, cut it under 40 words.</p></div>
+<div class="step" data-build-in="5" data-say="do: the second draft"><span class="k">Do</span><p>“Game Night! Board games, snacks, and new friends. Friday · 5–7pm · CIS A-204. RSVP in our Discord.”</p></div>
+<div class="step chk" data-build-in="6" data-say="check: all pass, done"><span class="k">Check</span><p><span class="ok">✓ Day, time, room · ✓ Under 40 words · ✓ One thing to do</span>. Done.</p></div>
+</div>
+</div>
 </section>
 
 <section id="part2" class="grad center">
@@ -548,21 +613,22 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 <section id="structure" class="cozy">
 <div class="head"><p class="eyebrow">Give it structure</p><h2>Six parts, one clear job.</h2></div>
 <div class="parts">
-<div class="part" data-build-in><p class="k">Role</p><p>You write flyers for ExplorAI, the AI club at RCC.</p><span class="m3">Who</span></div>
-<div class="part" data-build-in><p class="k">Goal</p><p>Get new students to come to game night.</p><span class="m3">What, Why</span></div>
-<div class="part" data-build-in><p class="k">Steps</p><p>Read the details. Write a draft. Check it.</p><span class="m3 none"></span></div>
-<div class="part" data-build-in><p class="k">Rules</p><p>Never make up a day, time, or room.</p><span class="m3">How</span></div>
-<div class="part" data-build-in><p class="k">Output</p><p>Only the flyer text. No notes before or after.</p><span class="m3">How</span></div>
-<div class="part" data-build-in><p class="k">Done when</p><p>Has day, time, room · under 40 words · ends with one thing to do</p><span class="m3 none"></span></div>
+<div class="ph"><span>Part</span><span>Flyer Writer example</span><span>Meeting 3</span></div>
+<div class="part" data-build-in="1" data-say="role"><p class="k">Role</p><p>You write flyers for ExplorAI, the AI club at RCC.</p><span class="m3">Who</span></div>
+<div class="part" data-build-in="2" data-say="goal"><p class="k">Goal</p><p>Get new students to come to game night.</p><span class="m3">What, Why</span></div>
+<div class="part" data-build-in="3" data-say="steps"><p class="k">Steps</p><p>Read the details. Write a draft. Check it.</p><span class="m3 none"></span></div>
+<div class="part" data-build-in="4" data-say="rules"><p class="k">Rules</p><p>Never make up a day, time, or room.</p><span class="m3">How</span></div>
+<div class="part" data-build-in="5" data-say="output"><p class="k">Output</p><p>Only the flyer text. No notes before or after.</p><span class="m3">How</span></div>
+<div class="part" data-build-in="6" data-say="done when"><p class="k">Done when</p><p>Has day, time, room · under 40 words · ends with one thing to do</p><span class="m3 none"></span></div>
 </div>
 <div class="right">
 <div class="win">
-<div class="blk mine"><b>Instructions</b><span>All six parts go here</span></div>
+<div class="blk mine"><b>Instructions</b><div class="slot"><i data-build-in="1">Role</i><i data-build-in="2">Goal</i><i data-build-in="3">Steps</i><i data-build-in="4">Rules</i><i data-build-in="5">Output</i><i data-build-in="6">Done when</i></div></div>
 <div class="blk dim"><b>The whole chat so far</b></div>
 <div class="blk you"><b>Your new message</b><span>The task</span></div>
 <div class="blk next"><b>Its reply</b></div>
 </div>
-<p class="callout" data-build-in>Same model, clearer job.</p>
+<p class="callout" data-build-in="7" data-say="same model, clearer job">Same model, clearer job.</p>
 </div>
 </section>
 
