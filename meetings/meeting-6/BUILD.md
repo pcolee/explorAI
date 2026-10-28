@@ -2,7 +2,7 @@
 
 Live board for the Meeting 6 deck and agent lab while Sam's agents build them overnight (2026-10-27 to 2026-10-28). It is rewritten in place and pushed with every milestone, so the top of this file is always the current state. History goes in commit messages and `docs/agent-log.md`.
 
-**Last update:** 2026-10-28 01:05 PDT · **Phase:** deck D3 done: the three deck reviews (design, copy, contract) are applied (`98df179` deck, `3b878b2` notes), full walks clean (84 presses forward and back, 0 back mismatches, no console errors, also with reduced motion); the deck is ready for integration with the lab's recorded run. Lab LF done 01:10 (real-key verify and pre-mortem fixes pushed: the lead keeps the flyer that passed, the key check survives a new kind of key; deck wording requests under **Requests**) · **Next push:** integration (I1), then the final walk (I2)
+**Last update:** 2026-10-28 01:35 PDT · **Phase:** deck P done: the eight slides still at v1 (cover, sign-in, the three part slides, When agents go wrong, One thing to remember, Thanks) are polished (`a0a0546`, `b1d57d7`, `8fca49c`); full walks clean (87 presses forward and back, 0 back mismatches, no console errors, also with reduced motion); every slide is now polished and the deck is ready for integration (I1). Deck D3 done earlier (`98df179`, `3b878b2`). Lab LF done 01:10 (real-key verify and pre-mortem fixes pushed: the lead keeps the flyer that passed, the key check survives a new kind of key; deck wording requests under **Requests**) · **Next push:** integration (I1), then the final walk (I2)
 
 Deck v1: https://pcolee.github.io/explorAI/meetings/meeting-6/ · notes: https://pcolee.github.io/explorAI/meetings/meeting-6/notes.html
 
@@ -17,7 +17,7 @@ Deck v1: https://pcolee.github.io/explorAI/meetings/meeting-6/ · notes: https:/
 
 | What | Files | Who | Since |
 |---|---|---|---|
-| Deck: D3 done (review fixes pushed); ready for integration with the lab's recorded run (I1) | `meetings/meeting-6/index.html`, `notes.html`, `plan.md` | Sam's agents (deck track) | D3 pushed 2026-10-28 01:02 |
+| Deck: P done (last eight v1 slides polished); ready for integration (I1), which also takes the four LF wording requests for slides 13 and 21 | `meetings/meeting-6/index.html`, `notes.html`, `plan.md` | Sam's agents (deck track) | P pushed 2026-10-28 01:32 |
 | Agent lab: LF done (fixes from a real-key verify in Chrome and a pre-mortem); next integration with the deck (I1) | `meetings/meeting-6/lab/` | Sam's agents (lab track) | LF pushed 2026-10-28 01:10 |
 | Docs | this file, Meeting 6 row in `docs/status.md`, Sam's entry in `docs/agent-log.md` | Sam's agents | 2026-10-27 23:05 |
 
@@ -44,30 +44,30 @@ What each slide is for, the shared words, and the design bar: `plan.md`. The lab
 
 | # | id | Slide | Time | State |
 |---|---|---|---|---|
-| 1 | cover | Under the Hood · How AI agents work · Wed, Oct 28 · 2-3pm · CIS A-204 | 2:00 | v1 |
-| 2 | signin | Title + sign-in QR (routine) | 2:01 | v1 (QR reused from Meeting 5, decoded) |
+| 1 | cover | Under the Hood · How AI agents work · Wed, Oct 28 · 2-3pm · CIS A-204 | 2:00 | polished, no presses: the three parts as small cards drawn from their own modules (the chat from slide 8, the agent card from slide 10, the team tree from slide 18); the part slides repeat them with that part lit |
+| 2 | signin | Title + sign-in QR (routine) | 2:01 | polished, unchanged: matches Meeting 5's layout (QR reused from Meeting 5, decoded again: `https://forms.gle/AAN5yiHXcajJvhAe8`) |
 | 3 | shares | explorAI Shares: one verified agents news item, with source | 2:04 | polished, 3 presses: "Google upgrades the agent you can try free in AI Studio" (Antigravity agent, Sept 17; free tier; Playground › Agents), sources on the slide, QR to aistudio.google.com (decoded); D3: ink-green 620 px QR, first card no longer implies the hosted computer is new |
 | 4 | hook | A finished game night flyer. Guess how many AIs made it, then reveal the team, messages, and check rounds (numbers from a real lab run) | 2:07 | polished, 3 presses (flyer alone, then the guess, then the team of 5 with "12 messages" and "3 check rounds"); the flyer and counts are the recorded run's; D3: "3 check rounds until the flyer passed", role chips colored as in the lab (checker pink), notes say all five are the same model |
-| 5 | part1 | Part 1 · From chat to agent | 2:10 | v1 |
+| 5 | part1 | Part 1 · From chat to agent | 2:10 | polished, no presses: the cover's three part cards with the chat card lit |
 | 6 | recall-chat | Meeting 3's group chat: part of the picture vs. everything | 2:10 | polished, 2 presses (Meeting 3's phone markup, last message then the whole chat) |
 | 7 | recall-window | The context window card, filled layer by layer. "It can't read what you didn't put in the window." | 2:12 | polished, 6 presses (empty slots fill one layer per press; reply tokens appear one by one); D3: "the model (the AI itself)" defined on screen, layer text 28 px |
 | 8 | session | A chat session is a window you keep filling, one turn at a time | 2:13 | polished, 3 presses (meter: 1, 3, 5 messages; earlier messages flash as they are sent again); D3: your bubbles green, meter text 28 px |
 | 9 | pin | Write the instructions once: you fill the "instructions from the app" slot yourself | 2:15 | polished, 4 presses (the app's layer becomes "written by you"); D3: no "behind the scenes"; the message now gives "RSVP in our Discord", so the reply invents nothing |
 | 10 | agent | Agent = model + instructions + tools + a loop + "done when". The session card turns into an agent card, one labeled piece per press | 2:16 | polished, 5 presses (chat session card gains 4 pieces, then becomes the Flyer Writer agent card) |
 | 11 | loop | The loop: think, do, check, again or done (flyer example, round counter) | 2:18 | polished, 6 presses (a spotlight moves around the think/do/check ring, round counter in the middle, log of both rounds, exits to Done; cap line); D3: "safety limit" (not "guardrail"), Done arrow hidden until round 2 passes |
-| 12 | part2 | Part 2 · Build one agent | 2:20 | v1 |
+| 12 | part2 | Part 2 · Build one agent | 2:20 | polished, no presses: the part cards with the agent card lit |
 | 13 | setup | Open the lab (QR), get a free Gemini key or use practice mode | 2:20 | polished: key page aistudio.google.com/api-keys, 18 and up with a personal Google account, the free-tier data line (facts file); lab QR decoded; D3: ink-green QR (decoded again), "Gemini key" without "API" |
 | 14 | build1 | Build 1: one agent, one job | 2:22 | polished, timer 3:00; the lab picture is a small copy of the real lab at level 1 |
 | 15 | structure | Give it structure: Role, Goal, Steps, Rules, Output, Done when, and the window they fill | 2:26 | polished, 7 presses (each part's name slides into the instructions slot, Meeting 3 recipe column, then the line); D3: the Flyer Writer example is the lab preset's lines, Done when maps to Meeting 3's How |
 | 16 | build2 | Build 2: add structure, run again, compare | 2:28 | polished, timer 5:00; lab picture at level 2 (The six parts, What it sees); D3: Do note matches the lab's level 2 ("Read the six parts. Run the same task as Build 1. Then change one part and run again."), picture shows the real task |
-| 17 | part3 | Part 3 · Build a team | 2:33 | v1; D3: "One lead" (not "boss") |
+| 17 | part3 | Part 3 · Build a team | 2:33 | polished, no presses: the part cards with the team tree lit; D3: "One lead" (not "boss") |
 | 18 | team | Who's in charge: jobs go down, reports come up, the boss makes the final call | 2:33 | polished, 4 presses (dots travel the tree lines: task down, jobs down, reports up, answer up; nodes ping on arrival; the rule in play glows); D3: going back into the slide plays only that press's dot, flow labels 28 px and left-aligned |
 | 19 | texting | What the agents say to each other (Meeting 3 style group chat) | 2:36 | polished, 8 presses ("Game Night Team" chat on Meeting 3's phone: the lead's three jobs, then one real message per press through 3 check rounds to the lead's answer; kinds named on the left); D3: the "Game Night Team · 5 agents" title bar is on screen, CIS A-204 never splits, notes introduce the Flyer Checker and the 3 reports not shown |
 | 20 | checkloop | "Done when": a checklist that sends work back, with a round limit | 2:38 | polished, 6 presses (the run's 3 drafts at 51, 40, 38 words above the checklist; marks stamp in per round; the checker's real notes; round dots to 3 of 3); D3: round 1's notes hide while round 2's marks show; the line says what the lab does after 3 fails ("names the lines that still fail. The lead gets the last draft.") |
 | 21 | build3 | Build 3: make a team and add a checker | 2:40 | polished, timer 10:00; lab picture at level 4 (team tree with the checker loop); the how-to moved into a Do note; D3: Do note and demo match the lab (Flyer Checker already exists at level 4; + Checker goes on the selected agent, whose own Done when box holds the lines) |
-| 22 | wrong | When agents go wrong: Meeting 4's police tip, and the limits that prevent it | 2:50 | v1 (Meeting 4's wording and sources); D3: "Our lab caps rounds and model calls, and its agents can only write." |
-| 23 | takeaway | One thing to remember | 2:54 | v1 |
-| 24 | thanks | Thank you, next week card, Instagram + Discord QRs | 2:56 | v1 ("Topic coming soon"; QRs reused from Meeting 5, decoded) |
+| 22 | wrong | When agents go wrong: Meeting 4's police tip, and the limits that prevent it | 2:50 | polished, 6 presses: headline "It did something nobody told it not to do."; the tip form (July 18, the made-up tip, flagged as spam), then what it was told with the missing "Nothing said not to send forms." line, then "about two months later", all in Meeting 4's words and sources; then four limits, each with what the lab does (a Rules part; agents only write, no forms, no web; at most 3 check rounds and 24 model calls a run, teams up to 8 agents, 4 levels, from `lab/engine.js`; the lead's final answer comes back to you). Takes the lab track's request: "Cap the rounds and model calls" |
+| 23 | takeaway | One thing to remember | 2:54 | polished, 1 press: one sentence ("An agent is the same AI plus three things you write: a job, a loop, and a checklist for done.") over slide 10's finished Flyer Writer card (Tools faded); the press brings in slide 18's team, joined to its Flyer Writer node |
+| 24 | thanks | Thank you, next week card, Instagram + Discord QRs | 2:56 | polished, no presses: "Topic coming soon" (no topic named yet); the next-week card fits its text; Discord QR recolored ink green like Instagram's, same target (decoded: `https://discord.gg/wymCa4EPj`; Instagram `https://www.instagram.com/explorai.rcc`) |
 
 ## Agent lab (the hands-on demo)
 
