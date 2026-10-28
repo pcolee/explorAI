@@ -17,6 +17,9 @@ Remove a line once it is answered and note the answer in that day's entry.
 **Changed:**
 - `meetings/meeting-6/BUILD.md` (new): live build board for the overnight Meeting 6 build. Slide plan, who is editing which files right now, requests from Cole, decisions, and what needs a person before 14:00. Rewritten and pushed at every milestone.
 - `docs/status.md`: Meeting 6 row (building overnight, points to `BUILD.md`).
+- `CLAUDE.md` (Layout): one line saying a meeting's `BUILD.md`, when present, is a live build board to read before editing that meeting (`de66daf`).
+- `meetings/meeting-6/plan.md` (new, `5601787`): the deck's content spec. Who is in the room, what they leave with, the shared words (model, instructions, tool, loop, done when, lead and helper, checker), the game night running example, all 24 slides with start times, and the design bar.
+- `meetings/meeting-6/lab/SPEC.md` (new, `5601787`): the agent lab's contract. Static page, no server, files and their jobs, how a team run works (lead plans, helpers report, checker loop with a 3-round cap, 24-call limit), the Gemini adapter's rate limit and error handling, practice mode, key handling, and what "done" means.
 
 **Decided:** Meeting 6 covers AI agents: from Meeting 3's context window, to one agent with a clear job, to a team with a boss, helpers, and check loops (Sam). Title stays "Under the Hood" with the subtitle "How AI agents work" (Sam's agents, so Meeting 5's thanks slide still matches). The hands-on demo is a static page in `meetings/meeting-6/lab/` that calls the Gemini API from the browser with each student's own key, plus a practice mode with no key (Sam, for reliability; replaces the FastAPI + Next.js stack from Sam's 2025 agents demo).
 
