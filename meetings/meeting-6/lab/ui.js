@@ -16,16 +16,20 @@ const L = DEFAULT_LIMITS;
 // Each level's goal names the agents the preset loads, so it matches what is on screen.
 const COUNT_WORD = ['no', 'one', 'two', 'three', 'four', 'five'];
 const GOALS = {
-  1: () => 'Give one agent a name, a one-line job, and a task. Press Run and see what the agent had to guess.',
-  2: (p, main) => `${main.name} now has all six parts. Run the same task again and compare the two answers, then change one part and run again.`,
-  3: p => `${p.lead.name} gives jobs to ${COUNT_WORD[p.helpers.length] || p.helpers.length} helpers, reads their reports, and makes the final call. Press Run, then add a helper of your own.`,
-  4: (p, main) => `${p.checker.name} grades ${main.name}'s work on its Done when list and sends it back until it passes. Press Run, then change a Done when line.`,
+  1: (p, main) => `${main.name} only has a name and a one-line job. Press Run and read what comes back. Then change the job line and run it again.`,
+  2: (p, main) => `${main.name} now has all six parts. Run the same task and compare the answer with level 1. Then change one part and run again.`,
+  3: p => `${p.lead.name} hands out jobs to ${COUNT_WORD[p.helpers.length] || p.helpers.length} helpers, puts their work together, and answers you. Press Run, then add a helper of your own.`,
+  4: (p, main) => `${p.checker.name} checks ${main.name}'s work against its Done when lines. If a line fails, ${main.name} has to fix it and try again. Press Run, then change a Done when line.`,
 };
 const PART_KEYS = ['role', 'goal', 'steps', 'rules', 'output', 'doneWhen'];
 function goalText(level, presetId) {
   const p = getPreset(presetId);
   // At level 2 a changed team may be the student's own bare agent from Build 1, so the line names that agent
   // and asks for the parts it is missing instead of saying they are already there.
+  if (level === 1 && S.dirty) {
+    const a = topAgent(S.team);
+    if (a) return GOALS[1](p, a);
+  }
   if (level === 2 && S.dirty) {
     const a = selected();
     const target = a && !isChecker(S.team, a.id) ? a : (topAgent(S.team) || a);
@@ -42,11 +46,26 @@ function goalText(level, presetId) {
 const PART_FIELDS = [
   { key: 'role', label: 'Role', hint: 'Who the agent is.', ph: 'Example: You write flyers for a college club\'s events.', rows: 2 },
   { key: 'goal', label: 'Goal', hint: 'What it should make, and why.', ph: 'Example: A flyer that gets students to come to game night.', rows: 2 },
-  { key: 'steps', label: 'Steps', hint: 'The order to work in. One step per line.', ph: 'Example:\nFind the day, time, and room\nWrite a short headline\nEnd with one thing to do', rows: 4 },
+  { key: 'steps', label: 'Steps', hint: 'What to do, in order. One step per line.', ph: 'Example:\nFind the day, time, and room\nWrite a short headline\nEnd with one thing to do', rows: 4 },
   { key: 'rules', label: 'Rules', hint: 'What it must always or never do. One rule per line.', ph: 'Example:\nUse only facts from the task\nNo hashtags', rows: 3 },
   { key: 'output', label: 'Output', hint: 'What the answer should look like.', ph: 'Example: The flyer text only, ready to print.', rows: 2 },
-  { key: 'doneWhen', label: 'Done when', hint: 'The checklist the work has to pass. One line each.', ph: 'Example:\nHas the day, time, and room\nUnder 40 words', rows: 3 },
+  { key: 'doneWhen', label: 'Done when', hint: 'The work is done when every line here passes. One line each.', ph: 'Example:\nHas the day, time, and room\nUnder 40 words', rows: 3 },
 ];
+
+// The deck's part icons (slide 10 draws Done when the same way).
+const PART_ICONS = {
+  role: ['M12 11.5a3.75 3.75 0 1 0 0-7.5 3.75 3.75 0 0 0 0 7.5z', 'M4.5 20.5a7.5 7.5 0 0 1 15 0'],
+  goal: ['M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16z', 'M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8z', 'M12 12.2v-.4'],
+  steps: ['M9.5 6.5h10M9.5 12h10M9.5 17.5h10', 'M4.5 6.5h.5M4.5 12h.5M4.5 17.5h.5'],
+  rules: ['M12 3.2l7 2.8v5.2c0 4.3-2.9 7.6-7 9.6-4.1-2-7-5.3-7-9.6V6z', 'M9 12l2.2 2.2L15.5 10'],
+  output: ['M6 3h8.5L19 7.5V21H6z', 'M14 3v5h5', 'M9 12.5h7M9 16.5h5'],
+  doneWhen: ['M7.5 4h9A3.5 3.5 0 0 1 20 7.5v9a3.5 3.5 0 0 1-3.5 3.5h-9A3.5 3.5 0 0 1 4 16.5v-9A3.5 3.5 0 0 1 7.5 4z', 'M8.5 12.2l2.4 2.4 4.8-5.2'],
+};
+function partIcon(key) {
+  const svg = svgEl('svg', { class: 'ic', viewBox: '0 0 24 24', 'aria-hidden': 'true' });
+  for (const d of PART_ICONS[key] || []) svg.append(svgEl('path', { d }));
+  return svg;
+}
 
 const PHASE = { plan: 'Planning', work: 'Working', combine: 'Putting it together', check: 'Checking', revise: 'Fixing', ping: 'Checking' };
 const KIND = { job: 'job', note: 'plan', draft: 'first draft', check: 'check', revise: 'new version', report: 'report', final: 'final answer' };
@@ -263,6 +282,8 @@ function renderModes() {
     chip.append(document.createTextNode('Practice mode'));
   }
   $('keyBtn').textContent = S.key ? 'Your key' : 'Add a Gemini key';
+  const mp = $('modelPill');
+  if (mp) mp.textContent = modelPillText();
   chip.disabled = S.running;
   $('keyBtn').disabled = S.running;
 }
@@ -278,6 +299,10 @@ function setMode(mode) {
 function renderLevels() {
   document.body.dataset.level = String(S.level);
   for (const b of document.querySelectorAll('.level')) b.setAttribute('aria-pressed', String(Number(b.dataset.level) === S.level));
+  const tag = `Level ${S.level}`;
+  const note = $('goalNote');
+  if ($('goalTag').textContent !== tag && !REDUCED) { note.classList.remove('swap'); void note.offsetWidth; note.classList.add('swap'); }
+  $('goalTag').textContent = tag;
   $('levelGoal').textContent = goalText(S.level, S.presetId);
   for (const b of $('presetSel').children) b.setAttribute('aria-pressed', String(b.dataset.preset === S.presetId));
   const p = getPreset(S.presetId);
@@ -355,7 +380,11 @@ function nodeEl(agent) {
   return b;
 }
 
+// Agents whose work a checker sent back this run stay pink until a check passes.
+const sentBack = new Set();
+
 function applyNodeState(b, st) {
+  b.classList.toggle('back', sentBack.has(b.dataset.id));
   const tag = b.querySelector('.node-state');
   if (!st) { delete b.dataset.state; tag.textContent = ''; return; }
   b.dataset.state = st.state;
@@ -394,8 +423,33 @@ function renderTree() {
   row.style.marginTop = '0';
   const roots = tops(S.team);
   for (const t of roots) row.append(subtree(t, seen));
+  // "You" sits above the top agent, as on slide 18: your task goes down this line and the answer comes back up it.
+  if (roots.length === 1) {
+    const you = el('div', 'you-pill', 'You');
+    you.id = 'youPill';
+    tree.append(you);
+  }
   tree.append(roots.length > 1 ? row : (row.firstChild || el('p', 'hint', 'No agents yet.')));
   requestAnimationFrame(fitTree);
+  renderFaces();
+}
+
+// The chat's title bar shows the team's faces, like the deck's group chat.
+function renderFaces() {
+  const faces = $('faces');
+  faces.replaceChildren();
+  const agents = S.team.agents;
+  for (const a of agents.slice(0, 5)) {
+    const f = el('span', null, a.emoji || '🤖');
+    f.style.setProperty('--c', a.color);
+    faces.append(f);
+  }
+  const n = agents.length;
+  $('chatSub').textContent = n === 1 ? `You and ${agents[0].name || 'your agent'}` : `You and ${n} agents`;
+}
+
+function modelPillText() {
+  return S.mode === 'gemini' ? `Model: ${S.geminiReady && S.gemini?.model ? S.gemini.model : 'Gemini'}` : 'Practice mode';
 }
 
 // A wide team stacks each checker under its agent instead of beside it, so the tree fits without scrolling.
@@ -434,6 +488,16 @@ function drawWires() {
   }
   svg.append(defs);
   const nodeOf = id => boxEl.querySelector(`.node[data-id="${CSS.escape(id)}"]`);
+  const youEl = $('youPill');
+  const topA = topAgent(S.team);
+  if (youEl && topA && nodeOf(topA.id)) {
+    const y = rectIn(youEl, box);
+    const t = rectIn(nodeOf(topA.id), box);
+    const d = `M${y.cx} ${y.b + 2} L${t.cx} ${t.t - 15}`;
+    const path = svgEl('path', { d, class: 'wire you' });
+    svg.append(path);
+    S.paths.set(`you>${topA.id}`, { d, path });
+  }
   for (const a of S.team.agents) {
     if (!a.parentId || isChecker(S.team, a.id)) continue;
     const pn = nodeOf(a.parentId);
@@ -620,8 +684,9 @@ function removeSelected() {
 
 // ---------- editor ----------
 
-function field({ id, label, hint, value, multiline, rows = 2, placeholder, wide, onInput, maxLength = 1500 }) {
-  const f = el('div', `field${wide ? ' wide' : ''}`);
+function field({ id, label, hint, value, multiline, rows = 2, placeholder, wide, onInput, maxLength = 1500, icon }) {
+  const f = el('div', `field${wide ? ' wide' : ''}${icon ? ' part' : ''}`);
+  if (icon) f.append(partIcon(icon));
   const lab = el('label', null, label);
   lab.htmlFor = id;
   const h = el('p', 'hint', hint);
@@ -689,17 +754,22 @@ function renderEditor() {
   const hd = el('div', 'ed-hd');
   const av = el('div', 'ed-av', a.emoji || '🤖');
   av.setAttribute('aria-hidden', 'true');
-  const hdText = el('div');
-  const eyebrow = el('p', 'eyebrow', `Selected agent · ${roleLabel(role)}`);
+  const hdText = el('div', 'ed-title');
+  const topLine = el('div', 'top-line');
+  const pill = el('span', `role-pill ${role}`, roleLabel(role));
   const h2 = el('h2', null, a.name || 'Agent');
   h2.id = 'edName';
+  topLine.append(pill, h2);
   const rel = el('p', 'hint ed-rel', relLine(a));
-  hdText.append(eyebrow, h2, rel);
-  hd.append(av, hdText);
+  hdText.append(el('span', 'sr', 'Selected agent: '), topLine, rel);
+  const mp = el('span', 'model-pill', modelPillText());
+  mp.id = 'modelPill';
+  hd.append(av, hdText, mp);
   ed.append(hd);
 
   const grid = el('div', 'fields');
-  grid.append(field({
+  const basics = el('div', 'basics');
+  basics.append(field({
     id: 'f-name', label: 'Name', hint: 'What the team calls this agent.', value: a.name, maxLength: 40,
     onInput: v => { a.name = v; h2.textContent = v || 'Agent'; markDirty(); renderTree(); refreshSoon(); },
   }));
@@ -735,27 +805,28 @@ function renderEditor() {
   }
   lookRow.append(emo, sw);
   look.append(lookLab, lookHint, lookRow);
-  grid.append(look);
+  basics.append(look);
 
-  grid.append(field({
+  basics.append(field({
     id: 'f-job', label: 'Job', wide: true, value: a.job, maxLength: 300,
     hint: a.parentId ? `One line: what this agent does. ${byId(S.team, a.parentId)?.name || 'Its lead'} reads this line too.` : 'One line: what this agent does.',
     placeholder: role === 'checker' ? 'Example: Checks the flyer against its Done when list.' : 'Example: Writes the game night flyer.',
     onInput: v => { a.job = v; markDirty(); renderTree(); refreshSoon(); },
   }));
+  grid.append(basics);
 
   const parts = el('div', 'part-group need-2');
-  parts.append(el('span', 'label', 'The six parts'), el('p', 'hint', 'Each part becomes a labeled section of the instructions. Empty parts are left out.'));
+  parts.append(el('span', 'label', 'The six parts'), el('p', 'hint', 'Each part goes into the instructions under its own heading. Empty parts are skipped.'));
   const pg = el('div', 'fields');
   for (const p of PART_FIELDS) {
     if (p.key === 'doneWhen' && role === 'checker') {
       const t = checkedBy(S.team, a.id);
-      const box = el('div', 'field wide');
-      box.append(el('span', 'label', 'Done when'));
+      const box = el('div', 'field wide part');
+      box.append(partIcon('doneWhen'), el('span', 'label', 'Done when'));
       const items = t?.doneWhen || [];
-      box.append(el('p', 'hint', items.length ? `${a.name} grades ${t.name}'s Done when list, line by line:` : `${t ? t.name : 'Its agent'} has no Done when lines yet. Select ${t ? t.name : 'it'} and add two or three.`));
+      box.append(el('p', 'hint', items.length ? `${a.name} checks ${t.name}'s Done when lines, one by one:` : `${t ? t.name : 'Its agent'} has no Done when lines yet. Select ${t ? t.name : 'it'} and add two or three.`));
       if (items.length) {
-        const ul = el('ul', 'hint');
+        const ul = el('ul', 'ck-list');
         for (const it of items) ul.append(el('li', null, it));
         box.append(ul);
       }
@@ -764,7 +835,7 @@ function renderEditor() {
     }
     const value = p.key === 'doneWhen' ? a.doneWhen.join('\n') : a[p.key];
     pg.append(field({
-      id: `f-${p.key}`, label: p.label, hint: p.hint, value, multiline: true, rows: p.rows, placeholder: p.ph, wide: true,
+      id: `f-${p.key}`, label: p.label, hint: p.hint, value, multiline: true, rows: p.rows, placeholder: p.ph, wide: true, icon: p.key,
       onInput: v => { a[p.key] = p.key === 'doneWhen' ? lines(v).slice(0, 8) : v; markDirty(); refreshSoon(); if (p.key === 'doneWhen') renderCheckBox(); },
     }));
   }
@@ -797,18 +868,29 @@ function renderCheckBox() {
   cb.replaceChildren();
   const chk = checkerOf(S.team, a);
   if (!chk) {
-    cb.append(el('span', 'label', 'Check loop'), el('p', 'hint', `No checker yet. Press + Checker to add one that grades ${a.name}'s work against its Done when list.`));
+    cb.append(el('span', 'label', 'Check loop'), el('p', 'hint', `No checker yet. Press + Checker to add a new agent that checks ${a.name}'s work against its Done when lines.`));
     return;
   }
   cb.append(el('span', 'label', `Checked by ${chk.name}`));
-  cb.append(el('p', 'hint', `${chk.name} grades every Done when line. If one fails, the work goes back to ${a.name} with notes.`));
+  cb.append(el('p', 'hint', `${chk.name} checks every Done when line. If one fails, ${a.name} gets the work back with notes.`));
   if (!a.doneWhen.length) cb.append(el('p', 'warn', `Add Done when lines above. Without them, ${chk.name} can only check "Does the job it was given".`));
-  const lab = el('span', 'label', 'Max rounds');
+  else {
+    const ul = el('ul', 'ck-list');
+    for (const it of a.doneWhen) ul.append(el('li', null, it));
+    cb.append(ul);
+  }
+  const cap = el('div', 'cap');
+  const lab = el('span', 'cap-pill', 'Max rounds');
   lab.id = 'roundsLabel';
-  const hint = el('p', 'hint', 'The most check rounds before the run goes on with the last version.');
   const row = el('div', 'rounds');
   row.setAttribute('role', 'group');
   row.setAttribute('aria-labelledby', 'roundsLabel');
+  const dots = el('span', 'dots');
+  dots.setAttribute('aria-hidden', 'true');
+  const paintDots = () => {
+    dots.replaceChildren();
+    for (let n = 1; n <= L.maxRounds; n += 1) dots.append(el('i', n <= a.maxRounds ? 'on' : null));
+  };
   for (let n = 1; n <= L.maxRounds; n += 1) {
     const b = el('button', null, String(n));
     b.type = 'button';
@@ -817,11 +899,15 @@ function renderCheckBox() {
     b.addEventListener('click', () => {
       a.maxRounds = n;
       for (const x of row.children) x.setAttribute('aria-pressed', String(x === b));
+      paintDots();
       markDirty();
     });
     row.append(b);
   }
-  cb.append(lab, hint, row);
+  paintDots();
+  cap.append(lab, row, dots);
+  const hint = el('p', 'hint', `After this many failed checks, the run moves on with ${a.name}'s last version.`);
+  cb.append(cap, hint);
 }
 
 function blk(cls, title, small) {
@@ -959,8 +1045,15 @@ function addMessage(m, run) {
 
   if (m.kind === 'final') {
     const li = el('li', 'final');
+    li.style.setProperty('--c', from.color);
     const hd = el('div', 'final-hd');
-    hd.append(el('b', null, `${from.emoji} Final answer from ${from.name}`));
+    const ft = el('div', 'ft');
+    const fav = el('span', 'msg-av', from.emoji);
+    fav.setAttribute('aria-hidden', 'true');
+    const fw = el('div');
+    fw.append(el('span', 'tag', `${from.name} → You`), el('b', null, `Final answer from ${from.name}`));
+    ft.append(fav, fw);
+    hd.append(ft);
     const copy = el('button', 'btn small', 'Copy');
     copy.type = 'button';
     copy.addEventListener('click', async () => {
@@ -976,20 +1069,26 @@ function addMessage(m, run) {
     return;
   }
 
-  const li = el('li', `msg ${m.from === 'you' ? 'you' : ''} ${m.kind === 'note' ? 'note' : ''}`);
+  const li = el('li', `msg ${m.from === 'you' ? 'you' : ''} ${m.kind === 'note' ? 'note' : ''} ${m.kind === 'check' ? 'check' : ''}`);
   li.style.setProperty('--c', from.color);
   li.style.setProperty('--c2', to.color);
   const av = el('div', 'msg-av', from.emoji);
   av.setAttribute('aria-hidden', 'true');
   const body = el('div', 'msg-body');
   const head = el('p', 'msg-from');
-  head.append(el('span', 'who', from.name), el('span', 'arrow', '→'), el('span', 'to', to.name), el('span', `kind ${m.kind}`, m.from === 'you' ? 'task' : KIND[m.kind] || m.kind));
+  head.append(el('span', 'who', from.name), el('span', 'arrow', '→'), el('span', 'to', to.name));
+  // Check and fix messages say their round in the header, like the deck's group chat.
+  if ((m.kind === 'check' || m.kind === 'revise') && m.round) head.append(el('span', 'rnd', `· round ${m.round}`));
+  head.append(el('span', `kind ${m.kind}`, m.from === 'you' ? 'task' : KIND[m.kind] || m.kind));
   body.append(head);
   const bub = el('div', 'bub');
   if (m.kind === 'check') {
     bub.append(checklist(m.checks || []));
     const v = el('div', 'verdict');
-    v.append(el('span', 'round-badge', `Round ${m.round} of ${m.maxRounds}`));
+    const dots = el('span', 'dots');
+    dots.setAttribute('aria-hidden', 'true');
+    for (let n = 1; n <= m.maxRounds; n += 1) dots.append(el('i', n <= m.round ? 'on' : null));
+    v.append(dots, el('span', 'round-badge', `Round ${m.round} of ${m.maxRounds}`));
     v.append(el('span', `res ${m.pass ? 'pass' : 'fail'}`, m.pass ? 'Passed' : m.capped ? 'Still failing at the round limit' : `Sent back to ${to.name}`));
     bub.append(v);
     if (m.text && !m.pass) {
@@ -1007,13 +1106,6 @@ function addMessage(m, run) {
     more.append(inner);
     bub.append(more);
   } else {
-    if (m.kind === 'revise') {
-      const v = el('div', 'verdict');
-      v.style.marginTop = '0';
-      v.style.marginBottom = '6px';
-      v.append(el('span', 'round-badge', `For round ${m.round} of ${m.maxRounds}`));
-      bub.append(v);
-    }
     bub.append(rich(m.text));
   }
   body.append(bub);
@@ -1204,6 +1296,7 @@ async function run() {
   const team = JSON.parse(JSON.stringify(S.team));
   const runState = { team, lastText: new Map(), passed: new Set(), lastLimitText: '' };
   S.nodeState.clear();
+  sentBack.clear();
   renderTree();
   setRunning(true);
   $('runStatus').textContent = S.mode === 'gemini' ? 'Connecting to Gemini…' : 'Running…';
@@ -1257,11 +1350,13 @@ async function run() {
       case 'waiting': setNode(ev.agentId, 'waiting', `Waiting ${ev.seconds}s`); addWait(ev, runState); $('fabRun').textContent = `Waiting ${ev.seconds}s`; break;
       case 'message':
         addMessage(ev, runState);
-        if (ev.kind === 'job' && ev.from !== 'you') pulse(ev.from, ev.to, 'down');
+        if (ev.kind === 'job') pulse(ev.from, ev.to, 'down');
+        else if (ev.kind === 'final') pulse(ev.from, ev.to, 'up');
         else if (ev.kind === 'report') pulse(ev.from, ev.to, 'up');
         else if (ev.kind === 'draft' || ev.kind === 'revise' || ev.kind === 'check') pulse(ev.from, ev.to, 'check');
         break;
       case 'check-result':
+        if (ev.pass) sentBack.delete(ev.agentId); else sentBack.add(ev.agentId);
         setNode(ev.checkerId, null);
         setNode(ev.agentId, ev.pass ? 'passed' : 'sent-back', ev.pass ? 'Passed' : 'Sent back');
         break;
