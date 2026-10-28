@@ -258,7 +258,14 @@ a{color:var(--accent)}
 /* ---------- key dialog ---------- */
 dialog.dlg{border:0;border-radius:26px;padding:0;max-width:min(560px,calc(100vw - 24px));width:100%;background:var(--card);color:var(--body);box-shadow:0 30px 80px -30px rgba(40,50,30,.6)}
 dialog.dlg::backdrop{background:rgba(48,60,36,.45)}
-.dlg form{display:flex;flex-direction:column;gap:12px;padding:24px;max-height:calc(100vh - 40px);overflow:auto}
+.dlg form{display:flex;flex-direction:column;gap:12px;padding:24px 24px 0;max-height:calc(100vh - 40px);max-height:calc(100dvh - 40px);overflow:auto}
+/* Children keep their full height (a min-height on one of them would otherwise let the column squeeze it). */
+.dlg form>*{flex-shrink:0}
+/* The result line and the buttons stay in view at the bottom while the rest scrolls. */
+.dlg-ft{position:sticky;bottom:0;margin:0 -24px;padding:10px 24px 20px;background:var(--card);display:flex;flex-direction:column;gap:8px;box-shadow:0 -10px 14px -12px rgba(40,50,30,.35)}
+.key-row{display:flex;gap:8px;align-items:center}
+.key-row input{flex:1;min-width:0}
+.key-row .btn{flex:none}
 .dlg-hd{display:flex;justify-content:space-between;align-items:start;gap:10px}
 .dlg h2{font-family:var(--display);font-variation-settings:'SOFT' 100;font-size:1.5rem;font-weight:600;color:var(--ink);line-height:1.2}
 .x{border:0;background:transparent;font-size:1.6rem;line-height:1;padding:4px 10px;border-radius:10px;color:var(--ink);min-width:44px;min-height:44px}
@@ -289,7 +296,10 @@ body[data-level="3"] .need-4{display:none!important}
 @media (max-width:1100px){
   .layout{grid-template-columns:minmax(0,1fr)}
   .thread{max-height:none;overflow:visible}
+  /* Room under the last message, so it can scroll clear of the floating Run button. */
+  .run-card{padding-bottom:84px}
 }
+.task-note{margin-top:6px}
 @media (max-width:700px){
   .top{padding:14px 16px 4px}
   .brand h1{font-size:1.6rem}
@@ -382,6 +392,7 @@ body[data-level="3"] .need-4{display:none!important}
         <label class="label" for="task">Task</label>
         <p class="hint" id="taskHint">What you ask for. The top agent gets it as the new message.</p>
         <textarea id="task" rows="4" aria-describedby="taskHint"></textarea>
+        <div class="dirty-note task-note" id="taskNote" hidden><span>You typed this task, so it stays at every level.</span><button type="button" id="teamTaskBtn" class="btn small"></button></div>
       </div>
       <div class="run-btns">
         <button type="button" class="btn primary" id="runBtn">Run</button>
@@ -405,7 +416,10 @@ body[data-level="3"] .need-4{display:none!important}
     </ol>
     <div class="field">
       <label for="keyInput">Your key</label>
-      <input type="password" id="keyInput" autocomplete="off" spellcheck="false" autocapitalize="off" placeholder="Paste your key">
+      <div class="key-row">
+        <input type="password" id="keyInput" autocomplete="off" spellcheck="false" autocapitalize="off" autocorrect="off" placeholder="Paste your key">
+        <button type="button" class="btn small" id="keyShow" aria-pressed="false" aria-label="Show the key">Show</button>
+      </div>
     </div>
     <label class="check-row"><input type="checkbox" id="keyRemember"> Remember on this device</label>
     <p class="hint">Without this box, the key is forgotten when you close the tab.</p>
@@ -414,11 +428,13 @@ body[data-level="3"] .need-4{display:none!important}
       <li>On the free tier, Google may use what you type to improve its products, and people may read it. Don't paste anything private.</li>
       <li>Google's terms say you must be 18 or older to use the Gemini API. Under 18? Use practice mode.</li>
     </ul>
-    <p class="key-status" id="keyStatus" role="status"></p>
-    <div class="btns">
-      <button type="button" class="btn primary" id="keyCheck">Check key and use Gemini</button>
-      <button type="button" class="btn" id="keyPractice">Use practice mode</button>
-      <button type="button" class="btn ghost" id="keyForget">Forget key</button>
+    <div class="dlg-ft">
+      <p class="key-status" id="keyStatus" role="status"></p>
+      <div class="btns">
+        <button type="button" class="btn primary" id="keyCheck">Check key and use Gemini</button>
+        <button type="button" class="btn" id="keyPractice">Use practice mode</button>
+        <button type="button" class="btn ghost" id="keyForget">Forget key</button>
+      </div>
     </div>
   </form>
 </dialog>

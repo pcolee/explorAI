@@ -21,8 +21,21 @@ const GOALS = {
   3: p => `${p.lead.name} gives jobs to ${COUNT_WORD[p.helpers.length] || p.helpers.length} helpers, reads their reports, and makes the final call. Press Run, then add a helper of your own.`,
   4: (p, main) => `${p.checker.name} grades ${main.name}'s work on its Done when list and sends it back until it passes. Press Run, then change a Done when line.`,
 };
+const PART_KEYS = ['role', 'goal', 'steps', 'rules', 'output', 'doneWhen'];
 function goalText(level, presetId) {
   const p = getPreset(presetId);
+  // At level 2 a changed team may be the student's own bare agent from Build 1, so the line names that agent
+  // and asks for the parts it is missing instead of saying they are already there.
+  if (level === 2 && S.dirty) {
+    const a = selected();
+    const target = a && !isChecker(S.team, a.id) ? a : (topAgent(S.team) || a);
+    if (target) {
+      const empty = PART_KEYS.every(k => (Array.isArray(target[k]) ? !target[k].length : !String(target[k] || '').trim()));
+      return empty
+        ? `Fill in the six parts for ${target.name}, then run the same task again and compare the two answers.`
+        : `Change one of ${target.name}'s six parts, then run the same task again and compare the two answers.`;
+    }
+  }
   return GOALS[level](p, p.helpers.find(h => h.id === p.main) || p.helpers[0]);
 }
 
@@ -270,6 +283,16 @@ function renderLevels() {
   const p = getPreset(S.presetId);
   $('dirtyNote').hidden = !S.dirty;
   $('loadLevelBtn').textContent = `Load ${p.name} for level ${S.level}`;
+  renderTaskNote();
+}
+
+// A task typed at level 1 or 2 stays at every level; at a team level, say so and offer the preset's team task.
+function renderTaskNote() {
+  const p = getPreset(S.presetId);
+  const teamTask = presetTask(S.presetId, S.level);
+  const show = S.level >= 3 && S.taskDirty && S.task.trim() !== teamTask.trim();
+  $('taskNote').hidden = !show;
+  if (show) $('teamTaskBtn').textContent = `Use the ${p.name} team task`;
 }
 
 function setLevel(n) {
@@ -301,7 +324,7 @@ function withUndo(label, fn) {
 }
 
 function markDirty() {
-  if (!S.dirty) { S.dirty = true; renderLevels(); }
+  if (!S.dirty) { S.dirty = true; renderLevels(); } else if (S.level === 2) $('levelGoal').textContent = goalText(S.level, S.presetId);
   save();
 }
 
@@ -611,7 +634,7 @@ function field({ id, label, hint, value, multiline, rows = 2, placeholder, wide,
   input.maxLength = maxLength;
   if (placeholder) input.placeholder = placeholder;
   input.setAttribute('aria-describedby', h.id);
-  input.addEventListener('input', () => onInput(input.value));
+  input.addEventListener('input', () => { onInput(input.value); warnIfKey(input.value); });
   f.append(lab, h, input);
   // A box grows to fit its text, so every step and rule shows without scrolling inside it.
   if (multiline) {
@@ -1053,7 +1076,7 @@ function addAlert(kind, title, text, buttons = []) {
 function errorButtons(retryable, kind) {
   const out = [];
   if (retryable) out.push(['Retry', () => run(), 'primary']);
-  if (kind === 'nokey' || kind === 'badKey' || kind === 'leaked' || kind === 'denied' || kind === 'disabled') out.push(['Change key', () => openKeyDialog()]);
+  if (['nokey', 'badKey', 'leaked', 'denied', 'disabled', 'nomodel', 'request'].includes(kind)) out.push(['Change key', () => openKeyDialog()]);
   if (S.mode === 'gemini') out.push(['Switch to practice mode', () => { setMode('practice'); toast('Practice mode is on. Press Run.'); }, 'accent']);
   return out;
 }
@@ -1098,6 +1121,17 @@ function toast(text, actionLabel, action) {
   toastTimer = setTimeout(() => { t.hidden = true; }, actionLabel ? 8000 : 3200);
 }
 
+// A key pasted into the task or a part would be saved with the team, sent to Google as text, and put in share links.
+// Google's older keys start with AIza; a long run of letters and digits with no spaces gets the same warning.
+// (No lookbehind: older iPhone Safari can't parse it, and a parse error would stop the whole page.)
+const KEY_LIKE = /\bAIza[0-9A-Za-z_-]{30,}|(?:^|\s)(?=[A-Za-z0-9_-]*\d)(?=[A-Za-z0-9_-]*[A-Za-z])[A-Za-z0-9_-]{36,}(?:\s|$)/;
+let keyWarned = false;
+function warnIfKey(text) {
+  const hit = KEY_LIKE.test(String(text || ''));
+  if (hit && !keyWarned) toast('That looks like a Gemini key. Delete it here and paste it in "Add a Gemini key" instead.');
+  keyWarned = hit;
+}
+
 // ---------- running ----------
 
 async function practiceAdapter() {
@@ -1130,8 +1164,12 @@ async function geminiAdapter() {
 }
 
 function onModelSwitch(model, reason) {
-  const why = { daily: 'the last model used up today\'s free requests', rate: 'the last model stayed at its per-minute limit', missing: 'the last model is not available to this key' }[reason] || 'the last model stopped working';
-  addLabNote(`Switched to ${model}, because ${why}.`);
+  if (reason === 'back') {
+    addLabNote(`Back to ${model}: a minute has passed since it hit its per-minute limit.`);
+  } else {
+    const why = { daily: 'the last model used up today\'s free requests', rate: 'the last model stayed at its per-minute limit', missing: 'the last model is not available to this key', noquota: 'the last model has no free requests for this key' }[reason] || 'the last model stopped working';
+    addLabNote(`Switched to ${model}, because ${why}.`);
+  }
   renderModes();
 }
 
@@ -1213,9 +1251,10 @@ async function run() {
 
   const onEvent = ev => {
     switch (ev.type) {
-      case 'agent-start': setNode(ev.agentId, 'thinking', PHASE[ev.phase] || 'Working'); break;
+      case 'agent-start': setNode(ev.agentId, 'thinking', PHASE[ev.phase] || 'Working'); $('fabRun').textContent = 'See messages'; break;
       case 'agent-idle': if (['thinking', 'waiting'].includes(S.nodeState.get(ev.agentId)?.state)) setNode(ev.agentId, null); break;
-      case 'waiting': setNode(ev.agentId, 'waiting', `Waiting ${ev.seconds}s`); addWait(ev, runState); break;
+      // On a phone the thread is far down the page, so the floating button says a wait is on.
+      case 'waiting': setNode(ev.agentId, 'waiting', `Waiting ${ev.seconds}s`); addWait(ev, runState); $('fabRun').textContent = `Waiting ${ev.seconds}s`; break;
       case 'message':
         addMessage(ev, runState);
         if (ev.kind === 'job' && ev.from !== 'you') pulse(ev.from, ev.to, 'down');
@@ -1283,6 +1322,9 @@ function stop() {
 function openKeyDialog() {
   const d = $('keyDialog');
   $('keyInput').value = '';
+  $('keyInput').type = 'password';
+  $('keyShow').textContent = 'Show';
+  $('keyShow').setAttribute('aria-pressed', 'false');
   $('keyInput').placeholder = S.key ? 'A key is saved. Paste a new one to change it.' : 'Paste your key';
   $('keyRemember').checked = Boolean(store.get('localStorage', STORE_KEY));
   $('keyStatus').textContent = S.mode === 'gemini' && S.gemini?.model ? `Using ${S.gemini.model}.` : '';
@@ -1293,42 +1335,74 @@ function openKeyDialog() {
   if (typeof matchMedia === 'function' && matchMedia('(pointer: fine)').matches) $('keyInput').focus();
 }
 
+let keyCheckCtl = null;
+
 function closeKeyDialog() {
+  // Closing the dialog cancels a key check that is still waiting on Google.
+  keyCheckCtl?.abort();
   const d = $('keyDialog');
   if (typeof d.close === 'function') d.close(); else d.removeAttribute('open');
 }
 
-async function checkKeyFromDialog() {
-  const input = $('keyInput').value.trim().replace(/^["']|["']$/g, '');
-  const key = input || S.key;
+// Copying from Notes, Messages, or a chat can add spaces, line breaks, curly quotes, or invisible characters.
+// A key is printable ASCII with no spaces, so all of those come out, plus a label like "Key:" in front.
+function cleanKey(raw) {
+  return String(raw || '')
+    .replace(/[\s​-‍⁠﻿"'`‘’“”]/g, '')
+    .replace(/^(?:(?:VITE_)?GEMINI_API_KEY=|(?:api)?key[:=])/i, '');
+}
+
+function setKeyStatus(cls, text) {
   const status = $('keyStatus');
+  status.className = `key-status${cls ? ` ${cls}` : ''}`;
+  status.textContent = text;
+  if (text) status.scrollIntoView({ block: 'nearest' });
+}
+
+async function checkKeyFromDialog() {
+  if (keyCheckCtl) return;
+  const input = cleanKey($('keyInput').value);
+  const key = input || S.key;
   if (!key) {
-    status.className = 'key-status bad';
-    status.textContent = 'Paste your key first, or use practice mode.';
+    setKeyStatus('bad', 'Paste your key first, or use practice mode.');
     return;
   }
-  status.className = 'key-status';
-  status.textContent = 'Checking the key with Google…';
+  if (/[^\x21-\x7E]/.test(key) || key.length < 20) {
+    setKeyStatus('bad', 'That doesn\'t look like a whole key. Copy it again from Google AI Studio and paste it here.');
+    return;
+  }
+  setKeyStatus('', 'Checking the key with Google…');
   $('keyCheck').disabled = true;
+  const ctl = new AbortController();
+  keyCheckCtl = ctl;
   try {
     const mod = await import('./gemini.js');
     const adapter = mod.createGeminiAdapter({ key, onModel: onModelSwitch });
-    const info = await adapter.checkKey({ ping: true });
+    const info = await adapter.checkKey({
+      ping: true,
+      signal: ctl.signal,
+      maxWaitSec: 15,
+      onWait: s => setKeyStatus('', `Google's free limit is busy. Waiting ${s}s, then checking again…`),
+    });
+    if (ctl.signal.aborted) return;
     S.key = key;
     S.gemini = adapter;
     S.geminiReady = true;
     store.set('sessionStorage', STORE_KEY, key);
     if ($('keyRemember').checked) store.set('localStorage', STORE_KEY, key); else store.del('localStorage', STORE_KEY);
     setMode('gemini');
-    status.className = 'key-status ok';
-    status.textContent = `The key works. Using ${info.model}.`;
+    setKeyStatus('ok', `The key works. Using ${info.model}.`);
     $('keyInput').value = '';
     $('keyForget').disabled = false;
     setTimeout(() => { closeKeyDialog(); toast(`Gemini is on: ${info.model}.`); }, 900);
   } catch (err) {
-    status.className = 'key-status bad';
-    status.textContent = err?.friendly || 'Gemini mode could not load on this page. Use practice mode for now.';
+    if (ctl.signal.aborted || err?.name === 'AbortError') {
+      setKeyStatus('', '');
+      return;
+    }
+    setKeyStatus('bad', err?.friendly || 'Gemini mode could not load on this page. Use practice mode for now.');
   } finally {
+    if (keyCheckCtl === ctl) keyCheckCtl = null;
     $('keyCheck').disabled = false;
   }
 }
@@ -1379,6 +1453,8 @@ function init() {
     try { history.replaceState(null, '', location.pathname + location.search); } catch { /* ignore */ }
   }
   if (!fromLink && !loadSaved()) loadPreset(DEFAULT_PRESET, 1);
+  // A team from a link is saved right away, so a reload keeps it.
+  if (fromLink) save();
 
   S.key = store.get('sessionStorage', STORE_KEY) || store.get('localStorage', STORE_KEY) || '';
   const savedMode = store.get('sessionStorage', STORE_MODE);
@@ -1415,8 +1491,15 @@ function init() {
     S.taskDirty = true;
     $('runStatus').textContent = '';
     growTask();
+    renderTaskNote();
+    warnIfKey(S.task);
     save();
     refreshSoon();
+  });
+  $('teamTaskBtn').addEventListener('click', () => {
+    if (S.running) return;
+    const p = getPreset(S.presetId);
+    withUndo(`Loaded the ${p.name} team task.`, () => { S.task = presetTask(S.presetId, S.level); S.taskDirty = false; });
   });
   $('task').addEventListener('keydown', e => {
     if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) { e.preventDefault(); run(); }
@@ -1433,7 +1516,21 @@ function init() {
   $('keyBtn').addEventListener('click', openKeyDialog);
   $('keyClose').addEventListener('click', closeKeyDialog);
   $('keyCheck').addEventListener('click', checkKeyFromDialog);
-  $('keyInput').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); checkKeyFromDialog(); } });
+  $('keyInput').addEventListener('keydown', e => {
+    if (e.key !== 'Enter') return;
+    e.preventDefault();
+    // On a phone, Go closes the keyboard so the result line under the box can be seen.
+    if (typeof matchMedia === 'function' && matchMedia('(pointer: coarse)').matches) e.target.blur();
+    checkKeyFromDialog();
+  });
+  $('keyShow').addEventListener('click', () => {
+    const input = $('keyInput');
+    const show = input.type === 'password';
+    input.type = show ? 'text' : 'password';
+    $('keyShow').textContent = show ? 'Hide' : 'Show';
+    $('keyShow').setAttribute('aria-pressed', String(show));
+  });
+  $('keyDialog').addEventListener('close', () => keyCheckCtl?.abort());
   $('keyPractice').addEventListener('click', () => { setMode('practice'); closeKeyDialog(); toast('Practice mode is on.'); });
   $('keyForget').addEventListener('click', forgetKey);
   $('keyDialog').addEventListener('click', e => { if (e.target === $('keyDialog')) closeKeyDialog(); });
