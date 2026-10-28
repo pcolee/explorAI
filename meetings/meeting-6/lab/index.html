@@ -280,39 +280,42 @@ body[data-level="3"] .need-4{display:none!important}
 @media (max-width:700px){
   .sub-row{flex-direction:column;gap:30px}
   .sub-kids{gap:6px;margin-top:44px}
-  .node{width:112px;grid-template-columns:1fr;grid-template-rows:auto auto;justify-items:center;text-align:center;padding:16px 6px 10px;row-gap:4px}
+  .node{width:122px;grid-template-columns:1fr;grid-template-rows:auto auto;justify-items:center;text-align:center;padding:16px 6px 10px;row-gap:4px}
   .node-av{grid-row:auto;width:38px;height:38px;font-size:1.15rem}
-  .node-name{white-space:normal;font-size:.84rem;overflow-wrap:anywhere}
+  .node-name{white-space:normal;font-size:.9rem;overflow-wrap:anywhere}
   .node-job{display:none}
-  .node.checker{width:112px}
-  .node-badge{left:50%;transform:translateX(-50%);font-size:.62rem}
-  .node-state{right:-4px;top:auto;bottom:-11px;font-size:.66rem;padding:2px 8px 2px 4px;gap:4px}
+  .node.checker{width:122px}
+  .node-badge{left:50%;transform:translateX(-50%)}
+  .node-state{right:-4px;top:auto;bottom:-11px;font-size:.74rem;padding:2px 8px 2px 4px;gap:4px}
   .node-state::before{width:12px;height:12px}
   .node[data-state="passed"] .node-state::before,.node[data-state="done"] .node-state::before,.node[data-state="sent-back"] .node-state::before{font-size:.55rem}
   .node{padding-bottom:20px}
   .you-pill{font-size:1.05rem;padding:6px 20px;margin-bottom:40px}
-  .sub-kids>.sub>.sub-row>.node:not(.checker),.sub-kids .node.checker{width:100px}
+  .sub-kids>.sub>.sub-row>.node:not(.checker),.sub-kids .node.checker{width:114px}
   .msg{grid-template-columns:32px minmax(0,1fr);gap:8px}
   .msg.you{grid-template-columns:minmax(0,1fr) 32px}
   .msg-av{width:32px;height:32px;font-size:1rem}
 }
 
 /* ================= Run 3: the canvas is the page; everything else floats over it ================= */
-html{font-size:15px}
+html{font-size:16px}
 @media (min-width:1500px) and (min-height:900px){html{font-size:17px}}
 html,body{height:100%}
 body{overflow:hidden;min-height:0;background:var(--cream)}
-body{--sheet-w:0px;--gap:14px;--hud-h:200px;--dock-h:120px;--top-h:58px}
-body[data-sheet]{--sheet-w:clamp(330px,32vw,520px)}
+/* --rw is the room the open side panels take on the right (the agent card and Messages). --pad-t and --pad-l are set by fitTree. */
+body{--sheet-w:0px;--chat-w:0px;--sg:0px;--cg:0px;--gap:14px;--hud-h:160px;--dock-h:120px;--pad-t:180px;--pad-l:32px;
+  --rw:calc(var(--gap) + var(--sheet-w) + var(--sg) + var(--chat-w) + var(--cg))}
+body[data-sheet]{--sheet-w:clamp(320px,30vw,480px);--sg:var(--gap)}
+body[data-chat]{--chat-w:clamp(310px,28vw,440px);--cg:var(--gap)}
 
 /* The canvas: dot grid and the deck's soft washes, filling the screen. */
-.canvas{position:fixed;inset:0;overflow:auto;z-index:0;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;cursor:grab;
+.canvas{position:fixed;inset:0;overflow:auto;z-index:0;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;cursor:default;
   background:radial-gradient(circle,rgba(63,90,42,.13) 1.5px,transparent 1.7px) 0 0/28px 28px,
     radial-gradient(900px 700px at 100% 0%,rgba(242,193,214,.55),transparent 62%),
     radial-gradient(1000px 800px at 0% 100%,rgba(217,232,173,.75),transparent 60%),var(--cream);background-attachment:local,fixed,fixed,fixed}
 .canvas.panning{cursor:grabbing;user-select:none}
 .stage{box-sizing:border-box;min-width:100%;min-height:100%;width:max-content;display:flex;align-items:center;justify-content:center;
-  padding:calc(var(--hud-h) + var(--gap) + 16px) calc(var(--sheet-w) + 2 * var(--gap) + 16px) calc(var(--dock-h) + var(--gap) + 14px) 32px}
+  padding:var(--pad-t) calc(var(--rw) + 16px) calc(var(--dock-h) + var(--gap) + 14px) var(--pad-l)}
 .tree-box{position:relative;display:flex;justify-content:center;min-width:min-content;margin:0}
 .canvas.tight .sub-row{gap:48px}
 
@@ -321,18 +324,16 @@ body[data-sheet]{--sheet-w:clamp(330px,32vw,520px)}
   box-shadow:inset 0 0 0 1.5px rgba(217,232,173,.95),0 24px 48px -28px rgba(63,90,42,.5)}
 
 /* ---------- HUD, top left ---------- */
-.hud{top:var(--gap);left:var(--gap);right:calc(var(--sheet-w) + 2 * var(--gap));padding:10px 12px;display:flex;flex-direction:column;gap:9px;z-index:6;animation:rise .5s cubic-bezier(.2,.8,.2,1) backwards;transition:right .35s cubic-bezier(.2,.8,.2,1)}
-.hud-top{display:flex;align-items:center;flex-wrap:wrap;gap:8px 14px}
-.hud-top .levels{flex:0 1 360px;min-width:250px}
-.hud-bottom{display:flex;gap:10px;align-items:stretch}
-.hud-bottom .goal-note{flex:1;min-width:0}
-.hud-bottom .stats{flex:0 0 auto;width:min(380px,42%)}
+/* A card of its own in the top left corner, like the sim's HUD: title, levels, the level's goal, then the run's numbers. */
+.hud{top:var(--gap);left:var(--gap);width:min(440px,calc(100vw - var(--rw) - var(--gap)));padding:12px 14px;display:flex;flex-direction:column;gap:10px;z-index:6;animation:rise .5s cubic-bezier(.2,.8,.2,1) backwards}
+.hud-top{display:flex;flex-direction:column;gap:8px}
+.hud-bottom{display:flex;flex-direction:column;gap:8px}
 .brand{display:flex;align-items:baseline;gap:4px 10px;flex-wrap:wrap}
-.brand .eyebrow{font-size:.7rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
+.brand .eyebrow{font-size:max(.75rem,12px);font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
 .brand h1{font-family:var(--display);font-variation-settings:'SOFT' 100;font-weight:600;font-size:1.6rem;line-height:1.05;color:var(--ink)}
 /* The level stepper: numbers joined in a bar; the current level shows its name. */
 .levels{display:flex;gap:3px;padding:3px;border-radius:999px;background:var(--mint);box-shadow:inset 0 0 0 1.5px var(--line)}
-.level{flex:none;display:flex;align-items:center;gap:8px;border:0;border-radius:999px;padding:4px;background:transparent;color:var(--ink);min-height:40px;min-width:40px;justify-content:center;transition:background .15s,box-shadow .15s}
+.level{position:relative;flex:none;display:flex;align-items:center;gap:8px;border:0;border-radius:999px;padding:4px;background:transparent;color:var(--ink);min-height:40px;min-width:40px;justify-content:center;transition:background .15s,box-shadow .15s}
 .level:hover:not([aria-pressed="true"]):not(:disabled){background:#fff}
 .level .n{flex:none;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:600;font-size:1rem;background:var(--green);color:var(--ink)}
 .level .t{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
@@ -342,20 +343,23 @@ body[data-sheet]{--sheet-w:clamp(330px,32vw,520px)}
 .level[aria-pressed="true"] .t{position:static;width:auto;height:auto;overflow:visible;clip:auto}
 .level[aria-pressed="true"] .t b{font-size:.95rem;white-space:nowrap}
 .level:disabled{opacity:.6}
+/* The other levels show their name in a small label on hover and keyboard focus. */
+.level:not([aria-pressed="true"]):is(:hover,:focus-visible) .t{position:absolute;top:calc(100% + 8px);left:50%;translate:-50% 0;width:auto;height:auto;clip:auto;overflow:visible;z-index:12;padding:5px 11px;border-radius:10px;background:var(--ink);color:var(--cream);box-shadow:0 10px 20px -12px rgba(0,0,0,.6);pointer-events:none}
+.level:not([aria-pressed="true"]):is(:hover,:focus-visible) .t b{font-size:.85rem;white-space:nowrap}
 .goal-note{position:relative;background:#FFFDF7;border-radius:16px;padding:8px 13px 9px;rotate:-.4deg;box-shadow:inset 0 0 0 1px rgba(63,90,42,.08),0 12px 22px -16px rgba(63,90,42,.45)}
 .goal-note::before{content:'';position:absolute;top:-8px;left:50%;width:60px;height:17px;rotate:4deg;background:rgba(242,193,214,.85);border-radius:5px}
-.goal-note .tag{display:block;font-size:.66rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
+.goal-note .tag{display:block;font-size:max(.75rem,12px);font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
 .goal{font-family:var(--display);font-variation-settings:'SOFT' 100;font-size:.98rem;font-weight:500;color:var(--ink);line-height:1.3}
 .goal-note.swap{animation:place .55s cubic-bezier(.2,.8,.2,1)}
 @keyframes place{from{opacity:0;transform:translateY(-8px) rotate(-2deg)}}
 .dirty-note{display:flex;align-items:center;gap:6px 8px;flex-wrap:wrap;font-size:.86rem;background:rgba(244,236,221,.8);border-radius:14px;padding:6px 8px 6px 12px}
 /* Run stats: the sim's pastel tiles, shown once a run starts. */
-.stats{display:flex;gap:6px}
-.tile{flex:1;border-radius:14px;padding:6px 10px;background:var(--t);min-width:0}
-.tile .tl{display:flex;align-items:center;gap:5px;font-size:.7rem;font-weight:700;color:var(--tc);line-height:1.15}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(92px,1fr));gap:6px}
+.tile{border-radius:14px;padding:6px 10px;background:var(--t);min-width:0}
+.tile .tl{display:flex;align-items:center;gap:5px;font-size:max(.75rem,12px);font-weight:700;color:var(--tc);line-height:1.15}
 .tile .tl i{font-style:normal;flex:none;width:18px;height:18px;border-radius:50%;background:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:.68rem}
 .tile .num{display:block;font-family:var(--display);font-variation-settings:'SOFT' 100;font-size:1.4rem;font-weight:600;line-height:1.1;color:var(--ink)}
-.tile .sub{display:block;font-size:.7rem;color:var(--body);line-height:1.2}
+.tile .sub{display:block;font-size:max(.75rem,12px);color:var(--body);line-height:1.2}
 .tile.bump .num{animation:bump .35s cubic-bezier(.34,1.56,.64,1)}
 @keyframes bump{50%{transform:scale(1.2)}}
 .t-agents{--t:#EEF4DA;--tc:#4C6B26}
@@ -364,13 +368,23 @@ body[data-sheet]{--sheet-w:clamp(330px,32vw,520px)}
 .t-calls{--t:#E6EEF6;--tc:#35587A}
 
 /* ---------- top right: example team menu, mode, key ---------- */
-.top-tools{margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+/* Floats on its own in the top right, left of any open panel. When it would hit the HUD, fitTree moves it under the HUD. */
+.top-tools{position:fixed;z-index:6;top:var(--gap);right:var(--rw);display:flex;gap:8px;align-items:center;justify-content:flex-end;animation:rise .5s cubic-bezier(.2,.8,.2,1) backwards}
+/* No room beside the HUD: the buttons take the HUD's title row instead, and the Example team button shows only its emoji. */
+body.tools-under .top-tools{right:auto;left:calc(var(--gap) + 12px);top:calc(var(--gap) + 10px);justify-content:flex-start}
+body.tools-under .brand{min-height:40px}
+body.tools-under .brand>*{display:none}
+body.tools-under .menu-btn .lbl,body.tools-under .menu-btn .nm{display:none}
+body.tools-under .menu{right:auto;left:0}
+.toast{pointer-events:none}
+.toast .btn{pointer-events:auto}
+@media (max-height:640px) and (min-width:701px){.stats{display:none!important}}
 .top-tools>.btn,.top-tools>.chip,.menu-btn{box-shadow:inset 0 0 0 1.5px rgba(63,90,42,.2),0 14px 28px -18px rgba(63,90,42,.55)}
 .menu-wrap{position:relative}
 .menu-btn .lbl{font-weight:500;color:var(--body)}
 .menu-btn::after{content:'';width:7px;height:7px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg) translateY(-2px);margin-left:2px}
 .menu{position:absolute;top:calc(100% + 8px);right:0;width:max-content;max-width:calc(100vw - 2 * var(--gap));padding:12px;display:flex;flex-direction:column;gap:10px;z-index:9;animation:rise .25s cubic-bezier(.2,.8,.2,1)}
-.menu>.label{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.menu>.label{font-size:max(.75rem,12px);letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
 .presets{display:flex;flex-direction:column;gap:4px}
 .presets button{display:flex;align-items:center;gap:8px;border:0;border-radius:14px;padding:6px 12px;min-height:40px;background:#fff;font-weight:700;font-size:.92rem;color:var(--ink);text-align:left;box-shadow:inset 0 0 0 1.5px var(--line)}
 .presets button:hover:not(:disabled){box-shadow:inset 0 0 0 2px var(--ink)}
@@ -379,17 +393,18 @@ body[data-sheet]{--sheet-w:clamp(330px,32vw,520px)}
 .tb-right{display:flex;gap:6px;padding-top:10px;border-top:1.5px solid rgba(217,232,173,.8)}
 /* With the sheet open, the sheet starts below these buttons. */
 
-/* ---------- canvas tools, under the HUD ---------- */
-.view-tools{position:fixed;z-index:4;left:var(--gap);top:calc(var(--hud-h) + var(--gap) + 10px);display:flex;flex-direction:column;align-items:flex-start;gap:8px}
-.legend{display:flex;flex-direction:column;gap:2px;font-size:.8rem;color:var(--body);padding:7px 12px;border-radius:14px;background:rgba(255,254,251,.85);box-shadow:inset 0 0 0 1px var(--line)}
+/* ---------- canvas tools, bottom left corner (above the dock when the dock reaches the corner) ---------- */
+.view-tools{position:fixed;z-index:4;left:var(--gap);bottom:calc(var(--gap) + 4px);display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+body.dock-wide .view-tools{bottom:auto;top:calc(var(--gap) + var(--hud-h) + 10px)}.legend{display:flex;flex-direction:column;gap:2px;font-size:.8rem;color:var(--body);padding:7px 12px;border-radius:14px;background:rgba(255,254,251,.85);box-shadow:inset 0 0 0 1px var(--line)}
 .legend span{display:inline-flex;align-items:center;gap:6px}
+.legend{max-width:max(220px,min(320px,calc((100vw - var(--rw) - 720px) / 2 - 2 * var(--gap))))}
 .pill-btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:999px;min-height:40px;padding:6px 16px 6px 12px;font-weight:700;font-size:.86rem;color:var(--ink);background:var(--card);box-shadow:inset 0 0 0 1.5px rgba(63,90,42,.18),0 12px 24px -16px rgba(63,90,42,.5)}
 .pill-btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .pill-btn:hover{box-shadow:inset 0 0 0 2px var(--ink),0 12px 24px -16px rgba(63,90,42,.5)}
 
 /* ---------- dock, bottom center ---------- */
-.dock{left:calc(var(--gap) + max(0px,(100vw - var(--sheet-w) - 3 * var(--gap) - 720px) / 2));
-  width:min(720px,calc(100vw - var(--sheet-w) - 3 * var(--gap)));bottom:var(--gap);padding:9px 10px;display:flex;flex-direction:column;gap:7px;
+.dock{left:calc(var(--gap) + max(0px,(100vw - var(--rw) - var(--gap) - 720px) / 2));
+  width:min(720px,calc(100vw - var(--rw) - var(--gap)));bottom:var(--gap);padding:9px 10px;display:flex;flex-direction:column;gap:7px;
   transition:left .35s cubic-bezier(.2,.8,.2,1),width .35s cubic-bezier(.2,.8,.2,1);animation:rise .55s .05s cubic-bezier(.2,.8,.2,1) backwards}
 .tree-tools{display:flex;gap:6px}
 .tool{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;border:0;border-radius:14px;min-height:42px;padding:4px 8px;background:#fff;color:var(--ink);font-weight:700;font-size:.88rem;white-space:nowrap;
@@ -402,7 +417,7 @@ body[data-sheet]{--sheet-w:clamp(330px,32vw,520px)}
 .dock-hint:empty{display:none}
 .run-row{display:flex;align-items:stretch;gap:8px}
 .task{flex:1;min-width:0;position:relative}
-.task>.label{position:absolute;left:12px;top:-7px;z-index:1;font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);background:var(--card);padding:0 6px;border-radius:6px;line-height:1.3}
+.task>.label{position:absolute;left:12px;top:-8px;z-index:1;font-size:max(.72rem,12px);font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);background:var(--card);padding:0 6px;border-radius:6px;line-height:1.3}
 .task textarea{display:block;width:100%;border:0;border-radius:16px;padding:9px 12px 7px;background:var(--mint);box-shadow:inset 0 0 0 1.5px rgba(156,181,123,.55);font-size:.95rem;line-height:1.4;color:#2E3A26;resize:none;min-height:0;max-height:calc(2.8em + 16px)}
 .task textarea:focus{outline:none;background:#fff;box-shadow:inset 0 0 0 2.5px var(--ink);max-height:min(220px,32vh)}
 .task-note{font-size:.82rem}
@@ -417,12 +432,22 @@ body[data-sheet]{--sheet-w:clamp(330px,32vw,520px)}
 .sheet{top:var(--gap);right:var(--gap);bottom:var(--gap);width:var(--sheet-w);display:flex;flex-direction:column;overflow:clip;z-index:7;
   transform:translateX(calc(100% + 40px));visibility:hidden;transition:transform .35s cubic-bezier(.2,.8,.2,1),visibility 0s .35s}
 body[data-sheet] .sheet{transform:none;visibility:visible;transition:transform .35s cubic-bezier(.2,.8,.2,1)}
-.sheet-hd{display:flex;align-items:center;gap:6px;padding:8px 8px 8px 10px;border-bottom:1.5px solid rgba(217,232,173,.9);flex:none}
-.tabs{display:flex;gap:2px;padding:3px;border-radius:999px;background:var(--mint);box-shadow:inset 0 0 0 1px var(--line);flex:1;min-width:0}
-.tabs button{flex:1;min-width:0;border:0;border-radius:999px;min-height:36px;padding:4px 10px;background:transparent;font-weight:700;font-size:.88rem;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.tabs button[aria-selected="true"]{background:var(--card);box-shadow:inset 0 0 0 1.5px rgba(63,90,42,.3),0 6px 12px -8px rgba(63,90,42,.5)}
-.sheet .x{flex:none}
+.sheet-x{position:absolute;top:8px;right:8px;z-index:2;background:rgba(255,254,251,.9)!important}
+.sheet #editor .ed-hd{padding-right:44px}
 .sheet-body{flex:1;min-height:0;display:flex;flex-direction:column}
+/* Messages float in their own panel, left of the agent card when both are open. */
+.chat-panel{top:var(--gap);bottom:var(--gap);right:calc(var(--gap) + var(--sheet-w) + var(--sg));width:var(--chat-w);display:flex;flex-direction:column;overflow:clip;z-index:7;
+  transform:translateX(calc(100% + 40px + var(--sheet-w)));visibility:hidden;transition:transform .35s cubic-bezier(.2,.8,.2,1),right .35s cubic-bezier(.2,.8,.2,1),visibility 0s .35s}
+body[data-chat] .chat-panel{transform:none;visibility:visible;transition:transform .35s cubic-bezier(.2,.8,.2,1),right .35s cubic-bezier(.2,.8,.2,1)}
+body:not([data-chat]) .chat-panel{width:clamp(310px,28vw,440px)}
+.chat-panel .chat{flex:1;border-radius:0;box-shadow:none;background:transparent;display:flex;flex-direction:column;min-height:0}
+.chat-panel .thread{flex:1;min-height:0;overflow-y:auto;max-height:none}
+.chat-panel .thread-hd{background:transparent}
+.chat-btns{display:flex;align-items:center;gap:2px;flex:none}
+.chat-panel .chat-id{flex:1 1 auto;min-width:0}
+.chat-panel .chat-id>div:last-child{min-width:0}
+.chat-panel .faces span+span{margin-left:-14px}
+body.tools-tight .chat-panel .faces span:nth-child(n+3){display:none}
 .sheet #editor{flex:1;overflow-y:auto;padding:14px 16px 24px;background:transparent;border-radius:0;box-shadow:none;animation:none}
 .sheet .ed-cols{grid-template-columns:minmax(0,1fr)!important}
 .sheet .basics{grid-template-columns:1fr}
@@ -433,10 +458,11 @@ body[data-sheet] .sheet{transform:none;visibility:visible;transition:transform .
 .sheet .field.part{grid-template-columns:40px minmax(0,1fr);column-gap:12px}
 .sheet .field.part .ic{width:40px;height:40px;padding:8px;border-radius:13px}
 .sheet .field.part>label,.sheet .field.part>.label{font-size:1.12rem}
-.sheet .chat{flex:1;border-radius:0;box-shadow:none;background:transparent;display:flex;flex-direction:column;min-height:0}
-.sheet .thread{flex:1;min-height:0;overflow-y:auto;max-height:none}
-.sheet .thread-hd{background:transparent}
 .dock-hint.canvas-hint{color:var(--ink);font-weight:600}
+/* Small labels never go under 12px, so they read on a projector at 150% zoom. */
+.kind,.node-badge,.round-badge,.final-hd .tag,.cap-pill,.turn b,.blk>b small{font-size:max(.75rem,12px)}
+.node-job{font-size:max(.9rem,13px)}
+.dock-hint,.run-status,.legend{font-size:max(.82rem,12.5px)}
 body[data-sheet] .canvas-hint,body:is([data-level="3"],[data-level="4"]) #treeHint:not(:empty) + .canvas-hint{display:none}
 .toast{bottom:calc(var(--dock-h) + var(--gap) + 12px);z-index:5}
 
@@ -446,7 +472,6 @@ body[data-sheet] .canvas-hint,body:is([data-level="3"],[data-level="4"]) #treeHi
   .node.checker{width:220px}
   .node-av{width:52px;height:52px;font-size:1.55rem}
   .node-name{font-size:1.2rem}
-  .node-job{font-size:.84rem}
   .you-pill{font-size:1.2rem;padding:8px 28px;margin-bottom:40px}
   .node-state{font-size:.78rem;padding:4px 12px 4px 6px}
   .sub-kids{margin-top:52px}
@@ -467,20 +492,27 @@ body[data-sheet] .canvas-hint,body:is([data-level="3"],[data-level="4"]) #treeHi
 @media (max-width:1000px) and (min-width:701px){
   .tool .ti{display:none}
 }
-/* A narrow HUD (the side sheet is open on a small screen) stacks the goal over the stats. */
-.hud{container-type:inline-size}
-@container (max-width:620px){.hud-bottom{flex-direction:column}.hud-bottom .stats{width:auto}.menu-btn .lbl{display:none}}
+/* With little room on the top row, the Example team button shows only the team's name. */
+body.tools-tight .menu-btn .lbl{display:none}
+body.tools-tight .hud{width:min(400px,calc(100vw - var(--rw) - var(--gap)))}
+body.tools-tight .top-tools{gap:6px}
+body.tools-tight .top-tools>.chip,body.tools-tight .top-tools .btn.small{padding-left:12px;padding-right:12px;font-size:.84rem}
+body.tools-tight .stats{grid-template-columns:repeat(auto-fit,minmax(78px,1fr))}
+body.tools-tight .tile .tl i{display:none}
 
 /* ---------- phone ---------- */
 @media (max-width:700px){
   body{--gap:8px}
-  body[data-sheet]{--sheet-w:0px}
-  .hud{left:var(--gap);right:var(--gap);padding:9px 10px;gap:7px;border-radius:20px}
+  body[data-sheet],body[data-chat]{--sheet-w:0px;--chat-w:0px;--sg:0px;--cg:0px}
+  .hud{left:var(--gap);right:var(--gap);width:auto;padding:9px 10px;gap:7px;border-radius:20px}
   .hud-top{gap:6px}
-  .hud-top .levels{order:3;flex:1 1 100%;min-width:0}
-  .hud-bottom{flex-direction:column;gap:6px}
-  .hud-bottom .stats{width:auto}
+  .hud-bottom{gap:6px}
+  .stats{grid-template-columns:repeat(4,minmax(0,1fr))}
   .brand .eyebrow{display:none}
+  /* On a phone the mode chip, key, and Example team buttons sit in the HUD's top right corner. */
+  .top-tools,body.tools-under .top-tools{left:calc(var(--gap) + 10px);right:auto;top:calc(var(--gap) + 9px);justify-content:flex-start}
+  .brand{min-height:36px}
+  .brand h1{display:none}
   .brand h1{font-size:1.25rem}
   .levels{padding:2px}
   .level{min-height:38px;min-width:38px}
@@ -490,7 +522,7 @@ body[data-sheet] .canvas-hint,body:is([data-level="3"],[data-level="4"]) #treeHi
   .goal-note{padding:6px 10px}
   .tile{padding:4px 8px;border-radius:12px}
   .tile .num{font-size:1.05rem}
-  .tile .tl{font-size:.62rem}
+  .tile .tl{font-size:max(.7rem,11px)}
   .tile .tl i{display:none}
   .tile .sub{display:none}
   .top-tools{gap:4px}
@@ -516,9 +548,7 @@ body[data-sheet] .canvas-hint,body:is([data-level="3"],[data-level="4"]) #treeHi
   .msgs-btn::before{content:'💬';font-size:1.05rem}
   .stage{padding:calc(var(--hud-h) + var(--gap) + 22px) 10px calc(var(--dock-h) + var(--gap) + 60px) 10px}
   /* The side sheet is a bottom sheet on a phone. */
-  .sheet{left:0;right:0;bottom:0;top:auto;width:auto;height:min(84vh,84dvh);border-radius:24px 24px 0 0;transform:translateY(calc(100% + 30px));z-index:9}
-  .sheet-hd{padding-top:16px;position:relative}
-  .sheet-hd::before{content:'';position:absolute;top:6px;left:50%;width:44px;height:5px;margin-left:-22px;border-radius:3px;background:rgba(63,90,42,.25)}
+  .sheet,.chat-panel,body:not([data-chat]) .chat-panel{left:0;right:0;bottom:0;top:auto;width:auto;height:min(84vh,84dvh);border-radius:24px 24px 0 0;transform:translateY(calc(100% + 30px));z-index:9}
   .sheet #editor{padding:14px 14px 30px}
 }
 @media (prefers-reduced-motion:reduce){
@@ -546,7 +576,20 @@ body[data-sheet] .canvas-hint,body:is([data-level="3"],[data-level="4"]) #treeHi
     <button type="button" class="level" data-level="3" aria-pressed="false"><span class="n">3</span><span class="t"><b>Build a team</b><small>A lead and helpers</small></span></button>
     <button type="button" class="level" data-level="4" aria-pressed="false"><span class="n">4</span><span class="t"><b>Add a check loop</b><small>Checker agent</small></span></button>
   </nav>
-  <div class="top-tools">
+  </div>
+  <div class="hud-bottom">
+  <div class="goal-note" id="goalNote"><span class="tag" id="goalTag">Level 1</span><p class="goal" id="levelGoal"></p></div>
+  <div class="stats" id="stats" aria-label="Last run" hidden>
+    <div class="tile t-agents" id="tileAgents"><span class="tl"><i aria-hidden="true">🤖</i>Agents</span><span class="num" id="statAgents">1</span><span class="sub">on the team</span></div>
+    <div class="tile t-msgs need-3" id="tileMsgs"><span class="tl"><i aria-hidden="true">💬</i>Messages</span><span class="num" id="statMsgs">0</span><span class="sub">between agents</span></div>
+    <div class="tile t-rounds need-4" id="tileRounds"><span class="tl"><i aria-hidden="true">✓</i>Check rounds</span><span class="num" id="statRounds">0</span><span class="sub">drafts graded</span></div>
+    <div class="tile t-calls" id="tileCalls"><span class="tl"><i aria-hidden="true">⚡</i>Asked the AI</span><span class="num" id="statCalls">0</span><span class="sub" id="statCallsSub">times this run</span></div>
+  </div>
+  </div>
+  <div class="dirty-note" id="dirtyNote" hidden><span id="dirtyText">You changed this team, so it stays when you switch levels.</span><button type="button" id="loadLevelBtn" class="btn small"></button></div>
+</header>
+
+<div class="top-tools" id="topTools">
     <div class="menu-wrap">
       <button type="button" class="btn small menu-btn" id="teamMenuBtn" aria-haspopup="true" aria-expanded="false" aria-controls="teamMenu"><span class="lbl">Example team</span><span class="cur" id="teamMenuCur"></span></button>
       <div class="menu float" id="teamMenu" hidden>
@@ -560,19 +603,7 @@ body[data-sheet] .canvas-hint,body:is([data-level="3"],[data-level="4"]) #treeHi
     </div>
     <button type="button" id="modeChip" class="chip" aria-haspopup="dialog" title="Change mode">Practice mode</button>
     <button type="button" id="keyBtn" class="btn small">Add a Gemini key</button>
-  </div>
 </div>
-  <div class="hud-bottom">
-  <div class="goal-note" id="goalNote"><span class="tag" id="goalTag">Level 1</span><p class="goal" id="levelGoal"></p></div>
-  <div class="stats" id="stats" aria-label="Last run" hidden>
-    <div class="tile t-agents" id="tileAgents"><span class="tl"><i aria-hidden="true">🤖</i>Agents</span><span class="num" id="statAgents">1</span><span class="sub">on the team</span></div>
-    <div class="tile t-msgs need-3" id="tileMsgs"><span class="tl"><i aria-hidden="true">💬</i>Messages</span><span class="num" id="statMsgs">0</span><span class="sub">between agents</span></div>
-    <div class="tile t-rounds need-4" id="tileRounds"><span class="tl"><i aria-hidden="true">✓</i>Check rounds</span><span class="num" id="statRounds">0</span><span class="sub">drafts graded</span></div>
-    <div class="tile t-calls" id="tileCalls"><span class="tl"><i aria-hidden="true">⚡</i>Asked the AI</span><span class="num" id="statCalls">0</span><span class="sub" id="statCallsSub">times this run</span></div>
-  </div>
-  </div>
-  <div class="dirty-note" id="dirtyNote" hidden><span id="dirtyText">You changed this team, so it stays when you switch levels.</span><button type="button" id="loadLevelBtn" class="btn small"></button></div>
-</header>
 
 <div class="view-tools" id="viewTools">
   <p class="legend need-3" aria-label="How to read the team">
@@ -583,7 +614,7 @@ body[data-sheet] .canvas-hint,body:is([data-level="3"],[data-level="4"]) #treeHi
 </div>
 
 <section class="dock float" id="dock" aria-labelledby="runTitle">
-  <h2 class="sr" id="runTitle">Run</h2>
+  <h2 class="sr" id="runTitle">Task and team tools</h2>
   <div class="tree-tools need-3" id="treeTools">
     <button type="button" class="tool" id="addHelperBtn"><span class="ti" aria-hidden="true">🙋</span>+ Helper</button>
     <button type="button" class="tool" id="addLeadBtn"><span class="ti" aria-hidden="true">🧭</span>+ Lead above</button>
@@ -591,11 +622,11 @@ body[data-sheet] .canvas-hint,body:is([data-level="3"],[data-level="4"]) #treeHi
     <button type="button" class="tool" id="removeBtn"><span class="ti" aria-hidden="true">🗑️</span>Remove</button>
   </div>
   <p class="dock-hint need-3" id="treeHint" aria-live="polite"></p>
-  <p class="dock-hint canvas-hint" id="canvasHint">Click an agent to edit it.</p>
+  <p class="dock-hint canvas-hint" id="canvasHint">Click an agent to change it.</p>
   <div class="run-row">
     <div class="task">
       <label class="label" for="task">Task</label>
-      <p class="sr" id="taskHint">What you ask for. The top agent gets it as the new message.</p>
+      <p class="sr" id="taskHint">Type what you want made. The top agent reads it first.</p>
       <textarea id="task" rows="2" aria-describedby="taskHint"></textarea>
     </div>
     <button type="button" class="btn primary" id="runBtn">Run</button>
@@ -606,20 +637,17 @@ body[data-sheet] .canvas-hint,body:is([data-level="3"],[data-level="4"]) #treeHi
   <p class="run-status" id="runStatus" role="status"></p>
 </section>
 
-<aside class="sheet float" id="sheet" aria-label="Agent and messages">
-  <div class="sheet-hd">
-    <div class="tabs" role="tablist" aria-label="Show">
-      <button type="button" role="tab" id="tabAgent" aria-controls="editor" aria-selected="true">Agent</button>
-      <button type="button" role="tab" id="tabMsgs" aria-controls="chatPanel" aria-selected="false">Messages</button>
-    </div>
-    <button type="button" class="x" id="sheetClose" aria-label="Close">×</button>
-  </div>
+<aside class="sheet float" id="sheet" aria-label="Agent">
+  <button type="button" class="x sheet-x" id="sheetClose" aria-label="Close the agent card">×</button>
   <div class="sheet-body">
-    <section id="editor" role="tabpanel" aria-labelledby="tabAgent"></section>
-    <div class="chat" id="chatPanel" role="tabpanel" aria-labelledby="tabMsgs" hidden>
-      <div class="thread-hd"><div class="chat-id"><div class="faces" id="faces" aria-hidden="true"></div><div><h2>Messages</h2><small id="chatSub"></small></div></div><button type="button" class="btn ghost small" id="clearBtn">Clear</button></div>
-      <ol class="thread" id="thread" aria-live="polite" aria-relevant="additions"></ol>
-    </div>
+    <section id="editor" aria-label="Agent card"></section>
+  </div>
+</aside>
+
+<aside class="chat-panel float" id="chatDock" aria-labelledby="chatTitle">
+  <div class="chat" id="chatPanel">
+    <div class="thread-hd"><div class="chat-id"><div class="faces" id="faces" aria-hidden="true"></div><div><h2 id="chatTitle">Messages</h2><small id="chatSub"></small></div></div><div class="chat-btns"><button type="button" class="btn ghost small" id="clearBtn">Clear</button><button type="button" class="x" id="chatClose" aria-label="Close Messages">×</button></div></div>
+    <ol class="thread" id="thread" aria-live="polite" aria-relevant="additions"></ol>
   </div>
 </aside>
 

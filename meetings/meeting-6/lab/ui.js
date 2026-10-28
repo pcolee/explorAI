@@ -390,26 +390,39 @@ function nodeEl(agent) {
 
 // ---------- side sheet (the selected agent, or Messages) ----------
 
+// The agent card and Messages are two floating panels on the right. Both stay open on a wide screen;
+// on a smaller one (or a phone, where they are bottom sheets) opening one closes the other.
+const BOTH_FIT = () => !PHONE() && innerWidth >= 1500;
+const chatOpen = () => 'chat' in document.body.dataset;
+
 function openSheet(tab) {
-  document.body.dataset.sheet = tab;
-  $('tabAgent').setAttribute('aria-selected', String(tab === 'agent'));
-  $('tabMsgs').setAttribute('aria-selected', String(tab === 'messages'));
-  $('editor').hidden = tab !== 'agent';
-  $('chatPanel').hidden = tab !== 'messages';
-  $('msgsBtn').setAttribute('aria-expanded', String(tab === 'messages'));
-  if (tab === 'messages') { S.unread = 0; renderCount(); }
-  if (tab === 'agent') requestAnimationFrame(growAll);
+  if (tab === 'messages') {
+    document.body.dataset.chat = '';
+    if (!BOTH_FIT()) delete document.body.dataset.sheet;
+    S.unread = 0;
+    renderCount();
+  } else {
+    document.body.dataset.sheet = 'agent';
+    if (!BOTH_FIT()) delete document.body.dataset.chat;
+    requestAnimationFrame(growAll);
+  }
+  $('msgsBtn').setAttribute('aria-expanded', String(chatOpen()));
   requestAnimationFrame(fitTree);
 }
 
 function closeSheet() {
   delete document.body.dataset.sheet;
+  requestAnimationFrame(fitTree);
+}
+
+function closeChat() {
+  delete document.body.dataset.chat;
   $('msgsBtn').setAttribute('aria-expanded', 'false');
   requestAnimationFrame(fitTree);
 }
 
 function renderCount() {
-  $('msgCount').textContent = S.unread > 0 && document.body.dataset.sheet !== 'messages' ? String(S.unread) : '';
+  $('msgCount').textContent = S.unread > 0 && !chatOpen() ? String(S.unread) : '';
 }
 
 // ---------- run stats (the HUD tiles) ----------
@@ -506,16 +519,65 @@ function modelPillText() {
 }
 
 // A wide team stacks each checker under its agent instead of beside it, so the tree fits without scrolling.
+// How much of the right edge the open panels take, in px.
+function rightRoom() {
+  const gap = PHONE() ? 8 : 14;
+  if (PHONE()) return gap;
+  let rw = gap;
+  if (document.body.dataset.sheet) rw += $('sheet').offsetWidth + gap;
+  if (chatOpen()) rw += $('chatDock').offsetWidth + gap;
+  return rw;
+}
+
+// Measure the floating cards, and move the top right buttons under the HUD when they would run into it.
+function sizeVars() {
+  const body = document.body;
+  body.style.setProperty('--hud-h', `${Math.round($('hud').getBoundingClientRect().height)}px`);
+  body.style.setProperty('--dock-h', `${Math.round($('dock').getBoundingClientRect().height)}px`);
+  if (PHONE()) { body.classList.remove('tools-under', 'tools-tight', 'dock-wide'); return; }
+  const free = innerWidth - rightRoom();
+  body.classList.toggle('tools-tight', free < 1150);
+  body.classList.remove('tools-under');
+  const hud = $('hud').getBoundingClientRect();
+  const tools = $('topTools').getBoundingClientRect();
+  body.classList.toggle('tools-under', tools.left < hud.right + 12);
+  // Where the dock's left edge ends up (it slides when a panel opens, so work it out instead of measuring).
+  body.classList.toggle('dock-wide', 14 + Math.max(0, (free - 14 - 720) / 2) < 190);
+}
+
 function fitTree() {
   const canvas = $('canvas');
   const box = $('treeBox');
   const stage = $('stage');
-  const cs = getComputedStyle(stage);
-  // The room left of the side sheet and between the HUD and the dock.
-  const availW = canvas.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
-  const availH = canvas.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
   box.style.zoom = '';
   canvas.classList.remove('compact', 'tight');
+  if (!PHONE()) {
+    // The tree goes beside the HUD or below it, whichever leaves it bigger.
+    sizeVars();
+    const hud = $('hud').getBoundingClientRect();
+    const tools = $('topTools').getBoundingClientRect();
+    const under = document.body.classList.contains('tools-under');
+    const padR = rightRoom() + 16;
+    const padB = $('dock').getBoundingClientRect().height + 14 + 14;
+    const w = box.offsetWidth || 1, h = box.offsetHeight || 1;
+    const beside = { l: Math.max(hud.right, under ? tools.right : 0) + 20, t: (under ? 14 : tools.bottom) + 16 };
+    const top = Math.max(hud.bottom, under ? tools.bottom : 0) + 16;
+    const opts = [beside, { l: 32, t: Math.max(top, tools.bottom + 16) }];
+    // When Reset view sits under the HUD (the dock fills the bottom), keep the tree clear of it too.
+    if (document.body.classList.contains('dock-wide')) {
+      const vt = $('viewTools').getBoundingClientRect();
+      opts[1] = { l: vt.right + 16, t: Math.max(top, tools.bottom + 16) };
+      opts.push({ l: 32, t: Math.max(vt.bottom + 12, tools.bottom + 16) });
+    }
+    const score = p => Math.min(1, (canvas.clientWidth - p.l - padR) / w, (canvas.clientHeight - p.t - padB) / h);
+    const pick = opts.reduce((a, b) => (score(b) > score(a) ? b : a));
+    document.body.style.setProperty('--pad-l', `${Math.round(pick.l)}px`);
+    document.body.style.setProperty('--pad-t', `${Math.round(pick.t)}px`);
+  }
+  const cs = getComputedStyle(stage);
+  // The open area: right of or below the HUD, left of the open panels, above the dock.
+  const availW = canvas.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+  const availH = canvas.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
   // Too wide: first narrower cards, then each checker under its agent.
   if (box.offsetWidth > availW) canvas.classList.add('tight');
   if (box.offsetWidth * 0.8 > availW) canvas.classList.add('compact');
@@ -1441,7 +1503,7 @@ async function run() {
   resetStats();
   S.unread = 0;
   // On a wide screen Messages opens beside the team; on a smaller one it opens when the run ends, so the team stays in view.
-  if (WIDE()) openSheet('messages'); else { if (document.body.dataset.sheet === 'agent') closeSheet(); renderCount(); }
+  if (WIDE()) openSheet('messages'); else { closeSheet(); renderCount(); }
   showRunStart(div);
   $('runStatus').textContent = 'Running…';
 
@@ -1460,7 +1522,7 @@ async function run() {
         addMessage(ev, runState);
         if (!ev.lab) {
           if (ev.from !== 'you' && ev.to !== 'you' && ev.to !== 'team') { S.stats.msgs += 1; setStat('statMsgs', S.stats.msgs); }
-          if (document.body.dataset.sheet !== 'messages') { S.unread += 1; renderCount(); }
+          if (!chatOpen()) { S.unread += 1; renderCount(); }
         }
         if (ev.kind === 'job') pulse(ev.from, ev.to, 'down');
         else if (ev.kind === 'final') pulse(ev.from, ev.to, 'up');
@@ -1756,28 +1818,27 @@ function init() {
   menu.addEventListener('click', e => { if (e.target.closest('button')) setTimeout(() => setMenu(false), 0); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && !menu.hidden) { e.stopImmediatePropagation(); setMenu(false); $('teamMenuBtn').focus(); } });
 
-  // The side sheet: the selected agent's card, or Messages.
-  $('tabAgent').addEventListener('click', () => openSheet('agent'));
-  $('tabMsgs').addEventListener('click', () => openSheet('messages'));
+  // The two floating panels: the selected agent's card, and Messages.
   $('sheetClose').addEventListener('click', closeSheet);
-  $('msgsBtn').addEventListener('click', () => (document.body.dataset.sheet === 'messages' ? closeSheet() : openSheet('messages')));
+  $('chatClose').addEventListener('click', closeChat);
+  $('msgsBtn').addEventListener('click', () => (chatOpen() ? closeChat() : openSheet('messages')));
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && document.body.dataset.sheet && !$('keyDialog').open && menu.hidden) closeSheet();
+    if (e.key !== 'Escape' || $('keyDialog').open || !menu.hidden) return;
+    // Esc closes the panel the focus is in, or else the agent card, then Messages.
+    if (document.activeElement?.closest('#chatDock') && chatOpen()) closeChat();
+    else if (document.body.dataset.sheet) closeSheet();
+    else if (chatOpen()) closeChat();
   });
-  $('canvasHint').textContent = typeof matchMedia === 'function' && matchMedia('(pointer: coarse)').matches ? 'Tap an agent to edit it.' : 'Click an agent to edit it.';
+  $('canvasHint').textContent = typeof matchMedia === 'function' && matchMedia('(pointer: coarse)').matches ? 'Tap an agent to change it.' : 'Click an agent to change it.';
   if (WIDE() && S.level <= 2) openSheet('agent');
-  else { $('editor').hidden = false; $('chatPanel').hidden = true; }
 
   // The floating HUD and dock set how much room the tree keeps clear around itself.
-  const sizeVars = () => {
-    document.body.style.setProperty('--hud-h', `${Math.round($('hud').getBoundingClientRect().height)}px`);
-    document.body.style.setProperty('--dock-h', `${Math.round($('dock').getBoundingClientRect().height)}px`);
-  };
   sizeVars();
   if (typeof ResizeObserver === 'function') {
     const ro = new ResizeObserver(() => { sizeVars(); requestAnimationFrame(fitTree); });
     ro.observe($('hud'));
     ro.observe($('dock'));
+    ro.observe($('topTools'));
   }
 
   // Drag the empty canvas to move around a big team (touch scrolls on its own).
