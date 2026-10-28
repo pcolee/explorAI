@@ -305,18 +305,41 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 /* team */
 #stage>section#team{display:grid;grid-template-columns:1fr 600px;grid-template-rows:auto 1fr;column-gap:64px;row-gap:20px;padding:88px 128px 96px}
 #team .head{grid-column:1/3;display:flex;flex-direction:column;gap:14px}
-.tree{display:flex;flex-direction:column;align-items:center}
+/* team: dots travel the lines (pink down with jobs, green up with reports), the nodes they reach ping, the current lines light, and the rule in play glows */
+.tree{position:relative;width:1000px;height:740px}
+.tree svg{position:absolute;inset:0;width:1000px;height:740px}
+.tree .ln{fill:none;stroke:rgba(156,181,123,.55);stroke-width:5;stroke-linecap:round;transition:stroke .5s}
+#team[data-step="1"] .ln0,#team[data-step="2"] .ln1,#team[data-step="2"] .ln2,#team[data-step="2"] .ln3{stroke:var(--accent)}
+#team[data-step="3"] .ln1,#team[data-step="3"] .ln2,#team[data-step="3"] .ln3,#team[data-step="4"] .ln0{stroke:#7FA45A}
+.tree .dot{position:absolute;left:0;top:0;width:24px;height:24px;margin:0;border-radius:50%;offset-rotate:0deg;offset-anchor:50% 50%;opacity:0;pointer-events:none}
+.tree .dot.dn{background:var(--accent);box-shadow:0 0 0 7px rgba(168,72,122,.22)}
+.tree .dot.up{background:#5E8A3A;box-shadow:0 0 0 7px rgba(127,164,90,.28)}
+#stage .tree .dot.pending{opacity:0;transform:none}
+#stage .tree .dot.dn:not(.pending){animation:goDown 1.1s cubic-bezier(.45,0,.3,1) .1s both}
+#stage .tree .dot.up:not(.pending){animation:goUp 1.1s cubic-bezier(.45,0,.3,1) .1s both}
+@keyframes goDown{0%{offset-distance:0%;opacity:0}12%{opacity:1}88%{opacity:1}100%{offset-distance:100%;opacity:0}}
+@keyframes goUp{0%{offset-distance:100%;opacity:0}12%{opacity:1}88%{opacity:1}100%{offset-distance:0%;opacity:0}}
+.tree .node{position:absolute;transform:translate(-50%,-50%);text-align:center}
+.tree .node::after{content:'';position:absolute;inset:-6px;border-radius:999px;box-shadow:0 0 0 0 rgba(168,72,122,.45);opacity:0;pointer-events:none}
+#team[data-step="1"] .node.lead::after,#team[data-step="2"] .node.h1::after,#team[data-step="2"] .node.h2::after,#team[data-step="2"] .node.h3::after{animation:ping .9s ease-out 1.05s}
+#team[data-step="3"] .node.lead::after,#team[data-step="4"] .node.you::after{animation:pingG .9s ease-out 1.05s}
+@keyframes ping{0%{opacity:1;box-shadow:0 0 0 0 rgba(168,72,122,.5)}100%{opacity:0;box-shadow:0 0 0 22px rgba(168,72,122,0)}}
+@keyframes pingG{0%{opacity:1;box-shadow:0 0 0 0 rgba(94,138,58,.5)}100%{opacity:0;box-shadow:0 0 0 22px rgba(94,138,58,0)}}
+.tree .flow{position:absolute;margin:0;max-width:300px}
+.tree .f1{right:524px;top:146px}
+.tree .f4{left:524px;top:146px}
+.tree .f2{left:0;top:356px;max-width:250px}
+.tree .f3{right:0;top:356px;max-width:250px}
+#team .rules .card{transition:box-shadow .5s,border-color .5s}
+#team[data-step="2"] .rules .r1,#team[data-step="4"] .rules .r2,#team[data-step="4"] .rules .r3{border-color:var(--accent);box-shadow:0 0 0 3px rgba(168,72,122,.14),0 0 30px 4px rgba(168,72,122,.2)}
 .node{font-family:var(--display);font-size:36px;font-weight:600;color:var(--ink);background:var(--card);border-radius:999px;padding:16px 38px;box-shadow:0 18px 34px -20px rgba(63,90,42,.5),inset 0 0 0 2px rgba(217,232,173,.9);white-space:nowrap}
 .node.you{background:var(--green)}
 .node.lead{background:var(--pinkwash);color:var(--accent);box-shadow:0 18px 34px -20px rgba(63,90,42,.5),inset 0 0 0 2px rgba(168,72,122,.45)}
 .node small{display:block;font-family:var(--sans);font-size:22px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--body);text-align:center}
-.helpers{display:flex;gap:24px}
-.helpers .node{font-size:32px;padding:16px 28px}
-.link{position:relative;height:150px;width:100%;display:grid;grid-template-columns:1fr 6px 1fr;column-gap:22px;align-items:center}
-.link .line{width:6px;height:100%;background:linear-gradient(var(--leaf),var(--accent));border-radius:3px;opacity:.6}
+.tree .h1,.tree .h2,.tree .h3{font-size:32px;padding:16px 28px}
 .flow{font-size:26px;line-height:1.3;color:var(--ink);background:#fff;border-radius:18px;padding:12px 20px;box-shadow:0 12px 26px -16px rgba(63,90,42,.45)}
-.flow.dn{justify-self:end;text-align:right}
-.flow.up{justify-self:start;background:#F5F9E8}
+.flow.dn{text-align:right;color:var(--accent)}
+.flow.up{background:#F5F9E8;color:#3B6420}
 #team .right{display:flex;flex-direction:column;gap:20px}
 #team .rules .card{padding:22px 30px}
 #team .rules .card p{font-size:28px}
@@ -330,13 +353,48 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 .ck .h{font-size:22px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink);padding-bottom:14px;text-align:center}
 .ck .h:first-child{text-align:left}
 .ck .col{display:flex;flex-direction:column}
-.ck .col>*{height:120px;display:flex;align-items:center;border-top:1.5px solid rgba(217,232,173,.8)}
+.ck .col>*{height:104px;display:flex;align-items:center;border-top:1.5px solid rgba(217,232,173,.8)}
 .ck .lbls p{font-size:30px;line-height:1.3;color:var(--ink)}
 .ck .marks>*{justify-content:center}
 .mk{width:76px;height:76px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:40px;font-weight:700}
 .mk.y{background:var(--green);color:#2F6B1F}
 .mk.n{background:var(--pink);color:var(--accent)}
 #checkloop .right{display:flex;flex-direction:column;gap:26px}
+/* checkloop: the draft being graded sits above the checklist; marks stamp in one row at a time; round 2 swaps in the new draft */
+#checkloop .left{display:flex;flex-direction:column;gap:24px}
+.nw{white-space:nowrap}
+.draft{background:#fff;border-radius:26px;padding:22px 30px;display:flex;flex-direction:column;gap:8px;min-height:226px;rotate:-.5deg;box-shadow:0 26px 50px -30px rgba(63,90,42,.45),inset 0 0 0 2px rgba(242,193,214,.8)}
+.draft .dh{font-size:22px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent)}
+.draft .dt{font-size:26px;line-height:1.4;color:var(--ink)}
+#checkloop .d2.pending{display:none}
+#checkloop .draft:has(.dt.d2:not(.pending)) .d1{display:none}
+#checkloop .ck{align-self:stretch}
+.ck .marks>span{position:relative}
+.ck .marks>span::before{content:'';position:absolute;left:50%;top:50%;width:76px;height:76px;margin:-38px 0 0 -38px;border-radius:50%;box-sizing:border-box;border:2px dashed rgba(156,181,123,.55)}
+.ck .mk{position:relative}
+#stage #checkloop .marks.pending{opacity:1;transform:none}
+#checkloop .marks.pending .mk{visibility:hidden}
+#checkloop .marks:not(.pending){animation:none}
+#checkloop .marks:not(.pending) .mk{animation:stamp .5s cubic-bezier(.34,1.56,.64,1) backwards}
+#checkloop .marks>span:nth-child(2) .mk{animation-delay:.35s}#checkloop .marks>span:nth-child(3) .mk{animation-delay:.7s}
+@keyframes stamp{0%{opacity:0;scale:1.7}60%{opacity:1;scale:.9}}
+.cap{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.cap .dots{display:flex;gap:10px}
+.cap .dots i{width:24px;height:24px;border-radius:50%;box-shadow:inset 0 0 0 2.5px var(--accent);transition:background .4s}
+.cap .dots i.on,#checkloop[data-s~="3"] .cap .dots i.r2{background:var(--accent)}
+.cap .rn{font-family:var(--display);font-size:34px;font-weight:600;color:var(--ink)}
+.cap .rb,#checkloop[data-s~="3"] .cap .ra{display:none}
+#checkloop[data-s~="3"] .cap .rb{display:inline}
+/* texting: Meeting 3's phone holds the agents' group chat; each press adds one message and names its kind on the left */
+#texting .iphone-msgs .msg-bub{font-size:18px;line-height:1.42}
+#texting .iphone-msgs .msg-from{font-size:15px}
+#texting .msg-av{width:30px;height:30px}
+.kinds{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px;counter-reset:k}
+.kinds li{counter-increment:k;display:flex;align-items:center;gap:20px;font-size:30px;line-height:1.3;color:var(--ink);transition:color .4s,opacity .4s}
+.kinds li::before{content:counter(k);flex:none;width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:26px;font-weight:600;background:var(--green);color:var(--ink);transition:background .4s,color .4s}
+.kinds li:not(.pending):has(+li:not(.pending)){opacity:.6}
+.kinds li:not(.pending):has(+.pending),#texting[data-step="6"] .kinds li:last-child{color:var(--accent);font-weight:700}
+.kinds li:not(.pending):has(+.pending)::before,#texting[data-step="6"] .kinds li:last-child::before{background:var(--accent);color:#fff}
 /* wrong */
 #wrong .qcard .q{font-size:64px}
 #wrong .qcard p{font-size:28px;line-height:1.42;color:var(--body)}
@@ -660,27 +718,47 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 <section id="team" class="cozy alt">
 <div class="head"><p class="eyebrow">Who’s in charge?</p><h2>Jobs go down. Reports come up.</h2></div>
 <div class="tree">
-<p class="node you">You</p>
-<div class="link"><p class="flow dn" data-build-in="1">Your task: a game night kit ↓</p><span class="line"></span><p class="flow up" data-build-in="4">↑ The lead combines the parts and answers you</p></div>
-<p class="node lead">Event Lead<small>lead</small></p>
-<div class="link"><p class="flow dn" data-build-in="2">Jobs: flyer, caption, snacks ↓</p><span class="line"></span><p class="flow up" data-build-in="3">↑ Each helper reports its part back</p></div>
-<div class="helpers"><p class="node">Flyer Writer<small>helper</small></p><p class="node">Caption Writer<small>helper</small></p><p class="node">Snack Planner<small>helper</small></p></div>
+<svg viewBox="0 0 1000 740" aria-hidden="true"><path class="ln ln0" d="M500,92 L500,278"/><path class="ln ln1" d="M500,382 C500,500 170,480 170,598"/><path class="ln ln2" d="M500,382 L500,598"/><path class="ln ln3" d="M500,382 C500,500 830,480 830,598"/></svg>
+<i class="dot dn" data-build-in="1" style="offset-path:path('M500,92 L500,278')"></i>
+<i class="dot dn" data-build-in="2" style="offset-path:path('M500,382 C500,500 170,480 170,598')"></i>
+<i class="dot dn" data-build-in="2" style="offset-path:path('M500,382 L500,598')"></i>
+<i class="dot dn" data-build-in="2" style="offset-path:path('M500,382 C500,500 830,480 830,598')"></i>
+<i class="dot up" data-build-in="3" style="offset-path:path('M500,382 C500,500 170,480 170,598')"></i>
+<i class="dot up" data-build-in="3" style="offset-path:path('M500,382 L500,598')"></i>
+<i class="dot up" data-build-in="3" style="offset-path:path('M500,382 C500,500 830,480 830,598')"></i>
+<i class="dot up" data-build-in="4" style="offset-path:path('M500,92 L500,278')"></i>
+<p class="node you" style="left:500px;top:50px">You</p>
+<p class="node lead" style="left:500px;top:330px">Event Lead<small>lead</small></p>
+<p class="node h1" style="left:170px;top:650px">Flyer Writer<small>helper</small></p>
+<p class="node h2" style="left:500px;top:650px">Caption Writer<small>helper</small></p>
+<p class="node h3" style="left:830px;top:650px">Snack Planner<small>helper</small></p>
+<p class="flow dn f1" data-build-in="1" data-say="your task goes to the lead">↓ Your task: a game night kit</p>
+<p class="flow up f4" data-build-in="4" data-say="the lead answers you">↑ The lead puts the parts together and answers you</p>
+<p class="flow dn f2" data-build-in="2" data-say="jobs go down to the helpers">↓ Jobs: a flyer, a caption, snacks under $30</p>
+<p class="flow up f3" data-build-in="3" data-say="reports come back up">↑ Each helper reports its part back</p>
 </div>
 <div class="right">
 <div class="rules">
-<div class="card"><span class="n">1</span><p>Helpers only take jobs from their lead.</p></div>
-<div class="card"><span class="n">2</span><p>Only the lead answers you.</p></div>
-<div class="card pink"><span class="n">3</span><p>The lead makes the final call.</p></div>
+<div class="card r1"><span class="n">1</span><p>Helpers only take jobs from their lead.</p></div>
+<div class="card r2"><span class="n">2</span><p>Only the lead answers you.</p></div>
+<div class="card pink r3"><span class="n">3</span><p>The lead makes the final call.</p></div>
 </div>
 <p class="def"><b>Agentic workflow:</b> agents passing work along a set path.</p>
 </div>
 </section>
 
-<section id="texting" class="hook-slide" style="background:linear-gradient(135deg,#FFFBF5 0%,#F4F7E6 55%,#D9E8AD 100%)">
+<section id="texting" class="hook-slide" style="background:radial-gradient(circle,rgba(63,90,42,.04) 1.5px,transparent 1.5px) 0 0/28px 28px,linear-gradient(135deg,#FFFBF5 0%,#F4F7E6 55%,#D9E8AD 100%)">
 <div class="hook-text">
 <p class="eyebrow">What they say to each other</p>
 <h2 style="font-size:68px">You send one task. The team sends the rest.</h2>
-<p class="pending-line">Messages from the recorded lab run go here (pending). Each line names what that message is.</p>
+<ol class="kinds">
+<li data-build-in="1" data-say="jobs from the lead">Jobs from the lead</li>
+<li data-build-in="2" data-say="a draft">A draft</li>
+<li data-build-in="3" data-say="the checker's notes">The checker’s notes</li>
+<li data-build-in="4" data-say="the fix">The fix</li>
+<li data-build-in="5" data-say="the pass">The pass</li>
+<li data-build-in="6" data-say="the lead's answer to you">The lead’s answer to you</li>
+</ol>
 </div>
 <div class="hook-phone-panel"><div class="hook-scale">
 <div class="iphone"><div class="iphone-screen"><div class="iphone-island"></div>
@@ -688,12 +766,12 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 <div class="imsg-nav"><span class="imsg-nav-back">‹</span>
 <div class="imsg-nav-center"><div class="imsg-nav-avs"><div class="imsg-nav-av" style="background:#FF375F">EL</div><div class="imsg-nav-av" style="background:#34C759">FW</div><div class="imsg-nav-av" style="background:#007AFF">CW</div><div class="imsg-nav-av" style="background:#E08600">SP</div><div class="imsg-nav-av" style="background:#AF52DE">FC</div></div><span class="imsg-nav-name">Game Night Team ›</span><span class="imsg-nav-sub">5 agents</span></div><span style="width:40px"></span></div>
 <div class="iphone-msgs">
-<div class="msg-row" data-build-in="6"><div class="msg-av cp-av">EL</div><div class="msg-grp cp"><span class="msg-from">Event Lead → You</span><span class="msg-bub">The final kit: flyer, caption, and snack list</span></div></div>
-<div class="msg-row" data-build-in="5"><div class="msg-av cv-av">FC</div><div class="msg-grp cv"><span class="msg-from">Flyer Checker → Flyer Writer</span><span class="msg-bub">Pass: all three checks</span></div></div>
-<div class="msg-row" data-build-in="4"><div class="msg-av cd-av">FW</div><div class="msg-grp cd"><span class="msg-from">Flyer Writer → Flyer Checker</span><span class="msg-bub">The fixed flyer</span></div></div>
-<div class="msg-row" data-build-in="3"><div class="msg-av cv-av">FC</div><div class="msg-grp cv"><span class="msg-from">Flyer Checker → Flyer Writer</span><span class="msg-bub">Notes: which checks failed and why</span></div></div>
-<div class="msg-row" data-build-in="2"><div class="msg-av cd-av">FW</div><div class="msg-grp cd"><span class="msg-from">Flyer Writer → Flyer Checker</span><span class="msg-bub">A draft flyer</span></div></div>
-<div class="msg-row" data-build-in="1"><div class="msg-av cp-av">EL</div><div class="msg-grp cp"><span class="msg-from">Event Lead → helpers</span><span class="msg-bub">Jobs: a flyer, an Instagram caption, and snacks under $30</span></div></div>
+<div class="msg-row" data-build-in="6"><div class="msg-av cp-av">EL</div><div class="msg-grp cp"><span class="msg-from">Event Lead → You</span><span class="msg-bub">Your game night kit is ready: the flyer, an Instagram caption, and a snack list under $30.</span></div></div>
+<div class="msg-row" data-build-in="5"><div class="msg-av cv-av">FC</div><div class="msg-grp cv"><span class="msg-from">Flyer Checker → Flyer Writer</span><span class="msg-bub">✓ Day, time, and room ✓ Under 40 words ✓ One thing to do. Pass.</span></div></div>
+<div class="msg-row" data-build-in="4"><div class="msg-av cd-av">FW</div><div class="msg-grp cd"><span class="msg-from">Flyer Writer → Flyer Checker</span><span class="msg-bub">Game Night! Board games, snacks, and new friends. Friday · 5–7pm · CIS A-204. RSVP in our Discord.</span></div></div>
+<div class="msg-row" data-build-in="3"><div class="msg-av cv-av">FC</div><div class="msg-grp cv"><span class="msg-from">Flyer Checker → Flyer Writer</span><span class="msg-bub">✗ No room. ✗ 42 words, so over 40. ✓ Ends with one thing to do. Add CIS A-204 and cut it down.</span></div></div>
+<div class="msg-row" data-build-in="2"><div class="msg-av cd-av">FW</div><div class="msg-grp cd"><span class="msg-from">Flyer Writer → Flyer Checker</span><span class="msg-bub">Game Night is back! Join ExplorAI this Friday from 5 to 7pm for an evening of board games, card games, snacks, and good company. Whether you are a strategy pro or brand new to games, everyone is welcome. RSVP in our Discord.</span></div></div>
+<div class="msg-row" data-build-in="1"><div class="msg-av cp-av">EL</div><div class="msg-grp cp"><span class="msg-from">Event Lead → helpers</span><span class="msg-bub">Flyer Writer: a flyer for game night, Friday 5–7pm, CIS A-204. Caption Writer: an Instagram caption. Snack Planner: snacks under $30.</span></div></div>
 </div>
 <div class="iphone-input"><span class="iphone-input-plus">+</span><div class="iphone-input-field">iMessage</div><span class="iphone-input-mic">🎙</span></div>
 <div class="iphone-home"></div>
@@ -703,17 +781,20 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 
 <section id="checkloop" class="cozy">
 <div class="head"><p class="eyebrow">Done when</p><h2>The checker grades against a written list.</h2></div>
+<div class="left">
+<div class="draft"><p class="dh"><span class="d1">Round 1 draft · 42 words</span><span class="d2" data-build-in="3">Round 2 draft</span></p><p class="dt d1">Game Night is back! Join ExplorAI this Friday from 5 to 7pm for an evening of board games, card games, snacks, and good company. Whether you are a strategy pro or brand new to games, everyone is welcome. RSVP in our Discord.</p><p class="dt d2" data-build-in="3">Game Night! Board games, snacks, and new friends. Friday · 5–7pm · <span class="nw">CIS A-204</span>. RSVP in our Discord.</p></div>
 <div class="ck">
 <p class="h">Flyer Checker · Done when</p><p class="h">Round 1</p><p class="h">Round 2</p>
 <div class="col lbls"><p>Has the day, time, and room</p><p>Under 40 words</p><p>Ends with one clear thing to do</p></div>
-<div class="col marks" data-build-in="1"><span><span class="mk n">✗</span></span><span><span class="mk n">✗</span></span><span><span class="mk y">✓</span></span></div>
-<div class="col marks" data-build-in="3"><span><span class="mk y">✓</span></span><span><span class="mk y">✓</span></span><span><span class="mk y">✓</span></span></div>
+<div class="col marks" data-build-in="1" data-say="round 1 marks: fail, fail, pass"><span><span class="mk n">✗</span></span><span><span class="mk n">✗</span></span><span><span class="mk y">✓</span></span></div>
+<div class="col marks" data-build-in="3" data-say="round 2: the new draft passes all three"><span><span class="mk y">✓</span></span><span><span class="mk y">✓</span></span><span><span class="mk y">✓</span></span></div>
+</div>
 </div>
 <div class="right">
-<p class="chip">Max 3 rounds</p>
+<div class="cap"><p class="chip">Max 3 rounds</p><div class="dots"><i class="on"></i><i class="r2"></i><i></i></div><b class="rn"><span class="ra">Round 1 of 3</span><span class="rb">Round 2 of 3</span></b></div>
 <p class="lead ink">If the work still fails after 3 rounds, it stops and shows you why.</p>
-<p class="bubble" data-build-in="2">Notes back to Flyer Writer: add the room, and cut it to under 40 words.</p>
-<p class="callout" data-build-in="4">A checker only works if “done” is written down.</p>
+<p class="bubble" data-build-in="2" data-say="the notes go back">Notes back to Flyer Writer: add the room, and cut it to under 40 words.</p>
+<p class="callout" data-build-in="4" data-say="the last line">A checker only works if “done” is written down.</p>
 </div>
 </section>
 

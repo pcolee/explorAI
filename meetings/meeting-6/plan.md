@@ -19,7 +19,7 @@ Community college students, mixed majors, many beginners. Regulars saw Meeting 3
 - **tool**: something an agent can use besides writing, like a web search or a calculator. Our lab's agents only write and talk to each other.
 - **loop**: the agent keeps going (do, check, redo) without you typing each step.
 - **done when**: the checklist the work has to pass.
-- **lead** and **helper**: the lead hands out jobs and makes the final call. A helper does one job and reports only to its lead. (Other tools say "orchestrator" and "sub-agent"; say that once, then use lead and helper.)
+- **lead** and **helper**: the lead hands out jobs and makes the final call. A helper does one job and reports only to its lead. (Anthropic calls these the orchestrator and workers; OpenAI says manager and specialists. Say that once, then use lead and helper.)
 - **checker**: an agent that grades work against "done when" and sends it back with notes.
 - **agentic workflow**: agents passing work along a set path. Define it once, on the team slide.
 
@@ -40,10 +40,10 @@ Times are slide start times. The meeting is 2:00 to 3:00 pm.
 7. **recall-window** (2:12). Meeting 3's context window card (Meeting 5 recreated it on its callback slide), filled one layer per press, ending on the rule: "It can't read what you didn't put in the window."
 8. **session** (2:13). A chat is a window you keep filling. Three turns of a person steering a flyer by hand ("shorter", "add the room"), while a window meter grows because every message is sent again each turn.
 9. **pin** (2:15). Write the job once. The top layer of the window, "Instructions from the app", is now written by you. One short message then gets a good flyer in one turn. Apps do this behind the scenes; now you write it.
-10. **agent** (2:16). So what's an agent? The instruction card gains one labeled piece per press: Instructions (its job, written once), Tools (things it can use), Loop (it keeps going on its own), Done when (the checklist that tells it to stop). It ends as an agent card. Line: the same model, plus a written job, a loop, and a way to know it's done.
+10. **agent** (2:16). So what's an agent? The instruction card gains one labeled piece per press: Instructions (its job, written once), Tools (things it can use), Loop (it keeps going on its own), Done when (the checklist that tells it to stop). It ends as an agent card. Line: the same model, plus a written job, a loop, and a way to know it's done. Say once in the notes: real agents also use tools, like search or running code; ours only write, so they can't do anything outside the page.
 11. **loop** (2:18). The loop: think, do, check, then again or done. One press per step, with the flyer: round 1 fails (too long, no room), notes go back, round 2 passes. A round counter shows "Round 1 of 3": the cap is a guardrail, without it a loop can run forever.
 12. **part2** (2:20). Part 2 · Build one agent · One job, written well.
-13. **setup** (2:20). Open the lab (QR + short URL). Two paths: get a free Gemini key in Google AI Studio and paste it, or use practice mode (prewritten replies). Your key stays in your browser tab. Don't paste anything private.
+13. **setup** (2:20). Open the lab (QR + short URL). Two paths: get a free Gemini key in Google AI Studio and paste it, or use practice mode (prewritten replies). A key needs someone 18 or older with a personal Google account (not a school account); anyone else uses practice mode. Your key stays in your browser tab. On the free tier, Google may use what you type to improve its products, and people may read it, so don't paste anything private.
 14. **build1** (2:22). Build 1 · One agent, one job. Name it, give it one line of job, give it a task, run it. What did it get right? What did it guess? Timer 3:00. The pictured card matches the real lab.
 15. **structure** (2:26). Give it structure. Six labeled parts, one per press, each with a flyer example: Role, Goal, Steps, Rules, Output, Done when. Beside them, the window shows these fill the instructions slot. Tie back to Meeting 3's recipe (Role is Who, Goal is What and Why, Rules and Output are How). Line: same model, clearer job.
 16. **build2** (2:28). Build 2 · Add structure, run the same task again, compare. What did it stop guessing? Timer 5:00.
