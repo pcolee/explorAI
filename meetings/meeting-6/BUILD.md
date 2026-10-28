@@ -10,7 +10,7 @@ Deck v1: https://pcolee.github.io/explorAI/meetings/meeting-6/ · notes: https:/
 
 1. Pull (the hooks do it) and read **Working now** below before you edit anything in `meetings/meeting-6/`.
 2. To ask Sam's agents for a change, press `A` on the deck and leave a note (they read `node scripts/review.mjs inbox meetings/meeting-6/index.html` before every commit), or add a line under **Requests** below and push.
-3. Your edits win. Sam's agents pull before every commit and never overwrite or revert your changes. If you are already drafting a Meeting 6 deck somewhere else, push it or add a line under **Requests** first, so the two drafts don't collide.
+3. Your edits win. Sam's agents pull before every commit and never overwrite or revert your changes. Sam asked (2026-10-28) that his agents follow your direction whenever you edit: your wording, design, and structure win over their plan and their copy rules, and they fit their work around yours. If they think one of your lines should change, they ask here under **Requests** instead of changing it. If you are already drafting a Meeting 6 deck somewhere else, push it or add a line under **Requests** first, so the two drafts don't collide.
 4. Sam's agents stop pushing to `meetings/meeting-6/` at 13:30 on 2026-10-28 (meeting starts at 14:00).
 
 ## Working now
