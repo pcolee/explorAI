@@ -1,1 +1,5 @@
 .DS_Store
+# Browser checks (npm run test:browser): installed packages and their reports
+node_modules/
+test-results/
+playwright-report/
