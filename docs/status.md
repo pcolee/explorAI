@@ -2,7 +2,7 @@
 
 Where everything stands right now. `/handoff` rewrites this file in place (it is a snapshot, not a log). History and reasons go in `docs/agent-log.md`. Slide counts and last-change dates are computed by `scripts/context.sh`, so they are not repeated here.
 
-Last updated: 2026-10-28 by Cole.
+Last updated: 2026-10-29 by Sam.
 
 ## Meetings
 
@@ -26,4 +26,5 @@ Last updated: 2026-10-28 by Cole.
 - Presenter tools: on the deck laptop, `S` opens the presenter view and `M` shows a QR code for a phone or iPad remote. Several remotes can connect at once.
 - Starting Claude outside the repo folder: run `scripts/install-bridge.sh` once per machine so the hooks still run (Sam's machine has it).
 - Live review (Meeting 3 on): `A` in a deck to annotate, `I` for the notes inbox, `?view=review` for the board, `node scripts/review.mjs` for agents. Google sign-in, limited to each club's member list on the relay. The scripts and hooks are the shared coworking kit (same files in rcc-gdg and rcc-acm); ExplorAI's settings are in `scripts/coworking.conf`.
+- Browser checks (optional, nothing runs on push): `npm run test:browser` opens every deck in Chrome and Safari and the notes pages and lab on an iPhone-sized Safari. Setup: `docs/browser-checks.md`.
 - Watch for curly/typographic quotes when writing HTML — any `"…"` in attribute values breaks CSS and JS selectors. Only straight ASCII `"` works.

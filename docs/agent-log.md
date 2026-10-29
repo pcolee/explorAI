@@ -11,6 +11,16 @@ Remove a line once it is answered and note the answer in that day's entry.
 - Meeting 6 (2026-10-28): what is next week's (2026-11-04) topic for the thanks slide?
 
 <!-- newest entry below: add "## YYYY-MM-DD · Name (via Claude Code)" here and end it with a blank line -->
+## 2026-10-29 · Sam (via Claude Code)
+
+**Changed:**
+
+- `b91d2b4`: optional browser checks with Playwright, set up in `docs/browser-checks.md`. `npm run test:browser` opens every meeting deck in Chrome and desktop Safari (it must move on a Right press with no script error or missing repo file), and every `notes.html` plus the Meeting 6 lab on an iPhone-sized Safari (no sideways scroll). 28 of 28 passed twice. New files only (`package.json`, `playwright.config.mjs`, `tests/browser/`, the doc) plus `.gitignore` lines for `node_modules/` and the reports. No deck, notes page, or lab file changed. Nothing runs on push, and there's still no build step. The lab's own 41 node tests give the same result with and without these files, `scripts/check.sh` is green, and the live site rebuilt fine (every meeting and the lab return 200). The same setup is in rcc-acm and rcc-gdg.
+
+**Decided:** Sam: add Playwright and uv to all three clubs' repos. This repo has no Python, so uv is only a doc line for now.
+
+**Next:** Cole, nothing to do unless you want to run the checks. Your Meeting 6 rename request in `BUILD.md` isn't touched by this.
+
 
 ## 2026-10-28 · Cole (via Claude Code)
 
