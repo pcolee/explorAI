@@ -82,7 +82,7 @@ From Cole's prep checklist, in the order to do them:
 3. Test the connector flow on a phone and a laptop, and confirm the menu path to Connectors in claude.ai settings (n12 says "Settings, then Connectors").
 4. Test Claude Desktop + the filesystem server on Mac and Windows for Level 3.
 5. Write the one-page setup guide with screenshots. When it exists, add its QR to slide 17 and the decoded URL to the log.
-6. Done 2026-11-03: Cole set Meeting 8 (Nov 11) as "Study Smarter with AI" (building a study assistant; the title stays vague on purpose) and Meeting 9 (Nov 18) as "Lab: Automate One Boring Thing". The thanks slide has two cards, "Next week · Nov 11 · Study Smarter with AI" and "Nov 18 · Lab: Automation" (Meeting 9's public title, vague on purpose), and n18 says both.
+6. Done 2026-11-03: Cole set Meeting 8 (Nov 11) as "Study Smarter with AI" (building a study assistant; the title stays vague on purpose) and Meeting 9 (Nov 18) as "Lab: Automate One Boring Thing". The thanks slide has two cards, "Next week · Nov 11 · Study Smarter with AI" and "Nov 18 · Lab: Automation", and n18 says both. "Lab: Automation" is only how this deck announces it; Meeting 9's title stays "Lab: Automate One Boring Thing" (Cole).
 7. Speakers: assign who covers which part (`A` in the deck, or `?view=review`).
 
 ## QR targets (reused from Meeting 6, decoded from the Meeting 7 deck in Chrome on 2026-11-03)
