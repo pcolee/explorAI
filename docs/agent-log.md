@@ -10,6 +10,17 @@ Remove a line once it is answered and note the answer in that day's entry.
 - Sam's Fall 2026 plan ([rcc-explorai](https://github.com/Sam-T-G/rcc-explorai), session cards in `semesters/2026-fall/sessions/`) has each meeting start with a written prediction and end with one sentence for `rules.md`. Should decks in this repo include those steps?
 
 <!-- newest entry below: add "## YYYY-MM-DD · Name (via Claude Code)" here and end it with a blank line -->
+## 2026-11-04 · Cole (via Claude Code)
+
+**Changed:**
+- `meetings/meeting-7/index.html`, `notes.html`, `BUILD.md` (`e2cd347`): new slide 11 (`scale`), "MCP is how the industry connects AI to its tools", before the Part 2 divider. Three cards, one per press (AI companies that support MCP, 10,000+ public servers, one server inside a company), then press 4: given to the Linux Foundation in Dec 2025. New notes card n11; old n11 to n19 are now n12 to n20; `N` is 20. Source: Anthropic's announcement of the Agentic AI Foundation (Dec 2025); the 10,000+ is their figure from then. Checked in Chrome at 11/20: 4 presses, nothing past the slide edge, no console errors; `scripts/check.sh` green. Only slides 11 to 13 were walked, not the full deck.
+
+**Decided:** Cole asked for the slide before Part 2. It takes 1 minute from the Drive demo (Part 2 divider and Drive now start 2:22), so hands-on and everything after keep their times, as with the GitHub demo.
+
+**Issues:** No review comments were checked: this machine has no review agent token. The deck now has 20 slides and 20 notes cards.
+
+**Next:** Cole reviews the new slide (`A` on the deck), then the Needs a person list in `meetings/meeting-7/BUILD.md` before 2:00.
+
 ## 2026-11-03 · Cole (via Claude Code)
 
 **Changed:**
