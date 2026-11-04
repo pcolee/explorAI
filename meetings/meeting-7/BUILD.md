@@ -2,7 +2,7 @@
 
 Live board for the Meeting 7 deck. It is rewritten in place and pushed with every milestone, so the top of this file is always the current state. History goes in commit messages and `docs/agent-log.md`.
 
-**Last update:** 2026-11-03 18:30 PST · **Phase:** V1 (scaffold). Cole's agent is building v1 of the deck and notes from Cole's plan, on Meeting 6's engine and look.
+**Last update:** 2026-11-03 PST · **Phase:** V1 done. Deck (16 slides) and notes (16 cards) are built from Cole's plan on Meeting 6's engine and look, and pushed. Checked in Chrome: 44 presses forward and 44 back with real keys (0 mismatches), every slide fully built with nothing past the slide edge, no console errors, T starts and pauses both timers, the hook's connector switch flips on press 3, all three QRs decoded (below), notes load with 16 cards in order. Next: Cole reviews (`A` on the deck), then the **Needs a person** list.
 
 Deck: https://pcolee.github.io/explorAI/meetings/meeting-7/ · notes: https://pcolee.github.io/explorAI/meetings/meeting-7/notes.html
 
@@ -16,7 +16,7 @@ Deck: https://pcolee.github.io/explorAI/meetings/meeting-7/ · notes: https://pc
 
 | What | Files | Who | Since |
 |---|---|---|---|
-| Deck and notes v1 from Cole's plan | `index.html`, `notes.html`, this file | Cole's agent | 2026-11-03 18:30 |
+| Nobody. Cole's agent finished v1. | none | none | 2026-11-03 |
 
 ## Requests
 
@@ -40,7 +40,7 @@ Cole's plan is `meetings/meeting-7/content.md` (kept untracked, like Meetings 3,
 
 ## Slide plan
 
-The plan's agenda (Hook 0–5, What MCP is 5–13, Live demo 13–20, Hands-on 20–40, Discussion 40–47, Wrap 47–50) placed after the routine's cover and sign-in, starting at 2:04.
+The plan's agenda (Hook 0–5, What MCP is 5–13, Live demo 13–20, Hands-on 20–40, Discussion 40–47, Wrap 47–50) placed after the routine's cover and sign-in, starting at 2:04. All 16 slides are v1, checked in Chrome as described at the top.
 
 | # | id | Slide | Time | State |
 |---|---|---|---|---|
@@ -64,7 +64,8 @@ The plan's agenda (Hook 0–5, What MCP is 5–13, Live demo 13–20, Hands-on 2
 ## Decisions made while building
 
 - No explorAI Shares slide: Cole's plan has none. The routine puts Shares at 2:04, so the hook starts there instead. Add one under **Requests** if wanted. (Cole's agent, 2026-11-03)
-- The demo asks for "my doc about game night" so the slide shows a real prompt instead of "[topic]". The demo doc in Drive must match (see **Needs a person**), or change slide 10 and n10. The slide draws the answer as three grey lines, not made-up bullets. (Cole's agent, 2026-11-03)
+- The demo asks for "my doc about game night" so the slide shows a real prompt instead of "[topic]". Slide 10 shows it reading a doc named "Game Night Plan", and slide 8's tool call searches "game night". The demo doc in Drive must match (see **Needs a person**), or change slides 8 and 10 and n8, n10. The slide draws the answer as three grey lines, not made-up bullets. (Cole's agent, 2026-11-03)
+- Look: Meeting 6's cozy washes, taped notes, part cards on the cover and part slides, and its deck engine (back undoes one press, timers keep their count). New modules: a chat window with a connector switch (3), the nine-cables vs. one-plug drawing (6), the three parts with arrows (7), Meeting 6's loop ring beside Meeting 3's context window (8). (Cole's agent, 2026-11-03)
 - The hook's calendar answer on slide 3 is a labeled example ("Example calendar"), since the live answer comes from the presenter's own calendar. (Cole's agent, 2026-11-03)
 - Slide 14's two lists (fine to just do / ask first) are an addition that serves the plan's third objective; Cole can drop them and keep only the point to land. (Cole's agent, 2026-11-03)
 
@@ -72,7 +73,7 @@ The plan's agenda (Hook 0–5, What MCP is 5–13, Live demo 13–20, Hands-on 2
 
 From Cole's prep checklist, in the order to do them:
 
-1. Create the test Google account with sample docs and calendar events, and a demo doc in Drive named for game night (slide 10's prompt says "my doc about game night").
+1. Create the test Google account with sample docs and calendar events, and a demo doc in Drive named "Game Night Plan" (slide 10's prompt says "my doc about game night"). Share the test account's sign-in in person only, never in the repo.
 2. Check whether claude.ai connectors (Google Drive, Google Calendar) work on a free plan. If not, the notes already say to pair members up; say so on slide 11 too.
 3. Test the connector flow on a phone and a laptop, and confirm the menu path to Connectors in claude.ai settings (n10 says "Settings, then Connectors").
 4. Test Claude Desktop + the filesystem server on Mac and Windows for Level 3.
@@ -80,7 +81,7 @@ From Cole's prep checklist, in the order to do them:
 6. Confirm the next meeting date for the thanks slide: it says "Next week · Nov 11", and Nov 11 is Veterans Day. Also the topic (it says "Topic coming soon").
 7. Speakers: assign who covers which part (`A` in the deck, or `?view=review`).
 
-## QR targets (reused from Meeting 6)
+## QR targets (reused from Meeting 6, decoded from the Meeting 7 deck in Chrome on 2026-11-03)
 
 - Sign-in: `https://forms.gle/AAN5yiHXcajJvhAe8`
 - Instagram: `https://www.instagram.com/explorai.rcc`

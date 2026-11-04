@@ -1,0 +1,473 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="data:,">
+<title>ExplorAI Meeting 7: Connecting AI to Your Apps</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght,SOFT@0,400..700,0..100;1,400..700,0..100&family=DM+Sans:wght@400..700&display=swap">
+<style>
+:root{--ink:#3F5A2A;--body:#4D5845;--accent:#A8487A;--green:#D9E8AD;--pink:#F2C1D6;--mint:#F4F7E6;--cream:#FFFBF5;--card:#FFFEFB;--sand:#F4ECDD;--pinkwash:#FBE6EF;--leaf:#9CB57B;
+--display:'Fraunces',Georgia,serif;--sans:'DM Sans',Arial,sans-serif;--mono:ui-monospace,'SF Mono',Menlo,Consolas,monospace;--grad:linear-gradient(135deg,#D9E8AD 0%,#EAEFD2 45%,#F2C1D6 100%)}
+html,body{margin:0;height:100%;background:var(--mint);overflow:hidden}
+*{box-sizing:border-box}
+#stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:0 0}
+#stage>section{position:absolute;inset:0;width:1920px;height:1080px;overflow:hidden;color:var(--body);font-family:var(--sans);padding:128px 128px 160px;display:flex;flex-direction:column;justify-content:start;gap:40px;background:var(--cream)}
+#stage>section[hidden],#stage [hidden]{display:none!important}
+h1,h2,h3,p,ul,ol{margin:0}
+.grad{background:var(--grad)!important}
+.center{justify-content:center!important}
+.eyebrow{font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--accent)}
+.title{font-family:var(--display);font-size:140px;font-weight:600;line-height:1.1;color:var(--ink)}
+.divider{font-family:var(--display);font-size:160px;font-weight:600;line-height:1.1;color:var(--ink)}
+h2{font-family:var(--display);font-size:72px;font-weight:600;line-height:1.15;color:var(--ink)}
+h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;color:var(--ink)}
+.lead{font-size:32px;line-height:1.4}
+.lead.ink{color:var(--ink)}
+.sub{font-size:36px;line-height:1.4;color:var(--ink)}
+.card{background:var(--card);padding:36px;border:1.5px solid var(--green);border-radius:28px;display:flex;flex-direction:column;gap:12px;box-shadow:0 18px 36px -24px rgba(63,90,42,.35)}
+.card.pink{border-color:var(--pink)}
+.card p{font-size:28px;line-height:1.4}
+.row{display:flex;gap:32px}.row>*{flex:1}
+.qr{display:flex;flex-direction:column;align-items:center;gap:20px;background:var(--card);padding:32px;border:2px solid var(--green);border-radius:32px}
+.qr img{object-fit:contain}.qr p{font-size:28px;font-weight:700;color:var(--ink)}
+.qr.sm{padding:24px;gap:14px;border-radius:28px}
+.qr.sm p{font-size:24px;text-align:center}
+[data-build-in].pending{opacity:0;transform:translateY(24px)}
+#count{position:fixed;right:14px;bottom:10px;font:600 13px system-ui,sans-serif;color:#3F5A2A;opacity:.7}
+.timer{font-family:var(--display);font-size:96px;font-weight:600;color:var(--ink);background:rgba(255,255,255,.85);padding:12px 48px;border-radius:999px;font-variant-numeric:tabular-nums;align-self:start;box-shadow:0 16px 34px -20px rgba(63,90,42,.5)}
+.timer.done{background:rgba(242,193,214,.95);color:var(--accent)}
+.timer.paused{opacity:.55}
+@keyframes sOut{to{opacity:0;transform:translateY(-10px)}}
+@keyframes sIn{from{opacity:0;transform:translateY(10px)}}
+.s-out{animation:sOut .22s ease both;pointer-events:none}
+.s-in{animation:sIn .22s ease both}
+/* Meeting 4 to 6 look: soft paper grain, cozy washes, taped notes, chat bubbles. */
+#stage{font-variation-settings:'SOFT' 100}
+#stage>section{isolation:isolate}
+#stage>section::after{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:.07;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .25 0 0 0 0 .35 0 0 0 0 .16 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.cozy{background:radial-gradient(1100px 820px at 96% 0%,rgba(242,193,214,.6),transparent 62%),radial-gradient(1200px 900px at 0% 100%,rgba(217,232,173,.8),transparent 60%),var(--cream)!important}
+.cozy.alt{background:radial-gradient(1100px 820px at 96% 0%,rgba(217,232,173,.75),transparent 62%),radial-gradient(1200px 900px at 0% 100%,rgba(242,193,214,.55),transparent 60%),var(--cream)!important}
+.stmt{font-family:var(--display);font-size:88px;font-weight:600;line-height:1.1;color:var(--ink);max-width:1500px}
+.sticky{position:relative;rotate:var(--r,0deg);background:#FFFDF7;border-radius:22px;padding:40px 30px 28px;display:flex;flex-direction:column;gap:10px;box-shadow:0 1px 0 rgba(63,90,42,.05),0 22px 40px -22px rgba(63,90,42,.42)}
+.sticky::before{content:'';position:absolute;top:-15px;left:50%;width:128px;height:32px;margin-left:-64px;rotate:-3deg;background:rgba(242,193,214,.8);border-radius:6px}
+.sticky.p{background:#FDF1F6}
+.sticky.p::before{background:rgba(217,232,173,.95)}
+.sticky.g{background:#F5F9E8}
+.sticky b{font-family:var(--display);font-size:60px;font-weight:600;line-height:1;color:var(--ink);white-space:nowrap}
+.sticky.p b{color:var(--accent)}
+.sticky p{font-size:28px;line-height:1.38;color:var(--body)}
+.bubble{font-size:28px;line-height:1.38;color:var(--ink);background:var(--card);padding:20px 28px;border-radius:30px 30px 30px 8px;max-width:94%;align-self:start;box-shadow:0 14px 30px -18px rgba(63,90,42,.4)}
+.bubble.me{align-self:end;border-radius:30px 30px 8px 30px;background:var(--green)}
+.prompt{font-family:var(--mono);font-size:26px;line-height:1.55;color:var(--ink);background:rgba(244,247,230,.9);border-radius:22px;padding:22px 30px;box-shadow:inset 0 0 0 1.5px rgba(156,181,123,.45)}
+/* no one-word last lines */
+.title,.callout,.tr,.dq,.sticky p,.levels li{text-wrap:balance}
+.callout{font-size:30px;line-height:1.4;font-weight:600;color:var(--accent);background:var(--pinkwash);border-radius:28px;padding:24px 38px;box-shadow:inset 0 0 0 2px rgba(168,72,122,.35)}
+.frost{padding:22px 34px;gap:4px;border-radius:24px;background:rgba(255,255,255,.55);backdrop-filter:blur(16px) saturate(1.2);-webkit-backdrop-filter:blur(16px) saturate(1.2);border:1.5px solid rgba(255,255,255,.5);display:flex;flex-direction:column}
+.frost .t{font-size:32px;font-weight:700;color:var(--ink);font-family:var(--display);line-height:1.2}
+.chip{align-self:start;font-size:22px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:8px 20px;border-radius:999px;background:var(--pinkwash);color:var(--accent)}
+.chip.g{background:var(--green);color:var(--ink)}
+.tags{display:flex;flex-wrap:wrap;gap:12px}
+.tags span{font-size:24px;font-weight:700;padding:8px 22px;border-radius:999px;background:var(--green);color:var(--ink)}
+.tags.p span{background:var(--pinkwash);color:var(--accent)}
+.ic{width:64px;height:64px;padding:12px;border-radius:18px;background:var(--pinkwash);fill:none;stroke:var(--accent);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+/* Meeting 3's context window card */
+.win{border:3px solid var(--ink);border-radius:28px;padding:18px;display:flex;flex-direction:column;gap:10px;background:rgba(255,254,251,.7)}
+.blk{border:2px solid var(--leaf);border-radius:16px;padding:10px 20px;background:var(--card)}
+.blk b{display:block;font-family:var(--display);font-size:30px;font-weight:600;color:var(--ink)}
+.blk span{font-size:24px}
+.blk.next{border:2px dashed var(--accent);background:transparent}
+.blk.next b{color:var(--accent)}
+.blk.mine{border-color:var(--accent);background:var(--pinkwash)}
+.blk.mine b{color:var(--accent)}
+/* hook: a chat window. The same question fails, the Google Calendar connector turns on (press 3), then it answers */
+#stage>section#hook{display:grid;grid-template-columns:760px 1fr;column-gap:88px;padding:96px 128px}
+.hl{display:flex;flex-direction:column;justify-content:center;gap:40px}
+.hl .q{font-family:var(--display);font-size:84px;font-weight:600;line-height:1.1;color:var(--ink)}
+.hl .sticky{align-self:start;--r:-1.5deg}
+.chatwin{background:var(--card);border-radius:36px;box-shadow:inset 0 0 0 2px rgba(217,232,173,.9),0 36px 70px -36px rgba(63,90,42,.45);display:flex;flex-direction:column;overflow:hidden}
+.cw-top{display:flex;align-items:center;gap:14px;padding:22px 32px;border-bottom:2px solid rgba(217,232,173,.7);font-size:24px;font-weight:700;color:var(--ink)}
+.cw-top .chip{margin-left:auto;font-size:18px;padding:6px 16px}
+.cw-msgs{flex:1;display:flex;flex-direction:column;gap:18px;padding:28px 32px;overflow:hidden}
+.cw-msgs .bubble{font-size:26px;padding:16px 24px;box-shadow:none}
+.cw-msgs .bubble:not(.me){background:var(--mint)}
+.cw-msgs ul{margin:8px 0 0;padding-left:1.1em}
+.used{align-self:start;font-size:20px;font-weight:700;color:var(--ink);background:var(--card);border-radius:999px;padding:8px 18px;box-shadow:inset 0 0 0 1.5px rgba(156,181,123,.7)}
+.used::before{content:'✓ ';color:var(--leaf)}
+.cw-bottom{display:flex;align-items:center;gap:16px;padding:20px 32px;border-top:2px solid rgba(217,232,173,.7);background:rgba(244,247,230,.7);font-size:24px;font-weight:600;color:var(--ink)}
+.cw-bottom .lbl{font-size:18px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--body)}
+.tog{margin-left:auto;width:68px;height:38px;border-radius:19px;background:#D3D7CB;position:relative;transition:background .4s;flex:none}
+.tog::after{content:'';position:absolute;top:4px;left:4px;width:30px;height:30px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.2);transition:left .45s cubic-bezier(.34,1.56,.64,1)}
+.cw-bottom .st{min-width:2.2em;font-size:20px;font-weight:700;color:var(--body)}
+.cw-bottom .st::before{content:'Off'}
+#hook[data-s~="3"] .tog{background:var(--accent)}
+#hook[data-s~="3"] .tog::after{left:34px}
+#hook[data-s~="3"] .cw-bottom .st::before{content:'On';color:var(--accent)}
+#hook[data-s~="3"] .cw-bottom{background:var(--pinkwash)}
+/* define: the sentence, then the three words of the name on taped notes */
+.names{display:flex;gap:44px;margin-top:24px}
+.names .sticky{flex:1}
+.names .sticky:nth-child(1){--r:-1.2deg}.names .sticky:nth-child(2){--r:.8deg}.names .sticky:nth-child(3){--r:-.6deg}
+/* usb: a different connection for every pair, then one shared plug */
+#stage>section#usb{padding:96px 128px 96px;gap:36px}
+.cmp{display:flex;flex-direction:column;gap:12px;padding:28px 32px}
+.cmp svg{width:100%;height:auto;display:block}
+.cmp text{font:600 24px var(--sans);fill:var(--ink)}
+.cmp .cap{font-size:28px;font-weight:700;color:var(--ink)}
+.cmp .cap span{color:var(--accent)}
+/* parts: host, server, tools, joined by arrows */
+.trio{display:grid;grid-template-columns:1fr 72px 1fr 72px 1fr;align-items:stretch;margin-top:12px}
+.trio .card{gap:20px;padding:40px 36px}
+.trio .arr{align-self:center;text-align:center;font-family:var(--display);font-size:64px;color:var(--accent)}
+.trio .card p{font-size:30px;color:var(--ink)}
+.trio .k{font-size:22px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--body)}
+/* loop: Meeting 6's ring. Act lights with the tool call, Observe with the result in the window */
+#stage>section#loop{padding:88px 128px 80px;gap:28px}
+.loopwrap{display:grid;grid-template-columns:600px 1fr;column-gap:96px;align-items:center;flex:1}
+.ring{position:relative;width:600px;height:600px}
+.ring svg{position:absolute;inset:0;overflow:visible}
+.ring .mid{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);text-align:center;font-size:22px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--body);opacity:.8}
+.rn{position:absolute;transform:translate(-50%,-50%);font:600 40px var(--display);color:var(--ink);background:var(--card);padding:14px 34px;border-radius:999px;white-space:nowrap;box-shadow:inset 0 0 0 2.5px var(--green),0 14px 30px -18px rgba(63,90,42,.5);transition:background .4s,color .4s,box-shadow .4s}
+.rn.think{left:300px;top:70px}.rn.act{left:530px;top:300px}.rn.obs{left:300px;top:530px}.rn.rep{left:70px;top:300px}
+#loop[data-step="1"] .rn.act,#loop[data-step="2"] .rn.obs{background:var(--pinkwash);color:var(--accent);box-shadow:inset 0 0 0 3px rgba(168,72,122,.55),0 0 0 14px rgba(242,193,214,.35)}
+.lcol{display:flex;flex-direction:column;gap:20px}
+.lcol .card{padding:22px 30px;gap:12px}
+.lcol .prompt{padding:16px 26px}
+.lcol .win{padding:14px;gap:8px}
+.lcol .blk{padding:8px 18px}
+.lcol .blk b{font-size:28px}
+.lcol .eyebrow{font-size:22px}
+/* demo: the steps on the left, what to point at on the right */
+#stage>section.build{display:grid;grid-template-columns:1000px 1fr;grid-template-rows:auto 1fr;column-gap:72px;row-gap:36px;align-content:start;padding:88px 128px 96px}
+.build .head{grid-column:1/3;display:flex;flex-direction:column;gap:16px}
+.build .side-col{grid-column:2;grid-row:2;display:flex;flex-direction:column;gap:22px}
+.steps{list-style:none;padding:0;display:flex;flex-direction:column;gap:26px;counter-reset:s}
+.steps li{display:flex;gap:24px;font-size:30px;line-height:1.4;color:var(--ink)}
+.steps li::before{counter-increment:s;content:counter(s);font:600 46px/1 var(--display);color:var(--accent);min-width:1em}
+.steps li>div{display:flex;flex-direction:column;gap:14px}
+.side-col .eyebrow{font-size:22px}
+.tr{display:flex;align-items:center;gap:18px;background:var(--card);border-radius:22px;padding:18px 24px;font-size:26px;line-height:1.35;color:var(--ink);box-shadow:inset 0 0 0 1.5px rgba(217,232,173,.9),0 14px 30px -20px rgba(63,90,42,.45)}
+.tr .k{flex:none;font-size:18px;font-weight:700;letter-spacing:2px;text-transform:uppercase;background:var(--green);color:var(--ink);border-radius:999px;padding:6px 16px}
+.tr.ans{flex-direction:column;align-items:stretch;gap:12px}
+.tr.ans .k{align-self:start;background:var(--pinkwash);color:var(--accent)}
+.tr.ans i{display:block;height:14px;border-radius:7px;background:rgba(63,90,42,.18)}
+.side-col .sticky{margin-top:10px;--r:1deg;padding:36px 28px 24px}
+.side-col .sticky p{font-size:26px;color:var(--ink)}
+/* challenges: three levels across, the timer beside the headline */
+#stage>section#challenges{padding:88px 128px 96px;gap:40px}
+.chead{display:flex;align-items:flex-end;gap:48px}
+.chead>div{flex:1;display:flex;flex-direction:column;gap:16px}
+.chead .timer{align-self:end}
+.levels{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
+.levels .card{gap:20px;padding:36px 36px 40px}
+.levels ul{padding-left:1.1em;display:flex;flex-direction:column;gap:16px}
+.levels li{font-size:28px;line-height:1.4;color:var(--ink)}
+.levels li::marker{color:var(--accent)}
+.tips{display:flex;gap:32px}
+.tips p{flex:1;font-size:28px;line-height:1.4;font-weight:600;color:var(--ink);background:rgba(255,254,251,.7);border-radius:22px;padding:20px 30px;box-shadow:inset 0 0 0 2px rgba(217,232,173,.9)}
+/* discuss: one question per press, the timer on the right */
+#stage>section#discuss{display:grid;grid-template-columns:1fr 380px;grid-template-rows:auto 1fr;column-gap:64px;row-gap:36px;padding:88px 128px 96px}
+#discuss .head{grid-column:1/3;display:flex;flex-direction:column;gap:16px}
+#discuss .timer{grid-column:2;grid-row:2;align-self:start;justify-self:end}
+.dqs{grid-column:1;grid-row:2;display:flex;flex-direction:column;gap:22px}
+.dq{display:flex;gap:28px;align-items:baseline;font:600 44px/1.2 var(--display);color:var(--ink);background:rgba(255,254,251,.85);border-radius:32px;padding:28px 40px;box-shadow:inset 0 0 0 2px rgba(217,232,173,.75),0 24px 48px -30px rgba(63,90,42,.4)}
+.dq b{font-size:40px;color:var(--accent);min-width:.8em}
+/* point: fine to just do, ask first, then the point to land */
+.lists .card{gap:18px}
+.lists ul{list-style:none;padding:0;display:flex;flex-direction:column;gap:14px}
+.lists li{font-size:30px;line-height:1.35;color:var(--ink);display:flex;gap:16px;align-items:center}
+.lists li::before{content:'✓';flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-size:24px;font-weight:700;background:var(--green);color:var(--ink)}
+.lists .pink li::before{content:'?';background:var(--pinkwash);color:var(--accent)}
+.lists .pink h3{color:var(--accent)}
+#point .callout{font-size:36px;padding:28px 44px}
+/* takeaway */
+#takeaway .tags span{font-size:28px;padding:12px 28px;background:rgba(255,254,251,.8)}
+#takeaway .tags span b{color:var(--accent)}
+/* thanks: the next-week card hugs its text */
+.frost .eyebrow{font-size:22px}
+#thanks .frost{align-self:start;padding-right:56px}
+/* cover and part dividers: the meeting's three parts drawn small; the part on screen is lit */
+.map{display:flex;gap:36px;margin-top:28px}
+.map figure{margin:0;width:420px;display:flex;flex-direction:column;gap:16px;animation:rise .7s cubic-bezier(.2,.8,.2,1) backwards;animation-delay:calc(.3s + var(--j,0) * 100ms)}
+.map figure:nth-child(2){--j:1}.map figure:nth-child(3){--j:2}
+.map .mt{height:236px;border-radius:28px;padding:24px 40px;background:rgba(255,254,251,.72);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;box-shadow:inset 0 0 0 2px rgba(217,232,173,.9),0 24px 48px -30px rgba(63,90,42,.45);transition:box-shadow .6s}
+.map figcaption{display:flex;align-items:baseline;gap:12px;font-size:22px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink)}
+.map figcaption b{font-family:var(--display);font-size:32px;font-weight:600;letter-spacing:0;color:var(--accent)}
+#part1 .map figure:not(:nth-child(1)),#part2 .map figure:not(:nth-child(2)),#part3 .map figure:not(:nth-child(3)){opacity:.4}
+#part1 .map figure:nth-child(1) .mt,#part2 .map figure:nth-child(2) .mt,#part3 .map figure:nth-child(3) .mt{box-shadow:inset 0 0 0 3px rgba(168,72,122,.55),0 0 0 10px rgba(242,193,214,.35),0 24px 48px -30px rgba(63,90,42,.45)}
+.mt svg{width:340px;height:190px;overflow:visible}
+#stage>section.pdiv{padding-top:96px;padding-bottom:120px}
+/* Motion from Meetings 4 to 6: things settle in softly, in reading order, and replay each time a slide shows. */
+[data-build-in]:not(.pending){animation:softIn .55s cubic-bezier(.2,.8,.2,1) backwards}
+.w{display:inline-block;animation:wordIn .6s cubic-bezier(.2,.8,.2,1) backwards;animation-delay:calc(var(--o,.08s) + var(--w,0) * 38ms)}
+.eyebrow,.lead:not([data-build-in]),.sub:not([data-build-in]){animation:fadeIn .7s ease .1s backwards}
+.card:not([data-build-in]),.chatwin,.win,.ring{animation:rise .7s cubic-bezier(.2,.8,.2,1) backwards}
+.qr{animation:pop .6s cubic-bezier(.34,1.56,.64,1) .3s backwards}
+.qr+.qr{animation-delay:.42s}
+.timer{animation:pop .6s cubic-bezier(.34,1.56,.64,1) .2s backwards}
+.timer.done{animation:ding .8s cubic-bezier(.34,1.56,.64,1)}
+.sticky:not(.pending){animation:place .75s cubic-bezier(.2,.8,.2,1) backwards}
+.sticky:not(.pending)::before{animation:tape .4s cubic-bezier(.2,.8,.2,1) .42s backwards}
+.frost{animation:rise .7s cubic-bezier(.2,.8,.2,1) .2s backwards}
+.rn{animation:pop .5s cubic-bezier(.34,1.56,.64,1) backwards}
+.rn.act{animation-delay:.1s}.rn.obs{animation-delay:.2s}.rn.rep{animation-delay:.3s}
+.bubble[data-build-in]:not(.pending){animation:bubbleIn .55s cubic-bezier(.34,1.4,.64,1) backwards}
+@keyframes softIn{from{opacity:0;translate:0 22px;filter:blur(4px)}}
+@keyframes wordIn{from{opacity:0;translate:0 .3em;filter:blur(6px)}}
+@keyframes fadeIn{from{opacity:0}}
+@keyframes rise{from{opacity:0;translate:0 28px;scale:.98}}
+@keyframes pop{from{opacity:0;scale:.6}}
+@keyframes ding{30%{scale:1.1}60%{scale:.97}}
+@keyframes place{0%{opacity:0;translate:0 -40px;scale:1.07;rotate:calc(var(--r,0deg) - 5deg)}60%{opacity:1;translate:0 3px;scale:.995;rotate:calc(var(--r,0deg) + .8deg)}}
+@keyframes tape{from{opacity:0;scale:.2 1}}
+@keyframes bubbleIn{0%{opacity:0;scale:.7;translate:0 14px}60%{opacity:1}}
+@media (prefers-reduced-motion:reduce){#stage *,#stage *::before,#stage *::after{animation:none!important;transition:none!important}}
+</style></head><body>
+<div id="stage">
+
+<section id="cover" class="grad center pdiv">
+<p class="eyebrow">ExplorAI · Meeting 7</p>
+<h1 class="title">Connecting AI to Your Apps</h1>
+<p class="sub">What MCP is and how to use it</p>
+<p class="lead ink">Wed, Nov 4 · 2–3pm · CIS A-204</p>
+<div class="map"><figure><div class="mt"><svg viewBox="0 0 340 190"><path d="M100,95 L135,95 M205,95 C222,95 222,40 240,40 M205,95 L240,95 M205,95 C222,95 222,150 240,150" fill="none" stroke="rgba(156,181,123,.8)" stroke-width="4" stroke-linecap="round"/><rect x="10" y="65" width="90" height="60" rx="16" fill="#D9E8AD"/><rect x="28" y="91" width="54" height="8" rx="4" fill="rgba(63,90,42,.35)"/><rect x="135" y="78" width="70" height="34" rx="17" fill="#A8487A"/><rect x="152" y="91" width="36" height="8" rx="4" fill="rgba(255,255,255,.75)"/><rect x="240" y="24" width="90" height="32" rx="12" fill="#FFFEFB" stroke="#D9E8AD" stroke-width="2.5"/><rect x="240" y="79" width="90" height="32" rx="12" fill="#FFFEFB" stroke="#D9E8AD" stroke-width="2.5"/><rect x="240" y="134" width="90" height="32" rx="12" fill="#FFFEFB" stroke="#D9E8AD" stroke-width="2.5"/></svg></div><figcaption><b>1</b>What MCP is</figcaption></figure><figure><div class="mt"><svg viewBox="0 0 340 190"><rect x="130" y="10" width="200" height="44" rx="22" fill="#D9E8AD"/><rect x="152" y="28" width="120" height="8" rx="4" fill="rgba(63,90,42,.3)"/><rect x="10" y="68" width="230" height="44" rx="22" fill="#FFFEFB" stroke="#D9E8AD" stroke-width="2.5"/><rect x="32" y="86" width="150" height="8" rx="4" fill="rgba(63,90,42,.25)"/><rect x="10" y="132" width="320" height="48" rx="16" fill="#FBE6EF"/><rect x="30" y="152" width="140" height="8" rx="4" fill="rgba(168,72,122,.45)"/><rect x="262" y="140" width="56" height="32" rx="16" fill="#A8487A"/><circle cx="302" cy="156" r="12" fill="#fff"/></svg></div><figcaption><b>2</b>Connect an app</figcaption></figure><figure><div class="mt"><svg viewBox="0 0 340 190"><rect x="10" y="22" width="320" height="64" rx="20" fill="#FFFEFB" stroke="#D9E8AD" stroke-width="2.5"/><circle cx="48" cy="54" r="18" fill="#D9E8AD"/><path d="M40,54 l6,6 l11,-12" fill="none" stroke="#3F5A2A" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="82" y="50" width="170" height="8" rx="4" fill="rgba(63,90,42,.25)"/><rect x="10" y="104" width="320" height="64" rx="20" fill="#FBE6EF" stroke="rgba(168,72,122,.45)" stroke-width="2.5"/><circle cx="48" cy="136" r="18" fill="#A8487A"/><text x="48" y="144" text-anchor="middle" font-family="DM Sans,Arial,sans-serif" font-size="24" font-weight="700" fill="#fff">?</text><rect x="82" y="132" width="140" height="8" rx="4" fill="rgba(168,72,122,.45)"/></svg></div><figcaption><b>3</b>Ask first</figcaption></figure></div>
+</section>
+
+<section id="signin" class="grad center" aria-label="Sign in">
+<div style="display:flex;align-items:center;gap:96px;flex:1"><div style="flex:1;display:flex;flex-direction:column;gap:36px"><p class="eyebrow">ExplorAI · Meeting 7</p><h1 class="title">Connecting AI to Your Apps</h1><p class="lead ink">Wed, Nov 4 · 2–3pm · CIS A-204</p>
+</div>
+<div class="qr"><img src="data:image/png;base64,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" alt="QR code: Sign in here!" style="width:400px;height:400px"><p>Sign in here!</p></div></div>
+</section>
+
+<section id="hook" class="cozy">
+<div class="hl">
+<p class="eyebrow">Same question, twice</p>
+<p class="q">“What’s on my calendar this week?”</p>
+<div class="sticky p" data-build-in="2" data-say="ask the room why"><p class="eyebrow" style="font-size:22px">Your turn</p><p style="font-family:var(--display);font-size:48px;font-weight:600;line-height:1.15;color:var(--accent)">Why can’t it answer?</p></div>
+<p class="callout" data-build-in="5" data-say="the line to land">Same model, same question. The only difference is it can now reach your app.</p>
+</div>
+<div class="chatwin">
+<div class="cw-top">New chat<span class="chip g">Example calendar</span></div>
+<div class="cw-msgs">
+<p class="bubble me">What’s on my calendar this week?</p>
+<p class="bubble" data-build-in="1" data-say="it can't answer">I can’t see your calendar. I only know what’s in this chat. You could paste your schedule here.</p>
+<span hidden data-build-in="3" data-say="turn on Google Calendar"></span>
+<p class="bubble me" data-build-in="4" data-say="same question, and it answers">What’s on my calendar this week?</p>
+<p class="used" data-build-in="4">Used Google Calendar · list events</p>
+<div class="bubble" data-build-in="4">Here’s your week:<ul><li>Mon 10am · CIS 5 lecture</li><li>Wed 2pm · ExplorAI meeting</li><li>Thu 6pm · Study group</li></ul></div>
+</div>
+<div class="cw-bottom"><span class="lbl">Connector</span>📅 Google Calendar<span class="tog"></span><span class="st"></span></div>
+</div>
+</section>
+
+<section id="part1" class="grad center pdiv">
+<p class="eyebrow">Part 1</p>
+<h1 class="divider">What MCP is</h1>
+<p class="sub">One standard way for AI to reach your apps.</p>
+<div class="map"><figure><div class="mt"><svg viewBox="0 0 340 190"><path d="M100,95 L135,95 M205,95 C222,95 222,40 240,40 M205,95 L240,95 M205,95 C222,95 222,150 240,150" fill="none" stroke="rgba(156,181,123,.8)" stroke-width="4" stroke-linecap="round"/><rect x="10" y="65" width="90" height="60" rx="16" fill="#D9E8AD"/><rect x="28" y="91" width="54" height="8" rx="4" fill="rgba(63,90,42,.35)"/><rect x="135" y="78" width="70" height="34" rx="17" fill="#A8487A"/><rect x="152" y="91" width="36" height="8" rx="4" fill="rgba(255,255,255,.75)"/><rect x="240" y="24" width="90" height="32" rx="12" fill="#FFFEFB" stroke="#D9E8AD" stroke-width="2.5"/><rect x="240" y="79" width="90" height="32" rx="12" fill="#FFFEFB" stroke="#D9E8AD" stroke-width="2.5"/><rect x="240" y="134" width="90" height="32" rx="12" fill="#FFFEFB" stroke="#D9E8AD" stroke-width="2.5"/></svg></div><figcaption><b>1</b>What MCP is</figcaption></figure><figure><div class="mt"><svg viewBox="0 0 340 190"><rect x="130" y="10" width="200" height="44" rx="22" fill="#D9E8AD"/><rect x="152" y="28" width="120" height="8" rx="4" fill="rgba(63,90,42,.3)"/><rect x="10" y="68" width="230" height="44" rx="22" fill="#FFFEFB" stroke="#D9E8AD" stroke-width="2.5"/><rect x="32" y="86" width="150" height="8" rx="4" fill="rgba(63,90,42,.25)"/><rect x="10" y="132" width="320" height="48" rx="16" fill="#FBE6EF"/><rect x="30" y="152" width="140" height="8" rx="4" fill="rgba(168,72,122,.45)"/><rect x="262" y="140" width="56" height="32" rx="16" fill="#A8487A"/><circle cx="302" cy="156" r="12" fill="#fff"/></svg></div><figcaption><b>2</b>Connect an app</figcaption></figure><figure><div class="mt"><svg viewBox="0 0 340 190"><rect x="10" y="22" width="320" height="64" rx="20" fill="#FFFEFB" stroke="#D9E8AD" stroke-width="2.5"/><circle cx="48" cy="54" r="18" fill="#D9E8AD"/><path d="M40,54 l6,6 l11,-12" fill="none" stroke="#3F5A2A" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="82" y="50" width="170" height="8" rx="4" fill="rgba(63,90,42,.25)"/><rect x="10" y="104" width="320" height="64" rx="20" fill="#FBE6EF" stroke="rgba(168,72,122,.45)" stroke-width="2.5"/><circle cx="48" cy="136" r="18" fill="#A8487A"/><text x="48" y="144" text-anchor="middle" font-family="DM Sans,Arial,sans-serif" font-size="24" font-weight="700" fill="#fff">?</text><rect x="82" y="132" width="140" height="8" rx="4" fill="rgba(168,72,122,.45)"/></svg></div><figcaption><b>3</b>Ask first</figcaption></figure></div>
+</section>
+
+<section id="define" class="cozy alt center">
+<p class="eyebrow">MCP · Model Context Protocol</p>
+<h2 class="stmt">One standard way for AI to connect to apps and tools.</h2>
+<div class="names">
+<div class="sticky" data-build-in="1" data-say="Model"><b>Model</b><p>The AI itself, like Claude.</p></div>
+<div class="sticky p" data-build-in="2" data-say="Context"><b>Context</b><p>What it can read right now: Meeting 3’s context window.</p></div>
+<div class="sticky g" data-build-in="3" data-say="Protocol"><b>Protocol</b><p>Rules both sides agree on, so they can talk to each other.</p></div>
+</div>
+</section>
+
+<section id="usb" class="cozy">
+<h2>MCP is like USB for AI.</h2>
+<div class="row">
+<div class="card cmp" data-build-in="1" data-say="before: a cable for every pair">
+<svg viewBox="0 0 760 400" aria-label="Three AI apps and three apps, joined by nine different connections">
+<g fill="none" stroke-width="4" stroke-linecap="round">
+<path d="M220,66 C380,66 380,66 540,66" stroke="#3F5A2A"/><path d="M220,66 C380,66 380,200 540,200" stroke="#A8487A" stroke-dasharray="14 10"/><path d="M220,66 C380,66 380,334 540,334" stroke="#9CB57B" stroke-dasharray="4 10"/>
+<path d="M220,200 C380,200 380,66 540,66" stroke="#E08600"/><path d="M220,200 C380,200 380,200 540,200" stroke="#007AFF" stroke-dasharray="20 8 4 8"/><path d="M220,200 C380,200 380,334 540,334" stroke="#AF52DE"/>
+<path d="M220,334 C380,334 380,66 540,66" stroke="#34C759" stroke-dasharray="14 10"/><path d="M220,334 C380,334 380,200 540,200" stroke="#FF375F" stroke-dasharray="4 10"/><path d="M220,334 C380,334 380,334 540,334" stroke="#4D5845" stroke-dasharray="20 8 4 8"/>
+</g>
+<g fill="#FFFEFB" stroke="#D9E8AD" stroke-width="3"><rect x="20" y="30" width="200" height="72" rx="20"/><rect x="20" y="164" width="200" height="72" rx="20"/><rect x="20" y="298" width="200" height="72" rx="20"/><rect x="540" y="30" width="200" height="72" rx="20"/><rect x="540" y="164" width="200" height="72" rx="20"/><rect x="540" y="298" width="200" height="72" rx="20"/></g>
+<g text-anchor="middle"><text x="120" y="75">Claude</text><text x="120" y="209">Cursor</text><text x="120" y="343">Another AI app</text><text x="640" y="75">Google Drive</text><text x="640" y="209">GitHub</text><text x="640" y="343">Notion</text></g>
+</svg>
+<p class="cap">Before: <span>9 different connections</span>, one for every pair.</p>
+</div>
+<div class="card cmp" data-build-in="2" data-say="with MCP: one plug">
+<svg viewBox="0 0 760 400" aria-label="The same apps, each joined once to one shared MCP plug">
+<g fill="none" stroke="#3F5A2A" stroke-width="4" stroke-linecap="round"><path d="M220,66 C285,66 285,200 320,200"/><path d="M220,200 L320,200"/><path d="M220,334 C285,334 285,200 320,200"/><path d="M440,200 C475,200 475,66 540,66"/><path d="M440,200 L540,200"/><path d="M440,200 C475,200 475,334 540,334"/></g>
+<g fill="#FFFEFB" stroke="#D9E8AD" stroke-width="3"><rect x="20" y="30" width="200" height="72" rx="20"/><rect x="20" y="164" width="200" height="72" rx="20"/><rect x="20" y="298" width="200" height="72" rx="20"/><rect x="540" y="30" width="200" height="72" rx="20"/><rect x="540" y="164" width="200" height="72" rx="20"/><rect x="540" y="298" width="200" height="72" rx="20"/></g>
+<g fill="#A8487A"><rect x="208" y="54" width="16" height="24" rx="4"/><rect x="208" y="188" width="16" height="24" rx="4"/><rect x="208" y="322" width="16" height="24" rx="4"/><rect x="536" y="54" width="16" height="24" rx="4"/><rect x="536" y="188" width="16" height="24" rx="4"/><rect x="536" y="322" width="16" height="24" rx="4"/></g>
+<rect x="320" y="166" width="120" height="68" rx="34" fill="#A8487A"/>
+<g text-anchor="middle"><text x="120" y="75">Claude</text><text x="120" y="209">Cursor</text><text x="120" y="343">Another AI app</text><text x="640" y="75">Google Drive</text><text x="640" y="209">GitHub</text><text x="640" y="343">Notion</text><text x="380" y="210" style="fill:#fff;font-size:28px;font-weight:700">MCP</text></g>
+</svg>
+<p class="cap">With MCP: <span>one plug</span> on each side.</p>
+</div>
+</div>
+<p class="callout" data-build-in="3" data-say="any AI, any app">Any AI that supports MCP can use any app that supports it.</p>
+</section>
+
+<section id="parts" class="cozy alt">
+<p class="eyebrow">How it fits together</p>
+<h2>Three parts work together.</h2>
+<div class="trio">
+<div class="card" data-build-in="1" data-say="host / client"><svg class="ic" viewBox="0 0 24 24"><path d="M4 5h16v11H10l-5 4v-4H4z"/><path d="M8 9.5h8M8 12.5h5"/></svg><p class="k">Host / client</p><p>The AI app you use.</p><div class="tags"><span>Claude</span><span>Cursor</span></div></div>
+<p class="arr" data-build-in="2">→</p>
+<div class="card" data-build-in="2" data-say="server"><svg class="ic" viewBox="0 0 24 24"><path d="M9 3v5M15 3v5"/><path d="M6 8h12v3a6 6 0 0 1-12 0z"/><path d="M12 17v4"/></svg><p class="k">Server</p><p>The connector for one app.</p><div class="tags"><span>Google Drive</span><span>GitHub</span><span>Notion</span></div></div>
+<p class="arr" data-build-in="3">→</p>
+<div class="card pink" data-build-in="3" data-say="tools"><svg class="ic" viewBox="0 0 24 24"><path d="M14.5 5.5a4.2 4.2 0 0 0-5.6 5.3L3.5 16.2a1.9 1.9 0 0 0 2.7 2.7l5.4-5.4a4.2 4.2 0 0 0 5.3-5.6l-2.6 2.6-2.3-.4-.4-2.3z"/></svg><p class="k">Tools</p><p>The actions a server offers.</p><div class="tags p"><span>search files</span><span>read a doc</span><span>list events</span></div></div>
+</div>
+<p class="callout" data-build-in="4" data-say="how they work together">Claude calls a tool. The server does it in the app. The result comes back to Claude.</p>
+</section>
+
+<section id="loop" class="cozy">
+<h2>Last week’s loop, now with a real tool.</h2>
+<div class="loopwrap">
+<div class="ring">
+<svg viewBox="0 0 600 600"><circle cx="300" cy="300" r="230" fill="none" stroke="#9CB57B" stroke-width="4" stroke-dasharray="2 14" stroke-linecap="round"/><g fill="none" stroke="#9CB57B" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M-10,-12 L6,0 L-10,12" transform="translate(462.6,137.4) rotate(45)"/><path d="M-10,-12 L6,0 L-10,12" transform="translate(462.6,462.6) rotate(135)"/><path d="M-10,-12 L6,0 L-10,12" transform="translate(137.4,462.6) rotate(225)"/><path d="M-10,-12 L6,0 L-10,12" transform="translate(137.4,137.4) rotate(315)"/></g></svg>
+<p class="mid">An agent<br>from Meeting 6</p>
+<span class="rn think">Think</span><span class="rn act">Act</span><span class="rn obs">Observe</span><span class="rn rep">Repeat</span>
+</div>
+<div class="lcol">
+<div class="card" data-build-in="1" data-say="act is a tool call"><p class="eyebrow">Act = a tool call</p><p class="prompt">Google Drive › search files<br>“game night”</p></div>
+<div class="card" data-build-in="2" data-say="the result goes in the window"><p class="eyebrow">Observe = the result goes in its context window</p>
+<div class="win"><div class="blk"><b>Instructions from the app</b></div><div class="blk"><b>Your message</b><span>Find my doc about game night…</span></div><div class="blk mine"><b>Tool result</b><span>The doc’s text, from Google Drive</span></div><div class="blk next"><b>Its reply</b></div></div></div>
+<p class="callout" data-build-in="3" data-say="a server is a bundle of tools">An MCP server is a bundle of tools the agent can call in this loop.</p>
+</div>
+</div>
+</section>
+
+<section id="part2" class="grad center pdiv">
+<p class="eyebrow">Part 2</p>
+<h1 class="divider">Connect an app</h1>
+<p class="sub">Watch one connection, then make your own.</p>
+<div class="map"><figure><div class="mt"><svg viewBox="0 0 340 190"><path d="M100,95 L135,95 M205,95 C222,95 222,40 240,40 M205,95 L240,95 M205,95 C222,95 222,150 240,150" fill="none" stroke="rgba(156,181,123,.8)" stroke-width="4" stroke-linecap="round"/><rect x="10" y="65" width="90" height="60" rx="16" fill="#D9E8AD"/><rect x="28" y="91" width="54" height="8" rx="4" fill="rgba(63,90,42,.35)"/><rect x="135" y="78" width="70" height="34" rx="17" fill="#A8487A"/><rect x="152" y="91" width="36" height="8" rx="4" fill="rgba(255,255,255,.75)"/><rect x="240" y="24" width="90" height="32" rx="12" fill="#FFFEFB" stroke="#D9E8AD" stroke-width="2.5"/><rect x="240" y="79" width="90" height="32" rx="12" fill="#FFFEFB" stroke="#D9E8AD" stroke-width="2.5"/><rect x="240" y="134" width="90" height="32" rx="12" fill="#FFFEFB" stroke="#D9E8AD" stroke-width="2.5"/></svg></div><figcaption><b>1</b>What MCP is</figcaption></figure><figure><div class="mt"><svg viewBox="0 0 340 190"><rect x="130" y="10" width="200" height="44" rx="22" fill="#D9E8AD"/><rect x="152" y="28" width="120" height="8" rx="4" fill="rgba(63,90,42,.3)"/><rect x="10" y="68" width="230" height="44" rx="22" fill="#FFFEFB" stroke="#D9E8AD" stroke-width="2.5"/><rect x="32" y="86" width="150" height="8" rx="4" fill="rgba(63,90,42,.25)"/><rect x="10" y="132" width="320" height="48" rx="16" fill="#FBE6EF"/><rect x="30" y="152" width="140" height="8" rx="4" fill="rgba(168,72,122,.45)"/><rect x="262" y="140" width="56" height="32" rx="16" fill="#A8487A"/><circle cx="302" cy="156" r="12" fill="#fff"/></svg></div><figcaption><b>2</b>Connect an app</figcaption></figure><figure><div class="mt"><svg viewBox="0 0 340 190"><rect x="10" y="22" width="320" height="64" rx="20" fill="#FFFEFB" stroke="#D9E8AD" stroke-width="2.5"/><circle cx="48" cy="54" r="18" fill="#D9E8AD"/><path d="M40,54 l6,6 l11,-12" fill="none" stroke="#3F5A2A" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="82" y="50" width="170" height="8" rx="4" fill="rgba(63,90,42,.25)"/><rect x="10" y="104" width="320" height="64" rx="20" fill="#FBE6EF" stroke="rgba(168,72,122,.45)" stroke-width="2.5"/><circle cx="48" cy="136" r="18" fill="#A8487A"/><text x="48" y="144" text-anchor="middle" font-family="DM Sans,Arial,sans-serif" font-size="24" font-weight="700" fill="#fff">?</text><rect x="82" y="132" width="140" height="8" rx="4" fill="rgba(168,72,122,.45)"/></svg></div><figcaption><b>3</b>Ask first</figcaption></figure></div>
+</section>
+
+<section id="demo" class="build cozy alt">
+<div class="head"><p class="eyebrow">Live demo · Google Drive</p><h2>Connect Google Drive, then ask about a doc.</h2></div>
+<ol class="steps">
+<li><div>Open Settings in claude.ai and find Connectors.</div></li>
+<li><div>Connect Google Drive and approve what it can see.</div></li>
+<li><div>Ask:<p class="prompt">Find my doc about game night and summarize it in 3 bullets.</p></div></li>
+<li><div>Watch the tool calls as they show up.</div></li>
+</ol>
+<div class="side-col">
+<p class="eyebrow">What it did</p>
+<p class="tr" data-build-in="1" data-say="it searched"><span class="k">Search</span>Searched Google Drive for “game night”</p>
+<p class="tr" data-build-in="2" data-say="then it read"><span class="k">Read</span>Read Game Night Plan</p>
+<div class="tr ans" data-build-in="3" data-say="then it answered"><span class="k">Answer</span><i style="width:92%"></i><i style="width:78%"></i><i style="width:85%"></i></div>
+<div class="sticky p" data-build-in="4" data-say="who chose what"><p>It picked the tools and the order. You picked what it can reach.</p></div>
+</div>
+</section>
+
+<section id="challenges" class="cozy">
+<div class="chead"><div><p class="eyebrow">Hands-on · 20 minutes</p><h2>Connect one app. Then try as many as you can.</h2></div><p class="timer" data-seconds="1200">20:00</p></div>
+<div class="levels">
+<div class="card"><p class="chip g">Level 1</p><ul><li>Find a doc in your Drive and summarize it.</li><li>Ask Claude what your busiest day this week is.</li></ul></div>
+<div class="card"><p class="chip g">Level 2</p><ul><li>Combine two apps: “Based on my calendar, when can I study for my exam this week?”</li><li>Ask Claude to find every doc you edited this month and group them by topic.</li></ul></div>
+<div class="card pink"><p class="chip">Level 3 · Bonus</p><ul><li>Install Claude Desktop and connect the filesystem server.</li><li>Ask it to summarize the notes in a folder, or sort a folder’s files by type.</li></ul></div>
+</div>
+<div class="tips"><p>No account, or rather not use yours? Pair up with a neighbor.</p><p>Done early? Help the person next to you connect.</p></div>
+</section>
+
+<section id="part3" class="grad center pdiv">
+<p class="eyebrow">Part 3</p>
+<h1 class="divider">Ask first</h1>
+<p class="sub">What should an agent never do without asking?</p>
+<div class="map"><figure><div class="mt"><svg viewBox="0 0 340 190"><path d="M100,95 L135,95 M205,95 C222,95 222,40 240,40 M205,95 L240,95 M205,95 C222,95 222,150 240,150" fill="none" stroke="rgba(156,181,123,.8)" stroke-width="4" stroke-linecap="round"/><rect x="10" y="65" width="90" height="60" rx="16" fill="#D9E8AD"/><rect x="28" y="91" width="54" height="8" rx="4" fill="rgba(63,90,42,.35)"/><rect x="135" y="78" width="70" height="34" rx="17" fill="#A8487A"/><rect x="152" y="91" width="36" height="8" rx="4" fill="rgba(255,255,255,.75)"/><rect x="240" y="24" width="90" height="32" rx="12" fill="#FFFEFB" stroke="#D9E8AD" stroke-width="2.5"/><rect x="240" y="79" width="90" height="32" rx="12" fill="#FFFEFB" stroke="#D9E8AD" stroke-width="2.5"/><rect x="240" y="134" width="90" height="32" rx="12" fill="#FFFEFB" stroke="#D9E8AD" stroke-width="2.5"/></svg></div><figcaption><b>1</b>What MCP is</figcaption></figure><figure><div class="mt"><svg viewBox="0 0 340 190"><rect x="130" y="10" width="200" height="44" rx="22" fill="#D9E8AD"/><rect x="152" y="28" width="120" height="8" rx="4" fill="rgba(63,90,42,.3)"/><rect x="10" y="68" width="230" height="44" rx="22" fill="#FFFEFB" stroke="#D9E8AD" stroke-width="2.5"/><rect x="32" y="86" width="150" height="8" rx="4" fill="rgba(63,90,42,.25)"/><rect x="10" y="132" width="320" height="48" rx="16" fill="#FBE6EF"/><rect x="30" y="152" width="140" height="8" rx="4" fill="rgba(168,72,122,.45)"/><rect x="262" y="140" width="56" height="32" rx="16" fill="#A8487A"/><circle cx="302" cy="156" r="12" fill="#fff"/></svg></div><figcaption><b>2</b>Connect an app</figcaption></figure><figure><div class="mt"><svg viewBox="0 0 340 190"><rect x="10" y="22" width="320" height="64" rx="20" fill="#FFFEFB" stroke="#D9E8AD" stroke-width="2.5"/><circle cx="48" cy="54" r="18" fill="#D9E8AD"/><path d="M40,54 l6,6 l11,-12" fill="none" stroke="#3F5A2A" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="82" y="50" width="170" height="8" rx="4" fill="rgba(63,90,42,.25)"/><rect x="10" y="104" width="320" height="64" rx="20" fill="#FBE6EF" stroke="rgba(168,72,122,.45)" stroke-width="2.5"/><circle cx="48" cy="136" r="18" fill="#A8487A"/><text x="48" y="144" text-anchor="middle" font-family="DM Sans,Arial,sans-serif" font-size="24" font-weight="700" fill="#fff">?</text><rect x="82" y="132" width="140" height="8" rx="4" fill="rgba(168,72,122,.45)"/></svg></div><figcaption><b>3</b>Ask first</figcaption></figure></div>
+</section>
+
+<section id="discuss" class="cozy alt">
+<div class="head"><p class="eyebrow">Discussion · 7 minutes</p><h2>Let’s talk about what you just connected.</h2></div>
+<div class="dqs">
+<p class="dq" data-build-in="1" data-say="which app next"><b>1</b>Which app would you connect next, and what would you use it for?</p>
+<p class="dq" data-build-in="2" data-say="never without asking"><b>2</b>What should an agent never be allowed to do without asking first?</p>
+<p class="dq" data-build-in="3" data-say="sending emails"><b>3</b>Would you let an agent send emails for you? Why or why not?</p>
+<p class="dq" data-build-in="4" data-say="access to all your apps"><b>4</b>What could go wrong if an agent had access to all your apps?</p>
+</div>
+<p class="timer" data-seconds="420">7:00</p>
+</section>
+
+<section id="point" class="cozy">
+<h2>Which actions need your OK first?</h2>
+<div class="row lists">
+<div class="card" data-build-in="1" data-say="fine to just do"><h3>Fine to just do</h3><ul><li>Search your files</li><li>Read a doc</li><li>List your events</li><li>Summarize what it found</li></ul></div>
+<div class="card pink" data-build-in="2" data-say="ask first"><h3>Ask first</h3><ul><li>Send an email</li><li>Delete a file</li><li>Pay for something</li><li>Post for you</li></ul></div>
+</div>
+<p class="callout" data-build-in="3" data-say="the point to land">More access means more useful, but also more risk. Good agents ask before taking actions that can’t be undone.</p>
+</section>
+
+<section id="takeaway" class="grad center">
+<p class="eyebrow">One thing to remember</p>
+<h2 class="stmt">MCP is one standard plug that lets AI use your apps.</h2>
+<div class="tags"><span><b>Host</b> · the AI app you use</span><span><b>Server</b> · the connector for one app</span><span><b>Tools</b> · what it can do there</span></div>
+</section>
+
+<section id="thanks" class="grad">
+<div style="display:flex;align-items:center;gap:56px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:28px">
+<h1 class="title" style="font-size:128px">Thank you!</h1>
+<p class="sub" style="font-weight:700">Follow us on Instagram · <span style="color:var(--accent)">@explorai.rcc</span></p>
+<div class="frost"><p class="eyebrow">Next week · Nov 11</p><p class="t">Topic coming soon</p></div>
+</div>
+<div style="display:flex;gap:28px;align-items:flex-start">
+<div class="qr sm"><img src="data:image/png;base64,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" alt="QR code: Instagram @explorai.rcc" style="width:300px;height:300px"><p>@explorai.rcc</p></div>
+<div class="qr sm"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUoAAAFKCAIAAAD0S4FSAAAFJUlEQVR42u3dwXEUMRCG0X8psiEJ8iA+50ESxCMy4DJ0dbfmvbu96/F8JR26pM85J8CNvnkEIG9A3oC8AXkD8gbkDfIG5A3IG5A3IG9A3iBvQN6AvAF5A/IG5A1v9v3JD//89eOyx/H760/R3/vv3/zkOT/5zXVmPqv73kmrN9icA/IG5A3IG5A3IG9A3iBvIK+aWkvZtE0WTlPdNy9lAmz7c7Z6g805IG9A3oC8AXkD8gZ5A/IG8qqptTRN6sycTOo6AW7mpF3dX+SdtHqDzTkgb0DegLwBeQPyBnkD8gZiai3OHqv83K65tCefu/HOU6s3IG9A3oC8AXmDvAF5A/IG5A3E1FreMQ9XN5c2c+INqzcgb5A3IG9A3oC8AXkD8gbkDTG1FnNLU2/MTNO03MbPfds7afUGm3NA3oC8AXkD8gbkDfIG5A3kVVNrXfdpZuHk2ZN5qbrP3fidvZNWb5A3IG9A3oC8AXkD8gZ5A/IGcvHUmvPS5s9pbTwBrm4ezuoNyBuQNyBvQN6AvEHegLwBeQNZPbW28X7JrtO2Zn7njWePzfzOdSfAPfnNVm+wOQfkDcgbkDcgb0DeIG9A3sBAn3NO7po92nja1syz1ja67w5QU2uAvEHegLwBeQPyBuQNyBvkDcRZa/kfE0J1N2bWfauZTyMLbwit++/PPPOsa9LO6g0254C8AXkD8gbkDcgb5A3IG8hlU2tdM14b72rsmtJ78rP3zeHNfM5Wb0DegLxB3oC8AXkD8gbkDcgbYmots29F3Dg/FLepLj+Jre5Z1f1mqzfYnAPyBuQNyBuQNyBvkDcgb2Cgzzkn8+7EzML5sK4z3jbe0zrzlL4snOC0eoPNOSBvQN6AvAF5A/IG5A3yBuKstcy+yTFN91rOnACbeQJc19ly932u1RtszgF5A/IG5A3IG5A3yBuQN5DLzlrLyKm1jWetbXySM888mzn/1/VeWb3B5hyQNyBvQN6AvAF5g7wBeQO57Ky1uhmgrpsrN36r+6b03AFq9QbkDfIG5A3IG5A3IG9A3oC8IabWcssJYXWni3V9q7fpusV143tl9Qabc0DegLwBeQPyBuQN8gbkDeSyqbWuWau6U826Zo9mntM287bNmW/szP+g1RtszgF5A/IG5A3IG5A3yBuQNxBnraV+yue+6bE0TZ7V/UVdJ6LVnaY2892weoPNOSBvQN6AvAF5A/IGeQPyBnLZ1NrMOa2NJ6LNPE3tvv9+15vjrDVA3oC8Qd6AvAF5A/IG5A3IG8jqG0Jn3j6Zl03pdc20zbzl0+oNyBuQNyBvkDcgb0DegLwBeQNx1lomnT1WNx+2cXaw6+7Rru/c9T+yeoPNOSBvQN6AvAF5A/IGeQPyBnLZ1FoWnohWN3s0c6qp617L+87h23ibqtUbbM4BeQPyBuQNyBuQN8gbkDeQV02txQ2S46flZn6rmRNgG+8PtXqDzTkgb0DegLwBeQPyBnkD8gZiai1vvT+07jd3zUttvDHzbe+V1RtszgF5A/IG5A3IG5A3yBuQNxBTa2TSBFjX/aF1p9Z1nbSXkae4Wb3B5hyQNyBvQN6AvAF5g7wBeQMxtZZ7T9vquj+0buapbqZt4180875UqzfYnAPyBuQNyBuQNyBvQN4gbyCm1tI9qbNxLq1uEitmB8e/sW4IBeQNyBvkDcgbkDcgb0DegLzhVT7nHE8BrN6AvAF5A/IG5A3IG+QNyBuQNyBvQN6AvEHegLwBeQPyBuQNyBvkDdzmLwzmGA334MD+AAAAAElFTkSuQmCC" alt="QR code: Discord server" style="width:300px;height:300px"><p>Discord</p></div>
+</div>
+</div>
+</section>
+
+</div><div id="count"></div>
+<script>
+var st=document.getElementById('stage'),S=[].slice.call(st.children),i=0;
+function fit(){var k=Math.min(innerWidth/1920,innerHeight/1080);st.style.transform='scale('+k+') translate(-50%,-50%)'}
+// Steps: every element with the same data-build-in number shows on the same press. Unnumbered ones get
+// a press each, after the numbered ones, in page order. G[n] lists slide n's presses; step is how many are shown.
+var G=S.map(function(s){var els=[].slice.call(s.querySelectorAll('[data-build-in]')),by={},max=0;
+ els.forEach(function(e){max=Math.max(max,+e.dataset.buildIn||0)});
+ els.forEach(function(e){var k=+e.dataset.buildIn||++max;(by[k]=by[k]||[]).push(e)});
+ return Object.keys(by).map(Number).sort(function(a,b){return a-b}).map(function(k){return by[k]})}),step=0;
+// The slide carries data-step (presses so far) and data-s ("1 2 3": every press so far), so a module's CSS can style each step.
+function setStep(k){step=k;G[i].forEach(function(els,j){els.forEach(function(e){e.classList.toggle('pending',j>=k)})});
+ S[i].setAttribute('data-step',k);for(var a=[],j=1;j<=k;j++)a.push(j);S[i].setAttribute('data-s',a.join(' '))}
+function fmt(t){var m=Math.floor(t/60),s=t%60;return m+':'+(s<10?'0':'')+s}
+// Each .timer keeps its own state (seconds left, or its end time while it runs), so leaving the slide and
+// coming back keeps the count, and a hidden tab cannot slow it.
+function left(el){return el._end?Math.max(0,(el._end-Date.now())/1000):el._left}
+function paint(el){var t=Math.ceil(left(el));el.textContent=fmt(t);el.classList.toggle('done',t<=0);el.classList.toggle('paused',!el._end&&t>0&&t<+el.dataset.seconds);if(el._end&&t<=0){el._end=0;el._left=0}}
+[].forEach.call(st.querySelectorAll('.timer'),function(el){el._left=+el.dataset.seconds;el._end=0});
+setInterval(function(){var el=S[i].querySelector('.timer');if(el&&el._end)paint(el)},250);
+function resetTimer(){var el=S[i].querySelector('.timer');if(el)paint(el)}
+// T pauses and resumes; T after 0:00 starts the timer over.
+function toggleTimer(){var el=S[i].querySelector('.timer');if(!el)return;if(el._end){el._left=left(el);el._end=0}else{if(el._left<=0)el._left=+el.dataset.seconds;el._end=Date.now()+el._left*1000}paint(el)}
+function show(n,end){var o=i;i=Math.max(0,Math.min(S.length-1,n));
+ if(S[o]!==S[i]){S.forEach(function(s,j){if(s!==S[o]&&s!==S[i])s.hidden=true});S[o].classList.add('s-out');setTimeout(function(){if(S[o]!==S[i])S[o].hidden=true;S[o].classList.remove('s-out')},220);S[i].hidden=false;S[i].classList.add('s-in');setTimeout(function(){S[i].classList.remove('s-in')},220)}else{S.forEach(function(s){s.hidden=s!==S[i]})}
+ setStep(end?G[i].length:0);
+ document.getElementById('count').textContent=(i+1)+' / '+S.length;history.replaceState(null,'','#'+(i+1));
+ if(document.activeElement&&document.activeElement.blur)document.activeElement.blur();resetTimer()}
+function next(){if(step<G[i].length)setStep(step+1);else if(i<S.length-1)show(i+1)}
+// Back undoes one press: it returns this slide to the step before, and only leaves the slide from step 0.
+function prev(){if(step>0)setStep(step-1);else if(i>0)show(i-1,true)}
+function typing(e){var t=e.target;return t&&(t.tagName==='TEXTAREA'||t.tagName==='INPUT'||t.isContentEditable)}
+addEventListener('keydown',function(e){if(typing(e)||e.metaKey||e.ctrlKey||e.altKey)return;
+ if(['ArrowRight','ArrowDown',' ','PageDown','Enter'].indexOf(e.key)>-1){e.preventDefault();next()}
+ else if(['ArrowLeft','ArrowUp','PageUp','Backspace'].indexOf(e.key)>-1){e.preventDefault();prev()}
+ else if(e.key==='f'||e.key==='F'){document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen().catch(function(){})}
+ else if(e.key==='t'||e.key==='T'){e.preventDefault();toggleTimer()}});
+addEventListener('click',function(e){if(document.documentElement.classList.contains('pv-tool'))return;if(e.target.closest('a,textarea,input,button,.pv-qr-dialog'))return;e.clientX<innerWidth/3?prev():next()});
+// Wrap headline words in spans so they can rise in one after another. Text and textContent stay the same.
+[].forEach.call(st.querySelectorAll('.title,.stmt,h2'),function(h){if(h.children.length)return;var k=0,parts=h.textContent.split(/(\s+)/);h.textContent='';
+ parts.forEach(function(p){if(!p)return;if(/^\s+$/.test(p)){h.appendChild(document.createTextNode(p));return}var w=document.createElement('span');w.className='w';w.style.setProperty('--w',k++);w.textContent=p;h.appendChild(w)})});
+// Open on the slide in the link; a number past the end opens slide 1.
+var h0=parseInt(location.hash.slice(1));
+addEventListener('resize',fit);fit();show(h0>=1&&h0<=S.length?h0-1:0);
+window.__explorDeck={
+ slides:S.map(function(s,n){var t=s.querySelector('.timer');return{beats:G[n].length,timer:t?+t.dataset.seconds:0,room:false}}),
+ state:function(){return{i:i,b:step,room:false,busy:false}}};
+addEventListener('hashchange',function(){var n=(parseInt(location.hash.slice(1))||1)-1;if(n!==i)show(n)});
+// The presenter view names the next press from the k-th [data-beat] on a slide. explorai-presenter.js gives every
+// [data-build-in] a label, but here one press can show several elements, so relabel: one per press, from data-say when set.
+addEventListener('load',function(){S.forEach(function(s,n){[].forEach.call(s.querySelectorAll('[data-beat]'),function(b){b.remove()});
+ var box=document.createElement('div');box.hidden=true;
+ G[n].forEach(function(els){var e=els.filter(function(x){return x.dataset.say})[0]||els[0],t=document.createElement('span');
+  t.setAttribute('data-beat','');var x=(e.dataset.say||e.textContent).replace(/\s+/g,' ').trim();t.textContent=x.length>70?x.slice(0,67)+'…':x;box.appendChild(t)});
+ s.appendChild(box)})});
+</script>
+<script src="../shared/explorai-presenter.js"></script>
+<script src="../shared/presenter.js"></script>
+<script src="../shared/review.js"></script>
+</body></html>
