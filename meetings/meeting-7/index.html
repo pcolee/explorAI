@@ -154,16 +154,19 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 /* demo: the steps on the left, what to point at on the right */
 #stage>section.build{display:grid;grid-template-columns:1000px 1fr;grid-template-rows:auto 1fr;column-gap:72px;row-gap:36px;align-content:start;padding:88px 128px 96px}
 .build .head{grid-column:1/3;display:flex;flex-direction:column;gap:16px}
-.build .side-col{grid-column:2;grid-row:2;display:flex;flex-direction:column;justify-content:space-between;gap:22px}
-.steps{list-style:none;padding:0;display:flex;flex-direction:column;justify-content:space-between;gap:26px;counter-reset:s}
-.steps li{display:flex;gap:30px;font-size:42px;line-height:1.35;color:var(--ink)}
-.steps li::before{counter-increment:s;content:counter(s);font:600 66px/1 var(--display);color:var(--accent);min-width:1em}
+.build .side-col{grid-column:2;grid-row:2;height:640px;display:flex;flex-direction:column;justify-content:space-between;gap:22px}
+.steps{list-style:none;padding:0;height:640px;display:grid;grid-template-rows:170px 170px 250px 50px;counter-reset:s}
+.steps li{display:flex;align-items:flex-start;gap:30px;font-size:42px;line-height:1.35;color:var(--ink)}
+.steps li::before{counter-increment:s;content:counter(s);font:600 66px/57px var(--display);color:var(--accent);min-width:1em}
 .steps li>div{display:flex;flex-direction:column;gap:18px}
 .steps .prompt{font-size:34px}
 .side-col .eyebrow{font-size:26px}
 .tr{display:flex;align-items:center;gap:20px;background:var(--card);border-radius:26px;padding:22px 28px;font-size:32px;line-height:1.35;color:var(--ink);box-shadow:inset 0 0 0 1.5px rgba(217,232,173,.9),0 14px 30px -20px rgba(63,90,42,.45)}
 .tr .k{flex:none;font-size:22px;font-weight:700;letter-spacing:2px;text-transform:uppercase;background:var(--green);color:var(--ink);border-radius:999px;padding:7px 20px}
 .tr.ans{flex-direction:column;align-items:stretch;gap:16px}
+.side-col .tr{height:120px}
+.side-col .tr.ans{height:170px}
+.side-col .sticky{height:150px;box-sizing:border-box}
 .tr.ans .k{align-self:start;background:var(--pinkwash);color:var(--accent)}
 .tr.ans i{display:block;height:18px;border-radius:9px;background:rgba(63,90,42,.18)}
 .side-col .sticky{margin-top:10px;--r:1deg;padding:40px 30px 26px}
@@ -413,10 +416,10 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 </ol>
 <div class="side-col">
 <p class="eyebrow">What it did</p>
-<p class="tr" data-build-in="1" data-say="it looked up the repo"><span class="k">Look up</span>Found the pcolee/explorAI repo on GitHub</p>
-<p class="tr" data-build-in="2" data-say="then it read the changes"><span class="k">Read</span>Read the 3 most recent commits</p>
+<p class="tr" data-build-in="1" data-say="it looked up the repo"><span class="k">Look up</span>Found pcolee/explorAI on GitHub</p>
+<p class="tr" data-build-in="2" data-say="then it read the changes"><span class="k">Read</span>Read its 3 latest commits</p>
 <div class="tr ans" data-build-in="3" data-say="then it answered"><span class="k">Answer</span><i style="width:92%"></i><i style="width:78%"></i><i style="width:85%"></i></div>
-<div class="sticky p" data-build-in="4" data-say="same plug"><p>Different server, different tools, the same loop. One plug.</p></div>
+<div class="sticky p" data-build-in="4" data-say="same plug"><p>Different server, same loop. One plug.</p></div>
 </div>
 </section>
 
