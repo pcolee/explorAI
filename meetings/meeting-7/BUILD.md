@@ -62,7 +62,7 @@ The plan's agenda (Hook 0–5, What MCP is 5–13, Live demo 13–20, Hands-on 2
 | 15 | discuss | The four discussion questions, one per press, 7:00 timer; n15 has talking-point answers under each (Cole's request) | 2:48 | v1 |
 | 16 | point | Fine to just do vs. ask first, then (press 3, Cole's request) "You're in control: you choose what it can reach: approve the least it needs, and you can disconnect it anytime.", then the point to land | 2:55 | v1 |
 | 17 | takeaway | One thing to remember: MCP is one standard plug that lets AI use your apps | 2:57 | v1 |
-| 18 | thanks | Thank you, two next-meeting cards, "Next week · Nov 11 · Study Smarter with AI" and a lighter "Nov 18 · Lab: Automation" under it, as on Meeting 3 (Cole: both titles vague on purpose), Instagram + Discord QRs (reused, decoded below) | 2:58 | v1 |
+| 18 | thanks | Thank you, two next-meeting cards, "Next week · Nov 11 · Study Smarter with AI" and "Nov 18 · Lab: Automation" under it in the same style (Cole: both titles vague on purpose), Instagram + Discord QRs (reused, decoded below) | 2:58 | v1 |
 
 ## Decisions made while building
 
