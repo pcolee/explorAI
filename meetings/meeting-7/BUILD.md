@@ -2,7 +2,7 @@
 
 Live board for the Meeting 7 deck. It is rewritten in place and pushed with every milestone, so the top of this file is always the current state. History goes in commit messages and `docs/agent-log.md`.
 
-**Last update:** 2026-11-03 PST · **Phase:** V1 done. Deck (18 slides, with the Shares slide, slide 6's example, and the recap and phase-by-phase loop added 2026-11-03 evening and walked again: 50 presses each way, no overflow, no errors, the RSVP QR decoded) and notes (18 cards) are built from Cole's plan on Meeting 6's engine and look, and pushed. Checked in Chrome: 44 presses forward and 44 back with real keys (0 mismatches), every slide fully built with nothing past the slide edge, no console errors, T starts and pauses both timers, the hook's connector switch flips on press 3, all three QRs decoded (below), notes load with 16 cards in order. Next: Cole reviews (`A` on the deck), then the **Needs a person** list.
+**Last update:** 2026-11-03 PST · **Phase:** V1 done. Deck (19 slides, with the Shares slide, slide 6's example, and the recap and phase-by-phase loop added 2026-11-03 evening and walked again: 50 presses each way, no overflow, no errors, the RSVP QR decoded) and notes (18 cards) are built from Cole's plan on Meeting 6's engine and look, and pushed. Checked in Chrome: 44 presses forward and 44 back with real keys (0 mismatches), every slide fully built with nothing past the slide edge, no console errors, T starts and pauses both timers, the hook's connector switch flips on press 3, all three QRs decoded (below), notes load with 16 cards in order. Next: Cole reviews (`A` on the deck), then the **Needs a person** list.
 
 Deck: https://pcolee.github.io/explorAI/meetings/meeting-7/ · notes: https://pcolee.github.io/explorAI/meetings/meeting-7/notes.html
 
@@ -11,7 +11,7 @@ Deck: https://pcolee.github.io/explorAI/meetings/meeting-7/ · notes: https://pc
 1. Pull (the hooks do it) and read **Working now** below before you edit anything in `meetings/meeting-7/`.
 2. This is Cole's meeting: Cole's plan (below) and Cole's edits win. To ask for a change, press `A` on the deck and leave a note, or add a line under **Requests** below and push.
 3. Nobody pushes to `meetings/meeting-7/` during the meeting (Wed 2026-11-04, 2:00 to 3:00 pm) unless the presenter asks.
-4. **Ask Cole before deleting the "Next week" pill** on the thanks slide (slide 18): always ask whether there is a new meeting topic for next week first, and act on the answer. Never remove it because no topic is written down yet. (Cole, 2026-11-03)
+4. **Ask Cole before deleting the "Next week" pill** on the thanks slide (slide 19): always ask whether there is a new meeting topic for next week first, and act on the answer. Never remove it because no topic is written down yet. (Cole, 2026-11-03)
 
 ## Working now
 
@@ -57,14 +57,17 @@ The plan's agenda (Hook 0–5, What MCP is 5–13, Live demo 13–20, Hands-on 2
 | 10 | loop | The loop, one step at a time (Cole's request): Think, Act, Observe, Repeat, one per press, each with a plain description and a Google Calendar example (the hook's question); press 5: a server is a bundle of tools | 2:19 | v1 |
 | 11 | part2 | Part 2 · Connect an app | 2:21 | v1 |
 | 12 | demo | Live demo: connect Google Drive, ask for a doc in 3 bullets, point at search, read, answer | 2:21 | v1 |
-| 13 | challenges | Hands-on: Levels 1, 2, 3 (bonus), 20:00 timer | 2:28 | v1 |
-| 14 | part3 | Part 3 · Ask first | 2:48 | v1 |
-| 15 | discuss | The four discussion questions, one per press, 7:00 timer; n15 has talking-point answers under each (Cole's request) | 2:48 | v1 |
-| 16 | point | Fine to just do vs. ask first, then (press 3, Cole's request) "You're in control: you choose what it can reach: approve the least it needs, and you can disconnect it anytime.", then the point to land | 2:55 | v1 |
-| 17 | takeaway | One thing to remember: MCP is one standard plug that lets AI use your apps | 2:57 | v1 |
-| 18 | thanks | Thank you, two next-meeting cards, "Next week · Nov 11 · Study Smarter with AI" and "Nov 18 · Lab: Automation" under it in the same style (Cole: both titles vague on purpose), Instagram + Discord QRs (reused, decoded below) | 2:58 | v1 |
+| 13 | demo-github | Live demo 2 (Cole's request): connect GitHub the same way, ask for the 3 most recent changes to pcolee/explorAI, look up, read, answer; sticky: different server, same loop, one plug. 4 presses | 2:25 | v1 |
+| 14 | challenges | Hands-on: Levels 1, 2, 3 (bonus), 20:00 timer | 2:28 | v1 |
+| 15 | part3 | Part 3 · Ask first | 2:48 | v1 |
+| 16 | discuss | The four discussion questions, one per press, 7:00 timer; n15 has talking-point answers under each (Cole's request) | 2:48 | v1 |
+| 17 | point | Fine to just do vs. ask first, then (press 3, Cole's request) "You're in control: you choose what it can reach: approve the least it needs, and you can disconnect it anytime.", then the point to land | 2:55 | v1 |
+| 18 | takeaway | One thing to remember: MCP is one standard plug that lets AI use your apps | 2:57 | v1 |
+| 19 | thanks | Thank you, two next-meeting cards, "Next week · Nov 11 · Study Smarter with AI" and "Nov 18 · Lab: Automation" under it in the same style (Cole: both titles vague on purpose), Instagram + Discord QRs (reused, decoded below) | 2:58 | v1 |
 
 ## Decisions made while building
+
+- GitHub demo (Cole, 2026-11-03): a second live demo as slide 13, on claude.ai like the Drive one. Drive keeps 2:21 to 2:25 and GitHub 2:25 to 2:28, so hands-on and everything after keep their times and the meeting still ends at 3:00. Slides 13 to 18 became 14 to 19 (notes renumbered, `N=19`).
 
 - Shares (slide 3): Project Play's launch party, with Cole's description. Cole wrote "next Friday, Nov 6"; the slide says "this Friday, Nov 6", since Nov 6 is two days after the meeting. The RSVP QR is in the flyer's pink at Cole's request. Adding it moved every later slide 3 minutes (hook 2:07, hands-on 2:27 to 2:47, thanks 2:57); the plan's section lengths are unchanged. (Cole, 2026-11-03)
 - The demo asks for "my doc about game night" so the slide shows a real prompt instead of "[topic]". Slide 12 shows it searching for "game night" and reading a doc named "Game Night Plan". The demo doc in Drive must match (see **Needs a person**), or change slide 12 and n12. The slide draws the answer as three grey lines, not made-up bullets. (Cole's agent, 2026-11-03)
@@ -76,6 +79,8 @@ The plan's agenda (Hook 0–5, What MCP is 5–13, Live demo 13–20, Hands-on 2
 ## Needs a person before 14:00
 
 From Cole's prep checklist, in the order to do them:
+
+0. New 2026-11-03: check that claude.ai has a GitHub connector, its Settings path, and that it can read the public pcolee/explorAI repo (slide 13 and n13 assume it does). If it does not, change the slide, or demo it from Claude Code instead.
 
 1. Create the test Google account with sample docs and calendar events, and a demo doc in Drive named "Game Night Plan" (slide 12's prompt says "my doc about game night"). Share the test account's sign-in in person only, never in the repo.
 2. Check whether claude.ai connectors (Google Drive, Google Calendar) work on a free plan. If not, the notes already say to pair members up; say so on slide 13 too.
