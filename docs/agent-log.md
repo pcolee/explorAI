@@ -9,7 +9,6 @@ Remove a line once it is answered and note the answer in that day's entry.
 - Is Wed 2 to 3 pm in CIS A-204 the standing meeting time for the rest of Fall 2026?
 - Sam's Fall 2026 plan ([rcc-explorai](https://github.com/Sam-T-G/rcc-explorai), session cards in `semesters/2026-fall/sessions/`) has each meeting start with a written prediction and end with one sentence for `rules.md`. Should decks in this repo include those steps?
 - Meeting 7 (2026-11-04): is there a meeting on 2026-11-11 (Veterans Day), and what is its topic? The thanks slide says "Next week · Nov 11 · Topic coming soon".
-- Meeting 7: should it have an explorAI Shares slide? Cole's plan has none.
 
 <!-- newest entry below: add "## YYYY-MM-DD · Name (via Claude Code)" here and end it with a blank line -->
 ## 2026-11-03 · Cole (via Claude Code)
@@ -18,10 +17,11 @@ Remove a line once it is answered and note the answer in that day's entry.
 - `meetings/meeting-7/BUILD.md` (`27ac908`, then `164559f`): live board for Meeting 7 with a summary of Cole's plan (so agents without the untracked `content.md` have it), the slide plan, decisions, and the prep list.
 - `meetings/meeting-7/index.html` + `notes.html` (`164559f`): v1 deck and notes, 16 slides and 16 cards, from Cole's `content.md` on Meeting 6's engine, presenter hooks, and look. QRs copied from Meeting 6 and decoded in Chrome: sign-in `https://forms.gle/AAN5yiHXcajJvhAe8`, Instagram `https://www.instagram.com/explorai.rcc`, Discord `https://discord.gg/wymCa4EPj`. Checked in Chrome: 44 presses forward and 44 back with real keys, nothing past any slide edge, no console errors, both timers, notes 16 cards with `m7-cur`.
 - `docs/status.md`: Meeting 7 row; the Discord reminder now says replace before Meeting 9.
+- `meetings/meeting-7/` (later commit): slide 3, explorAI Shares, Project Play's launch party in Cole's words, Project Play's flyer (`project-play-flyer.jpg`, 900x1200), and an RSVP QR in the flyer's pink `#F32D62` (decoded in Chrome: `https://partiful.com/e/oQHpVqwzHjn5AMQldQeI`). Notes now 17 cards; every later slide moved 3 minutes. Walked again: 45 presses forward and back, no overflow, no console errors.
 
-**Decided:** Cole: Meeting 7 (2026-11-04) is "Connecting AI to Your Apps (MCP)", which answers the open question on the Nov 4 topic. Cole asked to build from Meeting 6's structure (status.md's standing fact says Meeting 4's). The Discord invite stays for Meeting 7 (checked: expires 2026-11-20 06:37 UTC).
+**Decided:** Cole: Meeting 7 (2026-11-04) is "Connecting AI to Your Apps (MCP)", which answers the open question on the Nov 4 topic. Cole: Shares is Project Play's launch party (answers the Shares question); the slide says "this Friday, Nov 6" where Cole's text said "next Friday", since Nov 6 is two days after the meeting. Cole asked to build from Meeting 6's structure (status.md's standing fact says Meeting 4's). The Discord invite stays for Meeting 7 (checked: expires 2026-11-20 06:37 UTC).
 
-**Issues:** No Shares slide (open question). The thanks slide says Nov 11, which is Veterans Day (open question). The demo slides assume a Drive doc named "Game Night Plan". `docs/meeting-routine.md` line 84 calls 2026-11-19 a Wednesday; it is a Thursday (not changed). No review comments were checked: this machine has no review agent token.
+**Issues:** The thanks slide says Nov 11, which is Veterans Day (open question). The demo slides assume a Drive doc named "Game Night Plan". `docs/meeting-routine.md` line 84 calls 2026-11-19 a Wednesday; it is a Thursday (not changed). No review comments were checked: this machine has no review agent token.
 
 **Next:** Cole: review the deck (`A`), then the prep list under Needs a person in `meetings/meeting-7/BUILD.md` before 2:00 on 2026-11-04.
 
