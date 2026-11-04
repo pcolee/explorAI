@@ -62,7 +62,7 @@ The plan's agenda (Hook 0–5, What MCP is 5–13, Live demo 13–20, Hands-on 2
 | 15 | discuss | The four discussion questions, one per press, 7:00 timer; n15 has talking-point answers under each (Cole's request) | 2:48 | v1 |
 | 16 | point | Fine to just do vs. ask first, then (press 3, Cole's request) "You're in control: you choose what it can reach: approve the least it needs, and you can disconnect it anytime.", then the point to land | 2:55 | v1 |
 | 17 | takeaway | One thing to remember: MCP is one standard plug that lets AI use your apps | 2:57 | v1 |
-| 18 | thanks | Thank you, next-meeting card, Instagram + Discord QRs (reused, decoded below) | 2:58 | v1 |
+| 18 | thanks | Thank you, next-meeting card "Next week · Nov 11 · Study Smarter with AI" (Cole), Instagram + Discord QRs (reused, decoded below) | 2:58 | v1 |
 
 ## Decisions made while building
 
@@ -82,7 +82,7 @@ From Cole's prep checklist, in the order to do them:
 3. Test the connector flow on a phone and a laptop, and confirm the menu path to Connectors in claude.ai settings (n12 says "Settings, then Connectors").
 4. Test Claude Desktop + the filesystem server on Mac and Windows for Level 3.
 5. Write the one-page setup guide with screenshots. When it exists, add its QR to slide 17 and the decoded URL to the log.
-6. Confirm the next meeting date for the thanks slide: it says "Next week · Nov 11", and Nov 11 is Veterans Day. Also the topic (it says "Topic coming soon"). Cole may want the pill removed if there's no topic; ask Cole first (rule 4 above).
+6. Done 2026-11-03: Cole set Meeting 8 (Nov 11) as "Study Smarter with AI" (building a study assistant; the title stays vague on purpose) and Meeting 9 (Nov 18) as "Lab: Automate One Boring Thing". The thanks slide's pill says "Next week · Nov 11 · Study Smarter with AI", and n18 says both.
 7. Speakers: assign who covers which part (`A` in the deck, or `?view=review`).
 
 ## QR targets (reused from Meeting 6, decoded from the Meeting 7 deck in Chrome on 2026-11-03)
