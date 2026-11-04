@@ -1,0 +1,87 @@
+# Meeting 7 build board
+
+Live board for the Meeting 7 deck. It is rewritten in place and pushed with every milestone, so the top of this file is always the current state. History goes in commit messages and `docs/agent-log.md`.
+
+**Last update:** 2026-11-03 18:30 PST · **Phase:** V1 (scaffold). Cole's agent is building v1 of the deck and notes from Cole's plan, on Meeting 6's engine and look.
+
+Deck: https://pcolee.github.io/explorAI/meetings/meeting-7/ · notes: https://pcolee.github.io/explorAI/meetings/meeting-7/notes.html
+
+## If you are Sam's agent, read this first
+
+1. Pull (the hooks do it) and read **Working now** below before you edit anything in `meetings/meeting-7/`.
+2. This is Cole's meeting: Cole's plan (below) and Cole's edits win. To ask for a change, press `A` on the deck and leave a note, or add a line under **Requests** below and push.
+3. Nobody pushes to `meetings/meeting-7/` during the meeting (Wed 2026-11-04, 2:00 to 3:00 pm) unless the presenter asks.
+
+## Working now
+
+| What | Files | Who | Since |
+|---|---|---|---|
+| Deck and notes v1 from Cole's plan | `index.html`, `notes.html`, this file | Cole's agent | 2026-11-03 18:30 |
+
+## Requests
+
+Add a line here (or a note with `A` on the deck). Answers go under it.
+
+- None yet.
+
+## What this meeting is
+
+Cole's plan is `meetings/meeting-7/content.md` (kept untracked, like Meetings 3, 5, and 6). What it says, so every agent has it:
+
+- **Title:** Connecting AI to Your Apps. **Subtitle:** What MCP is and how to use it. **Date:** Wed, Nov 4 · 2–3pm · CIS A-204.
+- **Audience:** beginners. Follows Meeting 6 (agents). **Format:** zero install. The main path uses claude.ai connectors; Claude Desktop with the filesystem server is an optional bonus.
+- **Goal:** members understand what MCP is, see how it connects an agent to real apps, and connect at least one app themselves.
+- **By the end, members can:** explain MCP in one sentence; connect an app to Claude and use it to answer a question; name one thing an agent should never do without asking first.
+- **Definition (use these words):** MCP (Model Context Protocol) is one standard way for AI to connect to apps and tools.
+- **Analogy:** MCP is like USB for AI. Before USB, every device needed its own cable. MCP gives every app the same plug, so any AI that supports it can use any app that supports it.
+- **Three parts:** Host / client = the AI app you use (Claude, Cursor). Server = the connector for one app (Google Drive, GitHub, Notion). Tools = the actions the server offers (search files, read a doc, list events).
+- **Tie back to Meeting 6:** an agent is a loop of think, act, observe, repeat. The act step is a tool call. An MCP server is a bundle of tools the agent can call in that loop. Tool results go into the agent's context, which is how it "knows" your calendar.
+- **Point to land at the end:** more access means more useful, but also more risk. Good agents ask before taking actions that can't be undone.
+
+## Slide plan
+
+The plan's agenda (Hook 0–5, What MCP is 5–13, Live demo 13–20, Hands-on 20–40, Discussion 40–47, Wrap 47–50) placed after the routine's cover and sign-in, starting at 2:04.
+
+| # | id | Slide | Time | State |
+|---|---|---|---|---|
+| 1 | cover | Connecting AI to Your Apps · What MCP is and how to use it · date, time, room · the three parts as small cards | 2:00 | v1 |
+| 2 | signin | Title + sign-in QR (routine, QR reused from Meeting 6) | 2:01 | v1 |
+| 3 | hook | Same question, twice: "What's on my calendar this week?" fails, the Google Calendar connector is turned on, then it answers. Picture of the live demo, 5 presses | 2:04 | v1 |
+| 4 | part1 | Part 1 · What MCP is | 2:09 | v1 |
+| 5 | define | The one-sentence definition, then Model, Context, Protocol one per press | 2:09 | v1 |
+| 6 | usb | USB for AI: a different cable for every pair, then one shared plug | 2:11 | v1 |
+| 7 | parts | Host / client, Server, Tools, one per press | 2:13 | v1 |
+| 8 | loop | Meeting 6's loop: act is a tool call, the result goes into the context window, a server is a bundle of tools | 2:15 | v1 |
+| 9 | part2 | Part 2 · Connect an app | 2:17 | v1 |
+| 10 | demo | Live demo: connect Google Drive, ask for a doc in 3 bullets, point at search, read, answer | 2:17 | v1 |
+| 11 | challenges | Hands-on: Levels 1, 2, 3 (bonus), 20:00 timer | 2:24 | v1 |
+| 12 | part3 | Part 3 · Ask first | 2:44 | v1 |
+| 13 | discuss | The four discussion questions, one per press, 7:00 timer | 2:44 | v1 |
+| 14 | point | Fine to just do vs. ask first, then the point to land | 2:51 | v1 |
+| 15 | takeaway | One thing to remember: MCP is one standard plug that lets AI use your apps | 2:53 | v1 |
+| 16 | thanks | Thank you, next-meeting card, Instagram + Discord QRs (reused, decoded below) | 2:54 | v1 |
+
+## Decisions made while building
+
+- No explorAI Shares slide: Cole's plan has none. The routine puts Shares at 2:04, so the hook starts there instead. Add one under **Requests** if wanted. (Cole's agent, 2026-11-03)
+- The demo asks for "my doc about game night" so the slide shows a real prompt instead of "[topic]". The demo doc in Drive must match (see **Needs a person**), or change slide 10 and n10. The slide draws the answer as three grey lines, not made-up bullets. (Cole's agent, 2026-11-03)
+- The hook's calendar answer on slide 3 is a labeled example ("Example calendar"), since the live answer comes from the presenter's own calendar. (Cole's agent, 2026-11-03)
+- Slide 14's two lists (fine to just do / ask first) are an addition that serves the plan's third objective; Cole can drop them and keep only the point to land. (Cole's agent, 2026-11-03)
+
+## Needs a person before 14:00
+
+From Cole's prep checklist, in the order to do them:
+
+1. Create the test Google account with sample docs and calendar events, and a demo doc in Drive named for game night (slide 10's prompt says "my doc about game night").
+2. Check whether claude.ai connectors (Google Drive, Google Calendar) work on a free plan. If not, the notes already say to pair members up; say so on slide 11 too.
+3. Test the connector flow on a phone and a laptop, and confirm the menu path to Connectors in claude.ai settings (n10 says "Settings, then Connectors").
+4. Test Claude Desktop + the filesystem server on Mac and Windows for Level 3.
+5. Write the one-page setup guide with screenshots. When it exists, add its QR to slide 15 and the decoded URL to the log.
+6. Confirm the next meeting date for the thanks slide: it says "Next week · Nov 11", and Nov 11 is Veterans Day. Also the topic (it says "Topic coming soon").
+7. Speakers: assign who covers which part (`A` in the deck, or `?view=review`).
+
+## QR targets (reused from Meeting 6)
+
+- Sign-in: `https://forms.gle/AAN5yiHXcajJvhAe8`
+- Instagram: `https://www.instagram.com/explorai.rcc`
+- Discord: `https://discord.gg/wymCa4EPj` (expires 2026-11-20 06:37 UTC, checked 2026-11-03; replace it before Meeting 9)
