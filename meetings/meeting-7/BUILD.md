@@ -2,7 +2,7 @@
 
 Live board for the Meeting 7 deck. It is rewritten in place and pushed with every milestone, so the top of this file is always the current state. History goes in commit messages and `docs/agent-log.md`.
 
-**Last update:** 2026-11-03 PST · **Phase:** V1 done. Deck (19 slides, with the Shares slide, slide 6's example, and the recap and phase-by-phase loop added 2026-11-03 evening and walked again: 50 presses each way, no overflow, no errors, the RSVP QR decoded) and notes (18 cards) are built from Cole's plan on Meeting 6's engine and look, and pushed. Checked in Chrome: 44 presses forward and 44 back with real keys (0 mismatches), every slide fully built with nothing past the slide edge, no console errors, T starts and pauses both timers, the hook's connector switch flips on press 3, all three QRs decoded (below), notes load with 16 cards in order. Next: Cole reviews (`A` on the deck), then the **Needs a person** list.
+**Last update:** 2026-11-03 PST · **Phase:** V1 done. Deck (20 slides, with the Shares slide, slide 6's example, and the recap and phase-by-phase loop added 2026-11-03 evening and walked again: 50 presses each way, no overflow, no errors, the RSVP QR decoded) and notes (18 cards) are built from Cole's plan on Meeting 6's engine and look, and pushed. Checked in Chrome: 44 presses forward and 44 back with real keys (0 mismatches), every slide fully built with nothing past the slide edge, no console errors, T starts and pauses both timers, the hook's connector switch flips on press 3, all three QRs decoded (below), notes load with 16 cards in order. Next: Cole reviews (`A` on the deck), then the **Needs a person** list.
 
 Deck: https://pcolee.github.io/explorAI/meetings/meeting-7/ · notes: https://pcolee.github.io/explorAI/meetings/meeting-7/notes.html
 
@@ -55,15 +55,16 @@ The plan's agenda (Hook 0–5, What MCP is 5–13, Live demo 13–20, Hands-on 2
 | 8 | parts | Host / client, Server, Tools, one per press | 2:16 | v1 |
 | 9 | recap | Last week (Cole's request): "An agent is the same model with 4 more parts." Instructions, Tools, Loop, Done when in Meeting 6's words; 1 press lights Tools and Loop: "Today is about two of them: MCP gives an agent its tools, and the loop is how it uses them." | 2:18 | v1 |
 | 10 | loop | The loop, one step at a time (Cole's request): Think, Act, Observe, Repeat, one per press, each with a plain description and a Google Calendar example (the hook's question); press 5: a server is a bundle of tools | 2:19 | v1 |
-| 11 | part2 | Part 2 · Connect an app | 2:21 | v1 |
-| 12 | demo | Live demo: connect Google Drive, ask for a doc in 3 bullets, point at search, read, answer | 2:21 | v1 |
-| 13 | demo-github | Live demo 2 (Cole's request): connect GitHub the same way, ask for the 3 most recent changes to pcolee/explorAI, look up, read, answer; sticky: different server, same loop, one plug. 4 presses | 2:25 | v1 |
-| 14 | challenges | Hands-on: Levels 1, 2, 3 (bonus), 20:00 timer | 2:28 | v1 |
-| 15 | part3 | Part 3 · Ask first | 2:48 | v1 |
-| 16 | discuss | The four discussion questions, one per press, 7:00 timer; n15 has talking-point answers under each (Cole's request) | 2:48 | v1 |
-| 17 | point | Fine to just do vs. ask first, then (press 3, Cole's request) "You're in control: you choose what it can reach: approve the least it needs, and you can disconnect it anytime.", then the point to land | 2:55 | v1 |
-| 18 | takeaway | One thing to remember: MCP is one standard plug that lets AI use your apps | 2:57 | v1 |
-| 19 | thanks | Thank you, two next-meeting cards, "Next week · Nov 11 · Study Smarter with AI" and "Nov 18 · Lab: Automation" under it in the same style (Cole: both titles vague on purpose), Instagram + Discord QRs (reused, decoded below) | 2:58 | v1 |
+| 11 | scale | MCP in the tech industry (Cole's request, 2026-11-04): three cards, one per press: AI companies (Anthropic made it in 2024; OpenAI, Google, Microsoft support it), 10,000+ public servers (Anthropic's Dec 2025 figure), inside a company (one server for its own data; every employee's AI tool uses it); press 4: given to the Linux Foundation in Dec 2025, so no one company owns it. Source: Anthropic's announcement of the Agentic AI Foundation. Takes 1 minute from Drive, so hands-on and later keep their times | 2:21 | v1 |
+| 12 | part2 | Part 2 · Connect an app | 2:22 | v1 |
+| 13 | demo | Live demo: connect Google Drive, ask for a doc in 3 bullets, point at search, read, answer | 2:22 | v1 |
+| 14 | demo-github | Live demo 2 (Cole's request): connect GitHub the same way, ask for the 3 most recent changes to pcolee/explorAI, look up, read, answer; sticky: different server, same loop, one plug. 4 presses | 2:25 | v1 |
+| 15 | challenges | Hands-on: Levels 1, 2, 3 (bonus), 20:00 timer | 2:28 | v1 |
+| 16 | part3 | Part 3 · Ask first | 2:48 | v1 |
+| 17 | discuss | The four discussion questions, one per press, 7:00 timer; n15 has talking-point answers under each (Cole's request) | 2:48 | v1 |
+| 18 | point | Fine to just do vs. ask first, then (press 3, Cole's request) "You're in control: you choose what it can reach: approve the least it needs, and you can disconnect it anytime.", then the point to land | 2:55 | v1 |
+| 19 | takeaway | One thing to remember: MCP is one standard plug that lets AI use your apps | 2:57 | v1 |
+| 20 | thanks | Thank you, two next-meeting cards, "Next week · Nov 11 · Study Smarter with AI" and "Nov 18 · Lab: Automation" under it in the same style (Cole: both titles vague on purpose), Instagram + Discord QRs (reused, decoded below) | 2:58 | v1 |
 
 ## Decisions made while building
 
