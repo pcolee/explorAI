@@ -128,7 +128,7 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 .trio .arr{align-self:center;text-align:center;font-family:var(--display);font-size:64px;color:var(--accent)}
 .trio .card p{font-size:30px;color:var(--ink)}
 .trio .k{font-size:22px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--body)}
-/* loop: Meeting 6's ring. Act lights with the tool call, Observe with the result in the window */
+/* loop: Meeting 6's ring. Each press lights one phase on the ring and adds its row; the last press is the MCP line */
 #stage>section#loop{padding:88px 128px 80px;gap:28px}
 .loopwrap{display:grid;grid-template-columns:600px 1fr;column-gap:96px;align-items:center;flex:1}
 .ring{position:relative;width:600px;height:600px}
@@ -136,14 +136,21 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 .ring .mid{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);text-align:center;font-size:22px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--body);opacity:.8}
 .rn{position:absolute;transform:translate(-50%,-50%);font:600 40px var(--display);color:var(--ink);background:var(--card);padding:14px 34px;border-radius:999px;white-space:nowrap;box-shadow:inset 0 0 0 2.5px var(--green),0 14px 30px -18px rgba(63,90,42,.5);transition:background .4s,color .4s,box-shadow .4s}
 .rn.think{left:300px;top:70px}.rn.act{left:530px;top:300px}.rn.obs{left:300px;top:530px}.rn.rep{left:70px;top:300px}
-#loop[data-step="1"] .rn.act,#loop[data-step="2"] .rn.obs{background:var(--pinkwash);color:var(--accent);box-shadow:inset 0 0 0 3px rgba(168,72,122,.55),0 0 0 14px rgba(242,193,214,.35)}
-.lcol{display:flex;flex-direction:column;gap:20px}
-.lcol .card{padding:22px 30px;gap:12px}
-.lcol .prompt{padding:16px 26px}
-.lcol .win{padding:14px;gap:8px}
-.lcol .blk{padding:8px 18px}
-.lcol .blk b{font-size:28px}
-.lcol .eyebrow{font-size:22px}
+#loop[data-step="1"] .rn.think,#loop[data-step="2"] .rn.act,#loop[data-step="3"] .rn.obs,#loop[data-step="4"] .rn.rep{background:var(--pinkwash);color:var(--accent);box-shadow:inset 0 0 0 3px rgba(168,72,122,.55),0 0 0 14px rgba(242,193,214,.35)}
+.lcol{display:flex;flex-direction:column;gap:16px}
+.lcol .eyebrow{font-size:22px;margin-bottom:4px}
+.ph{display:grid;grid-template-columns:170px 1fr;column-gap:24px;align-items:baseline;background:var(--card);border-radius:22px;padding:18px 28px;box-shadow:inset 0 0 0 1.5px rgba(217,232,173,.9),0 14px 30px -20px rgba(63,90,42,.45);transition:box-shadow .4s}
+.ph b{font:600 34px var(--display);color:var(--ink)}
+.ph p{font-size:28px;line-height:1.35;color:var(--ink)}
+.ph .ex2{margin-top:6px;font:500 22px var(--mono);color:var(--accent)}
+#loop[data-step="1"] .ph:nth-of-type(1),#loop[data-step="2"] .ph:nth-of-type(2),#loop[data-step="3"] .ph:nth-of-type(3),#loop[data-step="4"] .ph:nth-of-type(4){box-shadow:inset 0 0 0 3px rgba(168,72,122,.5),0 14px 30px -20px rgba(63,90,42,.45)}
+/* recap: Meeting 6's four parts; the press lights Tools and Loop */
+.parts4{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.parts4 .card{flex-direction:row;align-items:center;gap:28px;padding:30px 36px;transition:box-shadow .5s,border-color .5s}
+.parts4 h3{font-size:40px}
+.parts4 p{font-size:28px;color:var(--ink)}
+#recap[data-s~="1"] .parts4 .card:not(.lit){opacity:.5;transition:opacity .5s}
+#recap[data-s~="1"] .parts4 .lit{border-color:var(--accent);box-shadow:0 0 0 10px rgba(242,193,214,.4),0 18px 36px -24px rgba(63,90,42,.35)}
 /* demo: the steps on the left, what to point at on the right */
 #stage>section.build{display:grid;grid-template-columns:1000px 1fr;grid-template-rows:auto 1fr;column-gap:72px;row-gap:36px;align-content:start;padding:88px 128px 96px}
 .build .head{grid-column:1/3;display:flex;flex-direction:column;gap:16px}
@@ -337,8 +344,20 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 <p class="callout" data-build-in="4" data-say="how they work together">Claude calls a tool. The server does it in the app. The result comes back to Claude.</p>
 </section>
 
+<section id="recap" class="cozy alt">
+<p class="eyebrow">Last week · Meeting 6</p>
+<h2>An agent is the same model with 4 more parts.</h2>
+<div class="parts4">
+<div class="card"><svg class="ic" viewBox="0 0 24 24"><path d="M6 3h8.5L19 7.5V21H6z"/><path d="M14 3v5h5"/><path d="M9 12.5h7M9 16.5h5"/></svg><div><h3>Instructions</h3><p>You write its job once.</p></div></div>
+<div class="card lit"><svg class="ic" viewBox="0 0 24 24"><path d="M14.5 5.5a4.2 4.2 0 0 0-5.6 5.3L3.5 16.2a1.9 1.9 0 0 0 2.7 2.7l5.4-5.4a4.2 4.2 0 0 0 5.3-5.6l-2.6 2.6-2.3-.4-.4-2.3z"/></svg><div><h3>Tools</h3><p>Things it can use besides writing, like a web search or a calculator.</p></div></div>
+<div class="card lit"><svg class="ic" viewBox="0 0 24 24"><path d="M19.5 12a7.5 7.5 0 1 1-2.2-5.3"/><path d="M19.5 3.5v4.5H15"/></svg><div><h3>Loop</h3><p>It checks its work and tries again on its own.</p></div></div>
+<div class="card"><svg class="ic" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3.5"/><path d="M8.5 12.2l2.4 2.4 4.8-5.2"/></svg><div><h3>Done when</h3><p>A checklist. When every line passes, the agent stops.</p></div></div>
+</div>
+<p class="callout" data-build-in="1" data-say="today: tools and the loop">Today is about two of them: MCP gives an agent its tools, and the loop is how it uses them.</p>
+</section>
+
 <section id="loop" class="cozy">
-<h2>Last week’s loop, now with a real tool.</h2>
+<h2>The loop, one step at a time.</h2>
 <div class="loopwrap">
 <div class="ring">
 <svg viewBox="0 0 600 600"><circle cx="300" cy="300" r="230" fill="none" stroke="#9CB57B" stroke-width="4" stroke-dasharray="2 14" stroke-linecap="round"/><g fill="none" stroke="#9CB57B" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M-10,-12 L6,0 L-10,12" transform="translate(462.6,137.4) rotate(45)"/><path d="M-10,-12 L6,0 L-10,12" transform="translate(462.6,462.6) rotate(135)"/><path d="M-10,-12 L6,0 L-10,12" transform="translate(137.4,462.6) rotate(225)"/><path d="M-10,-12 L6,0 L-10,12" transform="translate(137.4,137.4) rotate(315)"/></g></svg>
@@ -346,10 +365,12 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 <span class="rn think">Think</span><span class="rn act">Act</span><span class="rn obs">Observe</span><span class="rn rep">Repeat</span>
 </div>
 <div class="lcol">
-<div class="card" data-build-in="1" data-say="act is a tool call"><p class="eyebrow">Act = a tool call</p><p class="prompt">Google Drive › search files<br>“game night”</p></div>
-<div class="card" data-build-in="2" data-say="the result goes in the window"><p class="eyebrow">Observe = the result goes in its context window</p>
-<div class="win"><div class="blk"><b>Instructions from the app</b></div><div class="blk"><b>Your message</b><span>Find my doc about game night…</span></div><div class="blk mine"><b>Tool result</b><span>The doc’s text, from Google Drive</span></div><div class="blk next"><b>Its reply</b></div></div></div>
-<p class="callout" data-build-in="3" data-say="a server is a bundle of tools">An MCP server is a bundle of tools the agent can call in this loop.</p>
+<p class="eyebrow">You ask: “What’s on my calendar this week?”</p>
+<div class="ph" data-build-in="1" data-say="think"><b>Think</b><div><p>It reads your question and decides what it needs.</p><p class="ex2">“I need this week’s events.”</p></div></div>
+<div class="ph" data-build-in="2" data-say="act"><b>Act</b><div><p>It calls a tool. This is the step MCP plugs into.</p><p class="ex2">Google Calendar › find events, Nov 2–8</p></div></div>
+<div class="ph" data-build-in="3" data-say="observe"><b>Observe</b><div><p>The tool’s answer goes into its context window, so it can read it.</p><p class="ex2">3 events came back.</p></div></div>
+<div class="ph" data-build-in="4" data-say="repeat"><b>Repeat</b><div><p>Not done? Back to Think. Done? It answers you.</p><p class="ex2">“That’s everything. Time to answer.”</p></div></div>
+<p class="callout" data-build-in="5" data-say="a server is a bundle of tools">An MCP server is a bundle of tools the agent can call in this loop.</p>
 </div>
 </div>
 </section>
