@@ -59,7 +59,7 @@ The plan's agenda (Hook 0–5, What MCP is 5–13, Live demo 13–20, Hands-on 2
 | 13 | challenges | Hands-on: Levels 1, 2, 3 (bonus), 20:00 timer | 2:28 | v1 |
 | 14 | part3 | Part 3 · Ask first | 2:48 | v1 |
 | 15 | discuss | The four discussion questions, one per press, 7:00 timer | 2:48 | v1 |
-| 16 | point | Fine to just do vs. ask first, then the point to land | 2:55 | v1 |
+| 16 | point | Fine to just do vs. ask first, then (press 3, Cole's request) "You're in control: you choose what it can reach: approve the least it needs, and you can disconnect it anytime.", then the point to land | 2:55 | v1 |
 | 17 | takeaway | One thing to remember: MCP is one standard plug that lets AI use your apps | 2:57 | v1 |
 | 18 | thanks | Thank you, next-meeting card, Instagram + Discord QRs (reused, decoded below) | 2:58 | v1 |
 
