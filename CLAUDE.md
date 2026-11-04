@@ -51,6 +51,7 @@ Two people's agents edit this repo. The goal is that neither one ever works on a
 - Keys: arrows/Space/Enter/PageUp/PageDown move, `f` fullscreen, `t` starts the 1:00 timer on slides with `.round-timer`. Click left third = back, right two-thirds = next. URL hash = slide number.
 - `data-build-in` elements reveal one per "next" press (used for answer reveals).
 - Fonts: Fraunces (display), DM Sans (body), Google Fonts. Write font names with straight quotes: `'Fraunces'`. Curly quotes (`’Fraunces’`) make the browser silently fall back to Georgia.
+- Safe margins: on every slide, after its last press, text, cards, and pictures stay at least 96px inside all four edges of the 1920x1080 stage (the default section padding is 128px left and right). Backgrounds and washes may bleed. Measure it before pushing; a slide that crowds an edge gets a shorter title or tighter padding, never smaller type.
 - Palette: ink `#3F5A2A`, body `#4D5845`, accent `#A8487A`, washes `#D9E8AD` `#F2C1D6` `#F4F7E6`, cream `#FFFBF5`, card `#FFFEFB`. Light theme only.
 - QR codes are inline base64 PNGs. When you change one, put its decoded URL in the log entry.
 

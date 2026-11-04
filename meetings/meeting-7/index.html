@@ -84,7 +84,7 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 .rsvp .qr{border-color:rgba(243,45,98,.45)}
 .rsvp p{display:flex;flex-direction:column;gap:6px;font:600 44px/1.15 var(--display);color:var(--ink)}
 .rsvp p span{font:700 22px var(--sans);letter-spacing:2px;text-transform:uppercase;color:var(--accent)}
-.sh-flyer{width:600px;height:800px;object-fit:cover;border-radius:18px;rotate:2deg;box-shadow:0 40px 70px -30px rgba(63,90,42,.55);animation:rise .7s cubic-bezier(.2,.8,.2,1) .2s backwards}
+.sh-flyer{width:570px;height:760px;margin:0 auto;object-fit:cover;border-radius:18px;rotate:2deg;box-shadow:0 40px 70px -30px rgba(63,90,42,.55);animation:rise .7s cubic-bezier(.2,.8,.2,1) .2s backwards}
 /* hook: a chat window. The same question fails, the Google Calendar connector turns on (press 3), then it answers */
 #stage>section#hook{display:grid;grid-template-columns:760px 1fr;column-gap:88px;padding:96px 128px}
 .hl{display:flex;flex-direction:column;justify-content:center;gap:40px}
@@ -132,7 +132,7 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 #stage>section#scale{padding:96px 128px;gap:36px;justify-content:center}
 .trio .card p.stat{font-family:var(--display);font-size:84px;line-height:1;font-weight:700;color:var(--accent)}
 /* loop: Meeting 6's ring. Each press lights one phase on the ring and adds its row; the last press is the MCP line */
-#stage>section#loop{padding:88px 128px 80px;gap:28px}
+#stage>section#loop{padding:96px 128px 96px;gap:28px}
 .loopwrap{display:grid;grid-template-columns:600px 1fr;column-gap:96px;align-items:center;flex:1}
 .ring{position:relative;width:600px;height:600px}
 .ring svg{position:absolute;inset:0;overflow:visible}
@@ -155,7 +155,7 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 #recap[data-s~="1"] .parts4 .card:not(.lit){opacity:.5;transition:opacity .5s}
 #recap[data-s~="1"] .parts4 .lit{border-color:var(--accent);box-shadow:0 0 0 10px rgba(242,193,214,.4),0 18px 36px -24px rgba(63,90,42,.35)}
 /* demo: the steps on the left, what to point at on the right */
-#stage>section.build{display:grid;grid-template-columns:1000px 1fr;grid-template-rows:auto 1fr;column-gap:72px;row-gap:36px;align-content:start;padding:88px 128px 96px}
+#stage>section.build{display:grid;grid-template-columns:1000px 1fr;grid-template-rows:auto 1fr;column-gap:72px;row-gap:36px;align-content:start;padding:96px 128px 96px}
 .build .head{grid-column:1/3;display:flex;flex-direction:column;gap:16px}
 .build .side-col{grid-column:2;grid-row:2;height:640px;display:flex;flex-direction:column;justify-content:space-between;gap:22px}
 .steps{list-style:none;padding:0;height:640px;display:grid;grid-template-rows:160px 160px 272px 48px;counter-reset:s}
@@ -175,7 +175,7 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 .side-col .sticky{margin-top:10px;--r:1deg;padding:40px 30px 26px}
 .side-col .sticky p{font-size:30px;color:var(--ink)}
 /* challenges: three levels across, the timer beside the headline */
-#stage>section#challenges{padding:88px 128px 96px;gap:40px}
+#stage>section#challenges{padding:96px 128px 96px;gap:40px}
 .chead{display:flex;align-items:flex-end;gap:48px}
 .chead>div{flex:1;display:flex;flex-direction:column;gap:16px}
 .chead .timer{align-self:end}
@@ -187,7 +187,7 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 .tips{display:flex;gap:32px}
 .tips p{flex:1;font-size:28px;line-height:1.4;font-weight:600;color:var(--ink);background:rgba(255,254,251,.7);border-radius:22px;padding:20px 30px;box-shadow:inset 0 0 0 2px rgba(217,232,173,.9)}
 /* discuss: one question per press, the timer on the right */
-#stage>section#discuss{display:grid;grid-template-columns:1fr 380px;grid-template-rows:auto 1fr;column-gap:64px;row-gap:36px;padding:88px 128px 96px}
+#stage>section#discuss{display:grid;grid-template-columns:1fr 380px;grid-template-rows:auto 1fr;column-gap:64px;row-gap:36px;padding:96px 128px 96px}
 #discuss .head{grid-column:1/3;display:flex;flex-direction:column;gap:16px}
 #discuss .timer{grid-column:2;grid-row:2;align-self:start;justify-self:end}
 .dqs{grid-column:1;grid-row:2;display:flex;flex-direction:column;gap:22px}
@@ -221,6 +221,8 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 #part1 .map figure:nth-child(1) .mt,#part2 .map figure:nth-child(2) .mt,#part3 .map figure:nth-child(3) .mt{box-shadow:inset 0 0 0 3px rgba(168,72,122,.55),0 0 0 10px rgba(242,193,214,.35),0 24px 48px -30px rgba(63,90,42,.45)}
 .mt svg{width:340px;height:190px;overflow:visible}
 #stage>section.pdiv{padding-top:96px;padding-bottom:120px}
+#cover .mt{height:196px}
+#cover .map{margin-top:12px}
 /* Motion from Meetings 4 to 6: things settle in softly, in reading order, and replay each time a slide shows. */
 [data-build-in]:not(.pending){animation:softIn .55s cubic-bezier(.2,.8,.2,1) backwards}
 .w{display:inline-block;animation:wordIn .6s cubic-bezier(.2,.8,.2,1) backwards;animation-delay:calc(var(--o,.08s) + var(--w,0) * 38ms)}
