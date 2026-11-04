@@ -112,6 +112,8 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 /* define: the sentence, then the three words of the name on taped notes */
 .names{display:flex;gap:44px;margin-top:24px}
 .names .sticky{flex:1}
+.ex{align-self:start;display:flex;align-items:center;gap:20px;margin-top:8px;font-size:28px;line-height:1.4;color:var(--ink);background:rgba(255,254,251,.8);border-radius:999px;padding:14px 36px 14px 16px;box-shadow:inset 0 0 0 2px rgba(217,232,173,.9)}
+.ex .chip{font-size:18px;padding:6px 16px}
 .names .sticky:nth-child(1){--r:-1.2deg}.names .sticky:nth-child(2){--r:.8deg}.names .sticky:nth-child(3){--r:-.6deg}
 /* usb: a different connection for every pair, then one shared plug */
 #stage>section#usb{padding:96px 128px 96px;gap:36px}
@@ -290,6 +292,7 @@ h3{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.2;col
 <div class="sticky p" data-build-in="2" data-say="Context"><b>Context</b><p>What it can read right now: Meeting 3’s context window.</p></div>
 <div class="sticky g" data-build-in="3" data-say="Protocol"><b>Protocol</b><p>Rules both sides agree on, so they can talk to each other.</p></div>
 </div>
+<p class="ex" data-build-in="4" data-say="the Google Calendar example"><span class="chip g">Example</span>📅 Google Calendar: Claude asks for this week’s events, the calendar sends them back, and Claude reads them.</p>
 </section>
 
 <section id="usb" class="cozy">

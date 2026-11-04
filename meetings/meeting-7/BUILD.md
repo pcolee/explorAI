@@ -49,7 +49,7 @@ The plan's agenda (Hook 0–5, What MCP is 5–13, Live demo 13–20, Hands-on 2
 | 3 | shares | explorAI Shares: Project Play's launch party (Fri, Nov 6, 6:00–8:30 PM, Angel City Business Lab) in Cole's words, a pink RSVP QR (`https://partiful.com/e/oQHpVqwzHjn5AMQldQeI`, the flyer's `#F32D62`), and Project Play's flyer (`project-play-flyer.jpg`). No presses | 2:04 | v1 |
 | 4 | hook | Same question, twice: "What's on my calendar this week?" fails, the Google Calendar connector is turned on, then it answers. Picture of the live demo, 5 presses | 2:07 | v1 |
 | 5 | part1 | Part 1 · What MCP is | 2:12 | v1 |
-| 6 | define | The one-sentence definition, then Model, Context, Protocol one per press | 2:12 | v1 |
+| 6 | define | The one-sentence definition, then Model, Context, Protocol one per press, then (press 4, Cole's request) a one-line Google Calendar example; n6 walks through how a Google Calendar connection works step by step | 2:12 | v1 |
 | 7 | usb | USB for AI: a different cable for every pair, then one shared plug | 2:14 | v1 |
 | 8 | parts | Host / client, Server, Tools, one per press | 2:16 | v1 |
 | 9 | loop | Meeting 6's loop: act is a tool call, the result goes into the context window, a server is a bundle of tools | 2:18 | v1 |
