@@ -11,6 +11,7 @@ Deck: https://pcolee.github.io/explorAI/meetings/meeting-7/ · notes: https://pc
 1. Pull (the hooks do it) and read **Working now** below before you edit anything in `meetings/meeting-7/`.
 2. This is Cole's meeting: Cole's plan (below) and Cole's edits win. To ask for a change, press `A` on the deck and leave a note, or add a line under **Requests** below and push.
 3. Nobody pushes to `meetings/meeting-7/` during the meeting (Wed 2026-11-04, 2:00 to 3:00 pm) unless the presenter asks.
+4. **Ask Cole before deleting the "Next week" pill** on the thanks slide (slide 18): always ask whether there is a new meeting topic for next week first, and act on the answer. Never remove it because no topic is written down yet. (Cole, 2026-11-03)
 
 ## Working now
 
@@ -81,7 +82,7 @@ From Cole's prep checklist, in the order to do them:
 3. Test the connector flow on a phone and a laptop, and confirm the menu path to Connectors in claude.ai settings (n12 says "Settings, then Connectors").
 4. Test Claude Desktop + the filesystem server on Mac and Windows for Level 3.
 5. Write the one-page setup guide with screenshots. When it exists, add its QR to slide 17 and the decoded URL to the log.
-6. Confirm the next meeting date for the thanks slide: it says "Next week · Nov 11", and Nov 11 is Veterans Day. Also the topic (it says "Topic coming soon").
+6. Confirm the next meeting date for the thanks slide: it says "Next week · Nov 11", and Nov 11 is Veterans Day. Also the topic (it says "Topic coming soon"). Cole may want the pill removed if there's no topic; ask Cole first (rule 4 above).
 7. Speakers: assign who covers which part (`A` in the deck, or `?view=review`).
 
 ## QR targets (reused from Meeting 6, decoded from the Meeting 7 deck in Chrome on 2026-11-03)
