@@ -8,9 +8,23 @@ Remove a line once it is answered and note the answer in that day's entry.
 
 - Is Wed 2 to 3 pm in CIS A-204 the standing meeting time for the rest of Fall 2026?
 - Sam's Fall 2026 plan ([rcc-explorai](https://github.com/Sam-T-G/rcc-explorai), session cards in `semesters/2026-fall/sessions/`) has each meeting start with a written prediction and end with one sentence for `rules.md`. Should decks in this repo include those steps?
-- Meeting 6 (2026-10-28): what is next week's (2026-11-04) topic for the thanks slide?
+- Meeting 7 (2026-11-04): is there a meeting on 2026-11-11 (Veterans Day), and what is its topic? The thanks slide says "Next week · Nov 11 · Topic coming soon".
+- Meeting 7: should it have an explorAI Shares slide? Cole's plan has none.
 
 <!-- newest entry below: add "## YYYY-MM-DD · Name (via Claude Code)" here and end it with a blank line -->
+## 2026-11-03 · Cole (via Claude Code)
+
+**Changed:**
+- `meetings/meeting-7/BUILD.md` (`27ac908`, then `164559f`): live board for Meeting 7 with a summary of Cole's plan (so agents without the untracked `content.md` have it), the slide plan, decisions, and the prep list.
+- `meetings/meeting-7/index.html` + `notes.html` (`164559f`): v1 deck and notes, 16 slides and 16 cards, from Cole's `content.md` on Meeting 6's engine, presenter hooks, and look. QRs copied from Meeting 6 and decoded in Chrome: sign-in `https://forms.gle/AAN5yiHXcajJvhAe8`, Instagram `https://www.instagram.com/explorai.rcc`, Discord `https://discord.gg/wymCa4EPj`. Checked in Chrome: 44 presses forward and 44 back with real keys, nothing past any slide edge, no console errors, both timers, notes 16 cards with `m7-cur`.
+- `docs/status.md`: Meeting 7 row; the Discord reminder now says replace before Meeting 9.
+
+**Decided:** Cole: Meeting 7 (2026-11-04) is "Connecting AI to Your Apps (MCP)", which answers the open question on the Nov 4 topic. Cole asked to build from Meeting 6's structure (status.md's standing fact says Meeting 4's). The Discord invite stays for Meeting 7 (checked: expires 2026-11-20 06:37 UTC).
+
+**Issues:** No Shares slide (open question). The thanks slide says Nov 11, which is Veterans Day (open question). The demo slides assume a Drive doc named "Game Night Plan". `docs/meeting-routine.md` line 84 calls 2026-11-19 a Wednesday; it is a Thursday (not changed). No review comments were checked: this machine has no review agent token.
+
+**Next:** Cole: review the deck (`A`), then the prep list under Needs a person in `meetings/meeting-7/BUILD.md` before 2:00 on 2026-11-04.
+
 ## 2026-10-29 · Sam (via Claude Code)
 
 **Changed:**
