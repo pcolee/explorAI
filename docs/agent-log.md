@@ -10,6 +10,25 @@ Remove a line once it is answered and note the answer in that day's entry.
 - Sam's Fall 2026 plan ([rcc-explorai](https://github.com/Sam-T-G/rcc-explorai), session cards in `semesters/2026-fall/sessions/`) has each meeting start with a written prediction and end with one sentence for `rules.md`. Should decks in this repo include those steps?
 
 <!-- newest entry below: add "## YYYY-MM-DD · Name (via Claude Code)" here and end it with a blank line -->
+## 2026-11-17 · Cole (via Claude Code)
+
+**Changed:**
+- `meetings/meeting-8/index.html`, `notes.html`, `build.html`, `open-house-flyer.jpg`, `BUILD.md` (`baa702b`): Meeting 8 v1, Finals Toolkit Lab, from Cole's plan (`content.md`, untracked) on Meeting 7's engine and look. 11 slides / 11 notes; the build sheet keeps Cole's five prompts and adds a context-first step, fix-it prompts, keep-it (share/publish/phone) steps, and sample materials. Checked in Chrome: 20 presses forward and back, all slides 96px inside the edges (the demo slide was 31px over the bottom at first; fixed by cutting a grade row and tightening padding), T timer runs, no console errors, notes 11 cards, build sheet fits 390px.
+- QR targets: sign-in `https://forms.gle/AAN5yiHXcajJvhAe8` (reused), open house registration `https://forms.cloud.microsoft/r/ZL9NATLGSV?origin=QRCode` (decoded from the flyer, redrawn larger in blue), build sheet `https://pcolee.github.io/explorAI/meetings/meeting-8/build.html`, Instagram `https://www.instagram.com/explorai.rcc` (reused), Discord `https://discord.gg/NGS8BuwnF` (new).
+- `docs/meeting-routine.md`: a sign-in slide before the closing page, and the new Discord invite and expiry.
+
+**Decided:**
+- Cole: Nov 11 had no school, so Meeting 8 is Nov 18 (2:00–2:50) and is the Finals Toolkit Lab; the Veterans Day Shares slide is dropped.
+- Cole: always a sign-in slide at the beginning and the end of a deck.
+- Cole: volunteers for the Cybersecurity Open House (2026-11-30) message on Discord or see Cole outside after the meeting; no form.
+- Cole: members build with Gemini in Google AI Studio; the demo shows using, sharing, and publishing a finished app instead of building one.
+- Cole: the meeting ends by asking members what the last meeting of the semester (after Thanksgiving break) should be, e.g. a dinner or café social.
+- Cole: new Discord invite `NGS8BuwnF` (expires 2026-12-18 04:29 UTC, per Discord's API).
+
+**Issues:** The publish steps (Publish, Get started, Continue, Continue with free URL, Publish your app) and the 2-app free tier come from Google's docs, not a live run; the Share button's label and place weren't in the docs. Meeting 7's thanks slide still names "Study Smarter with AI" on Nov 11 and "Lab: Automation" on Nov 18 (past deck, not changed).
+
+**Next:** Cole: before 2:00 on 2026-11-18, the `meetings/meeting-8/BUILD.md` Needs a person list (prebuild the grade calculator, confirm Share/Publish in AI Studio, test prompts, assign floaters). After the meeting: pick the last-meeting plan and date.
+
 ## 2026-11-04 · Cole (via Claude Code)
 
 **Changed:**
