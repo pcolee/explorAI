@@ -56,7 +56,6 @@ Cole's plan is `meetings/meeting-8/content.md` (untracked, like Meetings 3, 5, 6
 1. Build the grade calculator ahead of time in AI Studio on a personal Gmail (build sheet prompt + sample syllabus). Don't publish it before the demo.
 2. Check the Share option's location in AI Studio and that Publish shows "Continue with free URL" on that account (n5 assumes the docs' labels).
 3. Test the four starter prompts in AI Studio.
-4. Assign officers to float during build time.
 
 ## QR targets (decoded 2026-11-17)
 
