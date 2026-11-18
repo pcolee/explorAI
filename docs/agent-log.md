@@ -13,6 +13,7 @@ Remove a line once it is answered and note the answer in that day's entry.
 ## 2026-11-18 · Cole (via Claude Code)
 
 **Changed:**
+- `meetings/meeting-8/index.html` (`bc6a900`): slide 7 rearranged at Cole's request: Round 3 under the two rounds at full width, build sheet QR 420px in a right column, the "Stuck?" and "No notes" tips as a list under the QR. Checked in Chrome: 128px side, 96px top, 112px bottom margins, type unchanged. Notes card 7 not edited.
 - `meetings/meeting-8/build.html` (`dc2222d`): a "Past decks" section and jump chip linking the live decks for Meetings 3 to 8 (Meeting 3 labeled AI context and prompting, Meeting 8 marked today). Checked on a local server in Chrome: six links correct, no sideways scroll.
 
 **Decided:**
