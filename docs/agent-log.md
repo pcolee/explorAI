@@ -10,6 +10,16 @@ Remove a line once it is answered and note the answer in that day's entry.
 - Sam's Fall 2026 plan ([rcc-explorai](https://github.com/Sam-T-G/rcc-explorai), session cards in `semesters/2026-fall/sessions/`) has each meeting start with a written prediction and end with one sentence for `rules.md`. Should decks in this repo include those steps?
 
 <!-- newest entry below: add "## YYYY-MM-DD · Name (via Claude Code)" here and end it with a blank line -->
+## 2026-11-18 · Cole (via Claude Code)
+
+**Changed:**
+- `meetings/meeting-8/build.html` (`dc2222d`): a "Past decks" section and jump chip linking the live decks for Meetings 3 to 8 (Meeting 3 labeled AI context and prompting, Meeting 8 marked today). Checked on a local server in Chrome: six links correct, no sideways scroll.
+
+**Decided:**
+- Cole: the links go in `build.html` (the student build sheet), not `BUILD.md`. Cole said "starting from AI context", read as Meeting 3; Meeting 4 is included because it sits between.
+
+**Next:** Cole to confirm Meeting 4 should stay in the list. Pushed on meeting day; the live links were not opened on pcolee.github.io.
+
 ## 2026-11-17 · Cole (via Claude Code)
 
 **Changed:**
