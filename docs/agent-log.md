@@ -19,7 +19,7 @@ Remove a line once it is answered and note the answer in that day's entry.
 
 **Decided:**
 - Cole (later 2026-11-17): the shares line says "Wanna help out?" (not "We need volunteers!"); the end sign-in QR now sits on the thanks slide (green card, "Did you sign in?") beside the Instagram and Discord QRs, which are accent pink so they stand out. Deck is 10 slides, notes 10 (`b87f7c1`). Sign-in QR target unchanged.
-- Cole (later 2026-11-17): slide 7's build sheet QR is 300px (was 120px) and nothing says officers are walking around; it says "Stuck? Raise a hand." (slide, notes card 7, build sheet; `f735db1`).
+- Cole (later 2026-11-17): slide 7's build sheet QR is 300px (was 120px) and nothing says officers are walking around; it says "Stuck? Raise a hand." (slide, notes card 7, build sheet; `f735db1`). Then the two tips ("Stuck?", "No notes?") lost their pills and are a plain bulleted list under the round cards, QR on the right.
 - Cole: Nov 11 had no school, so Meeting 8 is Nov 18 (2:00–2:50) and is the Finals Toolkit Lab; the Veterans Day Shares slide is dropped.
 - Cole: always a sign-in slide at the beginning and the end of a deck.
 - Cole: volunteers for the Cybersecurity Open House (2026-11-30) message on Discord or see Cole outside after the meeting; no form.
