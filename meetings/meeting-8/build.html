@@ -1,0 +1,199 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><link rel="icon" href="data:,"><title>Build Sheet · ExplorAI Meeting 8</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=DM+Sans:wght@400;500;700&display=swap">
+<style>
+:root{--bg:#FFFBF5;--card:#FFFEFB;--line:#DCE6C0;--fg:#3A4433;--ink:#3F5A2A;--accent:#A8487A;--wash:#EEF4DA;--pinkwash:#FBE6EF;
+color-scheme:light;--display:'Fraunces',Georgia,serif;--body:'DM Sans',Arial,sans-serif}
+html{color-scheme:light;scroll-behavior:smooth}*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.55}
+.wrap{max-width:720px;margin:0 auto;padding:24px 16px 80px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:var(--display);font-weight:600;font-size:34px;line-height:1.15;color:var(--ink);margin:6px 0 8px}
+h2{font-family:var(--display);font-weight:600;font-size:24px;color:var(--ink);margin:36px 0 10px;scroll-margin-top:60px}
+h3{font-family:var(--display);font-weight:600;font-size:19px;color:var(--ink);margin:0}
+p{margin:6px 0}
+a{color:var(--accent)}
+.jump{position:sticky;top:0;z-index:2;background:var(--bg);display:flex;gap:8px;overflow-x:auto;padding:10px 0;margin:14px 0 0;border-bottom:1px solid var(--line);scrollbar-width:none}
+.jump a{flex:none;font-size:14px;font-weight:500;color:var(--ink);background:var(--wash);border-radius:999px;padding:6px 12px;text-decoration:none;white-space:nowrap}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px 18px;margin-top:12px}
+.card .tag{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.card .good{font-size:14px;color:var(--fg);margin:4px 0 0}
+.head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+pre{margin:10px 0 0;padding:12px 14px;background:var(--wash);border-radius:12px;font:500 14.5px/1.55 ui-monospace,Menlo,monospace;white-space:pre-wrap;word-break:break-word;color:var(--ink)}
+mark{background:var(--pinkwash);color:var(--accent);border-radius:4px;padding:0 2px;font-weight:700}
+button{flex:none;font:700 14px var(--body);padding:8px 14px;border-radius:999px;border:1px solid var(--ink);background:var(--ink);color:var(--bg);cursor:pointer}
+button.ok{background:var(--pinkwash);color:var(--accent);border-color:var(--accent)}
+button:focus-visible,.jump a:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+button.ghost{background:transparent;color:var(--ink)}
+ol,ul{padding-left:22px;margin:6px 0}li{margin:5px 0}
+table{width:100%;border-collapse:collapse;margin-top:8px;font-size:16px}
+td{padding:10px 8px;border-top:1px solid var(--line);vertical-align:top}td:first-child{font-weight:700;color:var(--ink);width:42%}
+.steps{counter-reset:s;list-style:none;padding:0;margin:12px 0 0;display:grid;gap:10px}
+.steps>li{counter-increment:s;position:relative;margin:0;padding:14px 16px 14px 56px;background:var(--card);border:1px solid var(--line);border-radius:16px}
+.steps>li::before{content:counter(s);position:absolute;left:16px;top:12px;font:600 24px/1 var(--display);color:var(--accent)}
+.steps b{color:var(--ink)}
+code{font:600 14.5px ui-monospace,Menlo,monospace;color:var(--accent);word-break:break-all}
+.warn{margin-top:12px;padding:14px 16px;border-radius:16px;background:var(--pinkwash);border:1px solid #EBC3D6;color:var(--fg)}
+.warn b{color:var(--accent)}
+/* fix-it prompts: small copy cards in two columns on wide screens */
+.fixes{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+.fixes .card pre{margin-top:0;background:transparent;padding:0;font-size:14px}
+.fixes .card{display:flex;align-items:center;gap:12px;padding:12px 14px}
+.fixes .card pre{flex:1}
+@media(max-width:560px){.fixes{grid-template-columns:1fr}}
+.rounds{display:grid;gap:14px;margin:14px 0 18px}
+.round{background:linear-gradient(160deg,#D9E8AD,#E8F1C8);border:1px solid #B5CC8C;border-radius:36px;padding:22px 28px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:16px 28px}
+.rl{display:flex;flex-direction:column;gap:8px;min-width:0}
+.round p{margin:0;font-size:15.5px;line-height:1.5;color:var(--ink)}
+.rn{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink)}
+.rr{display:flex;flex-direction:column;align-items:center;gap:10px}
+.clock{font:600 30px/1 var(--display);color:var(--ink);font-variant-numeric:tabular-nums}
+.rbtn{display:flex;gap:8px}
+.round.done{background:var(--accent);border-color:var(--accent)}.round.done *{color:var(--bg)!important}.round.done button{border-color:var(--bg);background:transparent}
+@media(max-width:480px){.round{border-radius:28px;padding:20px 22px;grid-template-columns:1fr}.rr{flex-direction:row;justify-content:space-between;width:100%}}
+textarea{display:block;width:100%;min-height:150px;margin-top:10px;padding:14px 16px;background:var(--wash);border:3px solid var(--ink);border-radius:12px;font:500 16px/1.6 ui-monospace,Menlo,monospace;color:var(--ink);resize:none;overflow:hidden;cursor:text}
+textarea:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+details{margin-top:12px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px 18px}
+details summary{cursor:pointer;font:600 19px var(--display);color:var(--ink)}
+details[open] summary{margin-bottom:6px}
+.after{margin-top:44px;padding:30px 26px 30px;background:linear-gradient(160deg,#FBE6EF,#F6D5E4);color:var(--fg);border-radius:28px;border:2px dashed #DD9DBD}
+.after h2{color:var(--accent);margin:0 0 18px}.atag{display:block;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ink)}
+.aitem{padding:18px 0;border-top:1.5px dashed rgba(168,72,122,.35);display:flex;flex-direction:column;align-items:flex-start;gap:12px}.aitem:first-of-type{border-top:0;padding-top:0}.aitem:last-child{padding-bottom:0}
+.after p{margin:0;color:var(--fg);line-height:1.55}
+.alinks{display:flex;flex-wrap:wrap;gap:12px}
+.after a.icon{display:grid;place-items:center;width:46px;height:46px;border-radius:50%;background:#FFFEFB;border:1px solid #EBC3D6}
+.after a.icon svg{width:24px;height:24px}
+.after a.icon:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+</style></head><body><div class="wrap">
+<span class="eyebrow">ExplorAI · Meeting 8 · Build sheet</span>
+<h1>Finals Toolkit Lab</h1>
+<p>Build one tool you’ll actually use during finals week, and leave with a link to it.</p>
+<p>Open <a href="https://aistudio.google.com">aistudio.google.com</a> and sign in with a <b>personal Gmail</b> (school accounts can have it turned off, and they can’t publish for free). Find <b>Build</b> in the left sidebar and start a new app. Copy a prompt below, fill in the <mark>[brackets]</mark>, and paste it in.</p>
+<nav class="jump" aria-label="Jump to section"><a href="#rounds">Rounds</a><a href="#context">Context first</a><a href="#ideas">Prompts</a><a href="#fix">Fix it</a><a href="#keep">Keep it</a><a href="#samples">Sample notes</a><a href="#stuck">Stuck?</a></nav>
+
+<h2 id="rounds">Rounds</h2>
+<p>Work solo or with a friend. Officers are walking around: raise a hand anytime.</p>
+<div class="rounds">
+<div class="round" data-seconds="600"><div class="rl"><span class="rn">Round 1 · 10 min</span><p><b>Build.</b> Gather your context, pick a prompt, fill in the brackets, generate it.</p></div><div class="rr"><span class="clock" role="timer" aria-label="Round 1 timer">10:00</span><div class="rbtn"><button type="button" class="go">Start</button><button type="button" class="rs ghost">Reset</button></div></div></div>
+<div class="round" data-seconds="600"><div class="rl"><span class="rn">Round 2 · 10 min</span><p><b>Fix.</b> Use it like you would during finals. Click every button. Say what’s wrong, one change per message.</p></div><div class="rr"><span class="clock" role="timer" aria-label="Round 2 timer">10:00</span><div class="rbtn"><button type="button" class="go">Start</button><button type="button" class="rs ghost">Reset</button></div></div></div>
+<div class="round" data-seconds="360"><div class="rl"><span class="rn">Round 3 · 6 min</span><p><b>Keep it.</b> Publish it or share it, then open the link on your phone.</p></div><div class="rr"><span class="clock" role="timer" aria-label="Round 3 timer">6:00</span><div class="rbtn"><button type="button" class="go">Start</button><button type="button" class="rs ghost">Reset</button></div></div></div>
+</div>
+
+<h2 id="context">Step 1: give it context first</h2>
+<p>The AI only knows your class if you tell it. Grab one or two of these before you paste a prompt:</p>
+<ul><li><b>Syllabus:</b> the grading breakdown (what percent homework, quizzes, exams are worth).</li><li><b>Your scores</b> so far, from Canvas.</li><li><b>Notes or a study guide</b> for the class you’re most worried about.</li><li><b>Your finals schedule:</b> each class, day, and time.</li></ul>
+<p>No materials with you? Use the <a href="#samples">sample syllabus and notes</a> at the bottom.</p>
+<div class="warn"><b>Publishing makes it public.</b> If you plan to publish, build the app so you type your scores or notes <i>into the app</i>, not into the prompt. Then the link is safe to share and works for any class.</div>
+
+<h2 id="ideas">Step 2: pick a prompt</h2>
+<div class="card"><div class="head"><div><span class="tag">Every class</span><h3>“What do I need on the final?” calculator</h3></div><button type="button">Copy</button></div>
+<p class="good">Shows the score you need on the final for each letter grade.</p>
+<pre>Here is my class's grading breakdown from the syllabus: <mark>[paste]</mark>. My current scores are: <mark>[paste]</mark>. Build me an interactive calculator that shows what I need on the final to get an A, B, or C. Let me edit any score and update the results live. Keep the design clean and simple.</pre></div>
+
+<div class="card"><div class="head"><div><span class="tag">Review</span><h3>Study game generator</h3></div><button type="button">Copy</button></div>
+<p class="good">Turns your notes into a game for solo or study-group review.</p>
+<pre>Here are my notes for <mark>[class]</mark>: <mark>[paste]</mark>. Turn them into a playable <mark>[Jeopardy board / timed quiz / flashcard boss battle]</mark> with at least 15 questions. Track my score and show me which topics I missed at the end.</pre></div>
+
+<div class="card"><div class="head"><div><span class="tag">Practice</span><h3>Mock exam simulator</h3></div><button type="button">Copy</button></div>
+<p class="good">A timed practice exam in your professor’s style that grades your answers.</p>
+<pre>Act as my <mark>[class]</mark> professor. Using this study guide and these past exam questions: <mark>[paste]</mark>, build a timed 20-minute practice exam with a mix of question types. When I submit, grade it, explain each wrong answer, and list the topics I should review.</pre></div>
+
+<div class="card"><div class="head"><div><span class="tag">Focus</span><h3>Focus station</h3></div><button type="button">Copy</button></div>
+<p class="good">A personal finals-week page for staying on track.</p>
+<pre>Build me a finals-week focus page with: a Pomodoro timer (25/5, adjustable), a countdown to each of my finals <mark>[list each class, date, and time]</mark>, and a "currently working on" box. Make it calm and minimal. Optional: add a button that opens my focus playlist: <mark>[paste a Spotify or YouTube link]</mark>.</pre></div>
+
+<div class="card"><div class="head"><div><span class="tag">Yours</span><h3>Your own idea</h3></div><button type="button">Copy</button></div>
+<p class="good">Anything that makes finals week easier: a meal plan, a sleep schedule, a group study planner…</p>
+<p><b>&#9998; Editable:</b> type right in the box. It stays here if you close the page.</p>
+<textarea id="own" rows="3" spellcheck="true" aria-label="Your own idea, edit the prompt">I want a tool that helps me [problem]. Ask me 3 questions about what I need, then build it.</textarea></div>
+
+<h2 id="fix">Step 3: fix it by saying what’s wrong</h2>
+<p>Your first version will be rough. That’s normal: round two is where it gets good. Describe bugs like you’d tell a tutor: what you did, what you expected, what happened instead.</p>
+<div class="card"><div class="head"><div><span class="tag">Bug report</span><h3>When something’s broken</h3></div><button type="button">Copy</button></div>
+<pre>When I <mark>[what I did]</mark>, I expected <mark>[what should happen]</mark>, but <mark>[what happened instead]</mark>. Please fix only that.</pre></div>
+<div class="fixes">
+<div class="card"><pre>Save my progress so it's still there when I close the page and come back.</pre><button type="button">Copy</button></div>
+<div class="card"><pre>Make it work well on my phone screen.</pre><button type="button">Copy</button></div>
+<div class="card"><pre>Make the questions harder, and explain each answer after I pick one.</pre><button type="button">Copy</button></div>
+<div class="card"><pre>Add a dark mode toggle.</pre><button type="button">Copy</button></div>
+<div class="card"><pre>Add a reset button that clears everything.</pre><button type="button">Copy</button></div>
+<div class="card"><pre>Let me type my own scores or notes into the app instead of having them built in.</pre><button type="button">Copy</button></div>
+</div>
+<ol><li><b>One change per message.</b> If five changes break it, you won’t know which one did.</li><li><b>Click every button.</b> The AI can say a feature works when it doesn’t. You’re the tester.</li><li><b>A change broke it?</b> Restore the previous version, then ask for one smaller change.</li></ol>
+
+<h2 id="keep">Step 4: keep it</h2>
+<p>Don’t leave it stuck in one tab. Do at least one of these before you go:</p>
+<ol class="steps">
+<li><b>Find it later.</b> Every app you build is listed at <a href="https://aistudio.google.com/apps"><code>aistudio.google.com/apps</code></a>. Bookmark it.</li>
+<li><b>Share it.</b> Your app is private until you share it. People you share with can use it and see its code, and what they use counts toward your limits.</li>
+<li><b>Publish it.</b> Click <b>Publish</b> (top right). Then <b>Get started</b> if you see it, <b>Continue</b>, <b>Continue with free URL</b>, and <b>Publish your app</b>. You get a link ending in <code>.ai.studio</code> that anyone can open.</li>
+<li><b>Put it on your phone.</b> Open your link on your phone. iPhone (Safari): tap Share, then <b>Add to Home Screen</b>. Android (Chrome): tap the ⋮ menu, then <b>Add to Home screen</b>.</li>
+</ol>
+<div class="warn"><b>Free accounts can publish up to 2 apps</b>, so publish your best one. If Publish asks for a billing account, your account isn’t eligible for the free tier (school accounts aren’t): share it instead, or bookmark your apps page. <b>Published means public:</b> no passwords, private info, or anyone else’s info in it.</div>
+
+<h2 id="samples">No notes with you? Use these</h2>
+<details><summary>Sample syllabus and scores (for the calculator)</summary>
+<div class="card"><div class="head"><div><span class="tag">Sample</span><h3>Intro to Psychology</h3></div><button type="button">Copy</button></div>
+<pre>Grading breakdown: Homework 15%, Quizzes 15%, Midterm 1 20%, Midterm 2 20%, Final exam 30%.
+Grade scale: A = 90% and up, B = 80 to 89%, C = 70 to 79%, D = 60 to 69%.
+My current scores: Homework 94%, Quizzes 81%, Midterm 1 76%, Midterm 2 84%. Final exam not taken yet.</pre></div></details>
+<details><summary>Sample notes (for the study game or mock exam)</summary>
+<div class="card"><div class="head"><div><span class="tag">Sample</span><h3>Intro to Psychology · Memory unit</h3></div><button type="button">Copy</button></div>
+<pre>Memory has three stages: encoding (getting information in), storage (keeping it), and retrieval (getting it back out).
+Sensory memory holds what we see and hear for a second or two.
+Short-term memory holds about 7 items, plus or minus 2 (George Miller, 1956), for around 20 seconds unless we rehearse them.
+Chunking groups items into bigger units, like reading a phone number as 3 chunks, so more fits in short-term memory.
+Working memory (Baddeley and Hitch) is short-term memory as an active workspace: it holds and works with information at the same time.
+Long-term memory is explicit (facts and events you can say out loud) or implicit (skills and habits, like riding a bike).
+Explicit memory includes episodic memory (personal events) and semantic memory (general facts).
+The hippocampus helps form new explicit memories.
+Serial position effect: we remember the first items in a list (primacy) and the last items (recency) best.
+Ebbinghaus's forgetting curve: we forget most new information quickly, then forgetting slows down.
+Spacing effect: studying in several short sessions beats one long cram session.
+Testing effect: quizzing yourself helps you remember more than rereading.
+Proactive interference: old information gets in the way of learning new information.
+Retroactive interference: new information gets in the way of remembering old information.</pre></div></details>
+<details><summary>Sample finals schedule (for the focus station)</summary>
+<div class="card"><div class="head"><div><span class="tag">Sample</span><h3>Finals week</h3></div><button type="button">Copy</button></div>
+<pre>Intro to Psychology final: Monday, December 14, 10:00 AM
+Calculus I final: Tuesday, December 15, 8:00 AM
+English Composition final: Wednesday, December 16, 1:00 PM
+Intro to Programming final: Thursday, December 17, 10:00 AM</pre></div></details>
+
+<h2 id="stuck">If you get stuck</h2>
+<table>
+<tr><td>Can’t open AI Studio</td><td>Switch to a personal Gmail account.</td></tr>
+<tr><td>App is blank or shows an error</td><td>Tell the chat exactly what you see, or regenerate.</td></tr>
+<tr><td>A change broke something</td><td>Restore the previous version, then ask for one smaller change.</td></tr>
+<tr><td>Hit the daily limit</td><td>Pair up and share one account. Limits reset at midnight Pacific.</td></tr>
+<tr><td>Publish asks for billing</td><td>Your account can’t use the free tier. Share the app instead, or bookmark your apps page.</td></tr>
+<tr><td>App looks generic</td><td>Tell it the colors, style, and vibe you want: “calm, cream background, green buttons.”</td></tr>
+<tr><td>Chat keeps going in circles</td><td>Ask it to sum up what the app does right now, then start a new app with that summary.</td></tr>
+</table>
+
+<section class="after"><h2>After today…</h2>
+<div class="aitem"><span class="atag">ExplorAI Shares</span><p><b>Cybersecurity Open House:</b> Monday, Nov 30, 6–8 PM, BLCIS Bldg., first floor, Room A-114A/B. Student cyber projects, a SOC/NOC classroom tour, and students, alumni, professors, and industry partners to meet. <b>Want to volunteer?</b> Message us on Discord.</p></div>
+<div class="aitem"><span class="atag">Your call</span><p>Our last meeting of the semester is after Thanksgiving break. A dinner? A café social? Post your idea in the Discord.</p></div>
+<div class="aitem"><p>Keep up with us here!</p><div class="alinks">
+<a class="icon" href="https://www.instagram.com/explorai.rcc" aria-label="ExplorAI on Instagram, @explorai.rcc"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="ig" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#FEDA75"/><stop offset=".3" stop-color="#FA7E1E"/><stop offset=".55" stop-color="#D62976"/><stop offset=".8" stop-color="#962FBF"/><stop offset="1" stop-color="#4F5BD5"/></linearGradient></defs><path fill="url(#ig)" d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077"/></svg></a>
+<a class="icon" href="https://discord.gg/NGS8BuwnF" aria-label="ExplorAI on Discord"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#5865F2" d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg></a>
+</div></div>
+</section>
+</div>
+<script>
+document.querySelectorAll('.card button').forEach(function(b){b.addEventListener('click',function(){var el=b.closest('.card').querySelector('pre,textarea');var t=el.value!==undefined?el.value:el.textContent;
+ function done(){b.textContent='Copied';b.classList.add('ok');setTimeout(function(){b.textContent='Copy';b.classList.remove('ok')},1600)}
+ if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,sel)}else sel();
+ function sel(){if(el.select){el.select()}else{var r=document.createRange();r.selectNodeContents(el);var s=getSelection();s.removeAllRanges();s.addRange(r)}}})});
+
+document.querySelectorAll('.round').forEach(function(r){var tot=+r.dataset.seconds,left=tot,end=0,t=null,c=r.querySelector('.clock'),g=r.querySelector('.go');
+ function show(){var m=Math.floor(left/60),x=left%60;c.textContent=m+':'+(x<10?'0':'')+x}
+ function stop(){clearInterval(t);t=null}
+ function tick(){left=Math.max(0,Math.ceil((end-Date.now())/1000));show();if(!left){stop();g.textContent='Start';r.classList.add('done');try{navigator.vibrate&&navigator.vibrate([300,150,300])}catch(e){}}}
+ g.addEventListener('click',function(){if(t){left=Math.max(0,Math.ceil((end-Date.now())/1000));stop();g.textContent='Resume';return}
+  if(!left){left=tot;r.classList.remove('done')}end=Date.now()+left*1000;g.textContent='Pause';t=setInterval(tick,250);tick()});
+ r.querySelector('.rs').addEventListener('click',function(){stop();left=tot;r.classList.remove('done');g.textContent='Start';show()})});
+var own=document.getElementById('own');try{var sv=localStorage.getItem('m8-own');if(sv)own.value=sv}catch(e){}
+function fit(){own.style.height='auto';own.style.height=(own.scrollHeight+6)+'px'}
+fit();own.addEventListener('input',fit);addEventListener('resize',fit);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);
+own.addEventListener('input',function(){try{localStorage.setItem('m8-own',own.value)}catch(e){}});
+</script></body></html>

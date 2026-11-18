@@ -36,7 +36,10 @@ Standard slide structure and segment order for every meeting.
 - One activity or demo per part keeps energy up
 - Each slide ends with a bridge line in the notes that carries into the next slide without saying its headline
 
-### 6. Closing page
+### 6. Sign-in again
+- Right before the closing page, show the sign-in QR again ("Did you sign in?") for anyone who arrived late (Cole, 2026-11-17: always a sign-in slide at the beginning and the end)
+
+### 7. Closing page
 Single slide with three things:
 
 - **Thank you** — "Thank you!" as the main headline
@@ -46,7 +49,7 @@ Single slide with three things:
 | Platform | Handle / URL |
 |---|---|
 | Instagram | @explorai.rcc · https://www.instagram.com/explorai.rcc |
-| Discord | https://discord.gg/wymCa4EPj |
+| Discord | https://discord.gg/NGS8BuwnF |
 
 ---
 
@@ -81,10 +84,10 @@ Single slide with three things:
 
 QR codes in the deck are inline base64 PNGs. When you add or update a QR code, put its decoded URL in the commit message and in your log entry (`docs/agent-log.md`). Never embed a QR without recording what it points to.
 
-The Discord invite expires. Current invite `wymCa4EPj` expires **2026-11-20 06:37 UTC** (the evening of Wed 2026-11-19 Pacific), last changed for Meeting 5. Replace it every 2 meetings (next due Meeting 7, 2026-11-04), in each deck's Discord QR, the build sheet link, and this file. The expiry date, not the meeting count, is the real deadline: when you start a deck, check it with `curl -s "https://discord.com/api/v9/invites/<code>"` (the `expires_at` field) and replace the invite if it expires within about 2 weeks of that meeting. Every time the invite is replaced, update the code, the expiry date here and in `docs/status.md`, and the QR target list below.
+The Discord invite expires. Current invite `NGS8BuwnF` expires **2026-12-18 04:29 UTC** (the evening of Thu 2026-12-17 Pacific), last changed for Meeting 8 (2026-11-17). Replace it every 2 meetings, in each deck's Discord QR, the build sheet link, and this file. The expiry date, not the meeting count, is the real deadline: when you start a deck, check it with `curl -s "https://discord.com/api/v9/invites/<code>"` (the `expires_at` field) and replace the invite if it expires within about 2 weeks of that meeting. Every time the invite is replaced, update the code, the expiry date here and in `docs/status.md`, and the QR target list below.
 
 Current QR targets:
 - Sign-in: `https://forms.gle/AAN5yiHXcajJvhAe8`
 - Instagram: `https://www.instagram.com/explorai.rcc`
-- Discord: `https://discord.gg/wymCa4EPj`
+- Discord: `https://discord.gg/NGS8BuwnF`
 - Board application: `https://forms.gle/d6vLSxUzxgZUN5Q69`
