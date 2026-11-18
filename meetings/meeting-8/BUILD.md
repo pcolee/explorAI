@@ -2,7 +2,7 @@
 
 Live board for the Meeting 8 deck. Rewritten in place; history goes in commit messages and `docs/agent-log.md`.
 
-**Last update:** 2026-11-17 PST · **Phase:** v1 done. Deck (11 slides), notes (11 cards), and the student build sheet (`build.html`) built from Cole's plan on Meeting 7's engine and look. Checked in Chrome: 20 presses forward and 20 back with real keys (back to slide 1, step 0), every slide fully built at least 96px inside the stage edges, T runs the build timer, no console errors, notes load with 11 cards, the build sheet has no sideways scroll at 390px. Next: Cole reviews (`A` on the deck), then **Needs a person**.
+**Last update:** 2026-11-17 PST · **Phase:** v1 done. Deck (10 slides), notes (10 cards), and the student build sheet (`build.html`) built from Cole's plan on Meeting 7's engine and look. Checked in Chrome: 20 presses forward and 20 back with real keys (back to slide 1, step 0), every slide fully built at least 96px inside the stage edges, T runs the build timer, no console errors, notes load with 11 cards, the build sheet has no sideways scroll at 390px. Next: Cole reviews (`A` on the deck), then **Needs a person**.
 
 Deck: https://pcolee.github.io/explorAI/meetings/meeting-8/ · notes: https://pcolee.github.io/explorAI/meetings/meeting-8/notes.html · build sheet: https://pcolee.github.io/explorAI/meetings/meeting-8/build.html
 
@@ -44,8 +44,7 @@ Cole's plan is `meetings/meeting-8/content.md` (untracked, like Meetings 3, 5, 6
 | 7 | build | 26:00 timer, Round 1 Build 10 / Round 2 Fix 10 / Round 3 Keep it 6, build sheet QR | 2:14 |
 | 8 | show | Show and tell, 2:00 per person (T restarts) | 2:40 |
 | 9 | last | What should we do to end the semester? | 2:47 |
-| 10 | signin-end | Did you sign in? (same QR) | 2:49 |
-| 11 | thanks | Open house volunteers card, last-meeting card, Instagram + Discord QRs | 2:50 |
+| 10 | thanks | Sign-in QR (green, "Did you sign in?"), Instagram + Discord QRs (accent pink), open house "wanna help out?" card, last-meeting card (Cole, 2026-11-17: end sign-in moved onto the thanks slide) | 2:49 |
 
 ## Decisions made while building (Cole's agent)
 
