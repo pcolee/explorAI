@@ -37,7 +37,7 @@ Standard slide structure and segment order for every meeting.
 - Each slide ends with a bridge line in the notes that carries into the next slide without saying its headline
 
 ### 6. Sign-in again
-- Right before the closing page, show the sign-in QR again ("Did you sign in?") for anyone who arrived late (Cole, 2026-11-17: always a sign-in slide at the beginning and the end)
+- On the closing (thanks) page, show the sign-in QR again beside the social QRs, which use the accent color ("Did you sign in?") for anyone who arrived late (Cole, 2026-11-17: always a sign-in slide at the beginning and the end)
 
 ### 7. Closing page
 Single slide with three things:
