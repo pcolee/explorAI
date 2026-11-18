@@ -18,7 +18,7 @@ Remove a line once it is answered and note the answer in that day's entry.
 - `docs/meeting-routine.md`: a sign-in slide before the closing page, and the new Discord invite and expiry.
 
 **Decided:**
-- Cole (later 2026-11-17): the thanks slide's social QRs are light pink all the way through (card and code background, pink caption) instead of dark pink, and all three QRs are the same size (240px codes).
+- Cole (later 2026-11-17): the thanks slide's social QRs are light green all the way through (card and code background, ink caption), after dark pink and then light pink were tried, and all three QRs are the same size (240px codes).
 - Cole (later 2026-11-17): the shares line says "Wanna help out?" (not "We need volunteers!"); the end sign-in QR now sits on the thanks slide (green card, "Did you sign in?") beside the Instagram and Discord QRs, which are accent pink so they stand out. Deck is 10 slides, notes 10 (`b87f7c1`). Sign-in QR target unchanged.
 - Cole (later 2026-11-17): slide 7's build sheet QR is 300px (was 120px) and nothing says officers are walking around; it says "Stuck? Raise a hand." (slide, notes card 7, build sheet; `f735db1`). Then the two tips ("Stuck?", "No notes?") lost their pills and are a plain bulleted list under the round cards, QR on the right. Then the two tips sit side by side on one line directly under the round cards, with the build sheet QR back at 300px on the right of that row (a 260px version under the line crowded the bottom edge, so the QR sits beside the line instead).
 - Cole: Nov 11 had no school, so Meeting 8 is Nov 18 (2:00–2:50) and is the Finals Toolkit Lab; the Veterans Day Shares slide is dropped.
